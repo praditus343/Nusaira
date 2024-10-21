@@ -129,7 +129,7 @@ function LandingPage() {
             <div className="bg-white p-6">
                 <h2 className="text-xl font-bold mb-4 text-center">Ikuti Berita Terbaru Mengenai berita berita tentang<br />
                     budidaya</h2>
-
+                
                 <div className="grid grid-cols-4 gap-4">
                     {[...Array(8)].map((_, i) => (
                         <div key={i} className="border rounded overflow-hidden">
