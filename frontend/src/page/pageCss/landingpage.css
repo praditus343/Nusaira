@@ -1,12 +1,12 @@
 .container-text2 {
   display: flex;
-  align-items: center; /* Memusatkan elemen secara vertikal */
+  align-items: center;
 }
 
 .circle {
-  width: 12px; /* Ukuran lingkaran */
-  height: 12px; /* Ukuran lingkaran */
-  border-radius: 50%; /* Membuat lingkaran */
-  background-color: #82858a; /* Warna lingkaran (biru) */
+  width: 12px;
+  height: 12px; 
+  border-radius: 50%; 
+  background-color: #82858a; 
   margin-right: 0.5rem; 
 }

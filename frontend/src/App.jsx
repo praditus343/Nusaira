@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Impor BrowserRouter
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Login from './page/login';
 import LandingPage from './page/landingPage';
+
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<LandingPage />} />
+          
         </Routes>
       </Fragment>
     </Router>
