@@ -33,6 +33,11 @@ const Footer = () => {
           </ul>
         </div>
       </div>
+
+      {/* Copyright */}
+      <div className="mt-6 text-center">
+        <p className="text-sm">&copy; {new Date().getFullYear()} NusAIra. Semua hak dilindungi.</p>
+      </div>
     </footer>
   );
 };
