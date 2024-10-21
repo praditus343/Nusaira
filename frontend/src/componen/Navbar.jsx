@@ -1,11 +1,12 @@
 // Navbar.jsx
 import React, { useState } from 'react';
-import "./ComponenCss/Navbar.css"; // Pastikan untuk menambahkan CSS
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'; // Ikon kaca pembesar
+import { Link } from 'react-router-dom'; // Import Link dari React Router
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import "./ComponenCss/Navbar.css"; // Pastikan CSS ada
 
 const Navbar = () => {
-    const [isDropdownOpen, setDropdownOpen] = useState(false); // State untuk dropdown
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
@@ -55,9 +56,13 @@ const Navbar = () => {
                         </div>
                     )}
                 </div>
-                <a href="#login" className="border border-blue-600 text-blue-600 mx-3 py-2 px-4 rounded-md transition-colors hover:bg-blue-600 hover:text-white">Login</a>
-                <a href="#register" className="bg-blue-600 text-white py-2 px-4 rounded-md transition-colors hover:bg-blue-700">Daftar</a>
-
+                {/* Link ke Login dan Daftar */}
+                <Link to="/login" className="border border-blue-600 text-blue-600 mx-3 py-2 px-4 rounded-md transition-colors hover:bg-blue-600 hover:text-white">
+                    Login
+                </Link>
+                <Link to="/register" className="bg-blue-600 text-white py-2 px-4 rounded-md transition-colors hover:bg-blue-700">
+                    Daftar
+                </Link>
             </div>
         </nav>
     );
