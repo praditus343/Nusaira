@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom'; 
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -136,9 +137,9 @@ const LoginPage = () => {
 
           <p className="mt-6 text-center text-sm text-gray-600">
             Belum memiliki akun NusaAira?{" "}
-            <a href="#" className="text-blue-500 hover:underline">
-              Daftar
-            </a>
+            <Link to="/signup" className="text-blue-500 hover:underline">
+                Daftar
+            </Link>
           </p>
         </div>
       </div>
