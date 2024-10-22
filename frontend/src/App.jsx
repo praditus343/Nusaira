@@ -4,7 +4,9 @@ import Login from './page/login';
 import SignUp from './page/singup';
 import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
-import about from './page/about';
+import InputTambak from './page/InputTambakBaru';
+import PondManagement from './page/DaftarKolam';
+
 
 
 
@@ -17,7 +19,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/Home" element={<Homeuser/>} />
-          <Route path="/about" element={<about/>} />
+          <Route path="/InputTambak" element={<InputTambak/>} />
+          <Route path="/DaftarKolam" element={<PondManagement/>} />
         </Routes>
       </Fragment>
     </Router>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Home, ChevronDown, Bell, HelpCircle } from 'lucide-react';
 import Sidebar from '../componen/SideBar.jsx';
+import Footer from '../componen/Footer.jsx';
 
 const DashboardContent = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -13,21 +14,32 @@ const DashboardContent = () => {
         <div className="bg-gray-100 w-full min-h-screen">
             {/* Header */}
             <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <div className="flex items-center">
-                            <h1 className="text-xl font-semibold text-gray-800">Home</h1>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            <Bell className="w-6 h-6 text-gray-500" />
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <HelpCircle className="w-5 h-5 text-gray-600" />
-                            </div>
-                        </div>
-                    </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+            <h1 className="text-xl font-semibold text-gray-800">Home</h1>
+            <div className="flex items-center space-x-4">
+                <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
+                {/* Round image for the Indonesian flag */}
+                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                    <img 
+                        src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
+                        alt="Bendera Indonesia" 
+                        className="w-full h-full rounded-full object-cover"
+                    />
                 </div>
-            </header>
+                {/* Round image for profile photo */}
+                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                    <img 
+                        src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
+                        alt="Profile" 
+                        className="w-full h-full rounded-full object-cover"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div className="border-b border-gray-300 w-full" />
+</header>
 
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -140,8 +152,10 @@ function HomeUser() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <DashboardContent />
+                <Footer/>
             </div>
         </div>
+
     );
 }
 

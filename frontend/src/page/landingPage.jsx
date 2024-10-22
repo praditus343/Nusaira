@@ -9,10 +9,8 @@ function LandingPage() {
 
     return (
         <>
-            {/* Navbar di bagian atas */}
+            
             <Navbar />
-
-            {/* Konten utama di bawah Navbar */}
             <div className="flex items-center justify-between p-8 bg-white mt-4">
                 <div className="flex-1 pr-8">
                     <h2 className="text-3xl font-bold mb-4">
