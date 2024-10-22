@@ -58,11 +58,12 @@ const Navbar = () => {
                 </div>
                 {/* Link ke Login dan Daftar */}
                 <Link to="/login" className="border border-blue-600 text-blue-600 mx-3 py-2 px-4 rounded-md transition-colors hover:bg-blue-600 hover:text-white">
-                    Login
+                  Login
                 </Link>
-                <Link to="/register" className="bg-blue-600 text-white py-2 px-4 rounded-md transition-colors hover:bg-blue-700">
-                    Daftar
-                </Link>
+            <Link to="/signup" className="bg-blue-600 text-white py-2 px-4 rounded-md transition-colors hover:bg-blue-700">
+                 Daftar
+            </Link>
+
             </div>
         </nav>
     );
