@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './page/login';
 import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
-import about from './page/about';
+import InputTambak from './page/InputTambakBaru';
+import PondManagement from './page/DaftarKolam';
+
 
 
 
@@ -15,7 +17,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/Home" element={<Homeuser/>} />
-          <Route path="/about" element={<about/>} />
+          <Route path="/InputTambak" element={<InputTambak/>} />
+          <Route path="/DaftarKolam" element={<PondManagement/>} />
         </Routes>
       </Fragment>
     </Router>

@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     <footer className="bg-blue-600 text-white py-10">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+      <div className="w-full lg:w-[calc(100%-250px)] ml-auto container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
         {/* Informasi Kontak */}
         <div>
           <h4 className="font-semibold text-lg mb-3">Informasi Kontak</h4>
@@ -36,7 +36,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="mt-6 text-center">
-        <p className="text-sm">&copy; {new Date().getFullYear()} NusAIra. Semua hak dilindungi.</p>
+        <p className="text-sm">&copy; {new Date().getFullYear()} NusAlra. Semua hak dilindungi.</p>
       </div>
     </footer>
   );

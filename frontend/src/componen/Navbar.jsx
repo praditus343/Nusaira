@@ -1,9 +1,8 @@
-// Navbar.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link dari React Router
+import { Link } from 'react-router-dom'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import "./ComponenCss/Navbar.css"; // Pastikan CSS ada
+import "./ComponenCss/Navbar.css"; 
 
 const Navbar = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -18,7 +17,7 @@ const Navbar = () => {
             <div className="navbar-items">
                 <div className="search-container">
                     <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
-                    <input type="text" placeholder="Search..." className="search-input" />
+                    <input type="text" placeholder="Search..." className="search-input " />
                 </div>
                 <div className="dropdown">
                     <button className="dropdown-button" onClick={toggleDropdown}>

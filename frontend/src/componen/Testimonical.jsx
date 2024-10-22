@@ -1,10 +1,9 @@
 import React from "react";
-// Import Font Awesome components
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const Testimonial = () => {
-  // Dummy data testimonial
+  
   const dummyTestimonials = [
     {
       id: 1,
