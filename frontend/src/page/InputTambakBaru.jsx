@@ -148,11 +148,11 @@ const TambakForm = () => {
                                     </label>
                                 )}
                                 <input
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600 placeholder-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600 placeholder-black"
                                     id="nama"
                                     name="nama"
                                     type="text"
-                                    placeholder=" nama tambak"
+                                    placeholder=" Nama tambak"
                                     value={formData.nama}
                                     onChange={handleChange}
                                     onFocus={() => handleFocus('nama')}
@@ -163,13 +163,13 @@ const TambakForm = () => {
 
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
                                     name="negara"
                                     value={formData.negara}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" className="text-blue-600"> negara</option>
+                                    <option value="" className="text-black"> Negara</option>
                                     <option value="indonesia" className="text-blue-600">Indonesia</option>
                                     <option value="malaysia" className="text-blue-600">Malaysia</option>
                                     <option value="vietnam" className="text-blue-600">Vietnam</option>
@@ -177,13 +177,13 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
                                     name="provinsi"
                                     value={formData.provinsi}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" className="text-blue-600"> provinsi</option>
+                                    <option value="" className="text-black"> Provinsi</option>
                                     <option value="indonesia" className="text-blue-600">Boyolali</option>
                                     <option value="malaysia" className="text-blue-600">Bali</option>
                                     <option value="vietnam" className="text-blue-600">Bandung</option>
@@ -191,13 +191,13 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
                                     name="kabupaten"
                                     value={formData.kabupaten}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" className="text-blue-600"> kabupaten</option>
+                                    <option value="" className="text-black"> Kabupaten</option>
 
                                     <option value="indonesia" className="text-blue-600">Kabupaten Karanganyar</option>
                                     <option value="malaysia" className="text-blue-600">Kabupaten Grobogan</option>
@@ -208,13 +208,13 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
                                     name="kecamatan"
                                     value={formData.kecamatan}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" className="text-blue-600"> kecamatan</option>
+                                    <option value="" className="text-black"> Kecamatan</option>
                                     <option value="indonesia" className="text-blue-600">Kecamatan Mojosongo</option>
                                     <option value="malaysia" className="text-blue-600">Kecamatan Boyolali</option>
                                     <option value="vietnam" className="text-blue-600">Kecamatan Ampel</option>
@@ -224,13 +224,13 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
                                     name="kelurahan"
                                     value={formData.kelurahan}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" className="text-blue-600"> kelurahan</option>
+                                    <option value="" className="text-black"> Kelurahan</option>
                                     <option value="indonesia" className="text-blue-600">Kelurahan Siswodipuran</option>
                                     <option value="malaysia" className="text-blue-600">Kelurahan Pulisen</option>
                                     <option value="vietnam" className="text-blue-600">Kelurahan Banaran</option>
@@ -240,16 +240,16 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
                                     name="zonaWaktu"
                                     value={formData.zonaWaktu}
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="" className="text-blue-600"> zona waktu</option>
-                                    <option value="WIB" className="text-blue-600">WIB</option>
-                                    <option value="WITA" className="text-blue-600">WITA</option>
-                                    <option value="WIT" className="text-blue-600">WIT</option>
+                                    <option value="" className='text-black'> Zona Waktu</option>
+                                    <option value="WIB" className='text-blue-600'>WIB</option>
+                                    <option value="WITA" className='text-blue-600'>WITA</option>
+                                    <option value="WIT" className='text-blue-600'>WIT</option>
                                 </select>
                             </div>
                             <div>
@@ -260,11 +260,11 @@ const TambakForm = () => {
                                     Alamat
                                 </label>
                                 <input
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-3 text-blue-600 h-24 placeholder-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-3 text-blue-600 h-24 placeholder-black"
                                     id="alamat"
                                     name="alamat"
                                     type="text"
-                                    placeholder=" alamat"
+                                    placeholder=" Alamat"
                                     value={formData.alamat}
                                     onChange={handleChange}
                                     onFocus={() => setShowAlamatLabel(true)}
@@ -280,12 +280,12 @@ const TambakForm = () => {
                                     </label>
                                 )}
                                 <input
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600 placeholder-blue-600"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600 placeholder-black"
                                     id="jumlahKolam"
                                     name="jumlahKolam"
                                     type="number"
                                     min="1"
-                                    placeholder=" jumlah kolam"
+                                    placeholder=" Jumlah Kolam"
                                     value={formData.jumlahKolam}
                                     onChange={handleJumlahKolamChange}
                                     onFocus={() => handleFocus('jumlahKolam')}
@@ -311,7 +311,7 @@ const TambakForm = () => {
                                                 </label>
                                             )}
                                             <input
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2  placeholder-blue-600 text-blue-600"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2  placeholder-black text-blue-600"
                                                 id="NamaKolam"
                                                 name="NamaKolam"
                                                 type="text"
@@ -328,24 +328,24 @@ const TambakForm = () => {
                                                 Tipe Kolam
                                             </label>
                                             <select
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
                                                 id={`tipeKolam-${index}`}
                                                 name="tipeKolam"
                                                 required
                                                 value={kolam.tipeKolam}
                                                 onChange={(e) => handleKolamChange(index, e)}
                                             >
-                                                <option value=""> tipe kolam</option>
-                                                <option value="kolam-alam">Kolam Alam</option>
-                                                <option value="kolam-buatan">Kolam Buatan</option>
-                                                <option value="kolam-hybrid">Kolam Hybrid</option>
+                                                <option value="" className='text-black'> Tipe Kolam</option>
+                                                <option value="kolam-alam" className='text-blue-600'>Kolam Alam</option>
+                                                <option value="kolam-buatan" className='text-blue-600'>Kolam Buatan</option>
+                                                <option value="kolam-hybrid" className='text-blue-600'>Kolam Hybrid</option>
                                             </select>
                                         </div>
                                         <div className="flex space-x-4">
-                                            {['panjang (M)', 'lebar (M)', 'luas (M)', 'kedalaman (M)'].map((dimension, idx) => (
+                                            {['Panjang (M)', 'Lebar (M)', 'Luas (M)', 'Kedalaman (M)'].map((dimension, idx) => (
                                                 <div className="flex-1" key={dimension}>
                                                     <select
-                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600"
+                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
                                                         id={`${dimension}-${index}`}
                                                         name={dimension}
                                                         required
@@ -353,9 +353,9 @@ const TambakForm = () => {
                                                         onChange={(e) => handleKolamChange(index, e)}
                                                     >
                                                         <option value=""> {dimension}</option>
-                                                        <option value="10">10</option>
-                                                        <option value="15">15</option>
-                                                        <option value="manual">Ketik Manual</option>
+                                                        <option value="10" className='text-blue-600'>10</option>
+                                                        <option value="15" className='text-blue-600'>15</option>
+                                                        <option value="manual" className='text-blue-600'>Ketik Manual</option>
                                                     </select>
                                                     {kolam[dimension] === 'manual' && (
                                                         <input
@@ -379,11 +379,11 @@ const TambakForm = () => {
                                                 </label>
                                             )}
                                             <input
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-blue-600 text-blue-600"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black text-blue-600"
                                                 id="jumlahAnco"
                                                 name="jumlahAnco"
                                                 type="number"
-                                                placeholder=" jumlah anco"
+                                                placeholder=" Jumlah Anco"
                                                 value={formData.jumlahAnco}
                                                 onChange={handleChange}
                                                 onFocus={() => handleFocus('jumlahAnco')}

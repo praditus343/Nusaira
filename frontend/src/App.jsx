@@ -5,6 +5,7 @@ import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
 import InputTambak from './page/InputTambakBaru';
 import PondManagement from './page/DaftarKolam';
+import InputExcel from './page/InputExcel';
 
 
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/Home" element={<Homeuser/>} />
           <Route path="/InputTambak" element={<InputTambak/>} />
           <Route path="/DaftarKolam" element={<PondManagement/>} />
+          <Route path="/InputExcel" element={<InputExcel/>} />
         </Routes>
       </Fragment>
     </Router>
