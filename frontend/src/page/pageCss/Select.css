@@ -7,7 +7,7 @@ select {
     border: 1px solid #3B82F6; 
     border-radius: 0.375rem; 
     font-size: 1rem; 
-    /* color: #3B82F6;  */
+    color: #3B82F6; 
     background-color: white; 
 }
 
@@ -17,9 +17,7 @@ select:focus {
     border-color: #2563EB; 
 }
 
-.icon-white {
-    color: white !important;
-  }
+
   
 
 

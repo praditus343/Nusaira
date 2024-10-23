@@ -9,6 +9,8 @@ import PondManagement from './page/DaftarKolam';
 import InputExcel from './page/InputExcel';
 import TambakSimulation from './page/Simulasi';
 import HargaLele from './page/HargaLele';
+import PenyakitLele from './page/PenyakitLele';
+import Notification from './page/Notifikasi';
 
 
 
@@ -27,6 +29,8 @@ function App() {
           <Route path="/InputExcel" element={<InputExcel/>} />
           <Route path="/Simulasi" element={<TambakSimulation/>} />
           <Route path="/HargaLele" element={<HargaLele/>} />
+          <Route path="/PenyakitLele" element={<PenyakitLele/>} />
+          <Route path="/Notifikasi" element={<Notification/>} />
         </Routes>
       </Fragment>
     </Router>
