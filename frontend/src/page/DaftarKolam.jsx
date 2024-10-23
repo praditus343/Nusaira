@@ -120,8 +120,8 @@ const PondTable = () => {
                         </div>
 
                         <CustomButton className="bg-blue-600 hover:bg-blue-700 text-white w-30 text-lg">
-    <span className="text-2xl font-bold">+</span> <span className="font-normal">Kolam</span>
-</CustomButton>
+                            <span className="text-2xl font-bold">+</span> <span className="font-normal">Kolam</span>
+                        </CustomButton>
 
                         <CustomButton variant="ghost" className="w-32">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
