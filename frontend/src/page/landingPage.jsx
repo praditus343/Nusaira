@@ -9,7 +9,6 @@ function LandingPage() {
 
     return (
         <>
-            
             <Navbar />
             <div className="flex items-center justify-between p-8 bg-white mt-4">
                 <div className="flex-1 pr-8">

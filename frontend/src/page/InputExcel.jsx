@@ -60,7 +60,7 @@ const ExcelForm = () => {
     }, 0);
 
     return (
-        <div className="bg-gray-100 w-full min-h-screen">
+        <div className="bg-white w-full min-h-screen">
             {/* Header */}
             <header className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -197,7 +197,7 @@ const ExcelForm = () => {
 
 function InputExcel() {
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <ExcelForm />

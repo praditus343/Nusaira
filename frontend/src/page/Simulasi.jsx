@@ -28,7 +28,7 @@ const SimulationChart = () => {
     ];
 
     return (
-        <div className="bg-gray-100 w-full min-h-screen">
+        <div className="bg-white w-full min-h-screen mb-10">
             {/* Header */}
             <header className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -158,7 +158,7 @@ const SimulationChart = () => {
 
 function TambakSimulation() {
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <SimulationChart />

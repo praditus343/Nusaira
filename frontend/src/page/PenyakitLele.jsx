@@ -131,7 +131,7 @@ const FishDiseaseDashboard = () => {
     ];
 
     return (
-        <div className="bg-gray-100 w-full min-h-screen ">
+        <div className="bg-white w-full min-h-screen ">
             {/* Header */}
             <header className="bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,8 +167,8 @@ const FishDiseaseDashboard = () => {
                     Mengenal Penyakit dan Tantangan dalam Budidaya Lele
                 </h1>
                 <p className="text-gray-600">
-                    Pelajari Cara Mengatasi Penyakit dan Tantangan Budidaya Lele <br/>dengan Solusi Tepat!
-                    Dapatkan Tips Praktis untuk Meningkatkan<br/> Kualitas dan Produktivitas Tambak Anda
+                    Pelajari Cara Mengatasi Penyakit dan Tantangan Budidaya Lele <br />dengan Solusi Tepat!
+                    Dapatkan Tips Praktis untuk Meningkatkan<br /> Kualitas dan Produktivitas Tambak Anda
                 </p>
             </div>
 
@@ -237,7 +237,7 @@ const FishDiseaseDashboard = () => {
 
 function PenyakitLele() {
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <FishDiseaseDashboard />

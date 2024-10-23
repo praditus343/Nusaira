@@ -11,6 +11,7 @@ import TambakSimulation from './page/Simulasi';
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
 import Notification from './page/Notifikasi';
+import Blog from './page/Blog';
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/HargaLele" element={<HargaLele/>} />
           <Route path="/PenyakitLele" element={<PenyakitLele/>} />
           <Route path="/Notifikasi" element={<Notification/>} />
+          <Route path="/Blog" element={<Blog/>} />
         </Routes>
       </Fragment>
     </Router>

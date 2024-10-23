@@ -34,7 +34,7 @@ const CustomButton = ({ children, variant, className, ...props }) => {
 
 const PondTable = () => {
     return (
-        <div className="bg-gray-100 w-full min-h-screen">
+        <div className="bg-white w-full min-h-screen">
             {/* Header */}
             <header className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -94,7 +94,7 @@ const PondTable = () => {
             </div>
 
             {/* Main Card */}
-            <CustomCard className="p-4">
+            <CustomCard className="p-4 ml-5 mr-5">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-medium">Detail Daftar Kolam</h3>
                     <div className="flex gap-4">
@@ -187,7 +187,7 @@ const PondTable = () => {
 
 function PondManagement() {
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <PondTable />
