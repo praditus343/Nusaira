@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Bell, HelpCircle } from 'lucide-react';
 import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
-import "./pageCss/InputTambak.css"
+import "./pageCss/Select.css"
 
 const TambakForm = () => {
     const [formData, setFormData] = useState({
