@@ -9,13 +9,11 @@ import PondManagement from './page/DaftarKolam';
 import InputExcel from './page/InputExcel';
 import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile'
-
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
 import Notification from './page/Notifikasi';
 import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
-
 
 
 
