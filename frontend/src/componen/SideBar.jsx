@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown, faChevronUp, faHome, faMoneyBill, faTable, faFileExcel, faCartPlus, faDollarSign,
-  faClipboardList, faNewspaper, faHeart, faBell, faPenSquare, faGraduationCap, faPlus, faUser, faFileInvoice, faChevronLeft, faChartLine,faChevronRight 
+  faClipboardList, faNewspaper, faHeart, faBell, faPenSquare, faGraduationCap, faPlus, faUser, faFileInvoice, faChevronLeft, faChartLine, faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, Link } from 'react-router-dom';
 
@@ -11,7 +11,12 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isActive = location.pathname === path;
+
   const isAnyChildActive = children?.some((child) => location.pathname === child.path);
+
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     if (isAnyChildActive) {
@@ -23,16 +28,11 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
     <div>
       {!children ? (
         <Link to={path}>
-          <div
-            className={`flex items-center justify-between py-2 px-4 text-white cursor-pointer hover:bg-blue-600`}
-          >
+          <div className={`flex items-center justify-between py-2 px-4 text-white cursor-pointer hover:bg-blue-600`}>
             <div className="flex items-center">
               <FontAwesomeIcon icon={icon} className="mr-4" />
               {isSidebarOpen && (
-               <span
-               className={`${isActive ? 'border border-white text-white rounded-md px-2 bg-white bg-opacity-50 w-[150px]' : ''}`}
-               style={{ borderRadius: '5px' }} 
-             >
+                <span className={`${isActive ? 'text-white rounded-md px-2 bg-white bg-opacity-30' : ''}`} style={{ borderRadius: '5px' }}>
                   {label}
                 </span>
               )}
@@ -43,15 +43,12 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
         <div>
           <div
             className={`flex items-center justify-between py-2 px-4 text-white cursor-pointer hover:bg-blue-600`}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleDropdown} 
           >
             <div className="flex items-center">
               <FontAwesomeIcon icon={icon} className="mr-2" />
               {isSidebarOpen && (
-                <span
-                className={`${isActive ? 'border border-white text-white rounded-md px-2 bg-white bg-opacity-50 ' : ''}`}
-                style={{ borderRadius: '5px' }}
-              >
+                <span className={`${isActive ? 'text-white rounded-md px-2 bg-white bg-opacity-30' : ''}`} style={{ borderRadius: '5px' }}>
                   {label}
                 </span>
               )}
@@ -60,19 +57,15 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
               isOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />
             )}
           </div>
-          {(isOpen || isAnyChildActive) && children && isSidebarOpen && (
+          {isOpen && children && isSidebarOpen && (
             <div className="ml-4">
               {children.map((child, index) => (
                 <Link to={child.path} key={index}>
-                  <div className={`py-2 px-4 text-white cursor-pointer hover:bg-blue-600 ${location.pathname === child.path ? '' : ''}`}>
+                  <div className={`py-2 px-4 text-white cursor-pointer hover:bg-blue-600`}>
                     {child.icon && <FontAwesomeIcon icon={child.icon} className="mr-2" />}
-                    <span
-                  className={`${
-                    location.pathname === child.path ? 'border border-white rounded-md px-4 py-1 bg-white bg-opacity-50' : ''
-                  }`}
-                  style={{ borderRadius: '5px' }}
-                >{child.label}</span>
-                    
+                    <span className={`${location.pathname === child.path ? 'rounded-md px-4 py-1 bg-white bg-opacity-30' : ''}`} style={{ borderRadius: '5px' }}>
+                      {child.label}
+                    </span>
                   </div>
                 </Link>
               ))}
