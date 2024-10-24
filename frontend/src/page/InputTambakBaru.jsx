@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Bell, HelpCircle } from 'lucide-react';
 import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
-import "./pageCss/InputTambak.css"
+import "./pageCss/Select.css"
+import { useNavigate } from 'react-router-dom';
+import Alert from '../componen/Atlert';
 
 const TambakForm = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         nama: '',
         negara: '',
@@ -12,7 +14,7 @@ const TambakForm = () => {
         kabupaten: '',
         kecamatan: '',
         kelurahan: '',
-        alamatDetail: '',
+        alamat: '',
         zonaWaktu: '',
         jumlahKolam: '',
         kolamDetails: [],
@@ -67,25 +69,27 @@ const TambakForm = () => {
         });
     };
 
+
     const handleSubmit = (e) => {
         e.preventDefault();
         let hasError = false;
         const errorMessage = [];
-
+        
         for (const key in formData) {
             if (formData[key] === '' || (typeof formData[key] === 'number' && formData[key] < 0)) {
                 hasError = true;
                 errorMessage.push(`Field ${key} tidak boleh kosong atau negatif.`);
             }
         }
-
+        
         if (hasError) {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
-
             console.log("Form submitted:", formData);
+            navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
         }
     };
+
 
     const [labelVisible, setLabelVisible] = useState({
         nama: false,
@@ -94,8 +98,9 @@ const TambakForm = () => {
     });
 
 
+
     return (
-        <div className="bg-gray-100 w-full min-h-screen">
+        <div className="bg-white w-full min-h-screen">
             {/* Header */}
             <header className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -399,10 +404,12 @@ const TambakForm = () => {
                     <>
                         <button
                             type="submit"
+                            onClick={handleSubmit}
                             className="bg-blue-600 text-white rounded-lg px-40 py-2 transition duration-200 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50"
                         >
                             Kirim Data
                         </button>
+
                     </>
                 </form>
             </div>
@@ -414,7 +421,7 @@ const TambakForm = () => {
 
 function InputTambak() {
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <TambakForm />

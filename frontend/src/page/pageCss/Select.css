@@ -14,8 +14,12 @@ select {
 
 select:focus {
     outline: none;
-    border-color: #2563EB; 
+    border-color: #2563EB;
+    color: #3B82F6; 
 }
+
+
+  
 
 
 
