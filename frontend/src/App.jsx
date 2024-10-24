@@ -8,6 +8,7 @@ import InputTambak from './page/InputTambakBaru';
 import PondManagement from './page/DaftarKolam';
 import InputExcel from './page/InputExcel';
 import TambakSimulation from './page/Simulasi';
+import UserProfile from './page/UserProfile';
 
 
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/DaftarKolam" element={<PondManagement/>} />
           <Route path="/InputExcel" element={<InputExcel/>} />
           <Route path="/Simulasi" element={<TambakSimulation/>} />
+          <Route path="/UserProfile" element={<UserProfile/>} />
         </Routes>
       </Fragment>
     </Router>
