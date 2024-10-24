@@ -12,6 +12,7 @@ import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
 import Notification from './page/Notifikasi';
 import Blog from './page/Blog';
+import FinalStepUI from './page/FInalStep';
 
 
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/PenyakitLele" element={<PenyakitLele/>} />
           <Route path="/Notifikasi" element={<Notification/>} />
           <Route path="/Blog" element={<Blog/>} />
+          <Route path="/FinalStep" element={<FinalStepUI/>} />
         </Routes>
       </Fragment>
     </Router>
