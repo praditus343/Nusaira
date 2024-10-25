@@ -4,6 +4,7 @@ import Footer from '../componen/Footer';
 import "./pageCss/Select.css"
 import { useNavigate } from 'react-router-dom';
 import Alert from '../componen/Atlert';
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 const TambakForm = () => {
     const navigate = useNavigate();
@@ -19,6 +20,8 @@ const TambakForm = () => {
         jumlahKolam: '',
         kolamDetails: [],
     });
+    
+    
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -153,7 +156,7 @@ const TambakForm = () => {
                                     </label>
                                 )}
                                 <input
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600 placeholder-black"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
                                     id="nama"
                                     name="nama"
                                     type="text"
@@ -168,8 +171,13 @@ const TambakForm = () => {
 
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
                                     name="negara"
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                    }}                                
                                     value={formData.negara}
                                     onChange={handleChange}
                                     required
@@ -182,8 +190,13 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
                                     name="provinsi"
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                    }}
                                     value={formData.provinsi}
                                     onChange={handleChange}
                                     required
@@ -196,8 +209,14 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
                                     name="kabupaten"
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                       
+                                    }}
                                     value={formData.kabupaten}
                                     onChange={handleChange}
                                     required
@@ -213,8 +232,14 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
                                     name="kecamatan"
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                       
+                                    }}
                                     value={formData.kecamatan}
                                     onChange={handleChange}
                                     required
@@ -229,8 +254,14 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
                                     name="kelurahan"
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                       
+                                    }}
                                     value={formData.kelurahan}
                                     onChange={handleChange}
                                     required
@@ -245,10 +276,16 @@ const TambakForm = () => {
                             </div>
                             <div>
                                 <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
                                     name="zonaWaktu"
                                     value={formData.zonaWaktu}
                                     onChange={handleChange}
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                       
+                                    }}
                                     required
                                 >
                                     <option value="" className='text-black'> Zona Waktu</option>
@@ -265,7 +302,7 @@ const TambakForm = () => {
                                     Alamat
                                 </label>
                                 <input
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-3 text-blue-600 h-24 placeholder-black"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-3 text-black h-24 placeholder-black"
                                     id="alamat"
                                     name="alamat"
                                     type="text"
@@ -285,10 +322,16 @@ const TambakForm = () => {
                                     </label>
                                 )}
                                 <input
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-blue-600 placeholder-black"
+                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
                                     id="jumlahKolam"
                                     name="jumlahKolam"
                                     type="number"
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                       
+                                    }}
                                     min="1"
                                     placeholder=" Jumlah Kolam"
                                     value={formData.jumlahKolam}
@@ -316,7 +359,7 @@ const TambakForm = () => {
                                                 </label>
                                             )}
                                             <input
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2  placeholder-black text-blue-600"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2  placeholder-black text-black"
                                                 id="NamaKolam"
                                                 name="NamaKolam"
                                                 type="text"
@@ -333,7 +376,12 @@ const TambakForm = () => {
                                                 Tipe Kolam
                                             </label>
                                             <select
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
+                                                style={{
+                                                    appearance: 'none',
+                                                    background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                                    backgroundSize: '1.5rem',
+                                                }}
                                                 id={`tipeKolam-${index}`}
                                                 name="tipeKolam"
                                                 required
@@ -346,11 +394,16 @@ const TambakForm = () => {
                                                 <option value="kolam-hybrid" className='text-blue-600'>Kolam Hybrid</option>
                                             </select>
                                         </div>
-                                        <div className="flex space-x-4">
+                                        <div className="flex space-x-4 bg-white">
                                             {['Panjang (M)', 'Lebar (M)', 'Luas (M)', 'Kedalaman (M)'].map((dimension, idx) => (
                                                 <div className="flex-1" key={dimension}>
                                                     <select
-                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 "
+                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
+                                                        style={{
+                                                            appearance: 'none',
+                                                            background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                                            backgroundSize: '1.5rem',
+                                                        }}
                                                         id={`${dimension}-${index}`}
                                                         name={dimension}
                                                         required
@@ -384,7 +437,7 @@ const TambakForm = () => {
                                                 </label>
                                             )}
                                             <input
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black text-blue-600"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black text-black"
                                                 id="jumlahAnco"
                                                 name="jumlahAnco"
                                                 type="number"
@@ -425,6 +478,7 @@ function InputTambak() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <TambakForm />
+                <AIFloatingButton/>
                 <Footer />
             </div>
         </div>

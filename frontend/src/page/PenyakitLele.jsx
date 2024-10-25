@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Grid, List, Search } from 'lucide-react';
+import { Grid, List } from 'lucide-react';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
@@ -130,6 +131,11 @@ const FishDiseaseDashboard = () => {
         }
     ];
 
+    
+    const filteredDiseases = diseases.filter(disease =>
+        disease.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className="bg-white w-full min-h-screen ">
             {/* Header */}
@@ -139,18 +145,16 @@ const FishDiseaseDashboard = () => {
                         <h1 className="text-xl font-semibold text-gray-800">Budidaya</h1>
                         <div className="flex items-center space-x-4">
                             <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            {/* Round image for the Indonesian flag */}
                             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                                 <img
-                                    src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
+                                    src="path/to/indonesian-flag.png"
                                     alt="Bendera Indonesia"
                                     className="w-full h-full rounded-full object-cover"
                                 />
                             </div>
-                            {/* Round image for profile photo */}
                             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                                 <img
-                                    src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
+                                    src="path/to/profile-photo.png"
                                     alt="Profile"
                                     className="w-full h-full rounded-full object-cover"
                                 />
@@ -174,11 +178,11 @@ const FishDiseaseDashboard = () => {
 
             {/* Search Bar Container */}
             <div className="w-[800px] relative mb-10 mr-14 ml-14 flex items-center border border-blue-600 rounded-2xl bg-white">
-                <div className="relative flex-1  ">
+                <div className="relative flex-1">
                     <input
                         type="text"
-                        placeholder="search"
-                        className=" px-4 py-2 border-blue-600 rounded-l-2xl border-r-0  focus:outline-none ml-5"
+                        placeholder="Search"
+                        className="px-4 py-2 border-blue-600 rounded-l-2xl border-r-0 focus:outline-none ml-5"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -206,29 +210,31 @@ const FishDiseaseDashboard = () => {
             </div>
 
             {/* Main Content Container */}
-            <div className="border border-blue-600 rounded-lg bg-white p-2 mr-8 ml-8 p-6 mr-8 ml-8 h-[800px] overflow-y-auto">
-                <div className={`${isGridLayout
-                    ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto'
-                    : 'flex flex-col gap-4'}`}>
-                    {diseases.map((disease) => (
-                        <div
-                            key={disease.id}
-                            className={`bg-white rounded-lg border border-gray-300 overflow-hidden transform transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg
-          ${isGridLayout ? 'flex flex-col' : 'flex flex-row'}`}
-                        >
-                            <div className={`${isGridLayout ? 'w-full' : 'w-48'} relative`}>
-                                <img
-                                    src={disease.image}
-                                    alt={disease.title}
-                                    className="w-full h-48 object-cover"
-                                />
+            <div className="border border-blue-600 rounded-lg bg-white p-2 mr-8 ml-8 p-6 h-[800px] overflow-y-auto">
+                <div className={`${isGridLayout ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto' : 'flex flex-col gap-4'}`}>
+                    {filteredDiseases.length > 0 ? (
+                        filteredDiseases.map((disease) => (
+                            <div
+                                key={disease.id}
+                                className={`bg-white rounded-lg border border-gray-300 overflow-hidden transform transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg
+                                ${isGridLayout ? 'flex flex-col' : 'flex flex-row'}`}
+                            >
+                                <div className={`${isGridLayout ? 'w-full' : 'w-48'} relative`}>
+                                    <img
+                                        src={disease.image}
+                                        alt={disease.title}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                </div>
+                                <div className={`p-4 ${isGridLayout ? '' : 'flex-1'}`}>
+                                    <p className="text-sm text-gray-500 mb-2">{disease.date}</p>
+                                    <h3 className="font-semibold text-lg">{disease.title}</h3>
+                                </div>
                             </div>
-                            <div className={`p-4 ${isGridLayout ? '' : 'flex-1'}`}>
-                                <p className="text-sm text-gray-500 mb-2">{disease.date}</p>
-                                <h3 className="font-semibold text-lg">{disease.title}</h3>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-center text-gray-500">Tidak ada hasil yang ditemukan.</p>
+                    )}
                 </div>
             </div>
         </div>
@@ -241,6 +247,7 @@ function PenyakitLele() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <FishDiseaseDashboard />
+                <AIFloatingButton/>
                 <div className='mt-10'>
                     <Footer />
                 </div>

@@ -3,12 +3,11 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import "./pageCss/Select.css"
 import InteractiveMap from '../componen/InteraktifMap';
-import { Search, Share } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
-
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 
 
@@ -16,27 +15,28 @@ import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
 const PriceMonitoringDashboard = () => {
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedPrice, setSelectedPrice] = useState("");
-    const [searchTerm, setSearchTerm] = useState("");
-
+    const [searchInput, setSearchInput] = useState("");
     const data = [
         { tanggal: "10 Februari 2024", lokasi: "Boyolali", supplier: "Mr. Prengky", harga: 53000, marketPrice: 55000 },
         { tanggal: "10 Januari 2024", lokasi: "Boyolali", supplier: "Mr. Prengky", harga: 71000, marketPrice: 70000 },
-        // Add more data rows here...
+        // Tambahkan lebih banyak data di sini...
     ];
+
+     // Fungsi untuk memfilter data berdasarkan input
+    const filteredData = data.filter(row => {
+        const lowerCaseInput = searchInput.toLowerCase();
+        const isDateMatch = row.tanggal.toLowerCase().includes(lowerCaseInput);
+        const isLocationMatch = row.lokasi.toLowerCase().includes(lowerCaseInput);
+        const isSupplierMatch = row.supplier.toLowerCase().includes(lowerCaseInput);
+        const isHargaMatch = String(row.harga).includes(lowerCaseInput); 
+        return isDateMatch || isLocationMatch || isSupplierMatch || isHargaMatch; 
+    });
+
+
+
 
 
     const totalPrice = data.reduce((total, row) => total + (row.harga < row.marketPrice ? -row.harga : row.harga), 0);
-
-
-
-
-    const filteredData = data.filter(row =>
-        row.lokasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row.supplier.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row.harga.includes(searchTerm)
-    );
-
-
 
     const priceData = [
         { date: '13 Okt', price: 53000 },
@@ -70,6 +70,7 @@ const PriceMonitoringDashboard = () => {
         // You can replace this with any action you want, like showing a modal with more info.
         console.log("Detail for row:", row);
     };
+
 
 
 
@@ -146,8 +147,16 @@ const PriceMonitoringDashboard = () => {
                         <select
                             value={selectedLocation}
                             onChange={(e) => setSelectedLocation(e.target.value)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-r-full"
-                            style={{ color: 'white' }}
+                            className="bg-blue-600 text-white px-4 py-2 rounded-r-full select"
+                            style={{
+                                color: 'white',
+                                appearance: 'none',
+                                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>')`,
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'right 1rem center',
+                                backgroundSize: '1.2rem',
+                                paddingRight: '2.5rem',
+                            }}
                         >
                             <option value="" className="hidden"></option>
                             <option value="1">Option 1</option>
@@ -155,11 +164,6 @@ const PriceMonitoringDashboard = () => {
                             <option value="3">Option 3</option>
                         </select>
 
-                        {selectedLocation === "" && (
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <i className="fas fa-plus h-8 w-8" style={{ color: 'white' }}></i>
-                            </div>
-                        )}
                     </div>
                     <div className="flex items-center border border-blue-600 rounded-full overflow-hidden flex-grow-1">
                         {/* Input Harga */}
@@ -171,10 +175,18 @@ const PriceMonitoringDashboard = () => {
 
                         {/* Dropdown Harga */}
                         <select
-                            value={selectedPrice}
-                            onChange={(e) => setSelectedPrice(e.target.value)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-r-full"
-                            style={{ color: 'white' }}
+                            value={selectedLocation}
+                            onChange={(e) => setSelectedLocation(e.target.value)}
+                            className="bg-blue-600 text-white px-4 py-2 rounded-r-full select"
+                            style={{
+                                color: 'white',
+                                appearance: 'none',
+                                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>')`,
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'right 1rem center',
+                                backgroundSize: '1.2rem',
+                                paddingRight: '2.5rem',
+                            }}
                         >
                             <option value="" className="hidden"></option>
                             <option value="1">Option 1</option>
@@ -182,11 +194,6 @@ const PriceMonitoringDashboard = () => {
                             <option value="3">Option 3</option>
                         </select>
 
-                        {selectedPrice === "" && (
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <i className="fas fa-plus h-8 w-8 " style={{ color: 'white' }}></i>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
@@ -290,8 +297,8 @@ const PriceMonitoringDashboard = () => {
                                 type="text"
                                 placeholder="Cari..."
                                 className="border-2 border-blue-600 rounded-lg pl-10 py-2 w-full text-blue-600 placeholder-blue-300"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                             />
                             <Search className="absolute left-3 top-2 text-blue-600" />
                         </div>
@@ -311,14 +318,22 @@ const PriceMonitoringDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredData.map((row, index) => {
-                            console.log(row);
-                            return (
+                    {data.length === 0 ? (
+                        <tr>
+                            <td colSpan="5" className="text-center p-3">Tidak ada data ditemukan</td>
+                        </tr>
+                    ) : (
+                        (filteredData.length === 0 && searchInput) ? (
+                            <tr>
+                                <td colSpan="5" className="text-center p-3">Tidak ada data ditemukan</td>
+                            </tr>
+                        ) : (
+                            (searchInput ? filteredData : data).map((row, index) => (
                                 <tr key={index} className="bg-blue-100 border-b border-blue-300">
                                     <td className="p-3">{row.tanggal}</td>
                                     <td className="p-3">{row.lokasi}</td>
                                     <td className="p-3">{row.supplier}</td>
-                                    <td className={`p-3  ${row.harga < row.marketPrice ? 'text-red-500' : 'text-green-500'}`}>
+                                    <td className={`p-3 ${row.harga < row.marketPrice ? 'text-red-500' : 'text-green-500'}`}>
                                         {row.harga < row.marketPrice ? `-Rp. ${Math.abs(row.harga)}` : `+Rp. ${row.harga.toLocaleString()}`}
                                     </td>
                                     <td className="p-3">
@@ -330,9 +345,10 @@ const PriceMonitoringDashboard = () => {
                                         </button>
                                     </td>
                                 </tr>
-                            )
-                        })}
-                    </tbody>
+                            ))
+                        )
+                    )}
+                </tbody>
                 </table>
             </div>
         </div>
@@ -346,6 +362,7 @@ function HargaLele() {
     return (
         <div className="flex h-screen">
             <Sidebar />
+            <AIFloatingButton/>
             <div className="flex-1 overflow-auto">
                 <PriceMonitoringDashboard />
                 <div className='mt-10'>

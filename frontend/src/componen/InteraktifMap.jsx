@@ -87,21 +87,17 @@ const InteractiveMap = () => {
 
     function initializeMap() {
       if (mapInstanceRef.current) return;
-
-
-      const map = L.map(mapRef.current).setView([-6.2088, 106.8456], 12);
+      const map = L.map(mapRef.current).setView([-2.5, 118.0], 5); 
       mapInstanceRef.current = map;
-
-
+    
+      
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
       }).addTo(map);
-
-
+    
       locationData.forEach(location => {
         const markerColor = getMarkerColor(location.lastUpdate, location.priceChange);
-
-
+    
         const icon = L.divIcon({
           className: 'custom-div-icon',
           html: `<div style="
@@ -114,8 +110,7 @@ const InteractiveMap = () => {
           "></div>`,
           iconSize: [20, 20],
         });
-
-
+    
         const marker = L.marker([location.lat, location.lng], { icon })
           .addTo(map)
           .bindPopup(`
@@ -125,10 +120,11 @@ const InteractiveMap = () => {
               <p class="text-sm">Status: ${location.priceChange === "up" ? "Kenaikan Harga" : "Penurunan Harga"}</p>
             </div>
           `);
-
+    
         markersRef.current.push(marker);
       });
     }
+    
 
 
     return () => {

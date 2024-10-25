@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, Search, ListFilter } from 'lucide-react';
 import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 const BlogLayout = () => {
   const allPosts = [
@@ -276,6 +277,7 @@ function Blog() {
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <BlogLayout />
+        <AIFloatingButton/>
         <div className='mt-20'>
           <Footer />
         </div>
