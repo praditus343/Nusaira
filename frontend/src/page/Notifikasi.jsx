@@ -11,40 +11,61 @@ const NotificationDashboard = () => {
 
     const notifications = [
         {
-            type: 'Berita',
+            type: 'Sistem',
             date: '10 Oktober 2024',
-            title: 'Lele Di Boyolali Mengalami Kenaikan Harga',
-            description: 'Kabarnya lele di Boyolali mengalami kenaikan yang sangat signifikan disebabkan...',
+            title: 'Pembaruan Sistem NusAIra v2.1',
+            description: 'Sistem telah diperbarui dengan fitur baru dan peningkatan performa...',
             image: '/api/placeholder/80/80',
         },
         {
-            type: 'Edukasi',
-            date: '10 Oktober 2024',
-            title: 'Bootcamp: Reset Password',
-            description: 'Silahkan reset password dengan cara...',
-            image: '/api/placeholder/80/80',
-        },
-        {
-            type: 'Berita',
+            type: 'Kolam',
             date: '11 Oktober 2024',
-            title: 'NusAira Akan Mengupdate Versi Website',
-            description: 'NusAira akan segera mengupdate beberapa fitur yang ada di dalam web salah satunya adi...',
+            title: 'Status Kolam A1 Memerlukan Perhatian',
+            description: 'Parameter pH air pada kolam A1 berada di bawah normal, diperlukan tindakan segera...',
             image: '/api/placeholder/80/80',
         },
         {
-            type: 'Edukasi',
+            type: 'Bootcamp',
             date: '12 Oktober 2024',
-            title: 'Materi Bootcamp Minggu Ini',
-            description: 'Materi yang akan dibahas dalam bootcamp minggu ini adalah...',
+            title: 'Jadwal Bootcamp: Manajemen Kolam',
+            description: 'Sesi bootcamp minggu ini akan membahas teknik manajemen kolam yang efektif...',
             image: '/api/placeholder/80/80',
         },
         {
-            type: 'Berita',
+            type: 'Lele',
             date: '13 Oktober 2024',
-            title: 'Data Kolam Sudah Di Perbarui',
-            description: 'Silahkan cek untuk melihat data kolam terbaru...',
+            title: 'Update Harga Lele Terkini',
+            description: 'Harga lele di pasar mengalami kenaikan sebesar 15% dari harga sebelumnya...',
             image: '/api/placeholder/80/80',
         },
+        {
+            type: 'Blog',
+            date: '14 Oktober 2024',
+            title: 'Artikel Baru: Teknik Budidaya Modern',
+            description: 'Baca artikel terbaru kami tentang teknologi dalam budidaya ikan air tawar...',
+            image: '/api/placeholder/80/80',
+        },
+        {
+            type: 'Sistem',
+            date: '15 Oktober 2024',
+            title: 'Pemeliharaan Server',
+            description: 'Akan ada pemeliharaan server pada tanggal 20 Oktober 2024...',
+            image: '/api/placeholder/80/80',
+        },
+        {
+            type: 'Kolam',
+            date: '16 Oktober 2024',
+            title: 'Monitoring Kualitas Air',
+            description: 'Laporan monitoring kualitas air mingguan telah tersedia...',
+            image: '/api/placeholder/80/80',
+        },
+        {
+            type: 'Bootcamp',
+            date: '17 Oktober 2024',
+            title: 'Materi Bootcamp: Kontrol Penyakit',
+            description: 'Download materi bootcamp tentang pengendalian penyakit pada budidaya lele...',
+            image: '/api/placeholder/80/80',
+        }
     ];
 
     const filteredNotifications = notifications.filter(notification => 
@@ -62,14 +83,14 @@ const NotificationDashboard = () => {
                             <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
                             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                                 <img
-                                    src="path/to/indonesian-flag.png" // Ganti dengan path ke gambar bendera
+                                    src="path/to/indonesian-flag.png"
                                     alt="Bendera Indonesia"
                                     className="w-full h-full rounded-full object-cover"
                                 />
                             </div>
                             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                                 <img
-                                    src="path/to/profile-photo.png" // Ganti dengan path ke foto profil
+                                    src="path/to/profile-photo.png"
                                     alt="Profile"
                                     className="w-full h-full rounded-full object-cover"
                                 />
@@ -81,7 +102,7 @@ const NotificationDashboard = () => {
             </header>
 
             <div className="">
-                <div className="bg-blue-100 p-4 rounded-lg mb-4 w-[450px] mt-5 ml-5 ">
+                <div className="bg-blue-100 p-4 rounded-lg mb-4 w-[450px] mt-5 ml-5">
                     <div className="flex items-start gap-3">
                         <div>
                             <h2 className="font-medium mb-1">Aktifkan Pemberitahuan Notifikasi</h2>
@@ -110,8 +131,11 @@ const NotificationDashboard = () => {
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
                                     <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Semua'); setIsDropdownOpen(false); }}>Semua</button>
-                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Berita'); setIsDropdownOpen(false); }}>Berita</button>
-                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Edukasi'); setIsDropdownOpen(false); }}>Edukasi</button>
+                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Sistem'); setIsDropdownOpen(false); }}>Sistem</button>
+                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Kolam'); setIsDropdownOpen(false); }}>Kolam</button>
+                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Bootcamp'); setIsDropdownOpen(false); }}>Bootcamp</button>
+                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Lele'); setIsDropdownOpen(false); }}>Lele</button>
+                                    <button className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" onClick={() => { setFilter('Blog'); setIsDropdownOpen(false); }}>Blog</button>
                                 </div>
                             )}
                         </div>
@@ -120,6 +144,7 @@ const NotificationDashboard = () => {
                         <Settings size={20} />
                     </button>
                 </div>
+
                 {/* Card Notifikasi */}
                 <div className="max-h-[600px] overflow-y-auto p-4">
                     {filteredNotifications.map((notification, index) => (
@@ -127,10 +152,8 @@ const NotificationDashboard = () => {
                             key={index}
                             className="flex items-start gap-4 p-4 bg-blue-100 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 mb-4"
                         >
-                            {/* Kolom 1: Titik notifikasi */}
                             <div className="flex-shrink-0 w-3 h-3 mt-2 rounded-full bg-blue-500" />
 
-                            {/* Kolom 2: Jenis Notifikasi */}
                             <div className="flex flex-col w-1/4">
                                 <span className="text-sm font-medium text-blue-600">{notification.type}</span>
                                 <div className="flex items-center text-xs text-gray-500">
@@ -139,13 +162,11 @@ const NotificationDashboard = () => {
                                 </div>
                             </div>
 
-                            {/* Kolom 3: Judul */}
                             <div className="flex flex-col w-1/2 text-left">
                                 <h3 className="font-medium text-base mb-1 text-gray-800">{notification.title}</h3>
                                 <p className="text-sm text-gray-600">{notification.description}</p>
                             </div>
 
-                            {/* Kolom 4: Gambar notifikasi */}
                             {notification.image && (
                                 <img
                                     src={notification.image}

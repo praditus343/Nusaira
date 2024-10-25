@@ -15,32 +15,32 @@ const DashboardContent = () => {
         <div className="bg-white w-full min-h-screen mb-10">
             {/* Header */}
             <header className="bg-white shadow-sm">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-            <h1 className="text-xl font-semibold text-gray-800">Home</h1>
-            <div className="flex items-center space-x-4">
-                <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                {/* Round image for the Indonesian flag */}
-                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <img 
-                        src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
-                        alt="Bendera Indonesia" 
-                        className="w-full h-full rounded-full object-cover"
-                    />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center py-4">
+                        <h1 className="text-xl font-semibold text-gray-800">Home</h1>
+                        <div className="flex items-center space-x-4">
+                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
+                            {/* Round image for the Indonesian flag */}
+                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                <img
+                                    src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
+                                    alt="Bendera Indonesia"
+                                    className="w-full h-full rounded-full object-cover"
+                                />
+                            </div>
+                            {/* Round image for profile photo */}
+                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                <img
+                                    src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
+                                    alt="Profile"
+                                    className="w-full h-full rounded-full object-cover"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {/* Round image for profile photo */}
-                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <img 
-                        src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
-                        alt="Profile" 
-                        className="w-full h-full rounded-full object-cover"
-                    />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div className="border-b border-gray-300 w-full" />
-</header>
+                <div className="border-b border-gray-300 w-full" />
+            </header>
 
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -84,8 +84,8 @@ const DashboardContent = () => {
                             <div className="flex justify-between items-center">
                                 <div className="flex-1">
                                     <h3 className="text-lg font-semibold text-blue-600 mb-2">Bingung Ingin Cek Kualitas Tambak Lele ?</h3>
-                                    <p className="text-gray-600 mb-4">Temukan Solusi Terbaik untuk Memantau dan Meningkatkan <br /> Kualitas Tambak Anda! Bergabunglah Bersama Kami<br/>
-                                        dan Dapatkan Data Real-Time yang Akurat untuk<br/>
+                                    <p className="text-gray-600 mb-4">Temukan Solusi Terbaik untuk Memantau dan Meningkatkan <br /> Kualitas Tambak Anda! Bergabunglah Bersama Kami<br />
+                                        dan Dapatkan Data Real-Time yang Akurat untuk<br />
                                         Meningkatkan Hasil Panen Anda!</p>
                                     <button className="px-20 py-2 bg-blue-500 text-white rounded-md mt-5">Klik untuk info lebih lanjut</button>
                                 </div>
@@ -153,8 +153,8 @@ function HomeUser() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <DashboardContent />
-                <AIFloatingButton/>
-                <Footer/>
+                <AIFloatingButton />
+                <Footer />
             </div>
         </div>
 

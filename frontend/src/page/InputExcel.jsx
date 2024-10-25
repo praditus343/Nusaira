@@ -184,12 +184,15 @@ const ExcelForm = () => {
                             </tbody>
                         </table>
                     </div>
-
-                    {/* Div untuk Menampilkan Total Harga Akhir */}
-                    <div className="mt-4 p-4 bg-gray-100 border border-blue-500 rounded-md">
-                        <h3 className="text-lg font-medium text-gray-800">Total Harga Akhir:</h3>
-                        <p className="text-xl font-bold text-gray-800">{formatRupiah(totalHargaAkhir)}</p>
+                    
+                    {/* Div untuk Menampilkan Total Harga akhir */}
+                    <div className="mt-4 flex justify-end">
+                        <div className="flex flex-col items-end">
+                            <span className="text-lg font-medium">Total Harga Akhir:</span>
+                            <span className="text-xl font-bold text-green-600">{formatRupiah(totalHargaAkhir)}</span>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
