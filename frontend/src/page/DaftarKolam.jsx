@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 const CustomCard = ({ children, className }) => {
     return (
@@ -191,6 +192,7 @@ function PondManagement() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <PondTable />
+                <AIFloatingButton/>
                 <Footer />
             </div>
         </div>

@@ -3,6 +3,7 @@ import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 const ExcelForm = () => {
     const [rows, setRows] = useState([
@@ -201,6 +202,7 @@ function InputExcel() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <ExcelForm />
+                <AIFloatingButton/>
                 <Footer />
             </div>
         </div>

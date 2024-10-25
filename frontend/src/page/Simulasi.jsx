@@ -3,6 +3,7 @@ import { MapPin } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
+import AIFloatingButton from '../componen/AiFloatingButton';
 
 const SimulationChart = () => {
     const [formData, setFormData] = useState({
@@ -162,6 +163,7 @@ function TambakSimulation() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <SimulationChart />
+                <AIFloatingButton/>
                 <Footer />
             </div>
         </div>

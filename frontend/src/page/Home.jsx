@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Home, ChevronDown, Bell, HelpCircle } from 'lucide-react';
 import Sidebar from '../componen/SideBar.jsx';
 import Footer from '../componen/Footer.jsx';
+import AIFloatingButton from '../componen/AiFloatingButton.jsx';
 
 const DashboardContent = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -152,6 +153,7 @@ function HomeUser() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <DashboardContent />
+                <AIFloatingButton/>
                 <Footer/>
             </div>
         </div>
