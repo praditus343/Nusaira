@@ -2,6 +2,7 @@ import Footer from "../componen/Footer";
 import Sidebar from "../componen/SideBar";
 import React from "react";
 import { Edit, MapPin } from "lucide-react";
+import AIFloatingButton from "../componen/AiFloatingButton";
 
 const Userview = () => {
   return (
@@ -265,6 +266,7 @@ function UserProfile() {
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <Userview />
+        <AIFloatingButton/>
         <Footer />
       </div>
     </div>
