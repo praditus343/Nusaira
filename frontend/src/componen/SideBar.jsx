@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChevronDown, faChevronUp, faHome, faMoneyBill, faTable, faFileExcel, faCartPlus, faDollarSign,
-  faClipboardList, faNewspaper, faHeart, faBell, faPenSquare, faGraduationCap, faPlus, faUser, faFileInvoice, faChevronLeft, faChartLine, faChevronRight
+  faChevronDown, faChevronUp, faHome, faMoneyBill, faTable,faCartPlus, faDollarSign,
+  faClipboardList, faNewspaper, faHeart, faBell, faPenSquare, faGraduationCap, faPlus, faUser, faFileInvoice, faChevronLeft, faChartLine, faChevronRight,faTools 
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, Link } from 'react-router-dom';
 
@@ -105,7 +105,7 @@ const Sidebar = () => {
           children={[
             { icon: faPlus, label: "Input tambak baru", path: "/InputTambak" },
             { icon: faTable, label: "Daftar kolam", path: "/DaftarKolam" },
-            { icon: faFileExcel, label: "Input excel", path: "/InputExcel" },
+            { icon: faTools , label: "Management", path: "/ManajemenTambak" },
             { icon: faChartLine, label: "Simulasi", path: "/Simulasi" },
           ]}
         />
