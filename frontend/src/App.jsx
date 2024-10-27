@@ -16,6 +16,8 @@ import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
 import Pengeluaran from './page/Pengeluaran';
 import Pemasukan from './page/Pemasukan';
+import Laporan from './page/Laporan';
+import KabarLele from './page/KabarLele';
 
 
 
@@ -40,6 +42,8 @@ function App() {
           <Route path="/FinalStep" element={<FinalStepUI/>} />
           <Route path="/Pengeluaran" element={<Pengeluaran/>} />
           <Route path="/Pemasukan" element={<Pemasukan/>} />  
+          <Route path="/Laporan" element={<Laporan/>} />  
+          <Route path="/KabarLele" element={<KabarLele/>} /> 
         </Routes>
       </Fragment>
     </Router>
