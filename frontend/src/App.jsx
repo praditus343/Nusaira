@@ -6,7 +6,6 @@ import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
 import InputTambak from './page/InputTambakBaru';
 import PondManagement from './page/DaftarKolam';
-import InputExcel from './page/InputExcel';
 import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile'
 import HargaLele from './page/HargaLele';
@@ -16,8 +15,6 @@ import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
 import Pengeluaran from './page/Pengeluaran';
 import Pemasukan from './page/Pemasukan';
-import Laporan from './page/Laporan';
-import KabarLele from './page/KabarLele';
 
 
 
@@ -32,7 +29,7 @@ function App() {
           <Route path="/Home" element={<Homeuser/>} />
           <Route path="/InputTambak" element={<InputTambak/>} />
           <Route path="/DaftarKolam" element={<PondManagement/>} />
-          <Route path="/InputExcel" element={<InputExcel/>} />
+          <Route path="/ManajemenTambak" element={<Management/>} />
           <Route path="/Simulasi" element={<TambakSimulation/>} />
           <Route path="/UserProfile" element={<UserProfile/>} />
           <Route path="/HargaLele" element={<HargaLele/>} />
