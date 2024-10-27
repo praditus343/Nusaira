@@ -1,0 +1,12 @@
+.container-text2 {
+  display: flex;
+  align-items: center;
+}
+
+.circle {
+  width: 12px;
+  height: 12px; 
+  border-radius: 50%; 
+  background-color: #82858a; 
+  margin-right: 0.5rem; 
+}
