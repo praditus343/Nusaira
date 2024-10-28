@@ -20,8 +20,13 @@ const TambakForm = () => {
         jumlahKolam: '',
         kolamDetails: [],
     });
+<<<<<<< HEAD
 
 
+=======
+    
+    
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,14 +82,22 @@ const TambakForm = () => {
         e.preventDefault();
         let hasError = false;
         const errorMessage = [];
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
         for (const key in formData) {
             if (formData[key] === '' || (typeof formData[key] === 'number' && formData[key] < 0)) {
                 hasError = true;
                 errorMessage.push(`Field ${key} tidak boleh kosong atau negatif.`);
             }
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
         if (hasError) {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
@@ -177,7 +190,11 @@ const TambakForm = () => {
                                         appearance: 'none',
                                         background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                         backgroundSize: '1.5rem',
+<<<<<<< HEAD
                                     }}
+=======
+                                    }}                                
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                     value={formData.negara}
                                     onChange={handleChange}
                                     required
@@ -215,7 +232,11 @@ const TambakForm = () => {
                                         appearance: 'none',
                                         background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                         backgroundSize: '1.5rem',
+<<<<<<< HEAD
 
+=======
+                                       
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                     }}
                                     value={formData.kabupaten}
                                     onChange={handleChange}
@@ -238,7 +259,11 @@ const TambakForm = () => {
                                         appearance: 'none',
                                         background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                         backgroundSize: '1.5rem',
+<<<<<<< HEAD
 
+=======
+                                       
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                     }}
                                     value={formData.kecamatan}
                                     onChange={handleChange}
@@ -260,7 +285,11 @@ const TambakForm = () => {
                                         appearance: 'none',
                                         background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                         backgroundSize: '1.5rem',
+<<<<<<< HEAD
 
+=======
+                                       
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                     }}
                                     value={formData.kelurahan}
                                     onChange={handleChange}
@@ -284,7 +313,11 @@ const TambakForm = () => {
                                         appearance: 'none',
                                         background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                         backgroundSize: '1.5rem',
+<<<<<<< HEAD
 
+=======
+                                       
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                     }}
                                     required
                                 >
@@ -326,6 +359,15 @@ const TambakForm = () => {
                                     id="jumlahKolam"
                                     name="jumlahKolam"
                                     type="number"
+<<<<<<< HEAD
+=======
+                                    style={{
+                                        appearance: 'none',
+                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
+                                        backgroundSize: '1.5rem',
+                                       
+                                    }}
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                     min="1"
                                     placeholder=" Jumlah Kolam"
                                     value={formData.jumlahKolam}
@@ -365,14 +407,26 @@ const TambakForm = () => {
                                                 required
                                             />
                                         </div>
+<<<<<<< HEAD
                                         <div className='bg-white'>
                                             <select
                                                 className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
+=======
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={`tipeKolam-${index}`}>
+                                                Tipe Kolam
+                                            </label>
+                                            <select
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                                 style={{
                                                     appearance: 'none',
                                                     background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                                     backgroundSize: '1.5rem',
+<<<<<<< HEAD
 
+=======
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                                 }}
                                                 id={`tipeKolam-${index}`}
                                                 name="tipeKolam"
@@ -390,12 +444,17 @@ const TambakForm = () => {
                                             {['Panjang (M)', 'Lebar (M)', 'Luas (M)', 'Kedalaman (M)'].map((dimension, idx) => (
                                                 <div className="flex-1" key={dimension}>
                                                     <select
+<<<<<<< HEAD
                                                         className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black bg-white"
+=======
+                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                                         style={{
                                                             appearance: 'none',
                                                             background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
                                                             backgroundSize: '1.5rem',
                                                         }}
+<<<<<<< HEAD
                                                         id={`${dimension}-${idx}`}
                                                         name={dimension}
                                                         required
@@ -403,6 +462,14 @@ const TambakForm = () => {
                                                         onChange={(e) => handleKolamChange(idx, e)}
                                                     >
 
+=======
+                                                        id={`${dimension}-${index}`}
+                                                        name={dimension}
+                                                        required
+                                                        value={kolam[dimension]}
+                                                        onChange={(e) => handleKolamChange(index, e)}
+                                                    >
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                                                         <option value=""> {dimension}</option>
                                                         <option value="10" className='text-blue-600'>10</option>
                                                         <option value="15" className='text-blue-600'>15</option>
@@ -471,7 +538,11 @@ function InputTambak() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <TambakForm />
+<<<<<<< HEAD
                 <AIFloatingButton />
+=======
+                <AIFloatingButton/>
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                 <Footer />
             </div>
         </div>

@@ -15,8 +15,11 @@ import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
 import Pengeluaran from './page/Pengeluaran';
 import Pemasukan from './page/Pemasukan';
+<<<<<<< HEAD
 import Management from './page/ManajemenTambak';
 import KabarLele from './page/KabarLele';
+=======
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
 
 
 
@@ -41,7 +44,11 @@ function App() {
           <Route path="/FinalStep" element={<FinalStepUI/>} />
           <Route path="/Pengeluaran" element={<Pengeluaran/>} />
           <Route path="/Pemasukan" element={<Pemasukan/>} />  
+<<<<<<< HEAD
           {/* <Route path="/Laporan" element={<Lapora/>} />   */}
+=======
+          <Route path="/Laporan" element={<Laporan/>} />  
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
           <Route path="/KabarLele" element={<KabarLele/>} /> 
         </Routes>
       </Fragment>
