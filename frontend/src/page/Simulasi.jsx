@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
+import Header from '../componen/Header';
 
 const SimulationChart = () => {
     const [formData, setFormData] = useState({
@@ -30,35 +31,7 @@ const SimulationChart = () => {
 
     return (
         <div className="bg-white w-full min-h-screen mb-10">
-            {/* Header */}
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <h1 className="text-xl font-semibold text-gray-800">Simulasi</h1>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            {/* Round image for the Indonesian flag */}
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
-                                    alt="Bendera Indonesia"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                            {/* Round image for profile photo */}
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
-                                    alt="Profile"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="border-b border-gray-300 w-full" />
-            </header>
-
+            <Header/>
 
             {/* Title Section */}
             <div className="p-4 mt-5">

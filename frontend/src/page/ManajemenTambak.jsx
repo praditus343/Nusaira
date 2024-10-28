@@ -1,6 +1,6 @@
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { MapPin } from 'lucide-react';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import { Card, CardContent, CardHeader, CardTitle } from "../componen/CardManagement";
@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 
 import ManagementModal from '../componen/ManajemenModal';
+import Header from '../componen/Header';
 
 const DashboardManagement = () => {
     const [waterData, setWaterData] = useState([]);
@@ -24,7 +25,7 @@ const DashboardManagement = () => {
     const [suhu, setSuhu] = useState(null);
     const [oksigen, setOksigen] = useState(null);
     const [salinitas, setSalinitas] = useState(null);
-    
+
     const lokasi = "Boyolali"; // Ganti dengan lokasi yang sesuai
 
     useEffect(() => {
@@ -43,7 +44,7 @@ const DashboardManagement = () => {
 
     const analyzeData = (data) => {
         console.log("Analyzing data:", data);
-    
+
         // Cek apakah data tidak kosong dan singleReading memiliki properti yang diharapkan
         if (data.length === 0) {
             console.warn("No data available for analysis.");
@@ -54,9 +55,9 @@ const DashboardManagement = () => {
                 salinitas: { status: 'Data Tidak Tersedia', value: null }
             };
         }
-    
+
         const singleReading = data[0];
-    
+
         // Cek jika properti ada pada singleReading
         if (!singleReading.ph || !singleReading.suhu || !singleReading.oksigen || !singleReading.salinitas) {
             console.warn("Incomplete data in single reading:", singleReading);
@@ -67,7 +68,7 @@ const DashboardManagement = () => {
                 salinitas: { status: 'Data Tidak Lengkap', value: singleReading.salinitas || null }
             };
         }
-    
+
         return {
             ph: {
                 status: singleReading.ph >= 7.0 && singleReading.ph <= 8.5 ? 'Normal' : 'Perlu Perhatian',
@@ -87,7 +88,7 @@ const DashboardManagement = () => {
             }
         };
     };
-    
+
 
 
     const handleOnSubmit = (data) => {
@@ -105,19 +106,12 @@ const DashboardManagement = () => {
     };
 
     const analysis = analyzeData(waterData);
-    console.log("Analysis results:", analysis); 
+    console.log("Analysis results:", analysis);
 
 
     return (
         <div className="bg-white w-full min-h-screen">
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <h1 className="text-xl font-semibold text-gray-800">Manajemen Tambak</h1>
-                    </div>
-                </div>
-                <div className="border-b border-gray-300 w-full" />
-            </header>
+            <Header />
 
             <div className="mt-4 ml-8 mr-8">
                 <div className="p-4">
@@ -224,8 +218,8 @@ const DashboardManagement = () => {
 
                             </div>
                         </div>
-                                                {/* Rekomendasi */}
-                                                <div className="mt-6">
+                        {/* Rekomendasi */}
+                        <div className="mt-6">
                             <h3 className="font-bold mb-2">Rekomendasi Tindakan:</h3>
                             <ul className="list-disc pl-6">
                                 {analysis.ph.status !== 'Normal' && (

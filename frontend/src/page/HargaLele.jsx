@@ -8,6 +8,7 @@ import { Search } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import AIFloatingButton from '../componen/AiFloatingButton';
+import Header from '../componen/Header';
 
 
 
@@ -22,14 +23,14 @@ const PriceMonitoringDashboard = () => {
         // Tambahkan lebih banyak data di sini...
     ];
 
-     // Fungsi untuk memfilter data berdasarkan input
+    // Fungsi untuk memfilter data berdasarkan input
     const filteredData = data.filter(row => {
         const lowerCaseInput = searchInput.toLowerCase();
         const isDateMatch = row.tanggal.toLowerCase().includes(lowerCaseInput);
         const isLocationMatch = row.lokasi.toLowerCase().includes(lowerCaseInput);
         const isSupplierMatch = row.supplier.toLowerCase().includes(lowerCaseInput);
-        const isHargaMatch = String(row.harga).includes(lowerCaseInput); 
-        return isDateMatch || isLocationMatch || isSupplierMatch || isHargaMatch; 
+        const isHargaMatch = String(row.harga).includes(lowerCaseInput);
+        return isDateMatch || isLocationMatch || isSupplierMatch || isHargaMatch;
     });
 
 
@@ -78,35 +79,7 @@ const PriceMonitoringDashboard = () => {
 
     return (
         <div className="  space-y-6 space-x-6 bg-white w-full min-h-screen">
-            {/* Header */}
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <h1 className="text-xl font-semibold text-gray-800">Harga Lele</h1>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            {/* Round image for the Indonesian flag */}
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
-                                    alt="Bendera Indonesia"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                            {/* Round image for profile photo */}
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
-                                    alt="Profile"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="border-b border-gray-300 w-full" />
-            </header>
-
+            <Header />
 
             <div className="space-y-4">
                 {/* Date Selector */}
@@ -298,7 +271,7 @@ const PriceMonitoringDashboard = () => {
                                 placeholder="Cari..."
                                 className="border-2 border-blue-600 rounded-lg pl-10 py-2 w-full text-blue-600 placeholder-blue-300"
                                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                                onChange={(e) => setSearchInput(e.target.value)}
                             />
                             <Search className="absolute left-3 top-2 text-blue-600" />
                         </div>
@@ -318,37 +291,37 @@ const PriceMonitoringDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                    {data.length === 0 ? (
-                        <tr>
-                            <td colSpan="5" className="text-center p-3">Tidak ada data ditemukan</td>
-                        </tr>
-                    ) : (
-                        (filteredData.length === 0 && searchInput) ? (
+                        {data.length === 0 ? (
                             <tr>
                                 <td colSpan="5" className="text-center p-3">Tidak ada data ditemukan</td>
                             </tr>
                         ) : (
-                            (searchInput ? filteredData : data).map((row, index) => (
-                                <tr key={index} className="bg-blue-100 border-b border-blue-300">
-                                    <td className="p-3">{row.tanggal}</td>
-                                    <td className="p-3">{row.lokasi}</td>
-                                    <td className="p-3">{row.supplier}</td>
-                                    <td className={`p-3 ${row.harga < row.marketPrice ? 'text-red-500' : 'text-green-500'}`}>
-                                        {row.harga < row.marketPrice ? `-Rp. ${Math.abs(row.harga)}` : `+Rp. ${row.harga.toLocaleString()}`}
-                                    </td>
-                                    <td className="p-3">
-                                        <button
-                                            className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors duration-300"
-                                            onClick={() => handleDetailClick(row)}
-                                        >
-                                            Lihat Detail
-                                        </button>
-                                    </td>
+                            (filteredData.length === 0 && searchInput) ? (
+                                <tr>
+                                    <td colSpan="5" className="text-center p-3">Tidak ada data ditemukan</td>
                                 </tr>
-                            ))
-                        )
-                    )}
-                </tbody>
+                            ) : (
+                                (searchInput ? filteredData : data).map((row, index) => (
+                                    <tr key={index} className="bg-blue-100 border-b border-blue-300">
+                                        <td className="p-3">{row.tanggal}</td>
+                                        <td className="p-3">{row.lokasi}</td>
+                                        <td className="p-3">{row.supplier}</td>
+                                        <td className={`p-3 ${row.harga < row.marketPrice ? 'text-red-500' : 'text-green-500'}`}>
+                                            {row.harga < row.marketPrice ? `-Rp. ${Math.abs(row.harga)}` : `+Rp. ${row.harga.toLocaleString()}`}
+                                        </td>
+                                        <td className="p-3">
+                                            <button
+                                                className="bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors duration-300"
+                                                onClick={() => handleDetailClick(row)}
+                                            >
+                                                Lihat Detail
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )
+                        )}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -362,7 +335,7 @@ function HargaLele() {
     return (
         <div className="flex h-screen">
             <Sidebar />
-            <AIFloatingButton/>
+            <AIFloatingButton />
             <div className="flex-1 overflow-auto">
                 <PriceMonitoringDashboard />
                 <div className='mt-10'>
