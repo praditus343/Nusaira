@@ -3,43 +3,12 @@ import Sidebar from "../componen/SideBar";
 import React from "react";
 import { Edit, MapPin } from "lucide-react";
 import AIFloatingButton from "../componen/AiFloatingButton";
+import Header from "../componen/Header";
 
 const Userview = () => {
   return (
     <div className="bg-white w-full min-h-screen">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <h1 className="text-xl font-semibold text-gray-800">
-              Input Tambak Baru
-            </h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-blue-600 font-medium">
-                Informasi Terbaru NusAIra
-              </span>
-              {/* Round image for the Indonesian flag */}
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <img
-                  src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
-                  alt="Bendera Indonesia"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-              {/* Round image for profile photo */}
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <img
-                  src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
-                  alt="Profile"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="border-b border-gray-300 w-full" />
-      </header>
-
+      <Header />
       {/* Pengaturan Akun */}
       <span className="text-lg font-medium text-black ml-9 mr-18">
         Pengaturan Akun
@@ -208,9 +177,9 @@ const Userview = () => {
           {/* Foto Profil dan Detail */}
           <div className="flex items-center justify-between mt-4">
             <img
-              src="https://placekitten.com/80/80" 
+              src="https://placekitten.com/80/80"
               alt="Profil"
-              className="rounded-full w-16 h-16" 
+              className="rounded-full w-16 h-16"
             />
 
             {/* Bagian Detail */}
@@ -266,7 +235,7 @@ function UserProfile() {
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <Userview />
-        <AIFloatingButton/>
+        <AIFloatingButton />
         <Footer />
       </div>
     </div>
