@@ -3,6 +3,7 @@ import { Bell, ChevronDown, Settings, Calendar, MapPin } from 'lucide-react'; //
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
+import Header from '../componen/Header';
 
 const LaporanDashboard = () => {
     const [filter, setFilter] = useState('Semua');
@@ -30,29 +31,7 @@ const LaporanDashboard = () => {
 
     return (
         <div className="bg-white w-full min-h-screen">
-            {/* Header */}
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <h1 className="text-xl font-semibold text-gray-800">Laporan</h1>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            <img
-                                src="path/to/indonesian-flag.png"
-                                alt="Bendera Indonesia"
-                                className="w-8 h-8 rounded-full object-cover"
-                            />
-                            <img
-                                src="path/to/profile-photo.png"
-                                alt="Profile"
-                                className="w-8 h-8 rounded-full object-cover"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="border-b border-gray-300 w-full" />
-            </header>
-
+            <Header />
             {/* Filter */}
             <div className="mt-4 px-4">
                 <div className="p-4">
@@ -60,7 +39,7 @@ const LaporanDashboard = () => {
                         <div>
                             <h1 className="text-xl font-medium">Catatan Laporan Tambak Lele Segar</h1>
                             <div>
-                                    <span className="flex items-center text-gray-600">
+                                <span className="flex items-center text-gray-600">
                                     <Calendar size={16} className="mr-2" />
                                     <span>10 Oktober 2024</span>
                                 </span>
