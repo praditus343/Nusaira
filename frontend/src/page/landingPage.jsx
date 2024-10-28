@@ -1,7 +1,7 @@
 import Footer from "../componen/Footer";
 import Navbar from "../componen/Navbar";
 import Testimonial from "../componen/Testimonical";
-import "./pageCss/landingPage.css";
+import "./pageCss/landingpage.css";
 
 function LandingPage() {
     // const images = [img1, img2, img3, img4, img5, img6];
