@@ -10,13 +10,14 @@ import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile'
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
-import Notification from './page/Notifikasi';
+import Notifikasi from './page/Notifikasi';
 import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
 import Pengeluaran from './page/Pengeluaran';
 import Pemasukan from './page/Pemasukan';
 import Management from './page/ManajemenTambak';
 import KabarLele from './page/KabarLele';
+import Laporan from './page/Laporan';
 
 
 
@@ -36,12 +37,12 @@ function App() {
           <Route path="/UserProfile" element={<UserProfile/>} />
           <Route path="/HargaLele" element={<HargaLele/>} />
           <Route path="/PenyakitLele" element={<PenyakitLele/>} />
-          <Route path="/Notifikasi" element={<Notification/>} />
+          <Route path="/Notifikasi" element={<Notifikasi/>} />
           <Route path="/Blog" element={<Blog/>} />
           <Route path="/FinalStep" element={<FinalStepUI/>} />
           <Route path="/Pengeluaran" element={<Pengeluaran/>} />
           <Route path="/Pemasukan" element={<Pemasukan/>} />  
-          {/* <Route path="/Laporan" element={<Lapora/>} />   */}
+           <Route path="/Laporan" element={<Laporan/>} />  
           <Route path="/KabarLele" element={<KabarLele/>} /> 
         </Routes>
       </Fragment>
