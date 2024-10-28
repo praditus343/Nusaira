@@ -365,7 +365,7 @@ const TambakForm = () => {
                                                 required
                                             />
                                         </div>
-                                        <div className='bg-white'>
+                                        <div className="bg-white rounded-lg">
                                             <select
                                                 className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
                                                 style={{
@@ -386,11 +386,11 @@ const TambakForm = () => {
                                                 <option value="kolam-hybrid" className='text-blue-600'>Kolam Hybrid</option>
                                             </select>
                                         </div>
-                                        <div className="flex space-x-4 bg-white">
+                                        <div className="flex space-x-4">
                                             {['Panjang (M)', 'Lebar (M)', 'Luas (M)', 'Kedalaman (M)'].map((dimension, idx) => (
                                                 <div className="flex-1" key={dimension}>
                                                     <select
-                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black bg-white"
+                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black select-component"
                                                         style={{
                                                             appearance: 'none',
                                                             background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,

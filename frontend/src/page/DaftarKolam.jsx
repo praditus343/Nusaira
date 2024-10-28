@@ -11,6 +11,15 @@ const CustomCard = ({ children, className }) => {
     );
 };
 
+const buttons = [
+    'Mulai siklus',
+    'Kematian',
+    'Penyakit',
+    'Pakan',
+    'Anco'
+  ];
+
+
 const CustomButton = ({ children, variant, className, ...props }) => {
     const getVariantClass = () => {
         switch (variant) {
@@ -93,6 +102,18 @@ const PondTable = () => {
                     Export Laporan
                 </CustomButton>
             </div>
+
+            <div className="flex flex-wrap gap- ml-2 mt-2 mb-5">
+      {buttons.map((text) => (
+        <button
+          key={text}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors ml-2"
+        >
+          {text}
+        </button>
+      ))}
+    </div>
+
 
             {/* Main Card */}
             <CustomCard className="p-4 ml-5 mr-5">
