@@ -111,7 +111,11 @@ const BlogLayout = () => {
       image: '/api/placeholder/400/300',
       excerpt: 'Kualitas air adalah faktor utama dalam keberhasilan budidaya ikan. Mengatur pH dan kadar oksigen...'
     }
+<<<<<<< HEAD
   ];
+=======
+];
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
 
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -206,26 +210,42 @@ const BlogLayout = () => {
       </header>
 
 
+<<<<<<< HEAD
       <div className="mt-5 flex ml-10">
         <div className="max-w-7xl">
+=======
+      <div className="mt-5">
+        <div className="max-w-7xl mx-auto px-6">
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
           <div className="flex items-center space-x-4 mb-4">
             <div>
               <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
             </div>
             <h1 className="text-xl font-semibold text-gray-800">
+<<<<<<< HEAD
               Budidaya Nusantara Update Informasi dan<br /> Teknologi
+=======
+              Budidaya Nusantara Update Informasi dan<br/> Teknologi
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
             </h1>
           </div>
 
           <div className="mt-1">
             <p className="text-gray-600">
+<<<<<<< HEAD
               Kami berkomitmen untuk memberikan informasi yang akurat dan terkini tentang inovasi, praktik <br />terbaik, dan teknologi terbaru yang dapat meningkatkan produktivitas.
+=======
+              Kami berkomitmen untuk memberikan informasi yang akurat dan terkini tentang inovasi, praktik <br/>terbaik, dan teknologi terbaru yang dapat meningkatkan produktivitas.
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
             </p>
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
       <div className="max-w-7xl mx-auto mt-10 ml-20">
         {/* Search Bar */}
         <div className="mb-8 flex justify-start">
@@ -278,7 +298,11 @@ function Blog() {
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <BlogLayout />
+<<<<<<< HEAD
         <AIFloatingButton />
+=======
+        <AIFloatingButton/>
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
         <div className='mt-20'>
           <Footer />
         </div>

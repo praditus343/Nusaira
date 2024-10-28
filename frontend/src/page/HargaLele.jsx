@@ -154,8 +154,13 @@ const PriceMonitoringDashboard = () => {
                                 backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>')`,
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'right 1rem center',
+<<<<<<< HEAD
                                 backgroundSize: '1.5rem',
                                 paddingRight: '1.5rem',
+=======
+                                backgroundSize: '1.2rem',
+                                paddingRight: '2.5rem',
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                             }}
                         >
                             <option value="" className="hidden"></option>
@@ -184,8 +189,13 @@ const PriceMonitoringDashboard = () => {
                                 backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>')`,
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'right 1rem center',
+<<<<<<< HEAD
                                 backgroundSize: '1.5rem',
                                 paddingRight: '1.5rem',
+=======
+                                backgroundSize: '1.2rem',
+                                paddingRight: '2.5rem',
+>>>>>>> 06abe727bcccb81a7a6f79ed26e76295ddb481a8
                             }}
                         >
                             <option value="" className="hidden"></option>
