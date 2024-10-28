@@ -1,81 +1,119 @@
-
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { MapPin } from 'lucide-react';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import { Card, CardContent, CardHeader, CardTitle } from "../componen/CardManagement";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from 'recharts';
+
+import ManagementModal from '../componen/ManajemenModal';
 
 const DashboardManagement = () => {
+    const [waterData, setWaterData] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [ph, setPh] = useState(null);
+    const [suhu, setSuhu] = useState(null);
+    const [oksigen, setOksigen] = useState(null);
+    const [salinitas, setSalinitas] = useState(null);
+    
+    const lokasi = "Boyolali"; // Ganti dengan lokasi yang sesuai
 
-    // Data sampel untuk grafik - dalam implementasi nyata ini akan diambil dari database/API
-    const waterData = [
-        { tanggal: '1 Oct', ph: 7.2, suhu: 28, oksigen: 5.8, salinitas: 15 },
-        { tanggal: '2 Oct', ph: 7.4, suhu: 29, oksigen: 5.5, salinitas: 16 },
-        { tanggal: '3 Oct', ph: 7.1, suhu: 27, oksigen: 6.0, salinitas: 15 },
-        { tanggal: '4 Oct', ph: 7.3, suhu: 28, oksigen: 5.7, salinitas: 14 },
-        { tanggal: '5 Oct', ph: 7.5, suhu: 30, oksigen: 5.4, salinitas: 15 },
-    ];
+    useEffect(() => {
+        console.log("Current water data in dashboard:", waterData);
+        if (waterData.length > 0) {
+            const latestData = waterData[waterData.length - 1];
+            console.log("Latest water analysis data:", latestData);
 
-    // Fungsi untuk menganalisis data
+            setPh(latestData.ph);
+            setSuhu(latestData.suhu);
+            setOksigen(latestData.oksigen);
+            setSalinitas(latestData.salinitas);
+        }
+    }, [waterData]);
+
+
     const analyzeData = (data) => {
-        const lastReading = data[data.length - 1];
-        const prevReading = data[data.length - 2];
-
+        console.log("Analyzing data:", data);
+    
+        // Cek apakah data tidak kosong dan singleReading memiliki properti yang diharapkan
+        if (data.length === 0) {
+            console.warn("No data available for analysis.");
+            return {
+                ph: { status: 'Data Tidak Tersedia', value: null },
+                suhu: { status: 'Data Tidak Tersedia', value: null },
+                oksigen: { status: 'Data Tidak Tersedia', value: null },
+                salinitas: { status: 'Data Tidak Tersedia', value: null }
+            };
+        }
+    
+        const singleReading = data[0];
+    
+        // Cek jika properti ada pada singleReading
+        if (!singleReading.ph || !singleReading.suhu || !singleReading.oksigen || !singleReading.salinitas) {
+            console.warn("Incomplete data in single reading:", singleReading);
+            return {
+                ph: { status: 'Data Tidak Lengkap', value: singleReading.ph || null },
+                suhu: { status: 'Data Tidak Lengkap', value: singleReading.suhu || null },
+                oksigen: { status: 'Data Tidak Lengkap', value: singleReading.oksigen || null },
+                salinitas: { status: 'Data Tidak Lengkap', value: singleReading.salinitas || null }
+            };
+        }
+    
         return {
             ph: {
-                status: lastReading.ph >= 7.0 && lastReading.ph <= 8.5 ? 'Normal' : 'Perlu Perhatian',
-                trend: lastReading.ph > prevReading.ph ? 'Meningkat' : 'Menurun',
-                value: lastReading.ph
+                status: singleReading.ph >= 7.0 && singleReading.ph <= 8.5 ? 'Normal' : 'Perlu Perhatian',
+                value: singleReading.ph
             },
             suhu: {
-                status: lastReading.suhu >= 25 && lastReading.suhu <= 32 ? 'Normal' : 'Perlu Perhatian',
-                trend: lastReading.suhu > prevReading.suhu ? 'Meningkat' : 'Menurun',
-                value: lastReading.suhu
+                status: singleReading.suhu >= 25 && singleReading.suhu <= 32 ? 'Normal' : 'Perlu Perhatian',
+                value: singleReading.suhu
             },
             oksigen: {
-                status: lastReading.oksigen >= 4 ? 'Normal' : 'Perlu Perhatian',
-                trend: lastReading.oksigen > prevReading.oksigen ? 'Meningkat' : 'Menurun',
-                value: lastReading.oksigen
+                status: singleReading.oksigen >= 4 ? 'Normal' : 'Perlu Perhatian',
+                value: singleReading.oksigen
             },
             salinitas: {
-                status: lastReading.salinitas >= 10 && lastReading.salinitas <= 25 ? 'Normal' : 'Perlu Perhatian',
-                trend: lastReading.salinitas > prevReading.salinitas ? 'Meningkat' : 'Menurun',
-                value: lastReading.salinitas
+                status: singleReading.salinitas >= 10 && singleReading.salinitas <= 25 ? 'Normal' : 'Perlu Perhatian',
+                value: singleReading.salinitas
             }
         };
     };
+    
+
+
+    const handleOnSubmit = (data) => {
+        console.log("Data submitted:", data);
+        setWaterData((prevData) => [
+            ...prevData,
+            {
+                lokasi: lokasi, // Tambahkan lokasi di sini
+                ph: data.parsedPh,
+                suhu: data.parsedSuhu,
+                oksigen: data.parsedOksigen,
+                salinitas: data.parsedSalinitas
+            }
+        ]);
+    };
 
     const analysis = analyzeData(waterData);
+    console.log("Analysis results:", analysis); 
 
 
     return (
         <div className="bg-white w-full min-h-screen">
-            {/* Header */}
             <header className="bg-white shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4">
                         <h1 className="text-xl font-semibold text-gray-800">Manajemen Tambak</h1>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            {/* Round image for the Indonesian flag */}
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/indonesian-flag.png" // Replace with the actual path to the flag image
-                                    alt="Bendera Indonesia"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                            {/* Round image for profile photo */}
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/profile-photo.png" // Replace with the actual path to the profile photo
-                                    alt="Profile"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div className="border-b border-gray-300 w-full" />
@@ -83,9 +121,7 @@ const DashboardManagement = () => {
 
             <div className="mt-4 ml-8 mr-8">
                 <div className="p-4">
-
                     <div className="flex justify-between items-center">
-
                         <div>
                             <h1 className="text-xl font-medium">Tambak Lele Seger</h1>
                             <div className="flex items-center space-x-2 text-gray-600">
@@ -93,15 +129,12 @@ const DashboardManagement = () => {
                                 <span>Boyolali, Jawa Tengah</span>
                             </div>
                         </div>
-
-
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-2 px-4">
                                 <span className="text-gray-600">Daftar Tambak :</span>
                                 <select className="px-40 py-1.5 border rounded-md bg-white text-left">
                                     <option value="tambak1">Tambak Lele Seger</option>
                                     <option value="tambak2">Tambak Lele Kencana</option>
-
                                 </select>
                             </div>
                             <button className="px-10 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
@@ -113,9 +146,15 @@ const DashboardManagement = () => {
             </div>
 
             <div className="p-4 space-y-4 ml-5">
-                <h1 className="text-2xl font-bold mb-4">Dashboard Manajemen Tambak</h1>
+                <h1 className="text-2xl font-bold mb-2">Dashboard Manajemen Tambak</h1>
+                <button
+                    onClick={() => setModalOpen(true)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mb-5"
+                >
+                    + Tambah Data Air
+                </button>
 
-                {/* Grafik */}
+                {/* Chart */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Monitoring Kualitas Air</CardTitle>
@@ -123,72 +162,70 @@ const DashboardManagement = () => {
                     <CardContent>
                         <div className="h-80">
                             <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={waterData}>
+                                <BarChart data={waterData}> {/* Ganti LineChart dengan BarChart */}
                                     <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="tanggal" />
+                                    <XAxis dataKey="lokasi" /> {/* Ganti "id" dengan "lokasi" */}
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Line type="monotone" dataKey="ph" stroke="#8884d8" name="pH" />
-                                    <Line type="monotone" dataKey="suhu" stroke="#82ca9d" name="Suhu (°C)" />
-                                    <Line type="monotone" dataKey="oksigen" stroke="#ffc658" name="Oksigen (mg/L)" />
-                                    <Line type="monotone" dataKey="salinitas" stroke="#ff7300" name="Salinitas (ppt)" />
-                                </LineChart>
+                                    <Bar dataKey="ph" fill="#8884d8" name="pH" />
+                                    <Bar dataKey="suhu" fill="#82ca9d" name="Suhu (°C)" />
+                                    <Bar dataKey="oksigen" fill="#ffc658" name="Oksigen (mg/L)" />
+                                    <Bar dataKey="salinitas" fill="#ff7300" name="Salinitas (ppt)" />
+                                </BarChart>
                             </ResponsiveContainer>
                         </div>
                     </CardContent>
                 </Card>
 
-                {/* Laporan Analisis */}
+                {/* Analysis Report */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Laporan Analisis Kualitas Air</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {/* pH */}
+                            {/* pH Air */}
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">pH Air</h3>
-                                <p className="text-2xl mb-2">{analysis.ph.value}</p>
-                                <p className={`text-sm ${analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
-                                    Status: {analysis.ph.status}
+                                <p className="text-2xl mb-2">{analysis.ph ? analysis.ph.value : 'N/A'}</p>
+                                <p className={`text-sm ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                    Status: {analysis.ph ? analysis.ph.status : 'N/A'}
                                 </p>
-                                <p className="text-sm text-gray-600">Trend: {analysis.ph.trend}</p>
                             </div>
 
-                            {/* Suhu */}
+                            {/* Suhu Air */}
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">Suhu Air</h3>
-                                <p className="text-2xl mb-2">{analysis.suhu.value}°C</p>
-                                <p className={`text-sm ${analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
-                                    Status: {analysis.suhu.status}
+                                <p className="text-2xl mb-2">{analysis.suhu ? analysis.suhu.value : 'N/A'}</p>
+                                <p className={`text-sm ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                    Status: {analysis.suhu ? analysis.suhu.status : 'N/A'}
                                 </p>
-                                <p className="text-sm text-gray-600">Trend: {analysis.suhu.trend}</p>
+
                             </div>
 
-                            {/* Oksigen */}
+                            {/* Oksigen Terlarut */}
                             <div className="p-4 border rounded-lg">
-                                <h3 className="font-bold mb-2">Kadar Oksigen</h3>
-                                <p className="text-2xl mb-2">{analysis.oksigen.value} mg/L</p>
-                                <p className={`text-sm ${analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
-                                    Status: {analysis.oksigen.status}
+                                <h3 className="font-bold mb-2">Oksigen Terlarut</h3>
+                                <p className="text-2xl mb-2">{analysis.oksigen ? analysis.oksigen.value : 'N/A'}</p>
+                                <p className={`text-sm ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                    Status: {analysis.oksigen ? analysis.oksigen.status : 'N/A'}
                                 </p>
-                                <p className="text-sm text-gray-600">Trend: {analysis.oksigen.trend}</p>
+
                             </div>
 
                             {/* Salinitas */}
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">Salinitas</h3>
-                                <p className="text-2xl mb-2">{analysis.salinitas.value} ppt</p>
-                                <p className={`text-sm ${analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
-                                    Status: {analysis.salinitas.status}
+                                <p className="text-2xl mb-2">{analysis.salinitas ? analysis.salinitas.value : 'N/A'}</p>
+                                <p className={`text-sm ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                    Status: {analysis.salinitas ? analysis.salinitas.status : 'N/A'}
                                 </p>
-                                <p className="text-sm text-gray-600">Trend: {analysis.salinitas.trend}</p>
+
                             </div>
                         </div>
-
-                        {/* Rekomendasi */}
-                        <div className="mt-6">
+                                                {/* Rekomendasi */}
+                                                <div className="mt-6">
                             <h3 className="font-bold mb-2">Rekomendasi Tindakan:</h3>
                             <ul className="list-disc pl-6">
                                 {analysis.ph.status !== 'Normal' && (
@@ -210,10 +247,20 @@ const DashboardManagement = () => {
                         </div>
                     </CardContent>
                 </Card>
+
             </div>
+            {modalOpen && (
+                <ManagementModal
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onSubmit={handleOnSubmit}
+                />
+            )}
+
         </div>
     );
 };
+
 
 function Management() {
     return (
