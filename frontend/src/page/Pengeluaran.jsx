@@ -53,57 +53,57 @@ const ExcelForm = () => {
     return (
         <div className="bg-white w-full min-h-screen">
             {/* Header */}
-            <header className="bg-white shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <h1 className="text-xl font-semibold text-gray-800">Pengeluaran</h1>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/indonesian-flag.png"
-                                    alt="Bendera Indonesia"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
-                            </div>
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                <img
-                                    src="path/to/profile-photo.png"
-                                    alt="Profile"
-                                    className="w-full h-full rounded-full object-cover"
-                                />
+                <header className="bg-white shadow-sm">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center py-4">
+                            <h1 className="text-xl font-semibold text-gray-800">Pengeluaran</h1>
+                            <div className="flex items-center space-x-4">
+                                <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
+                                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                    <img
+                                        src="path/to/indonesian-flag.png"
+                                        alt="Bendera Indonesia"
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                </div>
+                                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                    <img
+                                        src="path/to/profile-photo.png"
+                                        alt="Profile"
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="border-b border-gray-300 w-full" />
-            </header>
+                    <div className="border-b border-gray-300 w-full" />
+                </header>
 
-            <div className="mt-4 px-4">
-                <div className="p-4">
-                    <div className="flex flex-col sm:flex-row justify-between items-center">
-                        <div>
-                            <h1 className="text-xl font-medium">Pengeluaran Tambak Lele Seger</h1>
-                            <div className="flex items-center space-x-2 text-gray-600">
-                                <MapPin className="w-4 h-4" />
-                                <span>Boyolali, Jawa Tengah</span>
+                <div className="mt-4 px-4">
+                    <div className="p-4">
+                        <div className="flex flex-col sm:flex-row justify-between items-center">
+                            <div>
+                                <h1 className="text-xl font-medium">Pengeluaran Tambak Lele Seger</h1>
+                                <div className="flex items-center space-x-2 text-gray-600">
+                                    <MapPin className="w-4 h-4" />
+                                    <span>Boyolali, Jawa Tengah</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                            <div className="flex items-center space-x-2">
-                                <span className="text-gray-600">Daftar Tambak:</span>
-                                <select className="px-4 py-1.5 border rounded-md bg-white text-left">
-                                    <option value="tambak1">Tambak Lele Seger</option>
-                                    <option value="tambak2">Tambak Lele Kencana</option>
-                                </select>
+                            <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+                                <div className="flex items-center space-x-2">
+                                    <span className="text-gray-600">Daftar Tambak:</span>
+                                    <select className="px-4 py-1.5 border rounded-md bg-white text-left">
+                                        <option value="tambak1">Tambak Lele Seger</option>
+                                        <option value="tambak2">Tambak Lele Kencana</option>
+                                    </select>
+                                </div>
+                                <button className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+                                    Export Laporan
+                                </button>
                             </div>
-                            <button className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
-                                Export Laporan
-                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
             {/* Content Section */}
             <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
