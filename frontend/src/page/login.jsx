@@ -1,11 +1,21 @@
-import React, { useState } from "react";
-import { Link } from 'react-router-dom'; 
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from 'react-router-dom'; 
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate(); // Untuk redirect setelah login
+
+  // Cek apakah user sudah login saat komponen di-mount
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn) {
+      navigate("/Home"); // Redirect ke dashboard jika sudah login
+    }
+  }, [navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,9 +28,18 @@ const LoginPage = () => {
 
     setLoading(true);
 
+    // Simulasi autentikasi sederhana
     setTimeout(() => {
       setLoading(false);
-      alert("Login Berhasil! 🚀");
+
+      // Contoh validasi login (login default dengan email dan password)
+      if (email === "user@gmail.com" && password === "user123") {
+        localStorage.setItem("isLoggedIn", "true"); // Simpan status login
+        alert("Login Berhasil! 🚀");
+        navigate("/Home"); // Redirect ke halaman dashboard
+      } else {
+        setError("Email atau kata sandi salah.");
+      }
     }, 2000);
   };
 
@@ -45,64 +64,61 @@ const LoginPage = () => {
             Login sekarang dan pantau tambak lele kamu untuk hasil terbaik.
           </p>
 
-          {error && (
-            <div className="text-red-500 text-sm mb-4">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
-<form onSubmit={handleLogin} className="space-y-5">
-  <div>
-    <label htmlFor="email" className="block text-black-600  text-lg">
-      Email
-    </label>
-    <input
-      id="email"
-      type="email"
-      placeholder="Email atau No Handphone"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-      required
-    />
-  </div>
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label htmlFor="email" className="block text-black-600 text-lg">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Email atau No Handphone"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+            </div>
 
-  <div>
-    <label htmlFor="password" className="block text-black-600  text-lg">
-      Kata Sandi
-    </label>
-    <input
-      id="password"
-      type="password"
-      placeholder="Kata Sandi"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-      required
-    />
-  </div>
+            <div>
+              <label htmlFor="password" className="block text-black-600 text-lg">
+                Kata Sandi
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Kata Sandi"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+            </div>
 
-  <div className="flex justify-between items-center">
-    <a href="#" className="text-blue-500 text-sm hover:underline">
-      Lupa Kata Sandi?
-    </a>
-  </div>
+            <div className="flex justify-between items-center">
+              <a href="#" className="text-blue-500 text-sm hover:underline">
+                Lupa Kata Sandi?
+              </a>
+            </div>
 
-  <button
-    type="submit"
-    disabled={loading}
-    className={`w-full py-3 rounded-md text-white font-semibold transition ${
-      loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
-    }`}
-  >
-    {loading ? (
-      <div className="flex items-center justify-center gap-2">
-        <span className="loader"></span> Memuat...
-      </div>
-    ) : (
-      "Login"
-    )}
-  </button>
-</form>
-
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-3 rounded-md text-white font-semibold transition ${
+                loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
+              }`}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <span className="loader"></span> Memuat...
+                </div>
+              ) : (
+                "Login"
+              )}
+            </button>
+          </form>
 
           <div className="mt-6 flex items-center justify-center">
             <span className="border-b w-1/4"></span>
@@ -138,7 +154,7 @@ const LoginPage = () => {
           <p className="mt-6 text-center text-sm text-gray-600">
             Belum memiliki akun NusaAira?{" "}
             <Link to="/signup" className="text-blue-500 hover:underline">
-                Daftar
+              Daftar
             </Link>
           </p>
         </div>
