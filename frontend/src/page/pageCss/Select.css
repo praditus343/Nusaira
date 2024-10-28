@@ -12,6 +12,9 @@ select:focus {
     color: #3B82F6; 
 }
 
+.select-component{
+    background-color: white !important;
+}
 
   
 
