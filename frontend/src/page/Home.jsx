@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, ChevronDown, Bell, HelpCircle } from 'lucide-react';
+import { Home, ChevronDown} from 'lucide-react';
 import Sidebar from '../componen/SideBar.jsx';
 import Footer from '../componen/Footer.jsx';
 import AIFloatingButton from '../componen/AiFloatingButton.jsx';
@@ -15,7 +15,6 @@ const DashboardContent = () => {
     return (
         <div className="bg-white w-full min-h-screen mb-10">
            <Header/>
-
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex justify-between items-center mb-6">
                     <div>
@@ -28,7 +27,6 @@ const DashboardContent = () => {
                         <span className="text-gray-700">Batch :</span>
 
                         <div className="relative">
-
                             <button
                                 onClick={toggleDropdown}
                                 className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center"

@@ -8,29 +8,32 @@ import Header from '../componen/Header';
 
 const SimulationChart = () => {
     const [formData, setFormData] = useState({
-        nama: 'Simulation 2024-10-24',
-        luasTambak: '1000',
-        jumlahTebar: '2500',
-        tanggalTebar: '2024-10-24',
-        biomassa: 'Simulation 2024-10-24'
+        nama: '',
+        luasTambak: '',
+        jumlahTebar: '',
+        tanggalTebar: '',
+        biomassa: ''
     });
+    
+    const [chartData, setChartData] = useState([]);
 
-    // Sample data untuk grafik
-    const chartData = [
-        { hari: 0, nilai1: 50, nilai2: 40 },
-        { hari: 1, nilai1: 85, nilai2: 45 },
-        { hari: 2, nilai1: 30, nilai2: 70 },
-        { hari: 3, nilai1: 75, nilai2: 45 },
-        { hari: 4, nilai1: 25, nilai2: 60 },
-        { hari: 5, nilai1: 30, nilai2: 80 },
-        { hari: 6, nilai1: 85, nilai2: 65 },
-        { hari: 7, nilai1: 100, nilai2: 90 },
-        { hari: 8, nilai1: 65, nilai2: 75 },
-        { hari: 9, nilai1: 70, nilai2: 60 }
-    ];
+    const handleSave = () => {
+        const luas = parseFloat(formData.luasTambak);
+        const jumlah = parseFloat(formData.jumlahTebar);
+        const biomassa = parseFloat(formData.biomassa);
+        const newChartData = Array.from({ length: 10 }, (_, index) => {
+            return {
+                hari: index,
+                nilai1: (biomassa * jumlah * index * 0.1).toFixed(2), 
+                nilai2: (biomassa * jumlah * index * 0.05).toFixed(2) 
+            };
+        });
+
+        setChartData(newChartData);
+    };
 
     return (
-        <div className="bg-white w-full min-h-screen mb-10">
+        <div className="bg-white w-full min-h-screen mb-10 ml-5">
             <Header/>
 
             {/* Title Section */}
@@ -43,9 +46,9 @@ const SimulationChart = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex gap-6 p-4 ">
+            <div className="flex gap-6 p-4">
                 {/* Left Side - Form */}
-                <div className="w-1/2 ">
+                <div className="w-1/2">
                     <div className="bg-blue-100 rounded-lg shadow">
                         <div className="p-4 bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
                             <span>Data Dasar</span>
@@ -57,16 +60,16 @@ const SimulationChart = () => {
                                 <input
                                     type="text"
                                     value={formData.nama}
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-2 border rounded-md border-gray-400"
                                     onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Luas Tambak (x²)</label>
+                                <label className="block text-gray-700 mb-2">Luas Tambak (m²)</label>
                                 <input
                                     type="text"
                                     value={formData.luasTambak}
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-2 border rounded-md border-gray-400"
                                     onChange={(e) => setFormData({ ...formData, luasTambak: e.target.value })}
                                 />
                             </div>
@@ -75,7 +78,7 @@ const SimulationChart = () => {
                                 <input
                                     type="text"
                                     value={formData.jumlahTebar}
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-2 border rounded-md border-gray-400"
                                     onChange={(e) => setFormData({ ...formData, jumlahTebar: e.target.value })}
                                 />
                             </div>
@@ -84,25 +87,27 @@ const SimulationChart = () => {
                                 <input
                                     type="date"
                                     value={formData.tanggalTebar}
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-2 border rounded-md border-gray-400"
                                     onChange={(e) => setFormData({ ...formData, tanggalTebar: e.target.value })}
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Biomassa Maks. (kg/m2)</label>
+                                <label className="block text-gray-700 mb-2">Biomassa Maks. (kg/m²)</label>
                                 <input
                                     type="text"
                                     value={formData.biomassa}
-                                    className="w-full p-2 border rounded"
+                                    className="w-full p-2 border rounded-md border-gray-400"
                                     onChange={(e) => setFormData({ ...formData, biomassa: e.target.value })}
                                 />
                             </div>
                             <div className="flex justify-end">
-                                <button className="px-10 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-10 mb-10">
+                                <button 
+                                    className="px-10 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-10 mb-10"
+                                    onClick={handleSave} 
+                                >
                                     Simpan
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
