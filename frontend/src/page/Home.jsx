@@ -53,14 +53,14 @@ const DashboardContent = () => {
                 </div>
 
 
-                <div className="bg-blue-50 rounded-lg shadow-md mb-10 border-2">
+                <div className="bg-white border border-blue-600 rounded-lg shadow-md mb-10 border-2">
                     <div className="p-6">
-                        <h2 className="text-xl font-semibold mb-2">Solusi Untuk Tambak Lele</h2>
+                        <h2 className="text-xl font-semibold mb-2 text-gray-500">Solusi Untuk Tambak Lele</h2>
                         <WrapBanner />
                     </div>
                 </div>
                 <div className="flex space-x-4">
-                    <div className="w-2/3 bg-blue-100 rounded-lg shadow-md">
+                    <div className="w-2/3 bg-white border-2 border-blue-600 rounded-lg shadow-md">
                         <div className="p-3 bg-blue-400 rounded-lg ml-4 mr-4 mt-4 mb-4">
                                 <div className="flex items-center space-x-4">
                                     <img src={imgConfusePeople} alt="Question mark" className="w-50 h-60 object-cover ml-4 mr-4" />
@@ -75,7 +75,7 @@ const DashboardContent = () => {
                     </div>
 
 
-                    <div className="w-1/3 bg-blue-100 rounded-lg shadow-md">
+                    <div className="w-1/3 bg-white border-2 border-blue-600 rounded-lg shadow-md">
                         <div className="p-6">
                             <h3 className="text-lg font-semibold mb-4">Budidaya Bersama NusAIra</h3>
                             <div className="p-4">
