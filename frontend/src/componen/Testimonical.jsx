@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import img1 from "../assets/img/assets_foto/f1.png";
 import img2 from "../assets/img/assets_foto/f2.png";
 import img3 from "../assets/img/assets_foto/f3.png";
@@ -9,9 +9,6 @@ import img5 from "../assets/img/assets_foto/f5.png";
 import img6 from "../assets/img/assets_foto/f5.png";
 
 const Testimonial = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const testimonialsPerPage = 3;
-
   const testimonials = [
     { id: 1, text: "Bagus sangat membantu dalam mencatat keuangan", rating: 5, name: "Rohman Nur Rohim", role: "Pemilik Tambak", image: img1 },
     { id: 2, text: "Sangat mudah digunakan dan efisien", rating: 4, name: "Putri Wulandari", role: "Pemilik Restoran", image: img2 },
@@ -21,37 +18,51 @@ const Testimonial = () => {
     { id: 6, text: "Aplikasi ini sangat membantu dalam mengelola keuangan usaha saya", rating: 5, name: "Rina Wijayanti", role: "Pengusaha Pembenihan Lele", image: img6 },
   ];
 
-  const maxIndex = Math.ceil(testimonials.length / testimonialsPerPage) - 1;
+  const scrollContainerRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1));
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === maxIndex ? 0 : prevIndex + 1));
+  const handleMouseLeave = () => {
+    setIsDragging(false);
   };
 
-  const start = currentIndex * testimonialsPerPage;
-  const currentTestimonials = testimonials.slice(start, start + testimonialsPerPage);
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // Adjust scroll speed
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   return (
     <div className="text-center py-10 relative ml-10 me-10 mb-32">
       <h2 className="text-2xl font-bold mb-10">Kata Mereka</h2>
-      
-      {/* Tombol navigasi di kiri */}
-      <button
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors mt-6"
-        onClick={handlePrev}
-      >
-        <FontAwesomeIcon icon={faChevronLeft} size="2x" />
-      </button>
 
-      {/* Card grid */}
-      <div className="grid grid-cols-3 gap-6 justify-center mx-10">
-        {currentTestimonials.map((testimonial) => (
+      {/* Container scrollable dengan drag-scroll */}
+      <div
+        ref={scrollContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className="flex overflow-x-auto gap-6 cursor-grab"
+        style={{ scrollBehavior: "smooth" }}
+      >
+        {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className="bg-blue-50 p-6 rounded-lg shadow-lg flex flex-col items-center"
+            className="min-w-[300px] bg-blue-50 p-6 rounded-lg shadow-lg flex flex-col items-center"
           >
             <p className="text-lg mb-2 text-center">"{testimonial.text}"</p>
             <div className="text-yellow-400 text-lg mb-2 flex">
@@ -73,14 +84,6 @@ const Testimonial = () => {
           </div>
         ))}
       </div>
-
-      {/* Tombol navigasi di kanan */}
-      <button
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors mt-6"
-        onClick={handleNext}
-      >
-        <FontAwesomeIcon icon={faChevronRight} size="2x" />
-      </button>
     </div>
   );
 };

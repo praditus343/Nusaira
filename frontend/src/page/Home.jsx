@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Home, ChevronDown} from 'lucide-react';
+import { Home, ChevronDown } from 'lucide-react';
 import Sidebar from '../componen/SideBar.jsx';
 import Footer from '../componen/Footer.jsx';
 import AIFloatingButton from '../componen/AiFloatingButton.jsx';
 import Header from '../componen/Header.jsx';
+import WrapBanner from '../componen/WrapBanner.jsx';
+import imgConfusePeople from "../assets/img/landing_page_sudah_daftar/landingsub3.png"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faYoutube, faTelegram } from '@fortawesome/free-brands-svg-icons';
+import imgElearningNusaira from "../assets/img/landing_page_sudah_daftar/landingsub2.png"
 
 const DashboardContent = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -14,7 +19,7 @@ const DashboardContent = () => {
 
     return (
         <div className="bg-white w-full min-h-screen mb-10">
-           <Header/>
+            <Header />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex justify-between items-center mb-6">
                     <div>
@@ -48,64 +53,49 @@ const DashboardContent = () => {
                 </div>
 
 
-                <div className="bg-white rounded-lg shadow-md mb-6">
+                <div className="bg-blue-50 rounded-lg shadow-md mb-10 border-2">
                     <div className="p-6">
                         <h2 className="text-xl font-semibold mb-2">Solusi Untuk Tambak Lele</h2>
-                        <div className="bg-blue-50 rounded-lg p-4">
-                            <div className="flex justify-between items-center">
-                                <div className="flex-1">
-                                    <h3 className="text-lg font-semibold text-blue-600 mb-2">Bingung Ingin Cek Kualitas Tambak Lele ?</h3>
-                                    <p className="text-gray-600 mb-4">Temukan Solusi Terbaik untuk Memantau dan Meningkatkan <br /> Kualitas Tambak Anda! Bergabunglah Bersama Kami<br />
-                                        dan Dapatkan Data Real-Time yang Akurat untuk<br />
-                                        Meningkatkan Hasil Panen Anda!</p>
-                                    <button className="px-20 py-2 bg-blue-500 text-white rounded-md mt-5">Klik untuk info lebih lanjut</button>
-                                </div>
-                                <div className="flex-shrink-0 ml-4">
-                                    <img src="/api/placeholder/150/150" alt="Illustration" className="w-36 h-36 object-cover" />
-                                </div>
-                            </div>
-                        </div>
+                        <WrapBanner />
                     </div>
                 </div>
-
-                <div className="flex space-x-6">
-                    <div className="flex-1 bg-white rounded-lg shadow-md">
-                        <div className="p-6">
-                            <div className="bg-blue-50 rounded-lg p-4">
+                <div className="flex space-x-4">
+                    <div className="w-2/3 bg-blue-100 rounded-lg shadow-md">
+                        <div className="p-3 bg-blue-400 rounded-lg ml-4 mr-4 mt-4 mb-4">
                                 <div className="flex items-center space-x-4">
-                                    <img src="/api/placeholder/80/80" alt="Question mark" className="w-20 h-20 object-cover" />
+                                    <img src={imgConfusePeople} alt="Question mark" className="w-50 h-60 object-cover ml-4 mr-4" />
                                     <div>
-                                        <h3 className="text-lg font-semibold mb-2">Rencanakan Proses Pertama Anda</h3>
-                                        <p className="text-gray-600 mb-4">Mulai perjalanan budidaya Anda dengan merencanakan dan mengelola budidaya secara <br /> efesien.</p>
-                                        <button className="px-20 py-2 bg-blue-500 text-white rounded-md mt-5">Mulai sekarang</button>
+                                        <h3 className="font-semibold mb-2 text-white">Rencanakan Proses Pertama Anda</h3>
+                                        <p className="text-white mb-4">Anda Perlu Memulai Siklus agar Dapat<br/> Mencatat dan Mengelola Budidaya Secara<br/>  Efisien.</p>
+                                        <button className="px-20 py-2 bg-blue-600 text-white rounded-md mt-4  hover:bg-blue-500 transition-colors duration-300">Mulai sekarang</button>
                                     </div>
                                 </div>
-                            </div>
+                            
                         </div>
                     </div>
 
 
-                    <div className="flex-1 bg-white rounded-lg shadow-md">
+                    <div className="w-1/3 bg-blue-100 rounded-lg shadow-md">
                         <div className="p-6">
                             <h3 className="text-lg font-semibold mb-4">Budidaya Bersama NusAIra</h3>
-                            <div className="bg-blue-50 rounded-lg p-4">
+                            <div className="p-4">
                                 <div className="space-y-4">
-                                    <div className="bg-red-500 rounded-md">
-                                        <button className="w-full text-white flex items-center p-2">
-                                            <img src="/api/placeholder/24/24" alt="YouTube" className="w-6 h-6 mr-2" />
-                                            <span>YouTube NusAIra</span>
+                                    <div className="bg-blue-500 rounded-md py-1">
+                                        <button className="w-full text-white flex items-center p-2 ml-2">
+                                        <FontAwesomeIcon icon={faYoutube} className="w-6 h-6 mr-2" />
+                                            <span className='ml-2'>YouTube NusAIra</span>
                                         </button>
                                     </div>
-                                    <div className="bg-blue-400 rounded-md">
+                                    <div className="bg-blue-500 rounded-md">
                                         <button className="w-full text-white flex items-center p-2">
-                                            <img src="/api/placeholder/24/24" alt="Twitter" className="w-6 h-6 mr-2" />
-                                            <span>Twitter NusAIra</span>
+                                            <img src={imgElearningNusaira} alt="Twitter" className="w-20 h-8 mr-2" />
+                                            <span>Belajar Bareng NusAira</span>
                                         </button>
                                     </div>
-                                    <div className="bg-blue-700 rounded-md">
-                                        <button className="w-full text-white flex items-center p-2">
-                                            <img src="/api/placeholder/24/24" alt="Telegram" className="w-6 h-6 mr-2" />
-                                            <span>Telegram NusAIra</span>
+                                    <div className="bg-blue-500 rounded-md py-1">
+                                        <button className="w-full text-white flex items-center p-2 ml-2">
+                                        <FontAwesomeIcon icon={faTelegram} className="w-6 h-6 mr-2" />
+                                            <span className='ml-2'>Telegram NusAIra</span>
                                         </button>
                                     </div>
                                 </div>

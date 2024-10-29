@@ -133,7 +133,7 @@ const BlogLayout = () => {
 
   const LeftCard = ({ post }) => (
     <div
-      className={`bg-white rounded-lg shadow-md overflow-hidden mb-4 transition-opacity duration-300 ${isPostVisible(post) ? 'opacity-100' : 'opacity-30'
+      className={`bg-white rounded-lg shadow-md overflow-hidden mb-4 border-2 border-grey-300 transition-opacity duration-300 ${isPostVisible(post) ? 'opacity-100' : 'opacity-30'
         }`}
     >
       <img
@@ -155,7 +155,7 @@ const BlogLayout = () => {
 
   const RightCard = ({ post }) => (
     <div
-      className={`flex bg-white rounded-lg shadow-md overflow-hidden mb-4 transition-opacity duration-300 ${isPostVisible(post) ? 'opacity-100' : 'opacity-30'
+      className={`flex bg-white rounded-lg shadow-md overflow-hidden mb-4 border-2 border-grey-300 transition-opacity duration-300 ${isPostVisible(post) ? 'opacity-100' : 'opacity-30'
         }`}
     >
       <div className="flex-1 p-4">
@@ -231,7 +231,7 @@ const BlogLayout = () => {
           </div>
           <div className="w-2/3">
             <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-            <div className="space-y-4 overflow-y-auto max-h-[125vh]">
+            <div className="space-y-4 overflow-y-auto max-h-[135vh]">
               {rightPosts.map(post => (
                 <RightCard key={post.id} post={post} />
               ))}

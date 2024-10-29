@@ -16,6 +16,14 @@ import img7 from "../assets/img/kabar_lele/kbl5.png"
 import img8 from "../assets/img/kabar_lele/kbl7.png"
 
 function LandingPage() {
+    const getRandomDate = () => {
+        const start = new Date(2020, 0, 1); 
+        const end = new Date(); 
+        const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+        
+        return date.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' });
+      };
+      
 
 
     return (
@@ -85,7 +93,7 @@ function LandingPage() {
             </div>
 
 
-            <div className="flex items-center justify-between p-10 bg-white mt-[180px] ml-4">
+            <div className="flex items-center justify-between p-10 bg-white mt-[130px] ml-4">
                 <div className="flex-1 pr-8 pl-2">
                     <h2 className=" font-bold mb-2">Memastikan tambak berjalan lancar hingga <br /> panen</h2>
                     <p className=" text-gray-600 mb-4 mt-4 text-left max-w-lg">
@@ -179,7 +187,7 @@ function LandingPage() {
                                         <div className="w-2 h-2 rounded-full bg-gray-500 mr-1"></div>
                                         <p className="text-xs text-gray-500">Nusaira</p>
                                     </div>
-                                    <p className="text-xs text-gray-500 ml-2">12 Oktober 2023</p>
+                                    <p className="text-xs text-gray-500 ml-2">{getRandomDate()}</p>
                                 </div>
                             </div>
                         </div>
