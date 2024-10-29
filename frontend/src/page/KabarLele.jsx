@@ -4,113 +4,127 @@ import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
+import img1 from '../assets/img/kabar_lele/kbl1.png';
+import img2 from '../assets/img/kabar_lele/kbl2.png';
+import img3 from '../assets/img/kabar_lele/kbl3.png';
+import img4 from '../assets/img/kabar_lele/kbl4.png';
+import img5 from '../assets/img/kabar_lele/kbl5.png';
+import img6 from '../assets/img/kabar_lele/kbl6.png';
+import img7 from '../assets/img/kabar_lele/kbl7.png';
 
 const KabarLeleLayout = () => {
   const allPosts = [
     {
       id: 1,
-      title: 'Seluk Beluk Usaha Budidaya Ikan',
+      title: 'Seluk Beluk Usaha Budidaya Ikan Lele',
       date: '15 Oktober 2024',
-      image: '/api/placeholder/400/300',
-      excerpt: 'Kegiatan budidaya ikan menjadi salah satu usaha yang banyak diminati dari masyarakat, baik untuk...'
+      image: img1,
+      excerpt: 'Kegiatan budidaya ikan Lele...'
     },
     {
       id: 2,
       title: 'Sulap Sungon Kotor Jadi Tempat Budidaya',
       date: '15 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img2,
       excerpt: 'Kerja keras komunitas Pecinta Sungai (KPS) dalam...'
     },
     {
       id: 3,
       title: 'Budidaya Ikan nan Menguntungkan',
       date: '15 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img3,
       excerpt: 'Pembersaran di kolam di anggap paling sederhana pengalolahannya, apalagi jika kolam ku berada di sekitar tempat...'
     },
     {
       id: 4,
       title: 'Menggabungkan Aquaponik',
       date: '15 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img4,
       excerpt: 'Aquaponik adalah sistem yang menggabungkan budidaya ikan (akuakultur) dengan hidroponik...'
     },
     {
       id: 5,
       title: 'Pembangunan Aquaponik',
       date: '15 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img5,
       excerpt: 'Untuk memenuhi kebutuhan manusia yang semakin meningkat terkait sektor pembangunan termasuk perikanan budi...'
     },
     {
       id: 6,
       title: 'Potensi Budidaya Ikan',
       date: '15 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img6,
       excerpt: 'Di Tanah Air dinilai sangat besar. Bahkan potensi produktivitasnya bisa digenjot dengan memanfaatkan teknologi...'
     },
     {
       id: 7,
       title: 'Inovasi Kolam Terpal Ikan Lele',
       date: '16 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img7,
       excerpt: 'Kolam terpal semakin diminati sebagai media budidaya lele karena biayanya yang lebih murah...'
     },
     {
       id: 8,
       title: 'Tips Memilih Pakan Ikan Berkualitas',
       date: '16 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img1,
       excerpt: 'Pemilihan pakan yang tepat dapat mempercepat pertumbuhan ikan dan meningkatkan kualitas panen...'
     },
     {
       id: 9,
       title: 'Mengenal Teknik Bioflok',
       date: '16 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img2,
       excerpt: 'Bioflok adalah salah satu teknik budidaya ikan yang hemat air dan ramah lingkungan...'
     },
     {
       id: 10,
       title: 'Keuntungan Budidaya Ikan Hias',
       date: '16 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img3,
       excerpt: 'Selain ikan konsumsi, budidaya ikan hias juga menawarkan potensi pasar yang menggiurkan...'
     },
     {
       id: 11,
       title: 'Strategi Panen Maksimal dalam Budidaya Lele',
       date: '17 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img4,
       excerpt: 'Mengoptimalkan strategi panen menjadi kunci sukses dalam budidaya lele agar hasil lebih maksimal...'
     },
     {
       id: 12,
       title: 'Mengatasi Penyakit Ikan',
       date: '17 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img5,
       excerpt: 'Penyakit ikan menjadi salah satu tantangan yang sering dihadapi oleh pembudidaya, namun dengan...'
     },
     {
       id: 13,
       title: 'Teknik Pembenihan Ikan Nila',
       date: '17 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img6,
       excerpt: 'Pembenihan ikan nila memerlukan teknik khusus untuk memastikan kualitas benih yang baik...'
     },
     {
       id: 14,
       title: 'Keberlanjutan dalam Budidaya Ikan',
       date: '18 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image: img7,
       excerpt: 'Menerapkan prinsip keberlanjutan dalam budidaya ikan menjadi penting untuk menjaga ekosistem...'
     },
     {
       id: 15,
       title: 'Meningkatkan Kualitas Air Budidaya',
       date: '18 Oktober 2024',
-      image: '/api/placeholder/400/300',
+      image:img1,
       excerpt: 'Kualitas air adalah faktor utama dalam keberhasilan budidaya ikan. Mengatur pH dan kadar oksigen...'
+    },
+    {
+      id: 16,
+      title: 'Pemanfaatan Teknologi dalam Budidaya Ikan',
+      date: '18 Oktober 2024',
+      image: img2,
+      excerpt: 'Pemanfaatan teknologi dalam budidaya ikan dapat meningkatkan efisiensi dan produktivitas...'
     }
 ];
 
@@ -230,7 +244,7 @@ const KabarLeleLayout = () => {
           </div>
           <div className="w-2/3">
             <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-            <div className="space-y-4 overflow-y-auto max-h-[125vh]">
+            <div className="space-y-4 overflow-y-auto max-h-[170vh]">
               {rightPosts.map(post => (
                 <RightCard key={post.id} post={post} />
               ))}
