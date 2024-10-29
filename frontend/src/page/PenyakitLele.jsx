@@ -1,157 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, List } from 'lucide-react';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 
+// Fungsi untuk menghasilkan tanggal acak
+const randomDate = () => {
+    const start = new Date(2024, 9, 1); // 1 Oktober 2024
+    const end = new Date(2024, 9, 31); // 31 Oktober 2024
+    const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    return date.toLocaleDateString();
+};
+
+// Judul penyakit
+const diseasesTitles = [
+    'Penyakit Bintik Putih Pada Lele',
+    'Penyakit Jamur Air',
+    'Penyakit Kulit Mengelupas',
+    'Hama Dan Penyakit Pada Lele',
+    'Tantangan Iklim Dalam Pembibitan',
+    'Penyakit Aeromonas Pada Lele',
+    'Meminimalisir penyakit pada lele',
+    'Penyebab lele Kembung',
+    'Penyebab lele mengambang',
+];
+
+// Mengimpor gambar satu per satu
+import pyl1 from '../assets/img/penyakit_lele/pyl1.png';
+import pyl2 from '../assets/img/penyakit_lele/pyl2.png';
+import pyl3 from '../assets/img/penyakit_lele/pyl3.png';
+import pyl4 from '../assets/img/penyakit_lele/pyl4.png';
+import pyl5 from '../assets/img/penyakit_lele/pyl5.png';
+import pyl6 from '../assets/img/penyakit_lele/pyl6.png';
+import pyl7 from '../assets/img/penyakit_lele/pyl7.png';
+import pyl8 from '../assets/img/penyakit_lele/pyl8.png';
+import pyl9 from '../assets/img/penyakit_lele/pyl9.png';
+
 const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [diseases, setDiseases] = useState([]);
 
-    const diseases = [
-        {
-            id: 1,
-            title: 'Penyakit Bintik Putih Pada Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 2,
-            title: 'Penyakit Jamur Air',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 3,
-            title: 'Penyakit Kulit Mengelupas',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 4,
-            title: 'Hama Dan Penyakit Pada Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 5,
-            title: 'Tantangan Iklim Dalam Pembibitan',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 6,
-            title: 'Penyakit Aeromonas Pada Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 7,
-            title: 'Pencegahan Penyakit Bakterial',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 8,
-            title: 'Manajemen Kualitas Air',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 9,
-            title: 'Optimasi Pakan Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 10,
-            title: 'Sistem Sirkulasi Air Modern',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 11,
-            title: 'Penanganan Stress Pada Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 12,
-            title: 'Vaksinasi Untuk Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 13,
-            title: 'Pemeliharaan Kolam Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 14,
-            title: 'Teknik Pemberian Pakan',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 15,
-            title: 'Monitoring Kesehatan Lele',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 16,
-            title: 'Pengendalian Parasit',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 17,
-            title: 'Manajemen Biomassa',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 18,
-            title: 'Sanitasi Kolam',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 19,
-            title: 'Teknologi Bioflok',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        },
-        {
-            id: 20,
-            title: 'Penanggulangan Wabah',
-            date: '10 Oktober 2024',
-            image: '/api/placeholder/400/300'
-        }
-    ];
+    useEffect(() => {
+        // Mengatur data penyakit dan gambar
+        const diseaseData = [
+            { id: 1, title: diseasesTitles[0], date: randomDate(), image: pyl1 },
+            { id: 2, title: diseasesTitles[1], date: randomDate(), image: pyl2 },
+            { id: 3, title: diseasesTitles[2], date: randomDate(), image: pyl3 },
+            { id: 4, title: diseasesTitles[3], date: randomDate(), image: pyl4 },
+            { id: 5, title: diseasesTitles[4], date: randomDate(), image: pyl5 },
+            { id: 6, title: diseasesTitles[5], date: randomDate(), image: pyl6 },
+            { id: 7, title: diseasesTitles[6], date: randomDate(), image: pyl7 },
+            { id: 8, title: diseasesTitles[7], date: randomDate(), image: pyl8 },
+            { id: 9, title: diseasesTitles[8], date: randomDate(), image: pyl9 },
+        ];
+        setDiseases(diseaseData);
+    }, []);
 
-    
     const filteredDiseases = diseases.filter(disease =>
         disease.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-        <div className="bg-white w-full min-h-screen ">
-            <Header/>
-            {/* Header Section */}
+        <div className="bg-white w-full min-h-screen">
+            <Header />
             <div className="mb-8 mr-14 ml-14 mt-5">
                 <h1 className="text-2xl font-bold mb-2">
                     Mengenal Penyakit dan Tantangan dalam Budidaya Lele
                 </h1>
                 <p className="text-gray-600">
-                    Pelajari Cara Mengatasi Penyakit dan Tantangan Budidaya Lele <br />dengan Solusi Tepat!
-                    Dapatkan Tips Praktis untuk Meningkatkan<br /> Kualitas dan Produktivitas Tambak Anda
+                    Pelajari Cara Mengatasi Penyakit dan Tantangan Budidaya Lele <br />
+                    dengan Solusi Tepat! Dapatkan Tips Praktis untuk Meningkatkan<br /> 
+                    Kualitas dan Produktivitas Tambak Anda
                 </p>
             </div>
 
-            {/* Search Bar Container */}
             <div className="w-[800px] relative mb-10 mr-14 ml-14 flex items-center border border-blue-600 rounded-2xl bg-white">
                 <div className="relative flex-1">
                     <input
@@ -184,7 +108,6 @@ const FishDiseaseDashboard = () => {
                 </button>
             </div>
 
-            {/* Main Content Container */}
             <div className="border border-blue-600 rounded-lg bg-white p-2 mr-8 ml-8 p-6 h-[800px] overflow-y-auto">
                 <div className={`${isGridLayout ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto' : 'flex flex-col gap-4'}`}>
                     {filteredDiseases.length > 0 ? (
@@ -222,7 +145,7 @@ function PenyakitLele() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <FishDiseaseDashboard />
-                <AIFloatingButton/>
+                <AIFloatingButton />
                 <div className='mt-10'>
                     <Footer />
                 </div>
