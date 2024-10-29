@@ -196,7 +196,7 @@ const KabarLeleLayout = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-10 ml-20">
+      <div className="max-w-7xl mx-auto mt-10 ml-10 mr-10">
         {/* Search Bar */}
         <div className="mb-8 flex justify-start">
           <div className="w-[800px] relative flex items-center border border-blue-600 rounded-2xl bg-white">
