@@ -184,7 +184,7 @@ const PriceMonitoringDashboard = () => {
                         <>
                             <div className="flex flex-col justify-between mb-2shadow rounded-lg">
                                 {chartData.map((item, index) => (
-                                    <div key={index} className="flex-grow-0 flex-shrink-0 mt-4">
+                                    <div key={index} className="flex-grow-0 flex-shrink-0 mt-4 border-2 border-grey-300">
                                         <div className="bg-white shadow rounded-lg p-4 h-full">
                                             <div className="flex flex-col justify-between h-full mt-4">
                                                 <div>
@@ -226,10 +226,10 @@ const PriceMonitoringDashboard = () => {
                     </div>
 
                     {/* Right Side - Scrollable Grid */}
-                    <div className="flex-grow flex-shrink min-w-0 w-1/2">
-                        <div className="grid grid-cols-2 gap-4 h-[900px] overflow-y-auto pr-2">
+                    <div className="flex-grow flex-shrink min-w-0 w-1/2 ">
+                        <div className="grid grid-cols-2 gap-4 h-[900px] overflow-y-auto pr-2 ">
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((index) => (
-                                <div key={index} className="bg-white shadow rounded-lg p-4">
+                                <div key={index} className="bg-white shadow-md rounded-lg p-4 border-2 border-grey-300">
                                     <div className="flex justify-between items-center mb-2">
                                         <div>
                                             <h3 className="font-semibold">JAWA TIMUR</h3>

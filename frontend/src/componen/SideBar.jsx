@@ -24,6 +24,8 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
     }
   }, [isAnyChildActive]);
 
+  if (!isSidebarOpen) return null;
+
   return (
     <div>
       {!children ? (
@@ -82,68 +84,76 @@ const Sidebar = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className={`min-h-screen bg-blue-500 text-white transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'} overflow-y-auto`}>
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center">
-          <img src={""} alt="Logo" className="w-8 h-8 rounded-full mr-2" />
-          {isSidebarOpen && <span className="text-white text-xl font-bold">NusAira</span>}
+    <div className={`min-h-screen bg-blue-500 text-white transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-12'} overflow-y-auto`}>
+      {isSidebarOpen ? (
+        <>
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center">
+              <img src={""} alt="Logo" className="w-8 h-8 rounded-full mr-2" />
+              {isSidebarOpen && <span className="text-white text-xl font-bold">NusAira</span>}
+            </div>
+            <div className="cursor-pointer" onClick={toggleSidebar}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </div>
+          </div>
+          <nav>
+            <MenuItem
+              icon={faHome}
+              label="Home"
+              isSidebarOpen={isSidebarOpen}
+              path="/Home"
+            />
+            <MenuItem
+              label="Budidaya/Tambak"
+              isSidebarOpen={isSidebarOpen}
+              children={[
+                { icon: faPlus, label: "Input tambak baru", path: "/InputTambak" },
+                { icon: faTable, label: "Daftar kolam", path: "/DaftarKolam" },
+                { icon: faTools , label: "Management", path: "/ManajemenTambak" },
+                { icon: faChartLine, label: "Simulasi", path: "/Simulasi" },
+              ]}
+            />
+            <MenuItem
+              label="Keuangan"
+              isSidebarOpen={isSidebarOpen}
+              children={[
+                { icon: faCartPlus, label: "Pengeluaran", path: "/Pengeluaran" },
+                { icon: faMoneyBill, label: "Pemasukan", path: "/Pemasukan" },
+                { icon: faClipboardList, label: "Ringkasan", path: "/Ringkasan" },
+                { icon: faClipboardList, label: "Laporan", path: "/Laporan" },
+              ]}
+            />
+            <MenuItem
+              label="Media"
+              isSidebarOpen={isSidebarOpen}
+              children={[
+                { icon: faDollarSign, label: "Harga Lele", path: "/HargaLele" },
+                { icon: faNewspaper, label: "Kabar Lele", path: "/KabarLele" },
+                { icon: faHeart, label: "Penyakit Lele", path: "/PenyakitLele" },
+                { icon: faBell, label: "Notifikasi", path: "/Notifikasi" },
+                { icon: faPenSquare, label: "Blog", path: "/Blog" },
+              ]}
+            />
+            <MenuItem
+              label="Bootcamp"
+              isSidebarOpen={isSidebarOpen}
+              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/Budidaya" }]}
+            />
+            <MenuItem
+              label="Berlangganan"
+              isSidebarOpen={isSidebarOpen}
+              children={[
+                { icon: faUser, label: "Akses Premium", path: "/AksesPremium" },
+                { icon: faFileInvoice, label: "Invoice", path: "/Invoice" },
+              ]}
+            />
+          </nav>
+        </>
+      ) : (
+        <div className="flex justify-center p-4 cursor-pointer" onClick={toggleSidebar}>
+          <FontAwesomeIcon icon={faChevronRight} />
         </div>
-        <div className="cursor-pointer" onClick={toggleSidebar}>
-          {isSidebarOpen ? <FontAwesomeIcon icon={faChevronLeft} /> : <FontAwesomeIcon icon={faChevronRight} />}
-        </div>
-      </div>
-      <nav>
-        <MenuItem
-          icon={faHome}
-          label="Home"
-          isSidebarOpen={isSidebarOpen}
-          path="/Home"
-        />
-        <MenuItem
-          label="Budidaya/Tambak"
-          isSidebarOpen={isSidebarOpen}
-          children={[
-            { icon: faPlus, label: "Input tambak baru", path: "/InputTambak" },
-            { icon: faTable, label: "Daftar kolam", path: "/DaftarKolam" },
-            { icon: faTools , label: "Management", path: "/ManajemenTambak" },
-            { icon: faChartLine, label: "Simulasi", path: "/Simulasi" },
-          ]}
-        />
-        <MenuItem
-          label="Keuangan"
-          isSidebarOpen={isSidebarOpen}
-          children={[
-            { icon: faCartPlus, label: "Pengeluaran", path: "/Pengeluaran" },
-            { icon: faMoneyBill, label: "Pemasukan", path: "/Pemasukan" },
-            { icon: faClipboardList, label: "Ringkasan", path: "/Ringkasan" },
-            { icon: faClipboardList, label: "Laporan", path: "/Laporan" },
-          ]}
-        />
-        <MenuItem
-          label="Media"
-          isSidebarOpen={isSidebarOpen}
-          children={[
-            { icon: faDollarSign, label: "Harga Lele", path: "/HargaLele" },
-            { icon: faNewspaper, label: "Kabar Lele", path: "/KabarLele" },
-            { icon: faHeart, label: "Penyakit Lele", path: "/PenyakitLele" },
-            { icon: faBell, label: "Notifikasi", path: "/Notifikasi" },
-            { icon: faPenSquare, label: "Blog", path: "/Blog" },
-          ]}
-        />
-        <MenuItem
-          label="Bootcamp"
-          isSidebarOpen={isSidebarOpen}
-          children={[{ icon: faGraduationCap, label: "Budidaya", path: "/Budidaya" }]}
-        />
-        <MenuItem
-          label="Berlangganan"
-          isSidebarOpen={isSidebarOpen}
-          children={[
-            { icon: faUser, label: "Akses Premium", path: "/AksesPremium" },
-            { icon: faFileInvoice, label: "Invoice", path: "/Invoice" },
-          ]}
-        />
-      </nav>
+      )}
     </div>
   );
 };
