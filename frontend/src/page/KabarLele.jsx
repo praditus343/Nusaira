@@ -126,35 +126,30 @@ const KabarLeleLayout = () => {
       image: img2,
       excerpt: 'Pemanfaatan teknologi dalam budidaya ikan dapat meningkatkan efisiensi dan produktivitas...'
     }
-];
 
+  ];
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [isGridLayout, setIsGridLayout] = useState(true);
   const [randomLeftPosts, setRandomLeftPosts] = useState([]);
-  const [rightPosts, setRightPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState(allPosts);
 
   useEffect(() => {
     // Randomly select 3 posts for the left side
     const shuffled = [...allPosts].sort(() => 0.5 - Math.random());
     setRandomLeftPosts(shuffled.slice(0, 3));
-    setRightPosts(allPosts);
   }, []);
 
-  const isPostVisible = (post) => {
-    return post.title.toLowerCase().includes(searchTerm.toLowerCase());
-  };
+  useEffect(() => {
+    // Filter posts based on the search term
+    const results = allPosts.filter(post =>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredPosts(results);
+  }, [searchTerm]);
 
   const LeftCard = ({ post }) => (
-    <div
-      className={`bg-white rounded-lg shadow-md overflow-hidden mb-4 transition-opacity duration-300 ${isPostVisible(post) ? 'opacity-100' : 'opacity-30'
-        }`}
-    >
-      <img
-        src={post.image}
-        alt={post.title}
-        className="w-full h-48 object-cover"
-      />
+    <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
+      <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />
       <div className="p-4">
         <div className="text-sm text-gray-500 mb-2">{post.date}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
@@ -168,10 +163,7 @@ const KabarLeleLayout = () => {
   );
 
   const RightCard = ({ post }) => (
-    <div
-      className={`flex bg-white rounded-lg shadow-md overflow-hidden mb-4 transition-opacity duration-300 ${isPostVisible(post) ? 'opacity-100' : 'opacity-30'
-        }`}
-    >
+    <div className="flex bg-white rounded-lg shadow-md overflow-hidden mb-4">
       <div className="flex-1 p-4">
         <div className="text-sm text-gray-500 mb-2">{post.date}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
@@ -181,32 +173,24 @@ const KabarLeleLayout = () => {
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
       </div>
-      <img
-        src={post.image}
-        alt={post.title}
-        className="w-48 h-48 object-cover"
-      />
+      <img src={post.image} alt={post.title} className="w-48 h-48 object-cover" />
     </div>
   );
 
   return (
     <div className="bg-white w-full min-h-screen">
-     <Header/>
+      <Header />
 
       <div className="mt-5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center space-x-4 mb-4">
-            <div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-            </div>
             <h1 className="text-xl font-semibold text-gray-800">
-              Budidaya Nusantara Update Informasi dan<br/> Teknologi
+              Lele Nusantara Update Informasi dan <br /> Teknologi
             </h1>
           </div>
-
           <div className="mt-1">
             <p className="text-gray-600">
-              Kami berkomitmen untuk memberikan informasi yang akurat dan terkini tentang inovasi, praktik <br/>terbaik, dan teknologi terbaru yang dapat meningkatkan produktivitas.
+              Jadikan budidaya lele lebih efektif dengan tips terbaru, pembaruan teknologi, dan solusi <br /> praktis dari Nusaira. Temukan kabar terkini seputar dunia lele di sini.
             </p>
           </div>
         </div>
@@ -226,13 +210,12 @@ const KabarLeleLayout = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <button
-              className="px-10 py-2.5 bg-blue-500 text-white rounded-r-2xl hover:bg-blue-600 transition-colors duration-200"
-            >
+            <button className="px-10 py-2.5 bg-blue-500 text-white rounded-r-2xl hover:bg-blue-600 transition-colors duration-200">
               <ListFilter size={24} />
             </button>
           </div>
         </div>
+
         <div className="flex gap-8">
           <div className="w-1/3">
             <h2 className="text-xl font-bold mb-4">Popular Berita</h2>
@@ -244,8 +227,8 @@ const KabarLeleLayout = () => {
           </div>
           <div className="w-2/3">
             <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-            <div className="space-y-4 overflow-y-auto max-h-[170vh]">
-              {rightPosts.map(post => (
+            <div className="space-y-4 overflow-y-auto max-h-[165vh]">
+              {filteredPosts.map(post => (
                 <RightCard key={post.id} post={post} />
               ))}
             </div>
@@ -256,15 +239,13 @@ const KabarLeleLayout = () => {
   );
 };
 
-
-
 function KabarLele() {
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <KabarLeleLayout />
-        <AIFloatingButton/>
+        <AIFloatingButton />
         <div className='mt-20'>
           <Footer />
         </div>
@@ -274,5 +255,3 @@ function KabarLele() {
 }
 
 export default KabarLele;
-
-
