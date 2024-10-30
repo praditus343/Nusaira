@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
+import { TambahDataKematianModal, TambahDataPakanModal, TambahDataPanenModal, TambahDataPenyakitModal, TambahLeleSegerModal,TambahJumlahAnco} from '../componen/ModalTambak';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 
 const CustomCard = ({ children, className }) => {
     return (
@@ -11,15 +15,6 @@ const CustomCard = ({ children, className }) => {
         </div>
     );
 };
-
-const buttons = [
-    'Mulai siklus',
-    'Kematian',
-    'Penyakit',
-    'Pakan',
-    'Anco'
-];
-
 
 const CustomButton = ({ children, variant, className, ...props }) => {
     const getVariantClass = () => {
@@ -43,7 +38,49 @@ const CustomButton = ({ children, variant, className, ...props }) => {
     );
 };
 
+const buttons = [
+    'Mulai siklus',
+    'Kematian',
+    'Penyakit',
+    'Pakan',
+    'Panen',
+    'Anco'
+];
+
 const PondTable = () => {
+    // State for active modal
+    const [activeModal, setActiveModal] = useState(null);
+
+    const handleButtonClick = (buttonText) => {
+        switch (buttonText) {
+            case 'Mulai siklus':
+                setActiveModal('TambahLeleSegerModal');
+                break;
+            case 'Kematian':
+                setActiveModal('TambahDataKematianModal');
+                break;
+            case 'Penyakit':
+                setActiveModal('TambahDataPenyakitModal');
+                break;
+            case 'Pakan':
+                setActiveModal('TambahDataPakanModal');
+                break;
+            case 'Panen':
+                setActiveModal('TambahDataPanenModal');
+                break;
+            case 'Anco':
+                setActiveModal('TambahJumlahAnco');
+                break;
+            default:
+                setActiveModal(null);
+                break;
+        }
+    };
+
+
+    // Close modal handler
+    const closeModal = () => setActiveModal(null);
+
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
@@ -60,26 +97,12 @@ const PondTable = () => {
                 </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex justify-between items-center mb-6 ml-4">
-                <div className="flex items-center gap-4">
-                    <span>Daftar Tambak:</span>
-                    <CustomButton variant="outline" className="flex items-center gap-2">
-                        Tambak Lele Seger
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </CustomButton>
-                </div>
-                <CustomButton className="bg-green-600 hover:bg-green-700 text-white mr-4">
-                    Export Laporan
-                </CustomButton>
-            </div>
-
-            <div className="flex flex-wrap gap- ml-2 mt-2 mb-5">
+            {/* Buttons for each modal */}
+            <div className="flex flex-wrap gap-2 ml-2 mt-2 mb-5">
                 {buttons.map((text) => (
                     <button
                         key={text}
+                        onClick={() => handleButtonClick(text)}
                         className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors ml-2"
                     >
                         {text}
@@ -88,30 +111,30 @@ const PondTable = () => {
             </div>
 
 
+            {/* Render modals based on active modal */}
+            {activeModal === 'TambahLeleSegerModal' && <TambahLeleSegerModal isOpen={true} onClose={closeModal} />}
+            {activeModal === 'TambahDataKematianModal' && <TambahDataKematianModal isOpen={true} onClose={closeModal} />}
+            {activeModal === 'TambahDataPenyakitModal' && <TambahDataPenyakitModal isOpen={true} onClose={closeModal} />}
+            {activeModal === 'TambahDataPakanModal' && <TambahDataPakanModal isOpen={true} onClose={closeModal} />}
+            {activeModal === 'TambahDataPanenModal' && <TambahDataPanenModal isOpen={true} onClose={closeModal} />}
+            {activeModal === 'TambahJumlahAnco' && <TambahJumlahAnco isOpen={true} onClose={closeModal} />}
+
             {/* Main Card */}
             <CustomCard className="p-4 ml-5 mr-5">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-medium">Detail Daftar Kolam</h3>
                     <div className="flex gap-4">
-                        <div className="relative flex-1  ">
+                        <div className="relative flex-1">
                             <input
                                 type="text"
                                 placeholder="Cari Kolam"
-                                className="pl-8 pr-4 py-2 px-4 border rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-blue-600 text-blue-600"
+                                className="pl-8 pr-4 py-2 border rounded-lg  block w-full sm:text-lg border border-blue-600 p-2 placeholder-blue-600 text-blue-600 z-30"
+                                autoFocus={false} 
                             />
-                            <svg
+                            <FontAwesomeIcon
+                                icon={faSearch}
                                 className="w-4 h-5 absolute left-3 top-3 text-blue-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
+                            />
                         </div>
 
                         <CustomButton className="bg-blue-600 hover:bg-blue-700 text-white w-30 text-lg">
@@ -148,34 +171,21 @@ const PondTable = () => {
                             {[...Array(5)].map((_, i) => (
                                 <tr key={i} className="bg-blue-50">
                                     <td className="p-3">A {i + 1}</td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
-                                    <td className="p-3">- </td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    <td className="p-3">-</td> {/* Replace with actual data */}
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-
             </CustomCard>
-
-            {/* Chat Button */}
-            <div className="fixed bottom-8 right-8">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <img
-                        src="/api/placeholder/32/32"
-                        alt="Chat"
-                        className="w-8 h-8"
-                    />
-                </div>
-                <div className="text-center mt-1 text-sm">NusAi</div>
-            </div>
         </div>
     );
 };
