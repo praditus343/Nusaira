@@ -15,18 +15,19 @@ const Button = ({ children, onClick, type = 'button', className }) => {
   );
 };
 
-
-
 const Select = ({ options, placeholder }) => {
   return (
-    <select className="block w-full border rounded p-2">
-      <option value="">{placeholder}</option>
-      {options.map((option, index) => (
-        <option key={index} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <FontAwesomeIcon icon={faTimes} className="absolute left-3 top-3 text-gray-500" />
+      <select className="block w-full border rounded-md pl-10 pr-3 py-2 appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        <option value="">{placeholder}</option>
+        {options.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 
@@ -34,7 +35,7 @@ const Textarea = ({ placeholder, ...props }) => {
   return (
     <textarea
       placeholder={placeholder}
-      className="block w-full border rounded p-2"
+      className="block w-full border rounded-md p-2"
       {...props}
     />
   );
@@ -71,7 +72,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <Select options={[{ value: '', label: 'Pilih Kolam' }]} placeholder="Pilih Kolam" />
           <Select options={[{ value: '', label: 'Lama Persiapan (Hari)' }]} placeholder="Lama Persiapan (Hari)" />
-          <input type="date" className="block w-full border rounded p-2" />
+          <input type="date" className="block w-full border rounded-md p-2" />
           <Select options={[{ value: '', label: 'Total tebar (Ekor)' }]} placeholder="Total tebar (Ekor)" />
           <Select options={[{ value: '', label: 'Broodstock' }]} placeholder="Broodstock" />
           <Select options={[{ value: '', label: 'Target FCR' }]} placeholder="Target FCR" />
@@ -104,7 +105,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Select options={[{ value: '', label: 'Pilih Kolam' }]} placeholder="Pilih Kolam" />
-          <input type="date" placeholder="Tanggal Tebar" />
+          <input type="date" className="block w-full border rounded-md p-2" />
           <div className="flex items-center space-x-2">
             <label className="font-bold">Berdasarkan:</label>
             <Checkbox id="jumlahEkor" label="Jumlah ekor" />
@@ -140,7 +141,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Select options={[{ value: '', label: 'Pilih Kolam' }]} placeholder="Pilih Kolam" />
-          <input type="date" placeholder="Tanggal Tebar" />
+          <input type="date" className="block w-full border rounded-md p-2" />
           <Select options={[{ value: '', label: 'Jenis Penyakit' }]} placeholder="Jenis Penyakit" />
           <Textarea placeholder="Catatan" />
           <div className="grid grid-cols-3 gap-4">
@@ -183,8 +184,8 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <Select options={[{ value: '', label: 'Pilih Kolam' }]} placeholder="Pilih Kolam" />
           <div className="grid grid-cols-2 gap-4">
-            <input type="date" placeholder="Tanggal" />
-            <input type="time" placeholder="Waktu pemberian" />
+            <input type="date" className="block w-full border rounded-md p-2" />
+            <input type="time" className="block w-full border rounded-md p-2" />
           </div>
           <Checkbox id="puasa" label="Puasa" />
           <Select options={[{ value: '', label: 'Jumlah (kg)' }]} placeholder="Jumlah (kg)" />
@@ -195,41 +196,82 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
-
 // Modal Tambah Data Panen
 export const TambahDataPanenModal = ({ isOpen, onClose }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Simpan data panen");
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Tambah Data Panen</h2>
-          <button onClick={onClose}>
-            <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
-          </button>
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Simpan data panen");
+    };
+  
+    if (!isOpen) return null;
+  
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-lg p-6 w-full max-w-md">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">Tambah Data Panen</h2>
+            <button onClick={onClose}>
+              <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
+            </button>
+          </div>
+  
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <Select
+                options={[{ value: '', label: 'Pilih Kolam' }]}
+                placeholder="Pilih Kolam"
+                className="rounded-md border-blue-600"
+              />
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-3 text-blue-600" />
+            </div>
+            <input
+              type="date"
+              placeholder="Tanggal panen/parsial"
+              className="block w-full border border-blue-600 rounded-md p-2"
+            />
+            <div className="relative">
+              <Select
+                options={[{ value: '', label: 'Total berat (kg)' }]}
+                placeholder="Total berat (kg)"
+                className="rounded-md border-blue-600"
+              />
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-3 text-blue-600" />
+            </div>
+            <div className="relative">
+              <Select
+                options={[{ value: '', label: 'Size (ekor/kg)' }]}
+                placeholder="Size (ekor/kg)"
+                className="rounded-md border-blue-600"
+              />
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-3 text-blue-600" />
+            </div>
+            <div className="relative">
+              <Select
+                options={[{ value: '', label: 'Total harga jual' }]}
+                placeholder="Total harga jual"
+                className="rounded-md border-blue-600"
+              />
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-3 text-blue-600" />
+            </div>
+            <div className="relative">
+              <Select
+                options={[{ value: '', label: 'Status' }]}
+                placeholder="Status"
+                className="rounded-md border-blue-600"
+              />
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-3 text-blue-600" />
+            </div>
+            <Textarea
+              placeholder="Catatan"
+              className="block w-full border border-blue-600 rounded-md p-2"
+            />
+            <Button type="submit" className="bg-blue-600 text-white rounded-md">Simpan</Button>
+          </form>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Select options={[{ value: '', label: 'Pilih Kolam' }]} placeholder="Pilih Kolam" />
-          <input type="date" placeholder="Tanggal panen/parsial" />
-          <Select options={[{ value: '', label: 'Total berat (kg)' }]} placeholder="Total berat (kg)" />
-          <Select options={[{ value: '', label: 'Size (ekor/kg)' }]} placeholder="Size (ekor/kg)" />
-          <Select options={[{ value: '', label: 'Total harga jual' }]} placeholder="Total harga jual" />
-          <Select options={[{ value: '', label: 'Status' }]} placeholder="Status" />
-          <Textarea placeholder="Catatan" />
-          <Button type="submit">Simpan</Button>
-        </form>
       </div>
-    </div>
-  );
-};
-
+    );
+  };
+// Modal Tambah Jumlah Anco
 export const TambahJumlahAnco = ({ isOpen, onClose }) => {
     const [pilihKolam, setPilihKolam] = useState('');
     const [tanggalPanenParsial, setTanggalPanenParsial] = useState('');
@@ -239,7 +281,6 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      // Proses submit form
       console.log({
         pilihKolam,
         tanggalPanenParsial,
@@ -257,70 +298,66 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
         <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-4">Cek Anco</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Dropdown Pilih Kolam */}
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700">Pilih Kolam</label>
               <select
                 value={pilihKolam}
                 onChange={(e) => setPilihKolam(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-blue-600 rounded-md focus:outline-none focus:ring-blue-600 focus:border-blue-600"
               >
                 <option value="" disabled>Pilih Kolam</option>
                 <option value="kolam1">Kolam 1</option>
                 <option value="kolam2">Kolam 2</option>
               </select>
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-10 text-blue-600" />
             </div>
   
-            {/* Input Tanggal Panen/Parsial */}
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700">Tanggal Panen/Parsial</label>
               <input
                 type="date"
                 value={tanggalPanenParsial}
                 onChange={(e) => setTanggalPanenParsial(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-blue-600 rounded-md focus:outline-none focus:ring-blue-600 focus:border-blue-600"
               />
             </div>
   
-            {/* Dropdown Waktu Pemberian Pakan */}
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700">Waktu Pemberian Pakan</label>
               <select
                 value={waktuPemberianPakan}
                 onChange={(e) => setWaktuPemberianPakan(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-blue-600 rounded-md focus:outline-none focus:ring-blue-600 focus:border-blue-600"
               >
                 <option value="" disabled>Pilih Waktu Pemberian Pakan</option>
                 <option value="pagi">Pagi</option>
                 <option value="siang">Siang</option>
                 <option value="sore">Sore</option>
               </select>
+              <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-10 text-blue-600" />
             </div>
   
-            {/* Input Waktu Cek Anco */}
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700">Waktu Cek Anco</label>
               <input
                 type="time"
                 value={waktuCekAnco}
                 onChange={(e) => setWaktuCekAnco(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-blue-600 rounded-md focus:outline-none focus:ring-blue-600 focus:border-blue-600"
               />
             </div>
   
-            {/* Textarea Catatan */}
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700">Catatan</label>
               <textarea
                 value={catatan}
                 onChange={(e) => setCatatan(e.target.value)}
                 rows="3"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-blue-600 rounded-md focus:outline-none focus:ring-blue-600 focus:border-blue-600"
                 placeholder="Catatan"
               />
             </div>
   
-            {/* Tombol Simpan */}
             <div className="flex justify-end">
               <button
                 type="button"
@@ -341,7 +378,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
       </div>
     );
   };
-  
+    
 
 export default {
   TambahLeleSegerModal,
