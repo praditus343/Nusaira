@@ -7,7 +7,7 @@ const MetricModal = ({ metric, onClose }) => (
     <div className="bg-white rounded-lg shadow-lg w-[80vw] max-w-3xl p-6">
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-gray-700">{metric.label}</h2>
+        <h2 className="font-medium text-gray-700">{metric.label}</h2>
         <button onClick={onClose} className="text-gray-500 hover:text-gray-700 text-2xl">
           <X />
         </button>
