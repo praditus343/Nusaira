@@ -19,6 +19,7 @@ import Pemasukan from './page/Pemasukan';
 import Management from './page/ManajemenTambak';
 import KabarLele from './page/KabarLele';
 import Laporan from './page/Laporan';
+import AquacultureDashboard from './componen/AquacultureDashboard';
 
 
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/Pemasukan" element={<Pemasukan/>} />  
           <Route path="/Laporan" element={<Laporan/>} />  
           <Route path="/KabarLele" element={<KabarLele/>} /> 
+          <Route path="/AquacultureDashboard" element={<AquacultureDashboard/>} /> 
         </Routes>
       </Fragment>
     </Router>
