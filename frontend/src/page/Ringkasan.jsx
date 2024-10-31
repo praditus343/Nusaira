@@ -177,7 +177,12 @@ function TableSection() {
             <td className="py-2 px-4 border">100%</td>
           </tr>
           <tr className="bg-blue-500 text-white">
-            <td colSpan="10" className="py-2 px-4 text-center">Kolam Terbaik</td>
+            <td colSpan="5" className="py-2 px-4 text-center">Total</td>
+            <td className="py-2 px-4 border">12 kg</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border"> </td>
           </tr>
         </tbody>
       </table>
