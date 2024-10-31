@@ -7,11 +7,11 @@ import Header from "../componen/Header";
 
 function SummaryDetails() {
   return (
-    <div className="  space-y-6 space-x-6 bg-white w-full min-h-screen">
+    <div className="  space-y-6 space-x-6 bg-white w-full min-h-screen ">
             <Header />
-    <div className="p-6">
+    <div className="p-6 ">
       {/* Header Section */}
-      <div className="mb-6">
+      <div className="mb-6 mr-4">
         <h1 className="text-2xl font-bold mb-4">Ringkasan Budidaya Tambak Lele</h1>
         <div className="flex gap-4 items-end mb-4">
           <div className="flex-1">
@@ -34,7 +34,7 @@ function SummaryDetails() {
       </div>
 
       {/* Main Content Card */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg shadow border  border-blue-500 mr-4">
         {/* Card Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-semibold">Tambak Lele Segar</h2>
@@ -52,13 +52,29 @@ function SummaryDetails() {
           <h3 className="text-blue-500">Lele Segar</h3>
         </div>
 
-        {/* Info Section */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <p><span className="font-medium">Lokasi Tambak:</span> Jawa Tengah, Boyolali, Tegalsari</p>
-          <p><span className="font-medium">Jumlah Kolam:</span> 4</p>
-          <p><span className="font-medium">Periode Siklus:</span> 1 Oktober 2024 - Sekarang</p>
-        </div>
+          {/* Info Section */}
+          <div className="mb-8">
+            <div className="flex mb-1">
+              <span className="font-medium w-32">Lokasi Tambak</span>
+              <span className="mr-2">:</span>
+              <span>Jawa Tengah, Boyolali, Tegalsari</span>
+            </div>
+            <div className="flex mb-1">
+              <span className="font-medium w-32">Jumlah Kolam</span>
+              <span className="mr-2">:</span>
+              <span>4</span>
+            </div>
+            <div className="flex mb-1">
+              <span className="font-medium w-32">Periode Siklus</span>
+              <span className="mr-2">:</span>
+              <span>1 Oktober 2024 - Sekarang</span>
+            </div>
+          </div>
 
+          <div className="text-center mb-8">
+            <h3 className="text-blue-700 inline-block border-b-4 border-blue-700 pb-1">Detail</h3>
+          </div>
+          
         {/* Metrics First Row */}
         <div className="grid grid-cols-3 gap-8 mb-8">
           <MetricCard icon={<BarChart3 />} title="Hasil Panen" description="Data pada Kolam B3, Kolam B4 tidak lengkap" />
