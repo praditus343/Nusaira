@@ -18,6 +18,7 @@ import Pemasukan from './page/Pemasukan';
 import Management from './page/ManajemenTambak';
 import KabarLele from './page/KabarLele';
 import Laporan from './page/Laporan';
+import Ringkasan from './page/Ringkasan';
 
 
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="/Pemasukan" element={<Pemasukan/>} />  
            <Route path="/Laporan" element={<Laporan/>} />  
           <Route path="/KabarLele" element={<KabarLele/>} /> 
+          <Route path="/Ringkasan" element={<Ringkasan/>} />
         </Routes>
       </Fragment>
     </Router>
