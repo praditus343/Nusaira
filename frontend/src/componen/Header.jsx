@@ -37,7 +37,8 @@ const Header = () => {
     '/Pemasukan': 'Pemasukan',
     '/Laporan': 'Laporan',
     '/KabarLele': 'Kabar Lele',
-    '/Aksespremium' : 'Premium'
+    '/Aksespremium' : 'Premium',
+    '/Ringkasan' : 'Ringkasan'
   };
 
   const title = titleMap[location.pathname] || 'Unknown Page';
