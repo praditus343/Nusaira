@@ -28,8 +28,6 @@
     font-size: 19px;
   }
   
-  
-  
 html, body, #root {
     margin: 0;
     padding: 0;
@@ -48,3 +46,20 @@ html, body, #root {
 *::-webkit-scrollbar {
   display: none; 
 }
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent; 
+  color: #2563eb; 
+}
+
+input[type="time"]::-webkit-inner-spin-button {
+  color: #2563eb; 
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background: transparent; 
+  color: #2563eb; 
+}
+
+

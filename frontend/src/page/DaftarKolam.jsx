@@ -3,9 +3,9 @@ import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
-import { TambahDataKematianModal, TambahDataPakanModal, TambahDataPanenModal, TambahDataPenyakitModal, TambahLeleSegerModal,TambahJumlahAnco} from '../componen/ModalTambak';
+import { TambahDataKematianModal, TambahDataPakanModal, TambahDataPanenModal, TambahDataPenyakitModal, TambahLeleSegerModal, TambahJumlahAnco } from '../componen/ModalTambak';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
 
 
 const CustomCard = ({ children, className }) => {
@@ -48,7 +48,6 @@ const buttons = [
 ];
 
 const PondTable = () => {
-    // State for active modal
     const [activeModal, setActiveModal] = useState(null);
 
     const handleButtonClick = (buttonText) => {
@@ -77,8 +76,6 @@ const PondTable = () => {
         }
     };
 
-
-    // Close modal handler
     const closeModal = () => setActiveModal(null);
 
     return (
@@ -123,31 +120,32 @@ const PondTable = () => {
             <CustomCard className="p-4 ml-5 mr-5">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-medium">Detail Daftar Kolam</h3>
-                    <div className="flex gap-4">
+                    <div className="flex items-center gap-4">
                         <div className="relative flex-1">
                             <input
                                 type="text"
                                 placeholder="Cari Kolam"
-                                className="pl-8 pr-4 py-2 border rounded-lg  block w-full sm:text-lg border border-blue-600 p-2 placeholder-blue-600 text-blue-600 z-30"
-                                autoFocus={false} 
+                                className="pl-8 pr-4 py-2 border rounded-lg block w-full sm:text-lg border border-blue-600 placeholder-blue-600 text-blue-600 z-30"
+                                autoFocus={false}
                             />
                             <FontAwesomeIcon
                                 icon={faSearch}
-                                className="w-4 h-5 absolute left-3 top-3 text-blue-600"
+                                className="w-4 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-600"
                             />
                         </div>
 
-                        <CustomButton className="bg-blue-600 hover:bg-blue-700 text-white w-30 text-lg">
-                            <span className="text-2xl font-bold">+</span> <span className="font-normal">Kolam</span>
+                        <CustomButton className="bg-blue-600 hover:bg-blue-700 text-white w-30 px-6 flex items-center justify-center">
+                            <span className="text-lg font-bold">+</span> <span className="font-normal">Kolam</span>
                         </CustomButton>
 
-                        <CustomButton variant="ghost" className="w-32">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
+                        <CustomButton variant="ghost" className="w-32 flex items-center justify-start">
+                            <FontAwesomeIcon
+                                icon={faCog}
+                                className="text-blue-400 text-md pointer-events-none w-[48px]"
+                            />
                         </CustomButton>
                     </div>
+
                 </div>
 
                 {/* Table */}
@@ -170,16 +168,17 @@ const PondTable = () => {
                         <tbody>
                             {[...Array(5)].map((_, i) => (
                                 <tr key={i} className="bg-blue-50">
-                                    <td className="p-3">A {i + 1}</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
-                                    <td className="p-3">-</td> {/* Replace with actual data */}
+                                    {/* Replace with actual data */}
+                                    <td className="p-3">A {i + 1}</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
+                                    <td className="p-3">-</td>
                                 </tr>
                             ))}
                         </tbody>
