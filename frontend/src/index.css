@@ -62,4 +62,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   color: #2563eb; 
 }
 
-
+select option[value=""] {
+  display: none; 
+}
