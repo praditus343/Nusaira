@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Footer from "../componen/Footer";
 import Navbar from "../componen/Navbar";
 import Testimonial from "../componen/Testimonical";
@@ -14,17 +15,63 @@ import img5 from "../assets/img/landing_page_sebelum_daftar/landingsb10.png"
 import img6 from "../assets/img/landing_page_sebelum_daftar/landingsb15.png"
 import img7 from "../assets/img/kabar_lele/kbl5.png"
 import img8 from "../assets/img/kabar_lele/kbl7.png"
+import PopupModal from "../componen/PopUpModal";
 
 function LandingPage() {
     const getRandomDate = () => {
-        const start = new Date(2020, 0, 1); 
-        const end = new Date(); 
+        const start = new Date(2020, 0, 1);
+        const end = new Date();
         const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-        
         return date.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' });
-      };
-      
+    };
 
+    
+    const [modalContent, setModalContent] = useState({
+        isOpen: false,
+        title: '',
+        description: ''
+    });
+
+
+    const modalContents = {
+        features: {
+            title: "Dapatkan lebih banyak dari fitur kami!",
+            description: "Login untuk membuka akses premium dan manfaatkan potensi maksimal."
+        },
+        eLearning: {
+            title: "Siap belajar lebih efektif?",
+            description: "Login sekarang untuk akses penuh ke e-Learning kami dan nikmati pengalaman belajar yang interaktif"
+        },
+        priceChart: {
+            title: "Pantau harga lele terbaru",
+            description: "Login untuk akses tren harga terkini dan buat keputusan yang lebih cerdas"
+        },
+        news: {
+            title: "Akses Berita Lengkap",
+            description: "Login untuk membaca artikel lengkap dan dapatkan update terbaru seputar budidaya lele"
+        },
+        ai: {
+            title: "Dapatkan lebih banyak dari fitur AI kami!",
+            description: "Login untuk membuka akses premium dan manfaatkan potensi maksimal."
+        }
+    };
+
+
+    const openModal = (contentType) => {
+        setModalContent({
+            isOpen: true,
+            title: modalContents[contentType].title,
+            description: modalContents[contentType].description
+        });
+    };
+
+    const closeModal = () => {
+        setModalContent({
+            isOpen: false,
+            title: '',
+            description: ''
+        });
+    };
 
     return (
         <>
@@ -40,10 +87,10 @@ function LandingPage() {
                         </p>
                     </div>
                     <div className="flex space-x-4 mt-[50px]">
-                        <button className="px-20 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">
+                        <button className="px-20 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300" onClick={() => openModal('features')}>
                             Lihat Detail
                         </button>
-                        <button className="px-20 py-2 border border-gray-500 text-gray-700 rounded-md hover:bg-gray-200 boder-4 transition duration-300">
+                        <button className="px-20 py-2 border border-gray-500 text-gray-700 rounded-md hover:bg-gray-200 boder-4 transition duration-300" >
                             Hubungi Kami
                         </button>
                     </div>
@@ -72,7 +119,6 @@ function LandingPage() {
                 </div>
             </div>
 
-
             <div className="flex items-center bg-white mt-4 ">
                 <div className="flex-1 w-32 ml-6 mr-10">
                     <div className="relative w-[300px] h-[300px] ">
@@ -88,18 +134,31 @@ function LandingPage() {
                     <p className=" text-gray-600 mb-6">
                         Untuk memastikan tambak berjalan lancar hingga <br />panen, penting untuk melakukan perencanaan yang <br /> matang dengan menganalisis lokasi dan memilih jenis<br /> ikan yang tepat. Kualitas air harus dipantau secara rutin,<br />memastikan parameter seperti pH dan kadar oksigen<br /> dalam kondisi baik. Pakan yang berkualitas dan sesuai<br /> dengan kebutuhan ikan juga sangat penting untuk<br /> pertumbuhan optimal.
                     </p>
-                    <button className="bg-blue-500 text-white px-20 py-2 rounded hover:bg-blue-600 mt-4">Selengkapnya</button>
+                    <div>
+                        <button
+                            onClick={() => openModal('ai')}
+                            className="bg-blue-500 text-white px-20 py-2 rounded hover:bg-blue-600 mt-4"
+                        >
+                            Selengkapnya
+                        </button>
+                    </div>
                 </div>
             </div>
-
 
             <div className="flex items-center justify-between p-10 bg-white mt-[130px] ml-4">
                 <div className="flex-1 pr-8 pl-2">
                     <h2 className=" font-bold mb-2">Memastikan tambak berjalan lancar hingga <br /> panen</h2>
                     <p className=" text-gray-600 mb-4 mt-4 text-left max-w-lg">
-                        Siap untuk Meningkatkan Keberhasilan Budidaya Lele<br /> Anda? Daftar di Bootcamp Kami dan nikmati<br /> pengalaman belajar yang mendalam dengan <br />pengetahuan praktis dari para ahli di bidangnya. Anda <br />akan diajarkan cara mengidentifikasi masalah yang<br /> mungkin terjadi dan bagaimana cara mengatasinya,<br /> memastikan setiap langkah budidaya Anda berjalan <br />lancar
+                        Siap untuk Meningkatkan Keberhasilan Budidaya Lele<br /> Anda? Daftar di E-Learning Kami dan nikmati<br /> pengalaman belajar yang mendalam dengan <br />pengetahuan praktis dari para ahli di bidangnya. Anda <br />akan diajarkan cara mengidentifikasi masalah yang<br /> mungkin terjadi dan bagaimana cara mengatasinya,<br /> memastikan setiap langkah budidaya Anda berjalan <br />lancar
                     </p>
-                    <button className="bg-blue-500 text-white px-20 py-2 rounded hover:bg-blue-600 mt-5">Selengkapnya</button>
+                    <div>
+                        <button
+                            onClick={() => openModal('eLearning')}
+                            className="bg-blue-500 text-white px-20 py-2 rounded hover:bg-blue-600 mt-4"
+                        >
+                            Selengkapnya
+                        </button>
+                    </div>
                 </div>
                 <div className="flex-1">
                     <div className="relative w-[575px] h-[575px] ">
@@ -111,6 +170,7 @@ function LandingPage() {
                     </div>
                 </div>
             </div>
+
             <div className="bg-white p-2 mt-5 ml-10 mr-10 ">
                 <h2 className="font-bold mb-4 text-center">Grafik Tren Harga Bibit Lele: Pantau Harga Secara Real Time</h2>
                 <p className="text-center mt-4 max-w-2x1 mx-auto">
@@ -144,21 +204,28 @@ function LandingPage() {
                             <div className="h-16 bg-gray-200 rounded"></div>
                         </div>
                     </div>
-                    {/* Right Column */}
-                    <div className="grid grid-cols-2 gap-4">
-                        {[...Array(6)].map((_, i) => (
-                            <div key={i} className="border p-4 rounded">
-                                <h4 className="font-medium mb-2">JAWA TIMUR</h4>
-                                <div className="flex justify-between mb-2">
-                                    <span>Rp 53.000</span>
-                                    <span className="text-green-500">Rp 1.000</span>
+                    <div>
+                        {/* Right Column */}
+                        <div className="grid grid-cols-2 gap-4">
+                            {[...Array(6)].map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="border p-4 rounded cursor-pointer"
+                                    onClick={() => openModal('priceChart')}
+                                >
+                                    <h4 className="font-medium mb-2">JAWA TIMUR</h4>
+                                    <div className="flex justify-between mb-2">
+                                        <span>Rp 53.000</span>
+                                        <span className="text-green-500">Rp 1.000</span>
+                                    </div>
+                                    <div className="h-16 bg-gray-200 rounded"></div>
                                 </div>
-                                <div className="h-16 bg-gray-200 rounded"></div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div className="bg-white p-6 mt-10 ml-10 mr-8">
                 <h1 className="text-xl font-bold mb-4 text-center">
                     Ikuti Berita Terbaru Mengenai berita berita tentang<br />
@@ -178,6 +245,7 @@ function LandingPage() {
                         <div
                             key={i}
                             className="border rounded-lg overflow-hidden h-[250px] border-grey-300 hover:scale-105 transition-transform duration-300 cursor-pointer shadow-md"
+                            onClick={() => openModal('news')}
                         >
                             <img src={item.img} alt={`News thumbnail ${i + 1}`} className="w-full h-48 object-cover" />
                             <div className="p-2">
@@ -194,12 +262,21 @@ function LandingPage() {
                     ))}
                 </div>
                 <div className="flex justify-end mt-4">
-                    <a href="/PenyakitLele" className="flex items-center text-blue-500 hover:text-blue-700">
+                    <button
+                        onClick={() => openModal('news')} 
+                        className="flex items-center text-blue-500 hover:text-blue-700"
+                    >
                         Selanjutnya
                         <i className="fas fa-arrow-right ml-1 mt-1"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
+            <PopupModal
+                isOpen={modalContent.isOpen}
+                title={modalContent.title}
+                description={modalContent.description}
+                onClose={closeModal}
+            />
             <Testimonial />
             <Footer />
         </>

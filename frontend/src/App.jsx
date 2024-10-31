@@ -8,6 +8,7 @@ import InputTambak from './page/InputTambakBaru';
 import PondManagement from './page/DaftarKolam';
 import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile'
+import Premium from './page/Premium';
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
 import Notifikasi from './page/Notifikasi';
@@ -36,6 +37,7 @@ function App() {
           <Route path="/ManajemenTambak" element={<Management/>} />
           <Route path="/Simulasi" element={<TambakSimulation/>} />
           <Route path="/UserProfile" element={<UserProfile/>} />
+          <Route path="/AksesPremium" element={<Premium/>} />
           <Route path="/HargaLele" element={<HargaLele/>} />
           <Route path="/PenyakitLele" element={<PenyakitLele/>} />
           <Route path="/Notifikasi" element={<Notifikasi/>} />
@@ -43,7 +45,7 @@ function App() {
           <Route path="/FinalStep" element={<FinalStepUI/>} />
           <Route path="/Pengeluaran" element={<Pengeluaran/>} />
           <Route path="/Pemasukan" element={<Pemasukan/>} />  
-           <Route path="/Laporan" element={<Laporan/>} />  
+          <Route path="/Laporan" element={<Laporan/>} />  
           <Route path="/KabarLele" element={<KabarLele/>} /> 
           <Route path="/Ringkasan" element={<Ringkasan/>} />
         </Routes>
