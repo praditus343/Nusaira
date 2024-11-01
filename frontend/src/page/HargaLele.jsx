@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -17,6 +17,10 @@ const PriceMonitoringDashboard = () => {
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedPrice, setSelectedPrice] = useState("");
     const [searchInput, setSearchInput] = useState("");
+
+    const navigate = useNavigate();
+
+
     const data = [
         { tanggal: "10 Februari 2024", lokasi: "Boyolali", supplier: "Mr. Prengky", harga: 53000, marketPrice: 55000 },
         { tanggal: "10 Januari 2024", lokasi: "Boyolali", supplier: "Mr. Prengky", harga: 71000, marketPrice: 70000 },
@@ -68,7 +72,7 @@ const PriceMonitoringDashboard = () => {
     ];
 
     const handleDetailClick = (row) => {
-        // You can replace this with any action you want, like showing a modal with more info.
+        navigate('/PriceHistory');
         console.log("Detail for row:", row);
     };
 
