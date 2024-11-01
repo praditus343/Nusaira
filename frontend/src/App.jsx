@@ -22,6 +22,7 @@ import Laporan from './page/Laporan';
 import Ringkasan from './page/Ringkasan';
 import AquacultureDashboard from './componen/AquacultureDashboard';
 import ChatAi from './page/ChatAi';
+import PriceHistory from './page/PriceHistory';
 
 
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/Ringkasan" element={<Ringkasan/>} />
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard/>} /> 
           <Route path="/ChatAi" element={<ChatAi/>} />
+          <Route path="/PriceHistory" element={<PriceHistory/>} />
         </Routes>
       </Fragment>
     </Router>

@@ -39,7 +39,8 @@ const Header = () => {
     '/KabarLele': 'Kabar Lele',
     '/Aksespremium' : 'Premium',
     '/Ringkasan' : 'Ringkasan',
-    '/ChatAi' : 'NusAI'
+    '/ChatAi' : 'NusAI',
+    '/PriceHistory' : 'Harga Lele / 10 Oktober 2024'
   };
 
   const title = titleMap[location.pathname] || 'Unknown Page';
