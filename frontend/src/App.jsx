@@ -21,6 +21,7 @@ import KabarLele from './page/KabarLele';
 import Laporan from './page/Laporan';
 import Ringkasan from './page/Ringkasan';
 import AquacultureDashboard from './componen/AquacultureDashboard';
+import ChatAi from './page/ChatAi';
 
 
 
@@ -50,6 +51,7 @@ function App() {
           <Route path="/KabarLele" element={<KabarLele/>} /> 
           <Route path="/Ringkasan" element={<Ringkasan/>} />
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard/>} /> 
+          <Route path="/ChatAi" element={<ChatAi/>} />
         </Routes>
       </Fragment>
     </Router>

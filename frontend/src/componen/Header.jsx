@@ -38,7 +38,8 @@ const Header = () => {
     '/Laporan': 'Laporan',
     '/KabarLele': 'Kabar Lele',
     '/Aksespremium' : 'Premium',
-    '/Ringkasan' : 'Ringkasan'
+    '/Ringkasan' : 'Ringkasan',
+    '/ChatAi' : 'NusAI'
   };
 
   const title = titleMap[location.pathname] || 'Unknown Page';

@@ -6,7 +6,7 @@ const AIFloatingButton = () => {
   const navigate = useNavigate(); 
 
   const handleClick = () => {
-    navigate('/AIChat'); 
+    navigate('/ChatAi'); 
   };
 
   return (
