@@ -29,7 +29,7 @@ const ChatInterface = () => {
                 <div className="w-full relative border border-blue-600 rounded-xl">
                     <input
                         type="text"
-                        placeholder="Kirim Pertanyaan Ke NuBAI"
+                        placeholder="Kirim Pertanyaan Ke NusAI"
                         className="w-full px-4 py-3 pr-14 border border-blue-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <button
