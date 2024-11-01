@@ -10,8 +10,6 @@ const ChatInterface = () => {
         <div className='bg-white w-full min-h-screen'>
             <Header />
             <div className="flex flex-col items-center justify-center max-w-2xl mx-auto mb-10 mb-40">
-
-                {/* Avatar */}
                 <div className="w-96 h-96 mb-6">
                     <img
                         src={imgAi}
@@ -19,13 +17,9 @@ const ChatInterface = () => {
                         className="w-full h-full"
                     />
                 </div>
-
-                {/* Question Text */}
                 <h1 className="text-lg text-gray-800 mb-6">
                     Apa yang bisa saya bantu?
                 </h1>
-
-                {/* Input Container */}
                 <div className="w-full relative border border-blue-600 rounded-xl">
                     <input
                         type="text"
