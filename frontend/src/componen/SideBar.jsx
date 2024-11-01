@@ -5,6 +5,7 @@ import {
   faClipboardList, faNewspaper, faHeart, faBell, faPenSquare, faGraduationCap, faPlus, faUser, faFileInvoice, faChevronLeft, faChartLine, faChevronRight,faTools 
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, Link } from 'react-router-dom';
+import imgLogo from "../assets/Logo.png";
 
 const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
   const location = useLocation();
@@ -89,8 +90,8 @@ const Sidebar = () => {
         <>
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center">
-              <img src={""} alt="Logo" className="w-8 h-8 rounded-full mr-2" />
-              {isSidebarOpen && <span className="text-white text-xl font-bold">NusAira</span>}
+              <img src={imgLogo} alt="Logo" className="w-12 h-12 rounded-full mr-2" />
+              {isSidebarOpen && <span className="text-white text-xl mt-2 font-bold">NusAIra</span>}
             </div>
             <div className="cursor-pointer" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faChevronLeft} />

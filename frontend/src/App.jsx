@@ -7,7 +7,7 @@ import Homeuser from './page/Home';
 import InputTambak from './page/InputTambakBaru';
 import PondManagement from './page/DaftarKolam';
 import TambakSimulation from './page/Simulasi';
-import UserProfile from './page/UserProfile'
+import UserProfile from './page/UserProfile';
 import Premium from './page/Premium';
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
@@ -23,37 +23,39 @@ import Ringkasan from './page/Ringkasan';
 import AquacultureDashboard from './componen/AquacultureDashboard';
 import ChatAi from './page/ChatAi';
 import PriceHistory from './page/PriceHistory';
-
-
+import PriceTrending from './page/PriceTrending';
+import SupplierDetail from './page/SupplierDetail';
 
 function App() {
   return (
-    <Router> {/* Tambahkan Router di sini */}
+    <Router>
       <Fragment>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/Home" element={<Homeuser/>} />
-          <Route path="/InputTambak" element={<InputTambak/>} />
-          <Route path="/DaftarKolam" element={<PondManagement/>} />
-          <Route path="/ManajemenTambak" element={<Management/>} />
-          <Route path="/Simulasi" element={<TambakSimulation/>} />
-          <Route path="/UserProfile" element={<UserProfile/>} />
-          <Route path="/AksesPremium" element={<Premium/>} />
-          <Route path="/HargaLele" element={<HargaLele/>} />
-          <Route path="/PenyakitLele" element={<PenyakitLele/>} />
-          <Route path="/Notifikasi" element={<Notifikasi/>} />
-          <Route path="/Blog" element={<Blog/>} />
-          <Route path="/FinalStep" element={<FinalStepUI/>} />
-          <Route path="/Pengeluaran" element={<Pengeluaran/>} />
-          <Route path="/Pemasukan" element={<Pemasukan/>} />  
-          <Route path="/Laporan" element={<Laporan/>} />  
-          <Route path="/KabarLele" element={<KabarLele/>} /> 
-          <Route path="/Ringkasan" element={<Ringkasan/>} />
-          <Route path="/AquacultureDashboard" element={<AquacultureDashboard/>} /> 
-          <Route path="/ChatAi" element={<ChatAi/>} />
-          <Route path="/PriceHistory" element={<PriceHistory/>} />
+          <Route path="/Home" element={<Homeuser />} />
+          <Route path="/InputTambak" element={<InputTambak />} />
+          <Route path="/DaftarKolam" element={<PondManagement />} />
+          <Route path="/ManajemenTambak" element={<Management />} />
+          <Route path="/Simulasi" element={<TambakSimulation />} />
+          <Route path="/UserProfile" element={<UserProfile />} />
+          <Route path="/AksesPremium" element={<Premium />} />
+          <Route path="/HargaLele" element={<HargaLele />} />
+          <Route path="/PenyakitLele" element={<PenyakitLele />} />
+          <Route path="/Notifikasi" element={<Notifikasi />} />
+          <Route path="/Blog" element={<Blog />} />
+          <Route path="/FinalStep" element={<FinalStepUI />} />
+          <Route path="/Pengeluaran" element={<Pengeluaran />} />
+          <Route path="/Pemasukan" element={<Pemasukan />} />  
+          <Route path="/Laporan" element={<Laporan />} />  
+          <Route path="/KabarLele" element={<KabarLele />} /> 
+          <Route path="/Ringkasan" element={<Ringkasan />} />
+          <Route path="/AquacultureDashboard" element={<AquacultureDashboard />} /> 
+          <Route path="/ChatAi" element={<ChatAi />} />
+          <Route path="/PriceHistory" element={<PriceHistory />} />
+          <Route path="/PriceTrend" element={<PriceTrending />} />
+          <Route path="/supplier/:supplierId" element={<SupplierDetail />} />
         </Routes>
       </Fragment>
     </Router>

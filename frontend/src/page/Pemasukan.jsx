@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 const ExcelForm = () => {
     const [rows, setRows] = useState([{ id: 1, tanggal: '', namaBarang: '', hargaAwal: '', jumlah: '', hargaAkhir: '-' }]);
@@ -65,13 +67,20 @@ const ExcelForm = () => {
                             </div>
                         </div>
                         <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                            <div className="flex items-center space-x-2">
-                                <span className="text-gray-600">Daftar Tambak:</span>
-                                <select className="px-4 py-1.5 border rounded-md bg-white text-left">
-                                    <option value="tambak1">Tambak Lele Seger</option>
-                                    <option value="tambak2">Tambak Lele Kencana</option>
-                                </select>
+                        <div className="flex items-center space-x-2 px-4">
+                                <span className="text-gray-600">Daftar Tambak :</span>
+                                <div className="relative flex items-center">
+                                    <select className="block w-[300px] pr-10 pl-4 border rounded-lg py-2 appearance-none">
+                                        <option value="kolam1">Lele Segar</option>
+                                        <option value="kolam2">Lele Jumbo</option>
+                                    </select>
+                                    <FontAwesomeIcon
+                                        icon={faChevronDown}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                                    />
+                                </div>
                             </div>
+
                             <button className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
                                 Export Laporan
                             </button>

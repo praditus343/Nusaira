@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Bell, ChevronDown, Settings, Calendar, ChevronRight } from 'lucide-react';
+import { Calendar, ChevronRight } from 'lucide-react';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Header from '../componen/Header';
 
 const LaporanDashboard = () => {
     const [filter, setFilter] = useState('Semua');
-    const [clickedIndex, setClickedIndex] = useState(null); // State untuk melacak ikon yang ditekan
+    const [clickedIndex, setClickedIndex] = useState(null); 
 
     const laporans = [
         {
@@ -59,7 +62,7 @@ const LaporanDashboard = () => {
             date: '19 Oktober 2024',
             description: 'Analisis kualitas air menunjukkan kebutuhan untuk mengganti 30% air dalam kolam F6.',
         },
-    
+
     ];
 
     const filteredLaporans = laporans.filter(laporan =>
@@ -67,35 +70,13 @@ const LaporanDashboard = () => {
     );
 
     const handleIconClick = (index) => {
-        // Toggle ikon ketika diklik
         setClickedIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
     return (
         <div className="bg-white w-full min-h-screen">
             {/* Header */}
-            <header className="bg-white shadow-sm sticky top-0 z-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <h1 className="text-xl font-semibold text-gray-800">Laporan</h1>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-                            <img
-                                src="path/to/indonesian-flag.png"
-                                alt="Bendera Indonesia"
-                                className="w-8 h-8 rounded-full object-cover"
-                            />
-                            <img
-                                src="path/to/profile-photo.png"
-                                alt="Profile"
-                                className="w-8 h-8 rounded-full object-cover"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="border-b border-gray-300 w-full" />
-            </header>
-
+            <Header/>
             {/* Filter Section */}
             <div className="mt-4 px-4 ml-4 mr-4">
                 <div className="p-4">
@@ -110,15 +91,22 @@ const LaporanDashboard = () => {
                         <div className="flex items-center space-x-4 mt-8 sm:mt-0">
                             <div className="flex items-center space-x-2">
                                 <span className="text-gray-600">Daftar Laporan:</span>
-                                <select
-                                    value={filter}
-                                    onChange={(e) => setFilter(e.target.value)}
-                                    className="px-4 py-2 border rounded-md bg-white"
-                                >
-                                    <option value="Semua">Semua</option>
-                                    <option value="Laporan Tambak">Laporan Tambak</option>
-                                </select>
+                                <div className="relative">
+                                    <select
+                                        value={filter}
+                                        onChange={(e) => setFilter(e.target.value)}
+                                        className="px-4 py-2 pr-10 border rounded-md bg-white appearance-none"
+                                    >
+                                        <option value="Semua">Semua</option>
+                                        <option value="Laporan Tambak">Laporan Tambak</option>
+                                    </select>
+                                    <FontAwesomeIcon
+                                        icon={faChevronDown}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                                    />
+                                </div>
                             </div>
+
                             <button className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
                                 Export Laporan
                             </button>
@@ -147,9 +135,8 @@ const LaporanDashboard = () => {
                         </div>
                         <ChevronRight
                             size={24}
-                            className={`text-blue-500 cursor-pointer transition-transform duration-300 ${
-                                clickedIndex === index ? 'rotate-90' : ''
-                            }`}
+                            className={`text-blue-500 cursor-pointer transition-transform duration-300 ${clickedIndex === index ? 'rotate-90' : ''
+                                }`}
                             onClick={() => handleIconClick(index)}
                         />
                     </div>

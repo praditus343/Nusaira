@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 
@@ -229,11 +229,10 @@ const PriceMonitoringDashboard = () => {
                         </>
                     </div>
 
-                    {/* Right Side - Scrollable Grid */}
-                    <div className="flex-grow flex-shrink min-w-0 w-1/2 ">
-                        <div className="grid grid-cols-2 gap-4 h-[900px] overflow-y-auto pr-2 ">
+                    <div className="flex-grow flex-shrink min-w-0 w-1/2">
+                        <div className="grid grid-cols-2 gap-4 h-[900px] overflow-y-auto pr-2">
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((index) => (
-                                <div key={index} className="bg-white shadow-md rounded-lg p-4 border-2 border-grey-300">
+                                <Link to="/PriceTrend" key={index} className="bg-white shadow-md rounded-lg p-4 border-2 border-gray-300 cursor-pointer">
                                     <div className="flex justify-between items-center mb-2">
                                         <div>
                                             <h3 className="font-semibold">JAWA TIMUR</h3>
@@ -257,7 +256,7 @@ const PriceMonitoringDashboard = () => {
                                             <YAxis />
                                         </LineChart>
                                     </ResponsiveContainer>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
@@ -331,8 +330,6 @@ const PriceMonitoringDashboard = () => {
         </div>
     );
 };
-
-
 
 
 function HargaLele() {

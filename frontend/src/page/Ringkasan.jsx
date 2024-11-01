@@ -4,31 +4,46 @@ import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from "../componen/Header";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 function SummaryDetails() {
   return (
-    <div className="  space-y-6 space-x-6 bg-white w-full min-h-screen ">
+    <div className="space-y-6 space-x-6 bg-white w-full min-h-screen ">
       <Header />
       <div className="p-6 ">
         {/* Header Section */}
         <div className="mb-6 mr-4">
           <h1 className="text-2xl font-bold mb-4">Ringkasan Budidaya Tambak Lele</h1>
           <div className="flex gap-4 items-end mb-4">
-            <div className="flex-1">
+            <div className="flex-1 relative">
               <label className="block text-sm mb-2">Tambak:</label>
-              <select className="w-full p-2 border rounded">
-                <option>Lele segar</option>
-              </select>
+              <div className="relative">
+                <select className="w-full p-2 pr-10 border rounded-md appearance-none">
+                  <option>Lele segar</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 relative">
               <label className="block text-sm mb-2">Batch:</label>
-              <select className="w-full p-2 border rounded">
-                <option>10 Oktober 2024</option>
-              </select>
+              <div className="relative">
+                <select className="w-full p-2 pr-10 border rounded-md appearance-none">
+                  <option>10 Oktober 2024</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
             </div>
+
             <div className="flex gap-2">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded">Budidaya</button>
-              <button className="border px-4 py-2 rounded">Keuangan</button>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Budidaya</button>
+              <button className="border border-gray-300 px-4 py-2 rounded-md">Keuangan</button>
             </div>
           </div>
         </div>
@@ -39,11 +54,18 @@ function SummaryDetails() {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Tambak Lele Segar</h2>
             <div className="flex gap-2">
-              <select className="border p-2 rounded">
-                <option>Pilih Kolam</option>
-              </select>
-              <button className="bg-green-500 text-white px-4 py-2 rounded">Ekspor</button>
+              <div className="relative">
+                <select className="border p-2 pr-10 rounded-md appearance-none">
+                  <option>Pilih Kolam</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
+              <button className="bg-green-500 text-white px-4 py-2 rounded-md">Ekspor</button>
             </div>
+
           </div>
 
           {/* Report Title */}

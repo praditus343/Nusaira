@@ -110,7 +110,6 @@ const NotificationDashboard = () => {
                             </button>
                             {isDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
-                                    {/* Meningkatkan ukuran teks pada dropdown */}
                                     <button className="text-left w-full px-4 py-3 text-lg hover:bg-gray-50" onClick={() => { setFilter('Semua'); setIsDropdownOpen(false); }}>Semua</button>
                                     <button className="text-left w-full px-4 py-3 text-lg hover:bg-gray-50" onClick={() => { setFilter('Sistem'); setIsDropdownOpen(false); }}>Sistem</button>
                                     <button className="text-left w-full px-4 py-3 text-lg hover:bg-gray-50" onClick={() => { setFilter('Kolam'); setIsDropdownOpen(false); }}>Kolam</button>
@@ -123,7 +122,7 @@ const NotificationDashboard = () => {
 
                     </div>
                     <button className="flex items-center px-3 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <Settings size={24} /> {/* Meningkatkan ukuran icon */}
+                        <Settings size={24} /> 
                     </button>
                 </div>
 

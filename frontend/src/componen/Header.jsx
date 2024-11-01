@@ -40,10 +40,11 @@ const Header = () => {
     '/Aksespremium' : 'Premium',
     '/Ringkasan' : 'Ringkasan',
     '/ChatAi' : 'NusAI',
-    '/PriceHistory' : 'Harga Lele / 10 Oktober 2024'
+    '/PriceHistory' : 'Harga Lele / 10 Oktober 2024',
+    '/PriceTrend' : 'Harga Lele / Trend',
+    
   };
-
-  const title = titleMap[location.pathname] || 'Unknown Page';
+  const title = location.pathname.includes('/supplier/') ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
 
   const handleProfileClick = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
@@ -78,7 +79,7 @@ const Header = () => {
               {isProfileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-blue-100 rounded-lg shadow-lg py-2 z-50">
                   <div className="px-4 py-2 text-center bg-blue-100">
-                    <h3 className="text-blue-500 font-medium">Herri Saputra</h3>
+                    <h5 className="text-blue-500 font-medium">Herri Saputra</h5>
                   </div>
                   <div
                     onClick={() => navigate('/UserProfile')}

@@ -14,7 +14,8 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import ManagementModal from '../componen/ManajemenModal';
 import Header from '../componen/Header';
 
@@ -112,7 +113,6 @@ const DashboardManagement = () => {
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
-
             <div className="mt-4 ml-8 mr-8">
                 <div className="p-4">
                     <div className="flex justify-between items-center">
@@ -126,11 +126,18 @@ const DashboardManagement = () => {
                         <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-2 px-4">
                                 <span className="text-gray-600">Daftar Tambak :</span>
-                                <select className="px-40 py-1.5 border rounded-md bg-white text-left">
-                                    <option value="tambak1">Tambak Lele Seger</option>
-                                    <option value="tambak2">Tambak Lele Kencana</option>
-                                </select>
+                                <div className="relative flex items-center">
+                                    <select className="block w-[300px] pr-10 pl-4 border rounded-lg py-2 appearance-none">
+                                        <option value="kolam1">Lele Segar</option>
+                                        <option value="kolam2">Lele Jumbo</option>
+                                    </select>
+                                    <FontAwesomeIcon
+                                        icon={faChevronDown}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                                    />
+                                </div>
                             </div>
+
                             <button className="px-10 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
                                 Export Laporan
                             </button>
@@ -250,7 +257,6 @@ const DashboardManagement = () => {
                     onSubmit={handleOnSubmit}
                 />
             )}
-
         </div>
     );
 };

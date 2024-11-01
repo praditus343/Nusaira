@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 const ExcelForm = () => {
     const [rows, setRows] = useState([{ id: 1, tanggal: '', namaBarang: '', hargaAwal: '', jumlah: '', hargaAkhir: '-' }]);
@@ -53,32 +55,39 @@ const ExcelForm = () => {
 
     return (
         <div className="bg-white w-full min-h-screen">
-            <Header/>
-                <div className="mt-4 px-4">
-                    <div className="p-4">
-                        <div className="flex flex-col sm:flex-row justify-between items-center">
-                            <div>
-                                <h1 className="text-xl font-medium">Pengeluaran Tambak Lele Seger</h1>
-                                <div className="flex items-center space-x-2 text-gray-600">
-                                    <MapPin className="w-4 h-4" />
-                                    <span>Boyolali, Jawa Tengah</span>
-                                </div>
+            <Header />
+            <div className="mt-4 px-4">
+                <div className="p-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-center">
+                        <div>
+                            <h1 className="text-xl font-medium">Pengeluaran Tambak Lele Seger</h1>
+                            <div className="flex items-center space-x-2 text-gray-600">
+                                <MapPin className="w-4 h-4" />
+                                <span>Boyolali, Jawa Tengah</span>
                             </div>
-                            <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                                <div className="flex items-center space-x-2">
-                                    <span className="text-gray-600">Daftar Tambak:</span>
-                                    <select className="px-4 py-1.5 border rounded-md bg-white text-left">
-                                        <option value="tambak1">Tambak Lele Seger</option>
-                                        <option value="tambak2">Tambak Lele Kencana</option>
+                        </div>
+                        <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+                            <div className="flex items-center space-x-2 px-4">
+                                <span className="text-gray-600">Daftar Tambak :</span>
+                                <div className="relative flex items-center">
+                                    <select className="block w-[300px] pr-10 pl-4 border rounded-lg py-2 appearance-none">
+                                        <option value="kolam1">Lele Segar</option>
+                                        <option value="kolam2">Lele Jumbo</option>
                                     </select>
+                                    <FontAwesomeIcon
+                                        icon={faChevronDown}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                                    />
                                 </div>
-                                <button className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
-                                    Export Laporan
-                                </button>
                             </div>
+
+                            <button className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+                                Export Laporan
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
             {/* Content Section */}
             <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
@@ -136,15 +145,15 @@ const ExcelForm = () => {
                                             />
                                         </td>
                                         <td className="p-2 border">
-                                                <input
-                                                    type="text" // Ubah dari 'number' menjadi 'text' untuk mengizinkan format
-                                                    className="w-full p-1 border rounded focus:outline-none focus:border-blue-500"
-                                                    value={formatRupiah(row.hargaAwal)} // Format saat ditampilkan
-                                                    onChange={(e) => {
-                                                        const value = e.target.value.replace(/[^\d]/g, ''); // Hapus karakter non-digit
-                                                        handleInputChange(row.id, 'hargaAwal', value);
-                                                    }}
-                                                />
+                                            <input
+                                                type="text" // Ubah dari 'number' menjadi 'text' untuk mengizinkan format
+                                                className="w-full p-1 border rounded focus:outline-none focus:border-blue-500"
+                                                value={formatRupiah(row.hargaAwal)} // Format saat ditampilkan
+                                                onChange={(e) => {
+                                                    const value = e.target.value.replace(/[^\d]/g, ''); // Hapus karakter non-digit
+                                                    handleInputChange(row.id, 'hargaAwal', value);
+                                                }}
+                                            />
                                         </td>
                                         <td className="p-2 border">
                                             <input
