@@ -25,6 +25,7 @@ import ChatAi from './page/ChatAi';
 import PriceHistory from './page/PriceHistory';
 import PriceTrending from './page/PriceTrending';
 import SupplierDetail from './page/SupplierDetail';
+import SuccessfulPayment from './componen/PembayaranBerhasil';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="/PriceHistory" element={<PriceHistory />} />
           <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplierId" element={<SupplierDetail />} />
+          <Route path="/PembayaranBerhasil" element={<SuccessfulPayment />} />
         </Routes>
       </Fragment>
     </Router>
