@@ -180,7 +180,6 @@ const KabarLeleLayout = () => {
   return (
     <div className="bg-white w-full min-h-screen">
       <Header />
-
       <div className="mt-5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center space-x-4 mb-4">

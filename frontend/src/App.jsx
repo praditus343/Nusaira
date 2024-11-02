@@ -26,6 +26,8 @@ import PriceHistory from './page/PriceHistory';
 import PriceTrending from './page/PriceTrending';
 import SupplierDetail from './page/SupplierDetail';
 import SuccessfulPayment from './componen/PembayaranBerhasil';
+import ElearningSidebar from './componen/ElearningSidebar';
+import MyBooks from './page/BukuSaya';
 
 function App() {
   return (
@@ -58,6 +60,8 @@ function App() {
           <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplierId" element={<SupplierDetail />} />
           <Route path="/PembayaranBerhasil" element={<SuccessfulPayment />} />
+          <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
+          <Route path="/MyBooks" element={<MyBooks />} />
         </Routes>
       </Fragment>
     </Router>
