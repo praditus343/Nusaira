@@ -42,6 +42,7 @@ const Header = () => {
     '/ChatAi' : 'NusAI',
     '/PriceHistory' : 'Harga Lele / 10 Oktober 2024',
     '/PriceTrend' : 'Harga Lele / Trend',
+    '/MyBooks': 'Buku Saya / E-Learning'
     
   };
   const title = location.pathname.includes('/supplier/') ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
