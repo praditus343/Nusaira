@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import imgProfile from "../assets/img/landing_page_sebelum_daftar/landingsb2.png"
 import { useNavigate } from 'react-router-dom';
 
+
 const Header = () => {
   const navigate = useNavigate();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -45,13 +46,38 @@ const Header = () => {
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
     '/RingkasanLearning': 'Ringkasan / E-Learning'
-    
+    '/AksesPremium':'AKses Premium',
   };
-  const title = location.pathname.includes('/supplier/') ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
-
+  const titlePenyakit = {
+    "1": "Penyakit Bintik Putih",
+    "2": "Penyakit Jamur",
+    "3": "Penyakit Kulit",
+    "4": "Penyakit Bercak Merah",
+    "5": "Penyakit Kembung",
+    "6": "Jamur Pada Insang",
+    "7": "Keracunan Amonia",
+    "8": "Penyakit Lesi Kulit",
+    "9": "Penyakit stes",
+  };
+  
+  
+  const artikelId = location.pathname.split('/').pop(); 
+  const artikelTitle = titlePenyakit[artikelId] || `Artikel ID: ${artikelId}`;
+  
+  const title = location.pathname.startsWith('/artikel/')
+    ? `Penyakit Lele / ${artikelTitle}`
+    : location.pathname.includes('/supplier/')
+    ? 'Detail Harga'
+    : titlePenyakit[location.pathname] || 'Unknown Page';
+  
+  console.log('Artikel ID:', artikelId);
+  console.log('Judul dari titlePenyakit:', artikelTitle);
+  
   const handleProfileClick = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
+
+  
 
   return (
     <header className="bg-white shadow-sm">

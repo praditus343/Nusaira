@@ -7,24 +7,19 @@ import Header from "../componen/Header";
 function TransactionItem({ title, date, status }) {
   return (
     <div className="flex items-start bg-blue-50 p-6 rounded-lg border border-blue-200 mb-4 w-full">
-      {/* Titik Biru */}
       <div className="bg-blue-500 w-3 h-3 rounded-full mr-4 mt-2"></div>
       <div className="flex-grow">
         <h3 className="text-blue-500 font-semibold text-lg">{title}</h3>
         <div className="flex items-center text-sm text-gray-500 mb-2">
-          {/* Ikon Kalender */}
           <i className="fas fa-calendar-alt mr-2"></i>
           <span>{date}</span>
         </div>
-        {/* Teks status di bawah judul */}
         <div className="flex items-center">
           <p className="text-sm text-gray-600 mr-2 break-words">{status}</p>
         </div>
       </div>
-      {/* Tanda panah di sisi kanan */}
       <div className="flex items-center">
         <i className="fas fa-chevron-right text-blue-500 mt-7"></i>{" "}
-        {/* Placeholder arrow */}
       </div>
     </div>
   );
@@ -32,7 +27,7 @@ function TransactionItem({ title, date, status }) {
 
 function Content() {
   return (
-    <>
+    < div className="w-full min-h-screen">
       <Header />
       <div className="max-w-6xl mx-auto p-8">
         <h2 className="text-xl font-semibold mb-1">
@@ -56,10 +51,10 @@ function Content() {
               + Kolam
             </button>
             <button className="bg-blue-500 text-white rounded-full px-3 py-2 hover:bg-blue-600">
-              <i className="fas fa-cog"></i> {/* Placeholder icon */}
+              <i className="fas fa-cog"></i> 
             </button>
             <button className="bg-blue-500 text-white rounded-full px-3 py-2 hover:bg-blue-600">
-              <i className="fas fa-th-large"></i> {/* Placeholder icon */}
+              <i className="fas fa-th-large"></i> 
             </button>
           </div>
         </div>
@@ -74,13 +69,13 @@ function Content() {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 function Invoice() {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <Content />
