@@ -46,6 +46,8 @@ const Header = () => {
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
     '/RingkasanLearning': 'Ringkasan / E-Learning',
+
+    '/AksesPremium':'AKses Premium',
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
@@ -67,7 +69,7 @@ const Header = () => {
     ? `Penyakit Lele / ${artikelTitle}`
     : location.pathname.includes('/supplier/')
     ? 'Detail Harga'
-    : titlePenyakit[location.pathname] || 'Unknown Page';
+    : titleMap[location.pathname] || 'Unknown Page';
   
   console.log('Artikel ID:', artikelId);
   console.log('Judul dari titlePenyakit:', artikelTitle);
