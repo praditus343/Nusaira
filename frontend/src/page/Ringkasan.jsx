@@ -1,11 +1,18 @@
-import React from 'react';
-import { BarChart3, Droplets, Activity, Database, LineChart, TrendingUp } from 'lucide-react';
-import Footer from '../componen/Footer';
-import Sidebar from '../componen/SideBar';
-import AIFloatingButton from '../componen/AiFloatingButton';
+import React from "react";
+import {
+  BarChart3,
+  Droplets,
+  Activity,
+  Database,
+  LineChart,
+  TrendingUp,
+} from "lucide-react";
+import Footer from "../componen/Footer";
+import Sidebar from "../componen/SideBar";
+import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 function SummaryDetails() {
   return (
@@ -14,7 +21,9 @@ function SummaryDetails() {
       <div className="p-6 ">
         {/* Header Section */}
         <div className="mb-6 mr-4">
-          <h1 className="text-2xl font-bold mb-4">Ringkasan Budidaya Tambak Lele</h1>
+          <h1 className="text-2xl font-bold mb-4">
+            Ringkasan Budidaya Tambak Lele
+          </h1>
           <div className="flex gap-4 items-end mb-4">
             <div className="flex-1 relative">
               <label className="block text-sm mb-2">Tambak:</label>
@@ -42,8 +51,12 @@ function SummaryDetails() {
             </div>
 
             <div className="flex gap-2">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Budidaya</button>
-              <button className="border border-gray-300 px-4 py-2 rounded-md">Keuangan</button>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Budidaya
+              </button>
+              <button className="border border-gray-300 px-4 py-2 rounded-md">
+                Keuangan
+              </button>
             </div>
           </div>
         </div>
@@ -63,9 +76,10 @@ function SummaryDetails() {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
                 />
               </div>
-              <button className="bg-green-500 text-white px-4 py-2 rounded-md">Ekspor</button>
+              <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                Ekspor
+              </button>
             </div>
-
           </div>
 
           {/* Report Title */}
@@ -94,21 +108,47 @@ function SummaryDetails() {
           </div>
 
           <div className="text-center mb-8">
-            <h3 className="text-blue-700 inline-block border-b-4 border-blue-700 pb-1">Detail</h3>
+            <h3 className="text-blue-700 inline-block border-b-4 border-blue-700 pb-1">
+              Detail
+            </h3>
           </div>
 
           {/* Metrics First Row */}
           <div className="grid grid-cols-3 gap-8 mb-8">
-            <MetricCard icon={<BarChart3 />} title="Hasil Panen" description="Data pada Kolam B3, Kolam B4 tidak lengkap" />
-            <MetricCard icon={<Activity />} title="Nilai SFR" description="Nilai Survival Rate (SR) dalam nilai yang baik (&gt;80%)" />
-            <MetricCard icon={<Database />} title="Nilai FCR" description="Data pada Kolam B3, Kolam B4 tidak lengkap" />
+            <MetricCard
+              icon={<BarChart3 />}
+              title="Hasil Panen"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
+            <MetricCard
+              icon={<Activity />}
+              title="Nilai SFR"
+              description="Nilai Survival Rate (SR) dalam nilai yang baik (&gt;80%)"
+            />
+            <MetricCard
+              icon={<Database />}
+              title="Nilai FCR"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
           </div>
 
           {/* Metrics Second Row */}
           <div className="grid grid-cols-3 gap-8 mb-8">
-            <MetricCard icon={<Droplets />} title="Kualitas Air" description="Data pada Kolam B3, Kolam B4 tidak lengkap" />
-            <MetricCard icon={<LineChart />} title="Daya Dukung Lahan" description="Daya dukung lahan sudah dipertimbangkan dengan baik" />
-            <MetricCard icon={<TrendingUp />} title="Pertumbuhan Lele" description="Data pada Kolam B3, Kolam B4 tidak lengkap" />
+            <MetricCard
+              icon={<Droplets />}
+              title="Kualitas Air"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
+            <MetricCard
+              icon={<LineChart />}
+              title="Daya Dukung Lahan"
+              description="Daya dukung lahan sudah dipertimbangkan dengan baik"
+            />
+            <MetricCard
+              icon={<TrendingUp />}
+              title="Pertumbuhan Lele"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
           </div>
 
           {/* Performance Indicators */}
@@ -126,8 +166,14 @@ function SummaryDetails() {
             <p className="font-medium mb-2">Keterangan:</p>
             <ol className="list-decimal list-inside space-y-1">
               <li>Penilaian peforma kolam bersifat relatif</li>
-              <li>Penilaian kolam dengan peforma baik berdasarkan hasil panen optimal, nilai FCR rendah, dan nilai SR tinggi.</li>
-              <li>Penilaian kolam dengan peforma buruk berdasarkan hasil panen rendah, nilai FCR tinggi, dan nilai SR rendah.</li>
+              <li>
+                Penilaian kolam dengan peforma baik berdasarkan hasil panen
+                optimal, nilai FCR rendah, dan nilai SR tinggi.
+              </li>
+              <li>
+                Penilaian kolam dengan peforma buruk berdasarkan hasil panen
+                rendah, nilai FCR tinggi, dan nilai SR rendah.
+              </li>
             </ol>
           </div>
         </div>
@@ -139,7 +185,9 @@ function SummaryDetails() {
 function MetricCard({ icon, title, description }) {
   return (
     <div className="text-center">
-      {React.cloneElement(icon, { className: "w-12 h-12 mx-auto mb-2 text-blue-500" })}
+      {React.cloneElement(icon, {
+        className: "w-12 h-12 mx-auto mb-2 text-blue-500",
+      })}
       <p className="font-medium mb-2">{title}</p>
       <p className="text-sm text-gray-600">{description}</p>
     </div>
@@ -199,7 +247,9 @@ function TableSection() {
             <td className="py-2 px-4 border">100%</td>
           </tr>
           <tr className="bg-blue-500 text-white">
-            <td colSpan="5" className="py-2 px-4 text-center">Total</td>
+            <td colSpan="5" className="py-2 px-4 text-center">
+              Total
+            </td>
             <td className="py-2 px-4 border">12 kg</td>
             <td className="py-2 px-4 border">0</td>
             <td className="py-2 px-4 border">0</td>
