@@ -8,6 +8,7 @@ import InputTambak from './page/InputTambakBaru';
 import PondManagement from './page/DaftarKolam';
 import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile';
+import Invoice from './page/Invoice';
 import Premium from './page/Premium';
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
@@ -62,6 +63,7 @@ function App() {
           <Route path="/PembayaranBerhasil" element={<SuccessfulPayment />} />
           <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
           <Route path="/MyBooks" element={<MyBooks />} />
+          <Route path="/Invoice" element={<Invoice />} />
         </Routes>
       </Fragment>
     </Router>
