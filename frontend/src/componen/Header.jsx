@@ -45,7 +45,7 @@ const Header = () => {
     '/PriceTrend' : 'Harga Lele / Trend',
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
-    '/RingkasanLearning': 'Ringkasan / E-Learning'
+    '/RingkasanLearning': 'Ringkasan / E-Learning',
     '/AksesPremium':'AKses Premium',
   };
   const titlePenyakit = {
