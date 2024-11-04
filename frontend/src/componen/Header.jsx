@@ -45,8 +45,7 @@ const Header = () => {
     '/PriceTrend' : 'Harga Lele / Trend',
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
-    '/RingkasanLearning': 'Ringkasan / E-Learning'
-    '/AksesPremium':'AKses Premium',
+    '/RingkasanLearning': 'Ringkasan / E-Learning',
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
