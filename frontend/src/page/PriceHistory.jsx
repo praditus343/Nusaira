@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom'; 
 import { MapPin } from 'lucide-react';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
@@ -20,14 +20,14 @@ const priceData = [
 
 const PriceCard = ({ supplier, location, price, province }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate(); 
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     // Function to handle navigating to the supplier details page
     const viewDetails = () => {
-        navigate(`/supplier/${supplier}`); // Adjust the URL as needed
+        navigate(`/supplier/${supplier}`); 
     };
 
     return (
@@ -58,7 +58,7 @@ const PriceCard = ({ supplier, location, price, province }) => {
                         Lihat Kontak
                     </button>
                     <button
-                        onClick={viewDetails} // Call viewDetails on button click
+                        onClick={viewDetails} 
                         className="px-4 py-2 text-white bg-blue-500 rounded-lg text-sm"
                     >
                         Lihat Detail

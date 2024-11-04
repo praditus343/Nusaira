@@ -29,6 +29,7 @@ import SupplierDetail from './page/SupplierDetail';
 import SuccessfulPayment from './componen/PembayaranBerhasil';
 import ElearningSidebar from './componen/ElearningSidebar';
 import MyBooks from './page/BukuSaya';
+import ArticlePage from './page/ArtikelPenyakit';
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
           <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
           <Route path="/MyBooks" element={<MyBooks />} />
           <Route path="/Invoice" element={<Invoice />} />
+          <Route path="/artikel/:id" element={<ArticlePage />} />
         </Routes>
       </Fragment>
     </Router>
