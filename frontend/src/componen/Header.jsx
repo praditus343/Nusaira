@@ -38,15 +38,15 @@ const Header = () => {
     '/Pemasukan': 'Pemasukan',
     '/Laporan': 'Laporan',
     '/KabarLele': 'Kabar Lele',
-    '/Aksespremium' : 'Premium',
+    '/AksesPremium' : 'Premium',
     '/Ringkasan' : 'Ringkasan',
     '/ChatAi' : 'NusAI',
     '/PriceHistory' : 'Harga Lele / 10 Oktober 2024',
     '/PriceTrend' : 'Harga Lele / Trend',
     '/MyBooks': 'Buku Saya / E-Learning',
-    '/Invoice' : 'Invoice',
+    '/Invoice': 'Invoice',
+    '/RingkasanLearning': 'Ringkasan / E-Learning'
     '/AksesPremium':'AKses Premium',
-  
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
