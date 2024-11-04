@@ -109,7 +109,7 @@ const ElearningSidebar = () => {
               icon={faClock}
               label="Ringkasan"
               isSidebarOpen={isSidebarOpen}
-              path="/ringkasan"
+              path="/RingkasanLearning"
             />
             <MenuItem
               icon={faBook}
