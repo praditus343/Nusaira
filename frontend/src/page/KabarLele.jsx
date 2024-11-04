@@ -1,135 +1,148 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronRight, Search, ListFilter } from 'lucide-react';
-import Sidebar from '../componen/SideBar';
-import Footer from '../componen/Footer';
-import AIFloatingButton from '../componen/AiFloatingButton';
-import Header from '../componen/Header';
-import img1 from '../assets/img/kabar_lele/kbl1.png';
-import img2 from '../assets/img/kabar_lele/kbl2.png';
-import img3 from '../assets/img/kabar_lele/kbl3.png';
-import img4 from '../assets/img/kabar_lele/kbl4.png';
-import img5 from '../assets/img/kabar_lele/kbl5.png';
-import img6 from '../assets/img/kabar_lele/kbl6.png';
-import img7 from '../assets/img/kabar_lele/kbl7.png';
+import React, { useState, useEffect } from "react";
+import { ChevronRight, Search, ListFilter } from "lucide-react";
+import Sidebar from "../componen/SideBar";
+import Footer from "../componen/Footer";
+import AIFloatingButton from "../componen/AiFloatingButton";
+import Header from "../componen/Header";
+import img1 from "../assets/img/kabar_lele/kbl1.png";
+import img2 from "../assets/img/kabar_lele/kbl2.png";
+import img3 from "../assets/img/kabar_lele/kbl3.png";
+import img4 from "../assets/img/kabar_lele/kbl4.png";
+import img5 from "../assets/img/kabar_lele/kbl5.png";
+import img6 from "../assets/img/kabar_lele/kbl6.png";
+import img7 from "../assets/img/kabar_lele/kbl7.png";
 
 const KabarLeleLayout = () => {
   const allPosts = [
     {
       id: 1,
-      title: 'Seluk Beluk Usaha Budidaya Ikan Lele',
-      date: '15 Oktober 2024',
+      title: "Seluk Beluk Usaha Budidaya Ikan Lele",
+      date: "15 Oktober 2024",
       image: img1,
-      excerpt: 'Kegiatan budidaya ikan Lele...'
+      excerpt: "Kegiatan budidaya ikan Lele...",
     },
     {
       id: 2,
-      title: 'Sulap Sungon Kotor Jadi Tempat Budidaya',
-      date: '15 Oktober 2024',
+      title: "Sulap Sungon Kotor Jadi Tempat Budidaya",
+      date: "15 Oktober 2024",
       image: img2,
-      excerpt: 'Kerja keras komunitas Pecinta Sungai (KPS) dalam...'
+      excerpt: "Kerja keras komunitas Pecinta Sungai (KPS) dalam...",
     },
     {
       id: 3,
-      title: 'Budidaya Ikan nan Menguntungkan',
-      date: '15 Oktober 2024',
+      title: "Budidaya Ikan nan Menguntungkan",
+      date: "15 Oktober 2024",
       image: img3,
-      excerpt: 'Pembersaran di kolam di anggap paling sederhana pengalolahannya, apalagi jika kolam ku berada di sekitar tempat...'
+      excerpt:
+        "Pembersaran di kolam di anggap paling sederhana pengalolahannya, apalagi jika kolam ku berada di sekitar tempat...",
     },
     {
       id: 4,
-      title: 'Menggabungkan Aquaponik',
-      date: '15 Oktober 2024',
+      title: "Menggabungkan Aquaponik",
+      date: "15 Oktober 2024",
       image: img4,
-      excerpt: 'Aquaponik adalah sistem yang menggabungkan budidaya ikan (akuakultur) dengan hidroponik...'
+      excerpt:
+        "Aquaponik adalah sistem yang menggabungkan budidaya ikan (akuakultur) dengan hidroponik...",
     },
     {
       id: 5,
-      title: 'Pembangunan Aquaponik',
-      date: '15 Oktober 2024',
+      title: "Pembangunan Aquaponik",
+      date: "15 Oktober 2024",
       image: img5,
-      excerpt: 'Untuk memenuhi kebutuhan manusia yang semakin meningkat terkait sektor pembangunan termasuk perikanan budi...'
+      excerpt:
+        "Untuk memenuhi kebutuhan manusia yang semakin meningkat terkait sektor pembangunan termasuk perikanan budi...",
     },
     {
       id: 6,
-      title: 'Potensi Budidaya Ikan',
-      date: '15 Oktober 2024',
+      title: "Potensi Budidaya Ikan",
+      date: "15 Oktober 2024",
       image: img6,
-      excerpt: 'Di Tanah Air dinilai sangat besar. Bahkan potensi produktivitasnya bisa digenjot dengan memanfaatkan teknologi...'
+      excerpt:
+        "Di Tanah Air dinilai sangat besar. Bahkan potensi produktivitasnya bisa digenjot dengan memanfaatkan teknologi...",
     },
     {
       id: 7,
-      title: 'Inovasi Kolam Terpal Ikan Lele',
-      date: '16 Oktober 2024',
+      title: "Inovasi Kolam Terpal Ikan Lele",
+      date: "16 Oktober 2024",
       image: img7,
-      excerpt: 'Kolam terpal semakin diminati sebagai media budidaya lele karena biayanya yang lebih murah...'
+      excerpt:
+        "Kolam terpal semakin diminati sebagai media budidaya lele karena biayanya yang lebih murah...",
     },
     {
       id: 8,
-      title: 'Tips Memilih Pakan Ikan Berkualitas',
-      date: '16 Oktober 2024',
+      title: "Tips Memilih Pakan Ikan Berkualitas",
+      date: "16 Oktober 2024",
       image: img1,
-      excerpt: 'Pemilihan pakan yang tepat dapat mempercepat pertumbuhan ikan dan meningkatkan kualitas panen...'
+      excerpt:
+        "Pemilihan pakan yang tepat dapat mempercepat pertumbuhan ikan dan meningkatkan kualitas panen...",
     },
     {
       id: 9,
-      title: 'Mengenal Teknik Bioflok',
-      date: '16 Oktober 2024',
+      title: "Mengenal Teknik Bioflok",
+      date: "16 Oktober 2024",
       image: img2,
-      excerpt: 'Bioflok adalah salah satu teknik budidaya ikan yang hemat air dan ramah lingkungan...'
+      excerpt:
+        "Bioflok adalah salah satu teknik budidaya ikan yang hemat air dan ramah lingkungan...",
     },
     {
       id: 10,
-      title: 'Keuntungan Budidaya Ikan Hias',
-      date: '16 Oktober 2024',
+      title: "Keuntungan Budidaya Ikan Hias",
+      date: "16 Oktober 2024",
       image: img3,
-      excerpt: 'Selain ikan konsumsi, budidaya ikan hias juga menawarkan potensi pasar yang menggiurkan...'
+      excerpt:
+        "Selain ikan konsumsi, budidaya ikan hias juga menawarkan potensi pasar yang menggiurkan...",
     },
     {
       id: 11,
-      title: 'Strategi Panen Maksimal dalam Budidaya Lele',
-      date: '17 Oktober 2024',
+      title: "Strategi Panen Maksimal dalam Budidaya Lele",
+      date: "17 Oktober 2024",
       image: img4,
-      excerpt: 'Mengoptimalkan strategi panen menjadi kunci sukses dalam budidaya lele agar hasil lebih maksimal...'
+      excerpt:
+        "Mengoptimalkan strategi panen menjadi kunci sukses dalam budidaya lele agar hasil lebih maksimal...",
     },
     {
       id: 12,
-      title: 'Mengatasi Penyakit Ikan',
-      date: '17 Oktober 2024',
+      title: "Mengatasi Penyakit Ikan",
+      date: "17 Oktober 2024",
       image: img5,
-      excerpt: 'Penyakit ikan menjadi salah satu tantangan yang sering dihadapi oleh pembudidaya, namun dengan...'
+      excerpt:
+        "Penyakit ikan menjadi salah satu tantangan yang sering dihadapi oleh pembudidaya, namun dengan...",
     },
     {
       id: 13,
-      title: 'Teknik Pembenihan Ikan Nila',
-      date: '17 Oktober 2024',
+      title: "Teknik Pembenihan Ikan Nila",
+      date: "17 Oktober 2024",
       image: img6,
-      excerpt: 'Pembenihan ikan nila memerlukan teknik khusus untuk memastikan kualitas benih yang baik...'
+      excerpt:
+        "Pembenihan ikan nila memerlukan teknik khusus untuk memastikan kualitas benih yang baik...",
     },
     {
       id: 14,
-      title: 'Keberlanjutan dalam Budidaya Ikan',
-      date: '18 Oktober 2024',
+      title: "Keberlanjutan dalam Budidaya Ikan",
+      date: "18 Oktober 2024",
       image: img7,
-      excerpt: 'Menerapkan prinsip keberlanjutan dalam budidaya ikan menjadi penting untuk menjaga ekosistem...'
+      excerpt:
+        "Menerapkan prinsip keberlanjutan dalam budidaya ikan menjadi penting untuk menjaga ekosistem...",
     },
     {
       id: 15,
-      title: 'Meningkatkan Kualitas Air Budidaya',
-      date: '18 Oktober 2024',
-      image:img1,
-      excerpt: 'Kualitas air adalah faktor utama dalam keberhasilan budidaya ikan. Mengatur pH dan kadar oksigen...'
+      title: "Meningkatkan Kualitas Air Budidaya",
+      date: "18 Oktober 2024",
+      image: img1,
+      excerpt:
+        "Kualitas air adalah faktor utama dalam keberhasilan budidaya ikan. Mengatur pH dan kadar oksigen...",
     },
     {
       id: 16,
-      title: 'Pemanfaatan Teknologi dalam Budidaya Ikan',
-      date: '18 Oktober 2024',
+      title: "Pemanfaatan Teknologi dalam Budidaya Ikan",
+      date: "18 Oktober 2024",
       image: img2,
-      excerpt: 'Pemanfaatan teknologi dalam budidaya ikan dapat meningkatkan efisiensi dan produktivitas...'
-    }
-
+      excerpt:
+        "Pemanfaatan teknologi dalam budidaya ikan dapat meningkatkan efisiensi dan produktivitas...",
+    },
   ];
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [randomLeftPosts, setRandomLeftPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
 
@@ -141,7 +154,7 @@ const KabarLeleLayout = () => {
 
   useEffect(() => {
     // Filter posts based on the search term
-    const results = allPosts.filter(post =>
+    const results = allPosts.filter((post) =>
       post.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredPosts(results);
@@ -149,7 +162,11 @@ const KabarLeleLayout = () => {
 
   const LeftCard = ({ post }) => (
     <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
-      <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />
+      <img
+        src={post.image}
+        alt={post.title}
+        className="w-full h-48 object-cover"
+      />
       <div className="p-4">
         <div className="text-sm text-gray-500 mb-2">{post.date}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
@@ -173,7 +190,11 @@ const KabarLeleLayout = () => {
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
       </div>
-      <img src={post.image} alt={post.title} className="w-48 h-48 object-cover" />
+      <img
+        src={post.image}
+        alt={post.title}
+        className="w-48 h-48 object-cover"
+      />
     </div>
   );
 
@@ -189,7 +210,9 @@ const KabarLeleLayout = () => {
           </div>
           <div className="mt-1">
             <p className="text-gray-600">
-              Jadikan budidaya lele lebih efektif dengan tips terbaru, pembaruan teknologi, dan solusi <br /> praktis dari Nusaira. Temukan kabar terkini seputar dunia lele di sini.
+              Jadikan budidaya lele lebih efektif dengan tips terbaru, pembaruan
+              teknologi, dan solusi <br /> praktis dari Nusaira. Temukan kabar
+              terkini seputar dunia lele di sini.
             </p>
           </div>
         </div>
@@ -219,7 +242,7 @@ const KabarLeleLayout = () => {
           <div className="w-1/3">
             <h2 className="text-xl font-bold mb-4">Popular Berita</h2>
             <div className="space-y-4">
-              {randomLeftPosts.map(post => (
+              {randomLeftPosts.map((post) => (
                 <LeftCard key={post.id} post={post} />
               ))}
             </div>
@@ -227,7 +250,7 @@ const KabarLeleLayout = () => {
           <div className="w-2/3">
             <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
             <div className="space-y-4 overflow-y-auto max-h-[165vh]">
-              {filteredPosts.map(post => (
+              {filteredPosts.map((post) => (
                 <RightCard key={post.id} post={post} />
               ))}
             </div>
@@ -245,7 +268,7 @@ function KabarLele() {
       <div className="flex-1 overflow-auto">
         <KabarLeleLayout />
         <AIFloatingButton />
-        <div className='mt-20'>
+        <div className="mt-20">
           <Footer />
         </div>
       </div>
