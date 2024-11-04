@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, List } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 
-// Fungsi untuk menghasilkan tanggal acak
 const randomDate = () => {
-    const start = new Date(2024, 9, 1); // 1 Oktober 2024
-    const end = new Date(2024, 9, 31); // 31 Oktober 2024
+    const start = new Date(2024, 9, 1);
+    const end = new Date(2024, 9, 31);
     const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     return date.toLocaleDateString();
 };
 
-// Judul penyakit
 const diseasesTitles = [
     'Penyakit Bintik Putih Pada Lele',
     'Penyakit Jamur Air',
@@ -26,7 +25,6 @@ const diseasesTitles = [
     'Penyebab lele mengambang',
 ];
 
-// Mengimpor gambar satu per satu
 import pyl1 from '../assets/img/penyakit_lele/pyl1.png';
 import pyl2 from '../assets/img/penyakit_lele/pyl2.png';
 import pyl3 from '../assets/img/penyakit_lele/pyl3.png';
@@ -41,9 +39,9 @@ const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [diseases, setDiseases] = useState([]);
+    const navigate = useNavigate(); // Initialize useNavigate for navigation
 
     useEffect(() => {
-        // Mengatur data penyakit dan gambar
         const diseaseData = [
             { id: 1, title: diseasesTitles[0], date: randomDate(), image: pyl1 },
             { id: 2, title: diseasesTitles[1], date: randomDate(), image: pyl2 },
@@ -61,6 +59,11 @@ const FishDiseaseDashboard = () => {
     const filteredDiseases = diseases.filter(disease =>
         disease.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // Function to handle redirection when a disease item is clicked
+    const handleDiseaseClick = (id) => {
+        navigate(`/artikel/${id}`);
+    };
 
     return (
         <div className="bg-white w-full min-h-screen">
@@ -116,6 +119,7 @@ const FishDiseaseDashboard = () => {
                                 key={disease.id}
                                 className={`bg-white rounded-lg border border-gray-300 overflow-hidden transform transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg
                                 ${isGridLayout ? 'flex flex-col' : 'flex flex-row'}`}
+                                onClick={() => handleDiseaseClick(disease.id)} // Attach click handler
                             >
                                 <div className={`${isGridLayout ? 'w-full' : 'w-48'} relative`}>
                                     <img
@@ -138,6 +142,8 @@ const FishDiseaseDashboard = () => {
         </div>
     );
 };
+
+
 
 function PenyakitLele() {
     return (
