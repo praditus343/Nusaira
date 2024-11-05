@@ -7,7 +7,6 @@ import SignUp from './page/singup';
 import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
 import InputTambak from './page/InputTambakBaru';
-import PondManagement from './page/DaftarKolam';
 import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile';
 import Invoice from './page/Invoice';
@@ -15,7 +14,6 @@ import Premium from './page/Premium';
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
 import Notifikasi from './page/Notifikasi';
-import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
 import Pengeluaran from './page/Pengeluaran';
 import Pemasukan from './page/Pemasukan';
@@ -35,6 +33,8 @@ import RingkasanLearning from './page/RingkasanLearning';
 import ArticlePage from './page/ArtikelPenyakit';
 import PengatutanTambak from './page/PengaturanTambak';
 import IsiKabarLele from './page/IsiKabarLele';
+import PondManagement from './page/DaftarKolam';
+
 
 function App() {
   return (
@@ -56,7 +56,7 @@ function App() {
           <Route path="/HargaLele" element={<HargaLele />} />
           <Route path="/PenyakitLele" element={<PenyakitLele />} />
           <Route path="/Notifikasi" element={<Notifikasi />} />
-          <Route path="/Blog" element={<Blog />} />
+          <Route path="/Blog" element={<KabarLele />} />
           <Route path="/FinalStep" element={<FinalStepUI />} />
           <Route path="/Pengeluaran" element={<Pengeluaran />} />
           <Route path="/Pemasukan" element={<Pemasukan />} />  
