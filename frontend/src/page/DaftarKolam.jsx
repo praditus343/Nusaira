@@ -7,7 +7,7 @@ import { TambahDataKematianModal, TambahDataPakanModal, TambahDataPanenModal, Ta
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
 import FishTable from '../componen/FishTable';
-
+import { useNavigate } from 'react-router-dom';
 
 const CustomCard = ({ children, className }) => {
     return (
@@ -50,6 +50,8 @@ const buttons = [
 
 const PondTable = () => {
     const [activeModal, setActiveModal] = useState(null);
+    const navigate = useNavigate();
+
 
     const handleButtonClick = (buttonText) => {
         switch (buttonText) {
@@ -137,8 +139,11 @@ const PondTable = () => {
                         <CustomButton className="bg-blue-600 hover:bg-blue-700 text-white w-30 px-6 flex items-center justify-center">
                             <span className="text-lg font-bold mr-2">+</span> <span className="font-normal">Kolam</span>
                         </CustomButton>
-
-                        <CustomButton variant="ghost" className="w-32 flex items-center justify-start">
+                        <CustomButton
+                            variant="ghost"
+                            className="w-32 flex items-center justify-start"
+                            onClick={() => navigate('/PengaturanTambak')}
+                        >
                             <FontAwesomeIcon
                                 icon={faCog}
                                 className="text-blue-400 text-md pointer-events-none w-[48px]"
@@ -148,7 +153,7 @@ const PondTable = () => {
 
                 </div>
                 {/* Table */}
-                <FishTable/>
+                <FishTable />
             </CustomCard>
         </div>
     );
