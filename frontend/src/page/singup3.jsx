@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import img from "../assets/img/login_singup/ls4.png"; // Impor gambar
-import imglogo from "../assets/logo.png"; // Impor gambar
+import imglogo from "../assets/Logo.png"; // Impor gambar
 
 const SignUpCompletePage = () => {
   const navigate = useNavigate();

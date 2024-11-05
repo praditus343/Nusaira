@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
-import imglogo from "../assets/logo.png"; // Impor gambar
+import imglogo from "../assets/Logo.png"; // Impor gambar
 
 const SignUpPage = () => {
   const navigate = useNavigate();
