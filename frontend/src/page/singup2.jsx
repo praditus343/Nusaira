@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
+import imglogo from "../assets/LOGO.png"; // Impor gambar
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -108,7 +110,7 @@ const SignUpPage = () => {
         {/* Left Side: Illustration */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src="/src/assets/singup.png"
+            src={img} // Use the imported image
             alt="Signup Illustration"
             className="max-w-sm"
           />
@@ -118,7 +120,7 @@ const SignUpPage = () => {
         <div className="w-full md:w-1/2 p-10">
           <div className="w-full flex py-6">
             <img
-              src="/src/assets/logo.png"
+              src={imglogo} // Gunakan variabel imglogo
               alt="Logo"
               className="h-12"
             />

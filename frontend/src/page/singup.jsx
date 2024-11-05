@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Impor useNavigate
+import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
 
 const SignUpPage = () => {
   const navigate = useNavigate(); // Inisialisasi hook navigasi
@@ -53,7 +54,7 @@ const SignUpPage = () => {
         {/* Bagian Kiri: Ilustrasi */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src="/src/assets/singup.png"
+            src={img} // Gunakan variabel img"
             alt="Signup Illustration"
             className="max-w-sm"
           />
