@@ -135,7 +135,7 @@ const PondTable = () => {
                         </div>
 
                         <CustomButton className="bg-blue-600 hover:bg-blue-700 text-white w-30 px-6 flex items-center justify-center">
-                            <span className="text-lg font-bold">+</span> <span className="font-normal">Kolam</span>
+                            <span className="text-lg font-bold mr-2">+</span> <span className="font-normal">Kolam</span>
                         </CustomButton>
 
                         <CustomButton variant="ghost" className="w-32 flex items-center justify-start">
