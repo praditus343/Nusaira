@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from "react-router-dom"; // Impor useNavigate
 
 const SignUpPage = () => {
+  const navigate = useNavigate(); // Inisialisasi hook navigasi
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -41,7 +42,8 @@ const SignUpPage = () => {
     // Simulasi pendaftaran
     setTimeout(() => {
       setLoading(false);
-      alert("Pendaftaran Berhasil! 🚀");
+      alert("Lanjutkan Pendaftaran! 🚀");
+      navigate("/signup2"); // Arahkan ke halaman signUp2
     }, 2000);
   };
 
@@ -66,14 +68,15 @@ const SignUpPage = () => {
             Daftar sekarang dan pantau tambak lele kamu untuk hasil terbaik.
           </p>
 
-          {error && (
-            <div className="text-red-500 text-sm mb-4">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
           <form onSubmit={handleSignUp} className="space-y-5">
-            {/** Input untuk Username */}
+            {/* Input untuk Username */}
             <div>
-              <label htmlFor="username" className="block text-black-600 text-lg">
+              <label
+                htmlFor="username"
+                className="block text-black-600 text-lg"
+              >
                 Username
               </label>
               <input
@@ -88,7 +91,7 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/** Input untuk No Handphone */}
+            {/* Input untuk No Handphone */}
             <div>
               <label htmlFor="phone" className="block text-black-600 text-lg">
                 No Handphone
@@ -105,7 +108,7 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/** Input untuk Email */}
+            {/* Input untuk Email */}
             <div>
               <label htmlFor="email" className="block text-black-600 text-lg">
                 Email
@@ -122,9 +125,12 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/** Input untuk Kata Sandi */}
+            {/* Input untuk Kata Sandi */}
             <div>
-              <label htmlFor="password" className="block text-black-600 text-lg">
+              <label
+                htmlFor="password"
+                className="block text-black-600 text-lg"
+              >
                 Kata Sandi
               </label>
               <input
@@ -139,9 +145,12 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/** Input untuk Ulangi Kata Sandi */}
+            {/* Input untuk Ulangi Kata Sandi */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-black-600 text-lg">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-black-600 text-lg"
+              >
                 Ulangi Kata Sandi
               </label>
               <input
@@ -156,9 +165,12 @@ const SignUpPage = () => {
               />
             </div>
 
-            {/** Dropdown untuk Pekerjaan */}
+            {/* Dropdown untuk Pekerjaan */}
             <div>
-              <label htmlFor="occupation" className="block text-black-600 text-lg">
+              <label
+                htmlFor="occupation"
+                className="block text-black-600 text-lg"
+              >
                 Pekerjaan
               </label>
               <select
@@ -176,7 +188,7 @@ const SignUpPage = () => {
               </select>
             </div>
 
-            {/** Tombol Daftar */}
+            {/* Tombol Daftar */}
             <button
               type="submit"
               disabled={loading}
@@ -193,8 +205,13 @@ const SignUpPage = () => {
               )}
             </button>
           </form>
+          {loading && (
+            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75">
+              <div className="loader"></div>
+            </div>
+          )}
 
-          {/** Pembatas dan Opsi untuk Mendaftar dengan Media Sosial */}
+          {/* Pembatas dan Opsi untuk Mendaftar dengan Media Sosial */}
           <div className="mt-6 flex items-center justify-center">
             <span className="border-b w-1/4"></span>
             <span className="text-sm text-gray-500 px-2">Atau</span>
@@ -202,7 +219,9 @@ const SignUpPage = () => {
           </div>
 
           <div className="mt-4">
-            <p className="text-center mb-2 text-sm text-gray-600">Daftar Dengan :</p>
+            <p className="text-center mb-2 text-sm text-gray-600">
+              Daftar Dengan :
+            </p>
             <div className="flex justify-center gap-4">
               <button
                 aria-label="Daftar dengan Google"
@@ -228,13 +247,26 @@ const SignUpPage = () => {
             </div>
           </div>
 
-          {/** Tautan untuk masuk jika sudah memiliki akun */}
+          {/* Tautan untuk masuk jika sudah memiliki akun */}
           <p className="mt-6 text-center text-sm text-gray-600">
             Sudah Memiliki Akun?{" "}
             <Link to="/login" className="text-blue-500 hover:underline">
               Masuk
             </Link>
           </p>
+          
+          {/* Navigation Dots */}
+          <div className="flex items-center justify-center mt-4">
+            <Link to="/" className="text-blue-500 hover:underline mx-2">
+              Home
+            </Link>
+            <Link to="/signup" className="text-blue-500 hover:underline mx-2">
+              Sign Up
+            </Link>
+            <Link to="/login" className="text-blue-500 hover:underline mx-2">
+              Login
+            </Link>
+          </div>
         </div>
       </div>
     </div>
