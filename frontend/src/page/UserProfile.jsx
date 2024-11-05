@@ -4,13 +4,14 @@ import React from "react";
 import { Edit, MapPin } from "lucide-react";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
+import UserImage from '../assets/img/assets_foto/f2.png'
 
 const Userview = () => {
   return (
     <div className="bg-white w-full min-h-screen">
       <Header />
       {/* Pengaturan Akun */}
-      <span className="text-lg font-medium text-black ml-9 mr-18">
+      <span className="text-lg font-medium text-black ml-9 mr-18 mt-10">
         Pengaturan Akun
       </span>
       <div className="flex items-center justify-between p-4 bg-white rounded-md mt-10 space-x-2">
@@ -21,7 +22,7 @@ const Userview = () => {
       </div>
 
       {/* User Information */}
-      <div className="max-w-4xl rounded-lg ml-10 mr-15 p-6 bg-blue-100 min-h-screen">
+      <div className="max-w-4xl rounded-lg ml-10 mr-15 p-6 bg-white border border-gray-300 min-h-screen shadow-md">
         <div className="mb-2">
           <h2 className="text-sm text-gray-600">Foto Profile</h2>
         </div>
@@ -30,7 +31,7 @@ const Userview = () => {
         <div className="flex flex-col items-center mb-12">
           <div className="w-36 h-36 bg-blue-200 rounded-full overflow-hidden mb-2">
             <img
-              src="/api/placeholder/96/96"
+              src={UserImage}
               alt="Profile"
               className="w-full h-full object-cover"
             />
@@ -50,7 +51,7 @@ const Userview = () => {
                 </span>
               </div>
             </div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
           </div>
 
           {/* Jenis Kelamin */}
@@ -63,7 +64,7 @@ const Userview = () => {
                 <span className="text-sm text-black-400">Laki-Laki</span>
               </div>
             </div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
           </div>
 
           {/* Lokasi */}
@@ -76,7 +77,7 @@ const Userview = () => {
                 </span>
               </div>
             </div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
           </div>
 
           {/* Terdaftar Sejak */}
@@ -87,7 +88,7 @@ const Userview = () => {
                 <span className="text-sm text-black-400">10 Oktober 2024</span>
               </div>
             </div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
           </div>
 
           {/* Keamanan */}
@@ -108,7 +109,7 @@ const Userview = () => {
                 </span>
               </div>
             </div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
           </div>
 
           {/* No Handphone */}
@@ -121,7 +122,7 @@ const Userview = () => {
                 </span>
               </div>
             </div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
           </div>
 
           {/* Ubah Kata Sandi */}
@@ -136,7 +137,7 @@ const Userview = () => {
 
           {/* Peringatan dan Tombol Tutup Akun */}
           <div>
-            <div className="h-px bg-blue-200"></div>
+            <div className="h-px bg-gray-300"></div>
             <div className="flex justify-between items-center mt-10">
               <span className="text-sm text-red-600">
                 Setelah Klik tombol Tutup Akun sistem akan menghapus seluruh
@@ -160,7 +161,7 @@ const Userview = () => {
         </div>
 
         {/* Informasi Tambak */}
-        <div className="bg-blue-100 p-6 rounded-lg flex flex-col justify-between shadow-lg w-full max-w-4xl">
+        <div className="bg-white border-blue-600 border p-6 rounded-lg flex flex-col justify-between shadow-lg w-full max-w-4xl">
           {/* Bagian Nama dan Lokasi */}
           <div className="flex items-start space-x-4">
             <div className="flex flex-col">
@@ -177,7 +178,7 @@ const Userview = () => {
           {/* Foto Profil dan Detail */}
           <div className="flex items-center justify-between mt-4">
             <img
-              src="https://placekitten.com/80/80"
+              src={UserImage}
               alt="Profil"
               className="rounded-full w-16 h-16"
             />
@@ -217,7 +218,7 @@ const Userview = () => {
 
 function UserProfile() {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 overflow-auto">
         <Userview />

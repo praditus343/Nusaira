@@ -190,7 +190,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">pH Air</h3>
                                 <p className="text-2xl mb-2">{analysis.ph ? analysis.ph.value : 'N/A'}</p>
-                                <p className={`text-sm ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-md font-semibold ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
                                     Status: {analysis.ph ? analysis.ph.status : 'N/A'}
                                 </p>
                             </div>
@@ -199,7 +199,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">Suhu Air</h3>
                                 <p className="text-2xl mb-2">{analysis.suhu ? analysis.suhu.value : 'N/A'}</p>
-                                <p className={`text-sm ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-md font-semibold ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
                                     Status: {analysis.suhu ? analysis.suhu.status : 'N/A'}
                                 </p>
 
@@ -209,7 +209,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">Oksigen Terlarut</h3>
                                 <p className="text-2xl mb-2">{analysis.oksigen ? analysis.oksigen.value : 'N/A'}</p>
-                                <p className={`text-sm ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-md font-semibold ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
                                     Status: {analysis.oksigen ? analysis.oksigen.status : 'N/A'}
                                 </p>
 
@@ -219,7 +219,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg">
                                 <h3 className="font-bold mb-2">Salinitas</h3>
                                 <p className="text-2xl mb-2">{analysis.salinitas ? analysis.salinitas.value : 'N/A'}</p>
-                                <p className={`text-sm ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-md font-semibold ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
                                     Status: {analysis.salinitas ? analysis.salinitas.status : 'N/A'}
                                 </p>
 
@@ -230,19 +230,19 @@ const DashboardManagement = () => {
                             <h3 className="font-bold mb-2">Rekomendasi Tindakan:</h3>
                             <ul className="list-disc pl-6">
                                 {analysis.ph.status !== 'Normal' && (
-                                    <li className="text-red-600">Perlu penyesuaian pH air</li>
+                                    <li className="text-red-600 font-semibold text-lg">Perlu penyesuaian pH air</li>
                                 )}
                                 {analysis.suhu.status !== 'Normal' && (
-                                    <li className="text-red-600">Perlu pengaturan suhu air</li>
+                                    <li className="text-red-600 font-semibold text-lg">Perlu pengaturan suhu air</li>
                                 )}
                                 {analysis.oksigen.status !== 'Normal' && (
-                                    <li className="text-red-600">Perlu penambahan aerasi</li>
+                                    <li className="text-red-600 font-semibold text-lg">Perlu penambahan aerasi</li>
                                 )}
                                 {analysis.salinitas.status !== 'Normal' && (
-                                    <li className="text-red-600">Perlu penyesuaian salinitas</li>
+                                    <li className="text-red-600 font-semibold text-lg">Perlu penyesuaian salinitas</li>
                                 )}
                                 {Object.values(analysis).every(param => param.status === 'Normal') && (
-                                    <li className="text-green-600">Semua parameter dalam kondisi normal</li>
+                                    <li className="text-green-600 font-semibold text-lg">Semua parameter dalam kondisi normal</li>
                                 )}
                             </ul>
                         </div>
@@ -269,7 +269,9 @@ function Management() {
             <div className="flex-1 overflow-auto">
                 <DashboardManagement />
                 <AIFloatingButton />
-                <Footer />
+                <div className='mt-20'>
+                    <Footer />
+                </div>
             </div>
         </div>
     );

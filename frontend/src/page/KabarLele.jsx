@@ -161,7 +161,7 @@ const KabarLeleLayout = () => {
   }, [searchTerm]);
 
   const LeftCard = ({ post }) => (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4 border boreder-gray-300">
       <img
         src={post.image}
         alt={post.title}
@@ -180,7 +180,7 @@ const KabarLeleLayout = () => {
   );
 
   const RightCard = ({ post }) => (
-    <div className="flex bg-white rounded-lg shadow-md overflow-hidden mb-4">
+    <div className="flex bg-white rounded-lg shadow-md overflow-hidden mb-4 border border-gray-300">
       <div className="flex-1 p-4">
         <div className="text-sm text-gray-500 mb-2">{post.date}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
