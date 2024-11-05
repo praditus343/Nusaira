@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link, useNavigate } from "react-router-dom";
+import img from "../assets/img/login_singup/ls1.png"; // Impor gambar
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -49,7 +50,7 @@ const LoginPage = () => {
         {/* Bagian Kiri: Ilustrasi */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src="/src/assets/login.png"
+            src={img}
             alt="Login Illustration"
             className="max-w-sm"
           />
@@ -83,7 +84,10 @@ const LoginPage = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-black-600 text-lg">
+              <label
+                htmlFor="password"
+                className="block text-black-600 text-lg"
+              >
                 Kata Sandi
               </label>
               <input
@@ -95,12 +99,6 @@ const LoginPage = () => {
                 className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 required
               />
-            </div>
-
-            <div className="flex justify-between items-center">
-              <a href="#" className="text-blue-500 text-sm hover:underline">
-                Lupa Kata Sandi?
-              </a>
             </div>
 
             <button
@@ -119,6 +117,12 @@ const LoginPage = () => {
               )}
             </button>
           </form>
+          <br />
+          <div className="flex justify-between items-center">
+            <a href="#" className="text-blue-500 text-sm hover:underline">
+              Lupa Kata Sandi?
+            </a>
+          </div>
 
           <div className="mt-6 flex items-center justify-center">
             <span className="border-b w-1/4"></span>

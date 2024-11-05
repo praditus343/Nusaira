@@ -86,13 +86,14 @@ function Content() {
     </>   
   );
 }
-
 function Premium() {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       <Sidebar />
-      <div className="flex-1 overflow-auto">
-        <Content />
+      <div className="flex-1 flex flex-col overflow-auto">
+        <div className="flex-grow">
+          <Content />
+        </div>
         <AIFloatingButton />
         <Footer />
       </div>

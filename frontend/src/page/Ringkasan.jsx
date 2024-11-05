@@ -222,24 +222,24 @@ function TableSection() {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-green-100">
+          <tr className="bg-green-500">
             <td className="py-2 px-4 border">Kolam B3</td>
             <td className="py-2 px-4 border">1900 m²</td>
             <td className="py-2 px-4 border">60</td>
             <td className="py-2 px-4 border">100.000</td>
-            <td className="py-2 px-4 border">60 (mg/m²)</td>
+            <td className="py-2 px-4 border">60(mg/m²)</td>
             <td className="py-2 px-4 border">15 kg</td>
             <td className="py-2 px-4 border">0</td>
             <td className="py-2 px-4 border">0</td>
             <td className="py-2 px-4 border">0</td>
             <td className="py-2 px-4 border">100%</td>
           </tr>
-          <tr className="bg-yellow-100">
+          <tr className="bg-yellow-500">
             <td className="py-2 px-4 border">Kolam B4</td>
             <td className="py-2 px-4 border">1800 m²</td>
             <td className="py-2 px-4 border">60</td>
             <td className="py-2 px-4 border">100.000</td>
-            <td className="py-2 px-4 border">48 (mg/m²)</td>
+            <td className="py-2 px-4 border">48(mg/m²)</td>
             <td className="py-2 px-4 border">12 kg</td>
             <td className="py-2 px-4 border">0</td>
             <td className="py-2 px-4 border">0</td>

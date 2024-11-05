@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import imgProfile from "../assets/img/landing_page_sebelum_daftar/landingsb2.png"
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 const Header = () => {
@@ -38,7 +40,7 @@ const Header = () => {
     '/Pemasukan': 'Pemasukan',
     '/Laporan': 'Laporan',
     '/KabarLele': 'Kabar Lele',
-    '/AksesPremium' : 'Premium',
+    '/AksesPremium' : 'Akses Premium',
     '/Ringkasan' : 'Ringkasan',
     '/ChatAi' : 'NusAI',
     '/PriceHistory' : 'Harga Lele / 10 Oktober 2024',
@@ -46,6 +48,7 @@ const Header = () => {
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
     '/RingkasanLearning': 'Ringkasan / E-Learning',
+    '/PengaturanTambak': 'Pengaturan Tambak'
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
@@ -67,7 +70,7 @@ const Header = () => {
     ? `Penyakit Lele / ${artikelTitle}`
     : location.pathname.includes('/supplier/')
     ? 'Detail Harga'
-    : titlePenyakit[location.pathname] || 'Unknown Page';
+    : titleMap[location.pathname] || 'Unknown Page';
   
   console.log('Artikel ID:', artikelId);
   console.log('Judul dari titlePenyakit:', artikelTitle);
@@ -113,18 +116,21 @@ const Header = () => {
                     onClick={() => navigate('/UserProfile')}
                     className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 font-medium" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
+                    <FontAwesomeIcon icon={faUser} className="text-blue-500" />
                     <span className="text-blue-500 font-medium">Profile</span>
+                  </div>
+                  <div
+                    onClick={() => navigate('/PengaturanTambak')}
+                    className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
+                  >
+                    <FontAwesomeIcon icon={faCog} className="text-blue-500" />
+                    <span className="text-blue-500 font-medium">Pengaturan Tambak</span>
                   </div>
                   <div
                     onClick={() => navigate('/')}
                     className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 font-medium" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
-                    </svg>
+                    <FontAwesomeIcon icon={faSignOutAlt} className="text-blue-500" />
                     <span className="text-blue-500 font-medium">Keluar</span>
                   </div>
                 </div>

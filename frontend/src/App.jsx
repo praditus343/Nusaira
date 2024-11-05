@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Login from './page/login';
+import SignUp3 from './page/singup3';
+import SignUp2 from './page/singup2';
 import SignUp from './page/singup';
 import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
@@ -31,6 +33,8 @@ import ElearningSidebar from './componen/ElearningSidebar';
 import MyBooks from './page/BukuSaya';
 import RingkasanLearning from './page/RingkasanLearning';
 import ArticlePage from './page/ArtikelPenyakit';
+import PengatutanTambak from './page/PengaturanTambak';
+import IsiKabarLele from './page/IsiKabarLele';
 
 function App() {
   return (
@@ -39,6 +43,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup2" element={<SignUp2 />} />
+          <Route path="/signup3" element={<SignUp3 />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/Home" element={<Homeuser />} />
           <Route path="/InputTambak" element={<InputTambak />} />
@@ -68,6 +74,8 @@ function App() {
           <Route path="/Invoice" element={<Invoice />} />
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
+          <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
+          <Route path="/IsiKabarLele" element={<IsiKabarLele />} />
         </Routes>
       </Fragment>
     </Router>

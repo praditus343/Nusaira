@@ -101,7 +101,7 @@ const ArticleDashboard = () => {
 
                 {/* Image Section */}
                 <div className="flex justify-center mb-6 ml-8 mr-8">
-                    <img src={article.image} alt={article.title} className="w-full h-[500px] rounded-xl shadow-lg mb-4" />
+                    <img src={article.image} alt={article.title} className="w-full h-[700px] rounded-xl shadow-lg mb-4" />
                 </div>
 
                 {/* Dropdown Filter Section */}
