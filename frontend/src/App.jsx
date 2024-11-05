@@ -33,6 +33,7 @@ import ElearningSidebar from './componen/ElearningSidebar';
 import MyBooks from './page/BukuSaya';
 import RingkasanLearning from './page/RingkasanLearning';
 import ArticlePage from './page/ArtikelPenyakit';
+import PengatutanTambak from './page/PengaturanTambak';
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           <Route path="/Invoice" element={<Invoice />} />
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
+          <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
         </Routes>
       </Fragment>
     </Router>

@@ -186,9 +186,9 @@ const PriceMonitoringDashboard = () => {
                     {/* Left Side - Big Chart */}
                     <div className="flex-grow-0 flex-shrink-0 w-1/2">
                         <>
-                            <div className="flex flex-col justify-between mb-2shadow rounded-lg">
+                            <div className="flex flex-col justify-between mb-2 ">
                                 {chartData.map((item, index) => (
-                                    <div key={index} className="flex-grow-0 flex-shrink-0 mt-4 border-2 border-grey-300">
+                                    <div key={index} className="flex-grow-0 flex-shrink-0 mt-4 border-2 border-grey-300 rounded-lg">
                                         <div className="bg-white shadow rounded-lg p-4 h-full">
                                             <div className="flex flex-col justify-between h-full mt-4">
                                                 <div>

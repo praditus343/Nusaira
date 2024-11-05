@@ -9,7 +9,7 @@ const Final = ({ jumlahKolam }) => {
   };
 
   const handleContinue = () => {
-    navigate('/DaftarTambak');
+    navigate('/DaftarKolam');
   };
 
   return (
