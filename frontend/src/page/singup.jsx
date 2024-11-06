@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Impor useNavigate
-import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
+import { Link, useNavigate } from "react-router-dom"; 
+import img from "../assets/img/login_singup/ls5.png"; 
 
 const SignUpPage = () => {
-  const navigate = useNavigate(); // Inisialisasi hook navigasi
+  const navigate = useNavigate(); 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -27,7 +27,6 @@ const SignUpPage = () => {
     e.preventDefault();
     setError("");
 
-    // Validasi dasar
     if (!Object.values(formData).every((field) => field)) {
       setError("Semua field harus diisi.");
       return;
@@ -40,11 +39,10 @@ const SignUpPage = () => {
 
     setLoading(true);
 
-    // Simulasi pendaftaran
     setTimeout(() => {
       setLoading(false);
       alert("Lanjutkan Pendaftaran! 🚀");
-      navigate("/signup2"); // Arahkan ke halaman signUp2
+      navigate("/signup2"); 
     }, 2000);
   };
 
@@ -54,7 +52,7 @@ const SignUpPage = () => {
         {/* Bagian Kiri: Ilustrasi */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src={img} // Gunakan variabel img"
+            src={img}
             alt="Signup Illustration"
             className="max-w-sm"
           />

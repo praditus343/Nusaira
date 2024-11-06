@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
-import imglogo from "../assets/Logo.png"; // Impor gambar
+import img from "../assets/img/login_singup/ls5.png"; 
+import imglogo from "../assets/Logo.png"; 
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -15,22 +15,19 @@ const SignUpPage = () => {
   const correctVerificationCode = "1111";
 
   const handleVerificationInput = (e, idx) => {
-    const value = e.target.value.replace(/[^0-9]/g, ''); // Only allow numbers
+    const value = e.target.value.replace(/[^0-9]/g, ''); 
     
     if (value.length <= 1) {
-      // Update the verification code in state
       const updatedCode = [...verificationCode];
       updatedCode[idx] = value;
       setVerificationCode(updatedCode);
 
-      // Handle focus movement
       if (value && idx < inputRefs.current.length - 1) {
         inputRefs.current[idx + 1].focus();
       } else if (!value && idx > 0) {
         inputRefs.current[idx - 1].focus();
       }
 
-      // Check if all fields are filled
       if (updatedCode.every(code => code !== "") && updatedCode.join('').length === 4) {
         handleVerification(updatedCode.join(''));
       }
@@ -42,7 +39,6 @@ const SignUpPage = () => {
     
     if (code === correctVerificationCode) {
       setLoading(true);
-      // Simulate verification process
       setTimeout(() => {
         setLoading(false);
         navigate("/signup3");
@@ -62,12 +58,10 @@ const SignUpPage = () => {
     setResendTimeout(30);
     setVerificationCode(["", "", "", ""]);
     setError("");
-    // Reset focus to first input
     inputRefs.current[0].focus();
     alert("Kode verifikasi telah dikirim ulang!");
   };
 
-  // Handle paste functionality
   const handlePaste = (e) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 4);
@@ -79,12 +73,10 @@ const SignUpPage = () => {
       }
       setVerificationCode(newVerificationCode);
       
-      // Focus the next empty input or the last input if all are filled
       const nextEmptyIndex = newVerificationCode.findIndex(code => code === '');
       const focusIndex = nextEmptyIndex === -1 ? 3 : nextEmptyIndex;
       inputRefs.current[focusIndex].focus();
 
-      // If all fields are filled, trigger verification
       if (pastedData.length === 4) {
         handleVerification(pastedData);
       }
@@ -92,10 +84,8 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
-    // Focus first input on mount
     inputRefs.current[0].focus();
 
-    // Handle countdown timer
     if (resendTimeout > 0) {
       const countdown = setInterval(() => {
         setResendTimeout(prev => prev - 1);
@@ -110,7 +100,7 @@ const SignUpPage = () => {
         {/* Left Side: Illustration */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src={img} // Use the imported image
+            src={img} 
             alt="Signup Illustration"
             className="max-w-sm"
           />
@@ -120,7 +110,7 @@ const SignUpPage = () => {
         <div className="w-full md:w-1/2 p-10">
           <div className="w-full flex py-6">
             <img
-              src={imglogo} // Gunakan variabel imglogo
+              src={imglogo} 
               alt="Logo"
               className="h-12"
             />
