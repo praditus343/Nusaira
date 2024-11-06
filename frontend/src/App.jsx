@@ -75,7 +75,7 @@ function App() {
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
           <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
-          <Route path="/IsiKabarLele" element={<IsiKabarLele />} />
+          <Route path="/kabar-lele/:id" element={<IsiKabarLele />} />
         </Routes>
       </Fragment>
     </Router>

@@ -1,36 +1,22 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react";
-import Sidebar from "../componen/SideBar";
-import Footer from "../componen/Footer";
-import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import img1 from "../assets/img/kabar_lele/kbl1.png";
+import AllPosts from "../componen/AllPost";
+import profileImg from "../assets/img/assets_foto/f2.png";
+import Sidebar from "../componen/SideBar";
+import AIFloatingButton from "../componen/AiFloatingButton";
+import Footer from "../componen/Footer";
 
-// Sample articles data
-const articles = [
-  {
-    id: 1,
-    title: "Seluk Beluk Usaha Budidaya Ikan Lele",
-    date: "15 Oktober 2024",
-    image: img1,
-    content:
-      "Usaha budidaya ikan lele merupakan salah satu usaha yang menjanjikan di bidang perikanan. Dalam artikel ini, kita akan membahas seluk beluk memulai usaha budidaya lele, dari persiapan kolam, pemilihan bibit berkualitas, hingga perawatan dan panen. Melalui teknik yang tepat, Anda dapat mengoptimalkan hasil panen dan meningkatkan keuntungan.",
-  },
-  // Add more articles here if needed
-];
-
-const KabarLeleArticle = () => {
+const KabarLeleArticleLayout = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Find the article based on the id from URL
-  const article = articles.find((article) => article.id === parseInt(id));
+  const article = AllPosts.find((post) => post.id === parseInt(id));
 
-  // If the article is not found, display a fallback message
   if (!article) {
     return (
-      <div className="bg-white w-full min-h-screen flex flex-col items-center justify-center">
+      <div className="bg-white w-full h-full flex flex-col items-center justify-center">
         <Header />
         <div className="p-6 text-center">
           <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
@@ -45,47 +31,59 @@ const KabarLeleArticle = () => {
             Kembali ke Berita
           </button>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="bg-white w-full min-h-screen">
+    <div className="bg-white w-full h-min-screen">
       <Header />
-      <div className="flex mt-5">
-        <Sidebar />
-        <div className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto">
-            {/* Back button */}
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center text-blue-500 mb-4"
-            >
-              <ChevronLeft className="w-5 h-5" />
-              Kembali ke Berita
-            </button>
-
-            {/* Article content */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={article.image}
-                alt={article.title}
-                className="w-full h-72 object-cover"
-              />
-              <div className="p-6">
-                <div className="text-sm text-gray-500 mb-2">{article.date}</div>
-                <h1 className="text-2xl font-bold mb-4">{article.title}</h1>
-                <p className="text-gray-700 text-lg">{article.content}</p>
-              </div>
-            </div>
+      <div className="flex flex-col items-start px-4 py-6 ml-8 mr-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-blue-500 mb-4 text-xl"
+        >
+          <ChevronLeft className="w-10 h-10 font-semibold" />
+          Kembali ke Blog
+        </button>
+        <article className="w-full">
+          <h1 className="font-bold text-gray-800 mb-8 text-center mt-4">{article.title}</h1>
+          <img
+            src={article.image}
+            alt={article.title}
+            className="w-full h-auto mb-12 rounded-xl" 
+          />
+          <div className="flex items-center text-sm text-gray-500 mb-4">
+            <img
+              src={profileImg} 
+              alt="Author"
+              className="w-8 h-8 rounded-full mr-2"
+            />
+            <span className="font-semibold">Admin</span>
+            <span className="ml-4">{article.date}</span>
           </div>
-        </div>
+          <section className="text-gray-700 text-lg leading-relaxed">
+            {article.content}
+          </section>
+        </article>
       </div>
-      <AIFloatingButton />
-      <Footer />
     </div>
   );
 };
+
+function KabarLeleArticle() {
+  return (
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex-1 overflow-auto h-full">
+        <KabarLeleArticleLayout />
+        <AIFloatingButton />
+        <div className="mt-20">
+          <Footer />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default KabarLeleArticle;
