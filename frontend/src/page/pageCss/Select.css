@@ -16,7 +16,9 @@ select:focus {
     background-color: white !important;
 }
 
-  
+.no-select {
+    user-select: none;
+  }
 
 
 

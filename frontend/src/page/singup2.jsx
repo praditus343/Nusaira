@@ -1,13 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
 import imglogo from "../assets/Logo.png"; // Impor gambar
-=======
-import { useNavigate } from 'react-router-dom';
-import img from "../assets/img/login_singup/ls5.png"; 
-import imglogo from "../assets/Logo.png"; 
->>>>>>> IsiBlog
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -21,13 +15,8 @@ const SignUpPage = () => {
   const correctVerificationCode = "1111";
 
   const handleVerificationInput = (e, idx) => {
-<<<<<<< HEAD
     const value = e.target.value.replace(/[^0-9]/g, ""); // Only allow numbers
 
-=======
-    const value = e.target.value.replace(/[^0-9]/g, ''); 
-    
->>>>>>> IsiBlog
     if (value.length <= 1) {
       const updatedCode = [...verificationCode];
       updatedCode[idx] = value;
@@ -39,17 +28,12 @@ const SignUpPage = () => {
         inputRefs.current[idx - 1].focus();
       }
 
-<<<<<<< HEAD
       // Check if all fields are filled
       if (
         updatedCode.every((code) => code !== "") &&
         updatedCode.join("").length === 4
       ) {
         handleVerification(updatedCode.join(""));
-=======
-      if (updatedCode.every(code => code !== "") && updatedCode.join('').length === 4) {
-        handleVerification(updatedCode.join(''));
->>>>>>> IsiBlog
       }
     }
   };
@@ -95,16 +79,11 @@ const SignUpPage = () => {
         newVerificationCode[i] = pastedData[i];
       }
       setVerificationCode(newVerificationCode);
-<<<<<<< HEAD
 
       // Focus the next empty input or the last input if all are filled
       const nextEmptyIndex = newVerificationCode.findIndex(
         (code) => code === ""
       );
-=======
-      
-      const nextEmptyIndex = newVerificationCode.findIndex(code => code === '');
->>>>>>> IsiBlog
       const focusIndex = nextEmptyIndex === -1 ? 3 : nextEmptyIndex;
       inputRefs.current[focusIndex].focus();
 
