@@ -36,6 +36,7 @@ import PondManagement from './page/DaftarKolam';
 import LupaPass1 from './page/LupaPass1';
 import LupaPass2 from './page/LupaPass2';
 import LupaPass3 from './page/LupaPass3';
+import Pembayaran from './page/Pembayaran';
 
 
 function App() {
@@ -80,6 +81,7 @@ function App() {
           <Route path="/LupaPass1" element={<LupaPass1 />} />
           <Route path="/LupaPass2" element={<LupaPass2 />} />
           <Route path="/LupaPass3" element={<LupaPass3 />} />
+          <Route path="/Pembayaran" element={<Pembayaran />} />
         </Routes>
       </Fragment>
     </Router>

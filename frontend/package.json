@@ -34,7 +34,7 @@
     "react-tooltip": "^5.28.0",
     "recharts": "^2.13.0",
     "shadcn-ui": "^0.2.3",
-    "sweetalert2": "^11.6.13",
+    "sweetalert2": "^11.14.5",
     "tailwind-merge": "^2.5.4",
     "three": "^0.169.0"
   },
