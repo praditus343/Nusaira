@@ -7,7 +7,7 @@ import img3 from "../assets/img/assets_foto/f3.png";
 import img4 from "../assets/img/assets_foto/f4.png";
 import img5 from "../assets/img/assets_foto/f5.png";
 import img6 from "../assets/img/assets_foto/f5.png";
-import "../page/pageCss/select.css";
+import "./ComponenCss/AntiBlok.css";
 
 const Testimonial = () => {
   const testimonials = [
