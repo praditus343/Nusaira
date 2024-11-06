@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronRight, Search, ListFilter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AllPosts from "../componen/AllPost";
+import AllPosts from "../componen/PostData";
 import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";

@@ -2,7 +2,7 @@ import React from "react";
 import { ChevronLeft } from "lucide-react";
 import Header from "../componen/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import AllPosts from "../componen/AllPost";
+import AllPosts from "../componen/PostData";
 import profileImg from "../assets/img/assets_foto/f2.png";
 import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
