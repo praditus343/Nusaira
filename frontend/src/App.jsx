@@ -33,6 +33,9 @@ import RingkasanLearning from './page/RingkasanLearning';
 import ArticlePage from './page/ArtikelPenyakit';
 import PengatutanTambak from './page/PengaturanTambak';
 import PondManagement from './page/DaftarKolam';
+import LupaPass1 from './page/LupaPass1';
+import LupaPass2 from './page/LupaPass2';
+import LupaPass3 from './page/LupaPass3';
 
 
 function App() {
@@ -74,6 +77,9 @@ function App() {
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
           <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
+          <Route path="/LupaPass1" element={<LupaPass1 />} />
+          <Route path="/LupaPass2" element={<LupaPass2 />} />
+          <Route path="/LupaPass3" element={<LupaPass3 />} />
         </Routes>
       </Fragment>
     </Router>
