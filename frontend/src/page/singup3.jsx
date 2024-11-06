@@ -11,8 +11,8 @@ const SignUpCompletePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 font-inter py-20">
-      <div className="w-full max-w-4xl flex shadow-xl rounded-lg overflow-hidden bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">
+      <div className="w-full max-w-5xl flex shadow-2xl rounded-lg overflow-hidden bg-white">
         {/* Left Side: Celebration Illustration */}
         <div className="hidden md:flex w-1/2 bg-blue-50 items-center justify-center p-8">
           <img

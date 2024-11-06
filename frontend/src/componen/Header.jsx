@@ -48,6 +48,7 @@ const Header = () => {
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
     '/RingkasanLearning': 'Ringkasan / E-Learning',
+    '/Pembayaran': 'Pembayaran',
     '/PengaturanTambak': 'Pengaturan Tambak'
   };
   const titlePenyakit = {

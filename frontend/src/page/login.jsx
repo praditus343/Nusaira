@@ -49,11 +49,7 @@ const LoginPage = () => {
       <div className="w-full max-w-5xl flex shadow-2xl rounded-lg overflow-hidden bg-white">
         {/* Bagian Kiri: Ilustrasi */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
-          <img
-            src={img}
-            alt="Login Illustration"
-            className="max-w-sm"
-          />
+          <img src={img} alt="Login Illustration" className="max-w-sm" />
         </div>
 
         {/* Bagian Kanan: Form Login */}
@@ -119,9 +115,9 @@ const LoginPage = () => {
           </form>
           <br />
           <div className="flex justify-between items-center">
-            <a href="#" className="text-blue-500 text-sm hover:underline">
+            <Link to="/LupaPass1" className="text-blue-500 hover:underline">
               Lupa Kata Sandi?
-            </a>
+            </Link>
           </div>
 
           <div className="mt-6 flex items-center justify-center">

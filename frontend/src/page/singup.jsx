@@ -255,7 +255,7 @@ const SignUpPage = () => {
               Masuk
             </Link>
           </p>
-          
+
           {/* Navigation Dots */}
           <div className="flex items-center justify-center mt-4">
             <Link to="/" className="text-blue-500 hover:underline mx-2">

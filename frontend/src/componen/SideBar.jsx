@@ -1,10 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChevronDown, faChevronUp, faHome, faMoneyBill, faTable,faCartPlus, faDollarSign,
-  faClipboardList, faNewspaper, faHeart, faBell, faPenSquare, faGraduationCap, faPlus, faUser, faFileInvoice, faChevronLeft, faChartLine, faChevronRight,faTools 
+  faBell,
+  faCartPlus,
+  faChartLine,
+  faChevronDown,
+  faChevronLeft,
+  faChevronRight,
+  faChevronUp,
+  faClipboardList,
+  faDollarSign,
+  faFileInvoice,
+  faGraduationCap,
+  faHeart,
+  faHome, faMoneyBill,
+  faNewspaper,
+  faPlus,
+  faTable,
+  faTools,
+  faUser
 } from '@fortawesome/free-solid-svg-icons';
-import { useLocation, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import imgLogo from "../assets/Logo.png";
 
 const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
@@ -129,10 +145,10 @@ const Sidebar = () => {
               isSidebarOpen={isSidebarOpen}
               children={[
                 { icon: faDollarSign, label: "Harga Lele", path: "/HargaLele" },
-                { icon: faNewspaper, label: "Kabar Lele", path: "/KabarLele" },
+                { icon: faNewspaper, label: "Blog", path: "/Blog" },
                 { icon: faHeart, label: "Penyakit Lele", path: "/PenyakitLele" },
                 { icon: faBell, label: "Notifikasi", path: "/Notifikasi" },
-                { icon: faPenSquare, label: "Blog", path: "/Blog" },
+                
               ]}
             />
             <MenuItem

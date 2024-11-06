@@ -7,7 +7,6 @@ import SignUp from './page/singup';
 import LandingPage from './page/landingPage';
 import Homeuser from './page/Home';
 import InputTambak from './page/InputTambakBaru';
-import PondManagement from './page/DaftarKolam';
 import TambakSimulation from './page/Simulasi';
 import UserProfile from './page/UserProfile';
 import Invoice from './page/Invoice';
@@ -15,7 +14,6 @@ import Premium from './page/Premium';
 import HargaLele from './page/HargaLele';
 import PenyakitLele from './page/PenyakitLele';
 import Notifikasi from './page/Notifikasi';
-import Blog from './page/Blog';
 import FinalStepUI from './page/FInalStep';
 import Pengeluaran from './page/Pengeluaran';
 import Pemasukan from './page/Pemasukan';
@@ -34,7 +32,12 @@ import MyBooks from './page/BukuSaya';
 import RingkasanLearning from './page/RingkasanLearning';
 import ArticlePage from './page/ArtikelPenyakit';
 import PengatutanTambak from './page/PengaturanTambak';
-import IsiKabarLele from './page/IsiKabarLele';
+import PondManagement from './page/DaftarKolam';
+import LupaPass1 from './page/LupaPass1';
+import LupaPass2 from './page/LupaPass2';
+import LupaPass3 from './page/LupaPass3';
+import Pembayaran from './page/Pembayaran';
+
 
 function App() {
   return (
@@ -56,7 +59,7 @@ function App() {
           <Route path="/HargaLele" element={<HargaLele />} />
           <Route path="/PenyakitLele" element={<PenyakitLele />} />
           <Route path="/Notifikasi" element={<Notifikasi />} />
-          <Route path="/Blog" element={<Blog />} />
+          <Route path="/Blog" element={<KabarLele />} />
           <Route path="/FinalStep" element={<FinalStepUI />} />
           <Route path="/Pengeluaran" element={<Pengeluaran />} />
           <Route path="/Pemasukan" element={<Pemasukan />} />  
@@ -75,7 +78,10 @@ function App() {
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
           <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
-          <Route path="/IsiKabarLele" element={<IsiKabarLele />} />
+          <Route path="/LupaPass1" element={<LupaPass1 />} />
+          <Route path="/LupaPass2" element={<LupaPass2 />} />
+          <Route path="/LupaPass3" element={<LupaPass3 />} />
+          <Route path="/Pembayaran" element={<Pembayaran />} />
         </Routes>
       </Fragment>
     </Router>

@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
-import imglogo from "../assets/Logo.png"; // Impor gambar
+import img from "../assets/img/login_singup/ls3.png"; // Import image
+import imglogo from "../assets/Logo.png"; // Import logo
 
-const SignUpPage = () => {
+const PasswordReset = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -14,46 +14,51 @@ const SignUpPage = () => {
   // Simulated correct verification code
   const correctVerificationCode = "1111";
 
-  const handleVerificationInput = (e, idx) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // Only allow numbers
+  const handleVerificationInput = useCallback(
+    (e, idx) => {
+      const value = e.target.value.replace(/[^0-9]/g, ""); // Only allow numbers
 
-    if (value.length <= 1) {
-      // Update the verification code in state
-      const updatedCode = [...verificationCode];
-      updatedCode[idx] = value;
-      setVerificationCode(updatedCode);
+      if (value.length <= 1) {
+        // Update the verification code in state
+        const updatedCode = [...verificationCode];
+        updatedCode[idx] = value;
+        setVerificationCode(updatedCode);
 
-      // Handle focus movement
-      if (value && idx < inputRefs.current.length - 1) {
-        inputRefs.current[idx + 1].focus();
-      } else if (!value && idx > 0) {
-        inputRefs.current[idx - 1].focus();
+        // Focus management
+        if (value && idx < inputRefs.current.length - 1) {
+          inputRefs.current[idx + 1].focus();
+        } else if (!value && idx > 0) {
+          inputRefs.current[idx - 1].focus();
+        }
+
+        // Check if all fields are filled
+        if (
+          updatedCode.every((code) => code !== "") &&
+          updatedCode.join("").length === 4
+        ) {
+          handleVerification(updatedCode.join(""));
+        }
       }
+    },
+    [verificationCode]
+  );
 
-      // Check if all fields are filled
-      if (
-        updatedCode.every((code) => code !== "") &&
-        updatedCode.join("").length === 4
-      ) {
-        handleVerification(updatedCode.join(""));
+  const handleVerification = useCallback(
+    (code) => {
+      setError("");
+      if (code === correctVerificationCode) {
+        setLoading(true);
+        // Simulate verification process
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/lupapass3");
+        }, 1500);
+      } else {
+        setError("Kode verifikasi salah.");
       }
-    }
-  };
-
-  const handleVerification = (code) => {
-    setError("");
-
-    if (code === correctVerificationCode) {
-      setLoading(true);
-      // Simulate verification process
-      setTimeout(() => {
-        setLoading(false);
-        navigate("/signup3");
-      }, 1500);
-    } else {
-      setError("Kode verifikasi salah.");
-    }
-  };
+    },
+    [navigate]
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,12 +70,10 @@ const SignUpPage = () => {
     setResendTimeout(30);
     setVerificationCode(["", "", "", ""]);
     setError("");
-    // Reset focus to first input
     inputRefs.current[0].focus();
     alert("Kode verifikasi telah dikirim ulang!");
   };
 
-  // Handle paste functionality
   const handlePaste = (e) => {
     e.preventDefault();
     const pastedData = e.clipboardData
@@ -92,7 +95,7 @@ const SignUpPage = () => {
       const focusIndex = nextEmptyIndex === -1 ? 3 : nextEmptyIndex;
       inputRefs.current[focusIndex].focus();
 
-      // If all fields are filled, trigger verification
+      // Trigger verification if all fields are filled
       if (pastedData.length === 4) {
         handleVerification(pastedData);
       }
@@ -100,10 +103,10 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
-    // Focus first input on mount
+    // Focus the first input on mount
     inputRefs.current[0].focus();
 
-    // Handle countdown timer
+    // Handle countdown timer for resend code
     if (resendTimeout > 0) {
       const countdown = setInterval(() => {
         setResendTimeout((prev) => prev - 1);
@@ -128,17 +131,20 @@ const SignUpPage = () => {
         <div className="w-full md:w-1/2 p-10">
           <div className="w-full flex py-6">
             <img
-              src={imglogo} // Gunakan variabel imglogo
+              src={imglogo} // Use the logo image
               alt="Logo"
               className="h-12"
             />
           </div>
-
+          <h4 className="text-gray-500 text-sm leading-relaxed mb-2">
+            Lupa Kata Sandi?
+          </h4>
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-            Verifikasi Akun
+            pengaturan ulang kata sandi
           </h2>
           <p className="text-sm text-gray-500 mb-6">
-            Kami mengirimkan kode verifikasi ke +62 ******945
+            Kami mengirimkan kode verifikasi ke{" "}
+            <span className="text-blue-500">Muhammadiqbal@gmail.com</span>
           </p>
 
           {error && (
@@ -238,4 +244,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default PasswordReset;
