@@ -7,7 +7,7 @@ const SignUpCompletePage = () => {
   const navigate = useNavigate();
 
   const handleStartNow = () => {
-    navigate("/home"); // Adjust the path to the main page of your app
+    navigate("/Home"); // Adjust the path to the main page of your app
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
+import Swal from "sweetalert2";
 import img from "../assets/img/login_singup/ls5.png"; 
 
 const SignUpPage = () => {
@@ -26,25 +27,32 @@ const SignUpPage = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     setError("");
-
+  
     if (!Object.values(formData).every((field) => field)) {
       setError("Semua field harus diisi.");
       return;
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       setError("Kata Sandi tidak cocok.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     setTimeout(() => {
       setLoading(false);
-      alert("Lanjutkan Pendaftaran! 🚀");
-      navigate("/signup2"); 
+      Swal.fire({
+        title: "Pendaftaran Berhasil!",
+        text: "Lanjutkan pendaftaran! 🚀",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/signup2");
+      });
     }, 2000);
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">
