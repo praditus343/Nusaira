@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import imgComputer from "../assets/img/landing_page_sudah_daftar/landingsub4.png";
 import imgAi from "../assets/img/landing_page_sebelum_daftar/landingsb6.png";
 import imgRead from "../assets/img/landing_page_sebelum_daftar/landingsb13.png";
-import "./ComponenCss/AntiBlok.css"
+import "../page/pageCss/select.css";
 
 const WrapBanner = () => {
     const scrollRef = useRef(null);
