@@ -32,7 +32,6 @@ import MyBooks from './page/BukuSaya';
 import RingkasanLearning from './page/RingkasanLearning';
 import ArticlePage from './page/ArtikelPenyakit';
 import PengatutanTambak from './page/PengaturanTambak';
-import IsiKabarLele from './page/IsiKabarLele';
 import PondManagement from './page/DaftarKolam';
 
 
@@ -75,7 +74,6 @@ function App() {
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
           <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
-          <Route path="/IsiKabarLele" element={<IsiKabarLele />} />
         </Routes>
       </Fragment>
     </Router>
