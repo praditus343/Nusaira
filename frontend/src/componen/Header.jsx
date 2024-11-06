@@ -40,11 +40,11 @@ const Header = () => {
     '/Pemasukan': 'Pemasukan',
     '/Laporan': 'Laporan',
     '/KabarLele': 'Kabar Lele',
-    '/AksesPremium' : 'Akses Premium',
-    '/Ringkasan' : 'Ringkasan',
-    '/ChatAi' : 'NusAI',
-    '/PriceHistory' : 'Harga Lele / 10 Oktober 2024',
-    '/PriceTrend' : 'Harga Lele / Trend',
+    '/AksesPremium': 'Akses Premium',
+    '/Ringkasan': 'Ringkasan',
+    '/ChatAi': 'NusAI',
+    '/PriceHistory': 'Harga Lele / 10 Oktober 2024',
+    '/PriceTrend': 'Harga Lele / Trend',
     '/MyBooks': 'Buku Saya / E-Learning',
     '/Invoice': 'Invoice',
     '/RingkasanLearning': 'Ringkasan / E-Learning',
@@ -62,25 +62,25 @@ const Header = () => {
     "8": "Penyakit Lesi Kulit",
     "9": "Penyakit stes",
   };
-  
-  
-  const artikelId = location.pathname.split('/').pop(); 
+
+
+  const artikelId = location.pathname.split('/').pop();
   const artikelTitle = titlePenyakit[artikelId] || `Artikel ID: ${artikelId}`;
-  
-  const title = location.pathname.startsWith('/artikel/')
-    ? `Penyakit Lele / ${artikelTitle}`
-    : location.pathname.includes('/supplier/')
-    ? 'Detail Harga'
-    : titleMap[location.pathname] || 'Unknown Page';
-  
+  const title = location.pathname.startsWith('/kabar-lele')
+    ? 'Artikel & Blog'
+    : location.pathname.startsWith('/artikel/')
+      ? `Penyakit Lele / ${artikelTitle}`
+      : location.pathname.includes('/supplier/')
+        ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
+
   console.log('Artikel ID:', artikelId);
   console.log('Judul dari titlePenyakit:', artikelTitle);
-  
+
   const handleProfileClick = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
 
-  
+
 
   return (
     <header className="bg-white shadow-sm">

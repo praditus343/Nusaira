@@ -13,6 +13,7 @@ import AquacultureDashboard from '../componen/AquacultureDashboard.jsx';
 import ActivePondsDashboard from '../componen/ActivePondsDashboard.jsx';
 import { Link } from 'react-router-dom';
 
+
 const DashboardContent = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isDashboardView, setIsDashboardView] = useState(true);
