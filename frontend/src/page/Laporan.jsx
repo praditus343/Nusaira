@@ -1,162 +1,278 @@
-import React, { useState } from 'react';
-import { Calendar, ChevronRight } from 'lucide-react';
-import Footer from '../componen/Footer';
-import Sidebar from '../componen/SideBar';
-import AIFloatingButton from '../componen/AiFloatingButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import Header from '../componen/Header';
+import React from "react";
+import {
+  BarChart3,
+  Droplets,
+  Activity,
+  Database,
+  LineChart,
+  TrendingUp,
+} from "lucide-react";
+import Footer from "../componen/Footer";
+import Sidebar from "../componen/SideBar";
+import AIFloatingButton from "../componen/AiFloatingButton";
+import Header from "../componen/Header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-const LaporanDashboard = () => {
-    const [filter, setFilter] = useState('Semua');
-    const [clickedIndex, setClickedIndex] = useState(null); 
-
-    const laporans = [
-        {
-            type: 'Laporan Tambak',
-            date: '10 Oktober 2024',
-            description: 'Berikut merupakan hasil laporan dari tambak lele segar. Hasilnya adalah....',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '11 Oktober 2024',
-            description: 'Parameter pH air pada kolam A1 berada di bawah normal, diperlukan tindakan segera...',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '12 Oktober 2024',
-            description: 'Hasil panen dari kolam B2 menunjukkan peningkatan, rata-rata berat lele mencapai 1,5 kg.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '13 Oktober 2024',
-            description: 'Kualitas air di kolam C3 stabil, dengan kadar oksigen terlarut berada pada level ideal.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '14 Oktober 2024',
-            description: 'Penyebaran pakan telah dilakukan secara merata, hasil observasi menunjukkan pertumbuhan yang baik.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '15 Oktober 2024',
-            description: 'Ditemukan adanya penyakit pada beberapa ikan di kolam D4, diperlukan tindakan medis segera.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '16 Oktober 2024',
-            description: 'Monitoring harian menunjukkan adanya peningkatan kadar amonia, perlu evaluasi lebih lanjut.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '17 Oktober 2024',
-            description: 'Laporan menyatakan bahwa penggunaan teknologi baru dalam pemberian pakan terbukti efektif.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '18 Oktober 2024',
-            description: 'Kondisi kolam E5 sangat baik, tidak ada tanda-tanda stres pada ikan selama observasi.',
-        },
-        {
-            type: 'Laporan Tambak',
-            date: '19 Oktober 2024',
-            description: 'Analisis kualitas air menunjukkan kebutuhan untuk mengganti 30% air dalam kolam F6.',
-        },
-
-    ];
-
-    const filteredLaporans = laporans.filter(laporan =>
-        filter === 'Semua' || laporan.type === filter
-    );
-
-    const handleIconClick = (index) => {
-        setClickedIndex((prevIndex) => (prevIndex === index ? null : index));
-    };
-
-    return (
-        <div className="bg-white w-full min-h-screen">
-            {/* Header */}
-            <Header/>
-            {/* Filter Section */}
-            <div className="mt-4 px-4 ml-4 mr-4">
-                <div className="p-4">
-                    <div className="flex flex-col sm:flex-row justify-between items-center">
-                        <div>
-                            <h1 className="text-xl font-medium">Catatan Laporan Tambak Lele Segar</h1>
-                            <div className="flex items-center text-gray-600 mt-1">
-                                <Calendar size={16} className="mr-2" />
-                                <span>10 Oktober 2024</span>
-                            </div>
-                        </div>
-                        <div className="flex items-center space-x-4 mt-8 sm:mt-0">
-                            <div className="flex items-center space-x-2">
-                                <span className="text-gray-600">Daftar Laporan:</span>
-                                <div className="relative">
-                                    <select
-                                        value={filter}
-                                        onChange={(e) => setFilter(e.target.value)}
-                                        className="px-4 py-2 pr-10 border rounded-md bg-white appearance-none"
-                                    >
-                                        <option value="Semua">Semua</option>
-                                        <option value="Laporan Tambak">Laporan Tambak</option>
-                                    </select>
-                                    <FontAwesomeIcon
-                                        icon={faChevronDown}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
-                                    />
-                                </div>
-                            </div>
-
-                            <button className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
-                                Export Laporan
-                            </button>
-                        </div>
-                    </div>
-                </div>
+function LaporanDashboard() {
+  return (
+    <div className="space-y-6 space-x-6 bg-white w-full min-h-screen ">
+      <Header />
+      <div className="p-6 ">
+        {/* Header Section */}
+        <div className="mb-6 mr-4">
+          <h1 className="text-2xl font-bold mb-4">
+            Laporan Budidaya Tambak Lele
+          </h1>
+          <div className="flex gap-4 items-end mb-4">
+            <div className="flex-1 relative">
+              <label className="block text-sm mb-2">Tambak:</label>
+              <div className="relative">
+                <select className="w-full p-2 pr-10 border rounded-md appearance-none">
+                  <option>Lele segar</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
+            </div>
+            <div className="flex-1 relative">
+              <label className="block text-sm mb-2">Batch:</label>
+              <div className="relative">
+                <select className="w-full p-2 pr-10 border rounded-md appearance-none">
+                  <option>10 Oktober 2024</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
             </div>
 
-            {/* Card Laporan Section */}
-            <div className="max-h-[600px] overflow-y-auto p-4 ml-6 mr-6">
-                {filteredLaporans.map((laporan, index) => (
-                    <div
-                        key={index}
-                        className="flex items-start gap-4 p-4 bg-blue-100 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 mb-4"
-                    >
-                        <div className="w-3 h-3 mt-2 rounded-full bg-blue-500" />
-                        <div className="flex flex-col w-1/4">
-                            <span className="text-sm font-medium text-blue-600">{laporan.type}</span>
-                            <div className="flex items-center text-xs text-gray-500">
-                                <Calendar size={12} className="mr-1" />
-                                {laporan.date}
-                            </div>
-                        </div>
-                        <div className="flex flex-col w-2/3">
-                            <p className="text-sm text-gray-800 mb-1">{laporan.description}</p>
-                        </div>
-                        <ChevronRight
-                            size={24}
-                            className={`text-blue-500 cursor-pointer transition-transform duration-300 ${clickedIndex === index ? 'rotate-90' : ''
-                                }`}
-                            onClick={() => handleIconClick(index)}
-                        />
-                    </div>
-                ))}
+            <div className="flex gap-2">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                Budidaya
+              </button>
+              <button className="border border-gray-300 px-4 py-2 rounded-md">
+                Keuangan
+              </button>
             </div>
+          </div>
         </div>
-    );
-};
+
+        {/* Main Content Card */}
+        <div className="bg-white p-6 rounded-lg shadow border  border-blue-500 mr-4">
+          {/* Card Header */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-semibold">Tambak Lele Segar</h2>
+            <div className="flex gap-2">
+              <div className="relative">
+                <select className="border p-2 pr-10 rounded-md appearance-none">
+                  <option>Pilih Kolam</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
+              <button className="bg-green-500 text-white px-4 py-2 rounded-md">
+                Ekspor
+              </button>
+            </div>
+          </div>
+
+          {/* Report Title */}
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-bold">LAPORAN BUDIDAYA</h2>
+            <h3 className="text-blue-500">Lele Segar</h3>
+          </div>
+
+          {/* Info Section */}
+          <div className="mb-8">
+            <div className="flex mb-1">
+              <span className="font-medium w-32">Lokasi Tambak</span>
+              <span className="mr-2">:</span>
+              <span>Jawa Tengah, Boyolali, Tegalsari</span>
+            </div>
+            <div className="flex mb-1">
+              <span className="font-medium w-32">Jumlah Kolam</span>
+              <span className="mr-2">:</span>
+              <span>4</span>
+            </div>
+            <div className="flex mb-1">
+              <span className="font-medium w-32">Periode Siklus</span>
+              <span className="mr-2">:</span>
+              <span>1 Oktober 2024 - Sekarang</span>
+            </div>
+          </div>
+
+          <div className="text-center mb-8">
+            <h3 className="text-blue-700 inline-block border-b-4 border-blue-700 pb-1">
+              Detail
+            </h3>
+          </div>
+
+          {/* Metrics First Row */}
+          <div className="grid grid-cols-3 gap-8 mb-8">
+            <MetricCard
+              icon={<BarChart3 />}
+              title="Hasil Panen"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
+            <MetricCard
+              icon={<Activity />}
+              title="Nilai SFR"
+              description="Nilai Survival Rate (SR) dalam nilai yang baik (&gt;80%)"
+            />
+            <MetricCard
+              icon={<Database />}
+              title="Nilai FCR"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
+          </div>
+
+          {/* Metrics Second Row */}
+          <div className="grid grid-cols-3 gap-8 mb-8">
+            <MetricCard
+              icon={<Droplets />}
+              title="Kualitas Air"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
+            <MetricCard
+              icon={<LineChart />}
+              title="Daya Dukung Lahan"
+              description="Daya dukung lahan sudah dipertimbangkan dengan baik"
+            />
+            <MetricCard
+              icon={<TrendingUp />}
+              title="Pertumbuhan Lele"
+              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
+            />
+          </div>
+
+          {/* Performance Indicators */}
+          <div className="flex gap-6 mb-4">
+            <Indicator color="yellow-500" text="Peforma Kolam Biasa" />
+            <Indicator color="green-500" text="Peforma Kolam Terbaik" />
+            <Indicator color="red-500" text="Peforma Kolam Terburuk" />
+          </div>
+
+          {/* Table Section */}
+          <TableSection />
+
+          {/* Notes Section */}
+          <div className="mt-6">
+            <p className="font-medium mb-2">Keterangan:</p>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Penilaian peforma kolam bersifat relatif</li>
+              <li>
+                Penilaian kolam dengan peforma baik berdasarkan hasil panen
+                optimal, nilai FCR rendah, dan nilai SR tinggi.
+              </li>
+              <li>
+                Penilaian kolam dengan peforma buruk berdasarkan hasil panen
+                rendah, nilai FCR tinggi, dan nilai SR rendah.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MetricCard({ icon, title, description }) {
+  return (
+    <div className="text-center">
+      {React.cloneElement(icon, {
+        className: "w-12 h-12 mx-auto mb-2 text-blue-500",
+      })}
+      <p className="font-medium mb-2">{title}</p>
+      <p className="text-sm text-gray-600">{description}</p>
+    </div>
+  );
+}
+
+function Indicator({ color, text }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className={`w-3 h-3 rounded-full bg-${color}`}></div>
+      <span>{text}</span>
+    </div>
+  );
+}
+
+function TableSection() {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="bg-blue-500 text-white">
+            <th className="py-2 px-4 border">Nomor Kolam</th>
+            <th className="py-2 px-4 border">Luas Kolam</th>
+            <th className="py-2 px-4 border">DOC (Hari)</th>
+            <th className="py-2 px-4 border">Jumlah Benih</th>
+            <th className="py-2 px-4 border">Padat Tebar</th>
+            <th className="py-2 px-4 border">Total Pakan</th>
+            <th className="py-2 px-4 border">Biomassa Panen</th>
+            <th className="py-2 px-4 border">Size Panen</th>
+            <th className="py-2 px-4 border">FCR</th>
+            <th className="py-2 px-4 border">SR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="bg-green-500">
+            <td className="py-2 px-4 border">Kolam B3</td>
+            <td className="py-2 px-4 border">1900 m²</td>
+            <td className="py-2 px-4 border">60</td>
+            <td className="py-2 px-4 border">100.000</td>
+            <td className="py-2 px-4 border">60(mg/m²)</td>
+            <td className="py-2 px-4 border">15 kg</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">100%</td>
+          </tr>
+          <tr className="bg-yellow-500">
+            <td className="py-2 px-4 border">Kolam B4</td>
+            <td className="py-2 px-4 border">1800 m²</td>
+            <td className="py-2 px-4 border">60</td>
+            <td className="py-2 px-4 border">100.000</td>
+            <td className="py-2 px-4 border">48(mg/m²)</td>
+            <td className="py-2 px-4 border">12 kg</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">100%</td>
+          </tr>
+          <tr className="bg-blue-500 text-white">
+            <td colSpan="5" className="py-2 px-4 text-center">
+              Total
+            </td>
+            <td className="py-2 px-4 border">12 kg</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border">0</td>
+            <td className="py-2 px-4 border"> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 function Laporan() {
-    return (
-        <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex-1 overflow-auto flex flex-col">
-                <LaporanDashboard />
-                <AIFloatingButton />
-                <Footer className="mt-10" />
-            </div>
-        </div>
-    );
+  return (
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-1">
+        <LaporanDashboard />
+        <Footer />
+        <AIFloatingButton />
+      </div>
+    </div>
+  );
 }
 
 export default Laporan;
