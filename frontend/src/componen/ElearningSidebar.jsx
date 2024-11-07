@@ -121,7 +121,7 @@ const ElearningSidebar = () => {
               icon={faStar}
               label="Favorit"
               isSidebarOpen={isSidebarOpen}
-              path="/favorit"
+              path="/BukuFavorit"
             />
           </nav>
         </>
