@@ -1,39 +1,41 @@
 import React, { Fragment } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
-import Login from './page/login';
-import SignUp3 from './page/singup3';
-import SignUp2 from './page/singup2';
-import SignUp from './page/singup';
-import LandingPage from './page/landingPage';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import AquacultureDashboard from './componen/AquacultureDashboard';
+import ElearningSidebar from './componen/ElearningSidebar';
+import ArticlePage from './page/ArtikelPenyakit';
+import MyBooks from './page/BukuSaya';
+import ChatAi from './page/ChatAi';
+import PondManagement from './page/DaftarKolam';
+import FinalStepUI from './page/FInalStep';
+import HargaLele from './page/HargaLele';
 import Homeuser from './page/Home';
 import InputTambak from './page/InputTambakBaru';
-import TambakSimulation from './page/Simulasi';
-import UserProfile from './page/UserProfile';
 import Invoice from './page/Invoice';
-import Premium from './page/Premium';
-import HargaLele from './page/HargaLele';
-import PenyakitLele from './page/PenyakitLele';
-import Notifikasi from './page/Notifikasi';
-import FinalStepUI from './page/FInalStep';
-import Pengeluaran from './page/Pengeluaran';
-import Pemasukan from './page/Pemasukan';
-import Management from './page/ManajemenTambak';
 import KabarLele from './page/KabarLele';
+import LandingPage from './page/landingPage';
 import Laporan from './page/Laporan';
-import Ringkasan from './page/Ringkasan';
-import AquacultureDashboard from './componen/AquacultureDashboard';
-import ChatAi from './page/ChatAi';
+import Login from './page/login';
+import LupaPass1 from './page/LupaPass1';
+import LupaPass2 from './page/LupaPass2';
+import LupaPass3 from './page/LupaPass3';
+import Management from './page/ManajemenTambak';
+import Notifikasi from './page/Notifikasi';
+import Pemasukan from './page/Pemasukan';
+import Pembayaran from './page/Pembayaran';
+import PengatutanTambak from './page/PengaturanTambak';
+import Pengeluaran from './page/Pengeluaran';
+import PenyakitLele from './page/PenyakitLele';
+import Premium from './page/Premium';
 import PriceHistory from './page/PriceHistory';
 import PriceTrending from './page/PriceTrending';
-import SupplierDetail from './page/SupplierDetail';
-import SuccessfulPayment from './componen/PembayaranBerhasil';
-import ElearningSidebar from './componen/ElearningSidebar';
-import MyBooks from './page/BukuSaya';
+import Ringkasan from './page/Ringkasan';
 import RingkasanLearning from './page/RingkasanLearning';
-import ArticlePage from './page/ArtikelPenyakit';
-import PengatutanTambak from './page/PengaturanTambak';
-import IsiKabarLele from './page/IsiKabarLele';
-import PondManagement from './page/DaftarKolam';
+import TambakSimulation from './page/Simulasi';
+import SignUp from './page/singup';
+import SignUp2 from './page/singup2';
+import SignUp3 from './page/singup3';
+import SupplierDetail from './page/SupplierDetail';
+import UserProfile from './page/UserProfile';
 
 
 function App() {
@@ -68,14 +70,16 @@ function App() {
           <Route path="/PriceHistory" element={<PriceHistory />} />
           <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplierId" element={<SupplierDetail />} />
-          <Route path="/PembayaranBerhasil" element={<SuccessfulPayment />} />
           <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
           <Route path="/MyBooks" element={<MyBooks />} />
           <Route path="/Invoice" element={<Invoice />} />
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
           <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
-          <Route path="/IsiKabarLele" element={<IsiKabarLele />} />
+          <Route path="/LupaPass1" element={<LupaPass1 />} />
+          <Route path="/LupaPass2" element={<LupaPass2 />} />
+          <Route path="/LupaPass3" element={<LupaPass3 />} />
+          <Route path="/Pembayaran" element={<Pembayaran />} />
         </Routes>
       </Fragment>
     </Router>

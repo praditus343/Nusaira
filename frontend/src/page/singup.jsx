@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Impor useNavigate
-import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
+import { Link, useNavigate } from "react-router-dom"; 
+import Swal from "sweetalert2";
+import img from "../assets/img/login_singup/ls5.png"; 
 
 const SignUpPage = () => {
-  const navigate = useNavigate(); // Inisialisasi hook navigasi
+  const navigate = useNavigate(); 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -26,27 +27,32 @@ const SignUpPage = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     setError("");
-
-    // Validasi dasar
+  
     if (!Object.values(formData).every((field) => field)) {
       setError("Semua field harus diisi.");
       return;
     }
-
+  
     if (formData.password !== formData.confirmPassword) {
       setError("Kata Sandi tidak cocok.");
       return;
     }
-
+  
     setLoading(true);
-
-    // Simulasi pendaftaran
+  
     setTimeout(() => {
       setLoading(false);
-      alert("Lanjutkan Pendaftaran! 🚀");
-      navigate("/signup2"); // Arahkan ke halaman signUp2
+      Swal.fire({
+        title: "Pendaftaran Berhasil!",
+        text: "Lanjutkan pendaftaran! 🚀",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/signup2");
+      });
     }, 2000);
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">
@@ -54,7 +60,7 @@ const SignUpPage = () => {
         {/* Bagian Kiri: Ilustrasi */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src={img} // Gunakan variabel img"
+            src={img}
             alt="Signup Illustration"
             className="max-w-sm"
           />
@@ -255,7 +261,7 @@ const SignUpPage = () => {
               Masuk
             </Link>
           </p>
-          
+
           {/* Navigation Dots */}
           <div className="flex items-center justify-center mt-4">
             <Link to="/" className="text-blue-500 hover:underline mx-2">
