@@ -27,8 +27,8 @@ const ActivePondsDashboard = () => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 ml-4 mr-4 border-2 mb-10">
-            <div className="mb-4 flex justify-between items-center">
+        <div className="bg-white rounded-lg shadow-md  ml-4 mr-4 border-2 mb-10 border-gray-300 mt-10">
+            <div className="mb-4 flex justify-between items-center ml-6 mr-6 mt-6">
                 <h2 className="text-lg font-medium text-gray-500">Daftar Kolam Aktif</h2>
                 <div className="flex items-center mb-4">
                     <div className="relative flex-1">
@@ -48,9 +48,12 @@ const ActivePondsDashboard = () => {
                     <h4 className="text-lg font-medium ml-4 text-gray-500">Data Budidaya</h4>
                 </div>
             </div>
-            <hr className="w-[145vh] border-gray-300 border" style={{ position: "relative", left: "50%", transform: "translateX(-50%)" }} />
+            <hr className="w-full border-gray-300 border" style={{ position: "relative", left: "50%", transform: "translateX(-50%)" }} />
+            <div className='mr-6 ml-6'>
+                
             <FishTable ponds={ponds} />
-            <div className="flex justify-between items-center mt-6">
+            </div>
+            <div className="flex justify-between items-center mt-6 ml-6 mr-6 mb-6">
                 <button className="text-blue-500 font-medium text-lg hover:" onClick={handleAddNewPond}>
                     Tambah Kolam Baru
                 </button>

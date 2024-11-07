@@ -5,6 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { TambahDataKematianModal, TambahDataPakanModal, TambahDataPanenModal, TambahDataPenyakitModal, TambahJumlahAnco, TambahLeleSegerModal } from './ModalTambak';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import MetricModal from './MetricsModal';
+import { Link } from 'react-router-dom';
 
 
 
@@ -170,7 +171,7 @@ const AquacultureDashboard = ({ data = {} }) => {
 
 
   return (
-    <div className="w-full max-w-6xl p-4 space-y-4">
+    <div className="w-full max-w-6xl p-4">
       {/* Buttons for each modal */}
       <div className="flex flex-wrap gap-2 mt-2 mb-5">
         {buttons.map((text) => (
@@ -193,7 +194,7 @@ const AquacultureDashboard = ({ data = {} }) => {
       {activeModal === 'TambahJumlahAnco' && <TambahJumlahAnco isOpen={true} onClose={closeModal} />}
 
       <div
-      className="overflow-x-auto flex space-x-4 py-4 cursor-grab"
+      className="overflow-x-auto flex space-x-5 py-4 cursor-grab"
       ref={sliderRef}
       onMouseDown={onMouseDown}
       onMouseLeave={onMouseLeave}
@@ -203,7 +204,7 @@ const AquacultureDashboard = ({ data = {} }) => {
       {metrics.map((metric) => (
         <div
           key={metric.label}
-          className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[200px] mx-2"
+          className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2"
           onClick={() => openModal(metric)}
 
         >
@@ -224,7 +225,7 @@ const AquacultureDashboard = ({ data = {} }) => {
     </div>
 
       {/* Main Content Card */}
-      <Card className='border-2'>
+      <Card className='border-2 w-[1180px] mt-10'>
         <div className="flex justify-between items-center m-6">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
@@ -246,7 +247,7 @@ const AquacultureDashboard = ({ data = {} }) => {
               </span>
 
             </div>
-            <a href="#" className="text-blue-500">Detail kolam</a>
+            <Link to="/PengaturanTambak" className="text-blue-500">Detail kolam</Link>
           </div>
           <div className="flex space-x-2">
             <h4 className='text-gray-500'>Data budidaya</h4>
