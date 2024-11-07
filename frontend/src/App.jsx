@@ -37,6 +37,7 @@ import SignUp3 from './page/singup3';
 import SupplierDetail from './page/SupplierDetail';
 import UserProfile from './page/UserProfile';
 import BukuFavorit from './page/BukuFavorit';
+import ELearning from './page/ELearning';
 
 
 
@@ -83,6 +84,7 @@ function App() {
           <Route path="/LupaPass3" element={<LupaPass3 />} />
           <Route path="/Pembayaran" element={<Pembayaran />} />
           <Route path="/BukuFavorit" element={<BukuFavorit />} />
+          <Route path="/ELearning" element={<ELearning />} />
         </Routes>
       </Fragment>
     </Router>

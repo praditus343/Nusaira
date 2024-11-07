@@ -154,7 +154,7 @@ const Sidebar = () => {
             <MenuItem
               label="Bootcamp"
               isSidebarOpen={isSidebarOpen}
-              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/Budidaya" }]}
+              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/ELearning" }]}
             />
             <MenuItem
               label="Berlangganan"
