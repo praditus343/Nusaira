@@ -15,8 +15,7 @@ const SignUpPage = () => {
   const correctVerificationCode = "1111";
 
   const handleVerificationInput = (e, idx) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // Only allow numbers
-
+    const value = e.target.value.replace(/[^0-9]/g, ""); 
     if (value.length <= 1) {
       const updatedCode = [...verificationCode];
       updatedCode[idx] = value;
@@ -28,7 +27,6 @@ const SignUpPage = () => {
         inputRefs.current[idx - 1].focus();
       }
 
-      // Check if all fields are filled
       if (
         updatedCode.every((code) => code !== "") &&
         updatedCode.join("").length === 4
@@ -80,7 +78,6 @@ const SignUpPage = () => {
       }
       setVerificationCode(newVerificationCode);
 
-      // Focus the next empty input or the last input if all are filled
       const nextEmptyIndex = newVerificationCode.findIndex(
         (code) => code === ""
       );
