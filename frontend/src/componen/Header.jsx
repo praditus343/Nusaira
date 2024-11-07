@@ -49,7 +49,9 @@ const Header = () => {
     '/Invoice': 'Invoice',
     '/RingkasanLearning': 'Ringkasan / E-Learning',
     '/Pembayaran': 'Pembayaran',
-    '/PengaturanTambak': 'Pengaturan Tambak'
+    '/PengaturanTambak': 'Pengaturan Tambak',
+    '/BukuFavorit': 'Favorit / E-Learning',
+    '/ELearning': 'E-Learning'
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",

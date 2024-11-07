@@ -136,7 +136,6 @@ const Sidebar = () => {
               children={[
                 { icon: faCartPlus, label: "Pengeluaran", path: "/Pengeluaran" },
                 { icon: faMoneyBill, label: "Pemasukan", path: "/Pemasukan" },
-                { icon: faClipboardList, label: "Ringkasan", path: "/Ringkasan" },
                 { icon: faClipboardList, label: "Laporan", path: "/Laporan" },
               ]}
             />
@@ -154,7 +153,7 @@ const Sidebar = () => {
             <MenuItem
               label="Bootcamp"
               isSidebarOpen={isSidebarOpen}
-              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/Budidaya" }]}
+              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/ELearning" }]}
             />
             <MenuItem
               label="Berlangganan"

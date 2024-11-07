@@ -28,7 +28,6 @@ import PenyakitLele from './page/PenyakitLele';
 import Premium from './page/Premium';
 import PriceHistory from './page/PriceHistory';
 import PriceTrending from './page/PriceTrending';
-import Ringkasan from './page/Ringkasan';
 import RingkasanLearning from './page/RingkasanLearning';
 import TambakSimulation from './page/Simulasi';
 import SignUp from './page/singup';
@@ -36,6 +35,9 @@ import SignUp2 from './page/singup2';
 import SignUp3 from './page/singup3';
 import SupplierDetail from './page/SupplierDetail';
 import UserProfile from './page/UserProfile';
+import BukuFavorit from './page/BukuFavorit';
+import ELearning from './page/ELearning';
+
 
 
 function App() {
@@ -64,7 +66,6 @@ function App() {
           <Route path="/Pemasukan" element={<Pemasukan />} />  
           <Route path="/Laporan" element={<Laporan />} />  
           <Route path="/KabarLele" element={<KabarLele />} /> 
-          <Route path="/Ringkasan" element={<Ringkasan />} />
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard />} /> 
           <Route path="/ChatAi" element={<ChatAi />} />
           <Route path="/PriceHistory" element={<PriceHistory />} />
@@ -80,6 +81,8 @@ function App() {
           <Route path="/LupaPass2" element={<LupaPass2 />} />
           <Route path="/LupaPass3" element={<LupaPass3 />} />
           <Route path="/Pembayaran" element={<Pembayaran />} />
+          <Route path="/BukuFavorit" element={<BukuFavorit />} />
+          <Route path="/ELearning" element={<ELearning />} />
         </Routes>
       </Fragment>
     </Router>
