@@ -18,6 +18,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import ManagementModal from '../componen/ManajemenModal';
 import Header from '../componen/Header';
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
+
 
 const DashboardManagement = () => {
     const [waterData, setWaterData] = useState([]);
@@ -109,6 +112,65 @@ const DashboardManagement = () => {
     const analysis = analyzeData(waterData);
     console.log("Analysis results:", analysis);
 
+    const exportToPDF = () => {
+        const doc = new jsPDF();
+        
+        doc.setFontSize(20);
+        doc.text("Laporan Analisis Kualitas Air", 105, 20, { align: "center" });
+        doc.setFontSize(12);
+        doc.text(`Lokasi: ${lokasi}`, 105, 30, { align: "center" });
+        doc.text(`Tanggal: ${new Date().toLocaleDateString()}`, 105, 40, { align: "center" });
+        
+        doc.setFontSize(16);
+        doc.text("Analisis Parameter Kualitas Air", 20, 60);
+        
+        const tableColumn = ["Parameter", "Nilai", "Status", "Deskripsi"];
+        const tableRows = [
+            ["pH", `${analysis.ph.value}`, `${analysis.ph.status}`, "Menunjukkan tingkat keasaman atau kebasaan air."],
+            ["Suhu", `${analysis.suhu.value} °C`, `${analysis.suhu.status}`, "Menunjukkan suhu air dalam satuan Celsius (°C)."],
+            ["Oksigen", `${analysis.oksigen.value} mg/L`, `${analysis.oksigen.status}`, "Menunjukkan jumlah oksigen terlarut dalam air."],
+            ["Salinitas", `${analysis.salinitas.value} ppt`, `${analysis.salinitas.status}`, "Menunjukkan tingkat kandungan garam dalam air."]
+        ];
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 70,
+            theme: 'grid',
+            styles: { fontSize: 10 },
+            headStyles: { fillColor: [135, 206, 235], halign: 'center' },
+        });
+        
+        
+        let yPosition = doc.previousAutoTable.finalY + 20;
+        doc.setFontSize(16);
+        doc.text("Kesimpulan dan Rekomendasi", 20, yPosition);
+        
+        yPosition += 10;
+        doc.setFontSize(12);
+        if (analysis.ph.status !== 'Normal') {
+            doc.text("- pH tidak normal. Pertimbangkan untuk melakukan penyesuaian keasaman air.", 20, yPosition, { maxWidth: 170 });
+            yPosition += 10;
+        }
+        if (analysis.suhu.status !== 'Normal') {
+            doc.text("- Suhu tidak normal. Atur suhu lingkungan untuk mencapai kondisi yang ideal.", 20, yPosition, { maxWidth: 170 });
+            yPosition += 10;
+        }
+        if (analysis.oksigen.status !== 'Normal') {
+            doc.text("- Oksigen terlarut rendah. Tambahkan aerasi untuk meningkatkan kadar oksigen.", 20, yPosition, { maxWidth: 170 });
+            yPosition += 10;
+        }
+        if (analysis.salinitas.status !== 'Normal') {
+            doc.text("- Salinitas tidak sesuai. Sesuaikan kandungan garam dalam air.", 20, yPosition, { maxWidth: 170 });
+            yPosition += 10;
+        }
+        if (Object.values(analysis).every(param => param.status === 'Normal')) {
+            doc.text("- Semua parameter dalam kondisi normal. Tidak ada tindakan khusus yang diperlukan.", 20, yPosition, { maxWidth: 170 });
+        }
+        
+        
+        doc.save(`Laporan_Kualitas_Air_${lokasi}.pdf`);
+    };
+
 
     return (
         <div className="bg-white w-full min-h-screen">
@@ -138,7 +200,7 @@ const DashboardManagement = () => {
                                 </div>
                             </div>
 
-                            <button className="px-10 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+                            <button onClick={exportToPDF} className="px-10 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
                                 Export Laporan
                             </button>
                         </div>
