@@ -119,7 +119,7 @@ const PondTable = () => {
             {activeModal === 'TambahJumlahAnco' && <TambahJumlahAnco isOpen={true} onClose={closeModal} />}
 
             {/* Main Card */}
-            <CustomCard className="p-4 ml-5 mr-5">
+            <CustomCard className="p-4 ml-5 mr-5 border-2 border-gray-300">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-medium">Detail Daftar Kolam</h3>
                     <div className="flex items-center gap-4">
