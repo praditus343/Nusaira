@@ -38,7 +38,7 @@ const Header = () => {
     '/FinalStep': 'Final Step',
     '/Pengeluaran': 'Pengeluaran',
     '/Pemasukan': 'Pemasukan',
-    '/Laporan': 'Laporan',
+    '/LaporanBudidaya': 'Laporan',
     '/KabarLele': 'Kabar Lele',
     '/AksesPremium': 'Akses Premium',
     '/Ringkasan': 'Ringkasan',
@@ -111,27 +111,27 @@ const Header = () => {
               </button>
 
               {isProfileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-blue-100 rounded-lg shadow-lg py-2 z-50">
-                  <div className="px-4 py-2 text-center bg-blue-100">
+                <div className="absolute right-0 mt-2 w-64 border border-blue-600 rounded-lg shadow-xl py-2 z-50 bg-white">
+                  <div className="px-4 py-2 text-center bg-white">
                     <h5 className="text-blue-500 font-medium">Herri Saputra</h5>
                   </div>
                   <div
                     onClick={() => navigate('/UserProfile')}
-                    className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
+                    className="px-4 py-2 bg-white hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
                   >
                     <FontAwesomeIcon icon={faUser} className="text-blue-500" />
                     <span className="text-blue-500 font-medium">Profile</span>
                   </div>
                   <div
                     onClick={() => navigate('/PengaturanTambak')}
-                    className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
+                    className="px-4 py-2 bg-white hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
                   >
                     <FontAwesomeIcon icon={faCog} className="text-blue-500" />
                     <span className="text-blue-500 font-medium">Pengaturan Tambak</span>
                   </div>
                   <div
                     onClick={() => navigate('/')}
-                    className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
+                    className="px-4 py-2 bg-white hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="text-blue-500" />
                     <span className="text-blue-500 font-medium">Keluar</span>
