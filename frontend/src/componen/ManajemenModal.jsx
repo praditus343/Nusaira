@@ -31,7 +31,6 @@ const ManagementModal = ({ isOpen, onClose, onSubmit }) => {
         const parsedOksigen = parseFloat(oksigen);
         const parsedSalinitas = parseFloat(salinitas);
         
-        // Validasi input
         if (
             isNaN(parsedPh) || parsedPh < 0 || parsedPh > 14 ||
             isNaN(parsedSuhu) || parsedSuhu < 0 ||
@@ -49,7 +48,6 @@ const ManagementModal = ({ isOpen, onClose, onSubmit }) => {
             return;
         }
     
-        // Kirim data yang sudah diparsing ke onSubmit
         onSubmit({ 
             parsedPh, 
             parsedSuhu, 
@@ -57,7 +55,7 @@ const ManagementModal = ({ isOpen, onClose, onSubmit }) => {
             parsedSalinitas 
         });
         
-        onClose(); // Tutup modal setelah pengiriman
+        onClose(); 
     };
     
     return (

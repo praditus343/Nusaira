@@ -13,7 +13,6 @@ import InputTambak from './page/InputTambakBaru';
 import Invoice from './page/Invoice';
 import KabarLele from './page/KabarLele';
 import LandingPage from './page/landingPage';
-import Laporan from './page/Laporan';
 import Login from './page/login';
 import LupaPass1 from './page/LupaPass1';
 import LupaPass2 from './page/LupaPass2';
@@ -37,6 +36,7 @@ import SupplierDetail from './page/SupplierDetail';
 import UserProfile from './page/UserProfile';
 import BukuFavorit from './page/BukuFavorit';
 import ELearning from './page/ELearning';
+import LaporanBudidaya from './page/LaporanBudidaya';
 
 
 
@@ -64,7 +64,7 @@ function App() {
           <Route path="/FinalStep" element={<FinalStepUI />} />
           <Route path="/Pengeluaran" element={<Pengeluaran />} />
           <Route path="/Pemasukan" element={<Pemasukan />} />  
-          <Route path="/Laporan" element={<Laporan />} />  
+          <Route path="/LaporanBudidaya" element={<LaporanBudidaya />} />  
           <Route path="/KabarLele" element={<KabarLele />} /> 
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard />} /> 
           <Route path="/ChatAi" element={<ChatAi />} />

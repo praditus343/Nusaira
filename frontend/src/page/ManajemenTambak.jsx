@@ -243,13 +243,13 @@ const DashboardManagement = () => {
 
                 {/* Analysis Report */}
                 <Card>
-                    <CardHeader>
+                    <CardHeader className='border-gray-300 mb-6'>
                         <CardTitle>Laporan Analisis Kualitas Air</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             {/* pH Air */}
-                            <div className="p-4 border rounded-lg">
+                            <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">pH Air</h3>
                                 <p className="text-2xl mb-2">{analysis.ph ? analysis.ph.value : 'N/A'}</p>
                                 <p className={`text-md font-semibold ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
@@ -258,7 +258,7 @@ const DashboardManagement = () => {
                             </div>
 
                             {/* Suhu Air */}
-                            <div className="p-4 border rounded-lg">
+                            <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Suhu Air</h3>
                                 <p className="text-2xl mb-2">{analysis.suhu ? analysis.suhu.value : 'N/A'}</p>
                                 <p className={`text-md font-semibold ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
@@ -268,7 +268,7 @@ const DashboardManagement = () => {
                             </div>
 
                             {/* Oksigen Terlarut */}
-                            <div className="p-4 border rounded-lg">
+                            <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Oksigen Terlarut</h3>
                                 <p className="text-2xl mb-2">{analysis.oksigen ? analysis.oksigen.value : 'N/A'}</p>
                                 <p className={`text-md font-semibold ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
@@ -278,7 +278,7 @@ const DashboardManagement = () => {
                             </div>
 
                             {/* Salinitas */}
-                            <div className="p-4 border rounded-lg">
+                            <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Salinitas</h3>
                                 <p className="text-2xl mb-2">{analysis.salinitas ? analysis.salinitas.value : 'N/A'}</p>
                                 <p className={`text-md font-semibold ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
