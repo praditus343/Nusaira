@@ -37,6 +37,7 @@ import UserProfile from './page/UserProfile';
 import BukuFavorit from './page/BukuFavorit';
 import ELearning from './page/ELearning';
 import LaporanBudidaya from './page/LaporanBudidaya';
+import KabarLeleArticle from './page/IsiKabarLele';
 
 
 
@@ -83,6 +84,7 @@ function App() {
           <Route path="/Pembayaran" element={<Pembayaran />} />
           <Route path="/BukuFavorit" element={<BukuFavorit />} />
           <Route path="/ELearning" element={<ELearning />} />
+          <Route path="/kabar-lele/:id" element={<KabarLeleArticle />} />
         </Routes>
       </Fragment>
     </Router>
