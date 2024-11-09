@@ -81,7 +81,7 @@ const ELearningBooks = () => {
                   <p className="text-gray-600 text-sm mb-4">{book.description}</p>
                   <div className="flex justify-between items-center">
                     <button
-                      onClick={() => navigate(`/RingkasanLearning`)} // Use navigate to redirect
+                      onClick={() => navigate(`/HomeLearning`)} // Use navigate to redirect
                       className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg text-sm"
                     >
                       Lihat Selengkapnya
