@@ -1,11 +1,13 @@
+import "./pageCss/Select.css";
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import Sidebar from '../componen/SideBar';
-import Footer from '../componen/Footer';
-import "./pageCss/Select.css"
 import { useNavigate } from 'react-router-dom';
-import Alert from '../componen/Atlert';
 import AIFloatingButton from '../componen/AiFloatingButton';
+import Alert from '../componen/Atlert';
+import Footer from '../componen/Footer';
 import Header from '../componen/Header';
+import Sidebar from '../componen/SideBar';
 
 const TambakForm = () => {
     const navigate = useNavigate();
@@ -14,19 +16,22 @@ const TambakForm = () => {
         negara: '',
         provinsi: '',
         kabupaten: '',
-        kecamatan: '',
-        kelurahan: '',
         alamat: '',
-        zonaWaktu: '',
         jumlahKolam: '',
         kolamDetails: [],
     });
 
+    const [labelVisible, setLabelVisible] = useState({
+        nama: false,
+        alamat: false,
+        jumlahAnco: false,
+        NamaKolam: false,
+        jumlahKolam: false
+    });
 
+    const [showAlamatLabel, setShowAlamatLabel] = useState(false);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
 
@@ -35,7 +40,6 @@ const TambakForm = () => {
         } else {
             setLabelVisible((prev) => ({ ...prev, [name]: false }));
         }
-
     };
 
     const handleFocus = (name) => {
@@ -62,7 +66,7 @@ const TambakForm = () => {
         setFormData({
             ...formData,
             jumlahKolam,
-            kolamDetails: Array.from({ length: jumlahKolam }, () => ({
+            kolamDetails: Array.from({ length: parseInt(jumlahKolam) || 0 }, () => ({
                 namaKolam: '',
                 tipeKolam: '',
                 panjang: '',
@@ -72,7 +76,6 @@ const TambakForm = () => {
             })),
         });
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -93,21 +96,30 @@ const TambakForm = () => {
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
         }
     };
-
-
-    const [labelVisible, setLabelVisible] = useState({
-        nama: false,
-        alamat: false,
-        jumlahAnco: false,
-    });
-
-
+    const SelectWithArrow = ({ name, value, onChange, children, required }) => (
+        <div className="relative">
+            <select
+                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black appearance-none pr-10 relative z-10"
+                name={name}
+                value={value}
+                onChange={onChange}
+                required={required}
+                style={{ position: 'relative', zIndex: 1 }} 
+            >
+                {children}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-600 z-20">
+                <FontAwesomeIcon icon={faChevronDown} className="h-4 w-4" />
+            </div>
+        </div>
+    );
+    
+    
 
     return (
         <div className="bg-white w-full min-h-screen">
-           <Header/>
+            <Header />
 
-            {/* Form Container */}
             <div className="bg-white p-6 w-full">
                 <h2 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
                     <div className="w-5 h-5 bg-gray-500 rounded-full mr-2" />
@@ -118,7 +130,6 @@ const TambakForm = () => {
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Informasi Tambak */}
                     <div className="p-4">
                         <h3 className="text-md font-medium text-gray-700 mb-4">Informasi Tambak</h3>
                         <div className="space-y-4">
@@ -142,131 +153,46 @@ const TambakForm = () => {
                                 />
                             </div>
 
-                            <div>
-                                <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
-                                    name="negara"
-                                    style={{
-                                        appearance: 'none',
-                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                        backgroundSize: '1.5rem',
-                                    }}
-                                    value={formData.negara}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="" className="text-black"> Negara</option>
-                                    <option value="indonesia" className="text-blue-600">Indonesia</option>
-                                    <option value="malaysia" className="text-blue-600">Malaysia</option>
-                                    <option value="vietnam" className="text-blue-600">Vietnam</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
-                                    name="provinsi"
-                                    style={{
-                                        appearance: 'none',
-                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                        backgroundSize: '1.5rem',
-                                    }}
-                                    value={formData.provinsi}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="" className="text-black"> Provinsi</option>
-                                    <option value="indonesia" className="text-blue-600">Boyolali</option>
-                                    <option value="malaysia" className="text-blue-600">Bali</option>
-                                    <option value="vietnam" className="text-blue-600">Bandung</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
-                                    name="kabupaten"
-                                    style={{
-                                        appearance: 'none',
-                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                        backgroundSize: '1.5rem',
+                            <SelectWithArrow
+                                name="negara"
+                                value={formData.negara}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" className="text-black">Negara</option>
+                                <option value="indonesia" className="text-blue-600">Indonesia</option>
+                            </SelectWithArrow>
 
-                                    }}
-                                    value={formData.kabupaten}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="" className="text-black"> Kabupaten</option>
+                            <SelectWithArrow
+                                name="provinsi"
+                                value={formData.provinsi}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" className="text-black">Provinsi</option>
+                                <option value="jawa tengah" className="text-blue-600">Jawa Tengah</option>
+                                <option value="jawa timur" className="text-blue-600">Jawa Timur</option>
+                                <option value="jawa barat" className="text-blue-600">Jawa Barat</option>
+                            </SelectWithArrow>
 
-                                    <option value="indonesia" className="text-blue-600">Kabupaten Karanganyar</option>
-                                    <option value="malaysia" className="text-blue-600">Kabupaten Grobogan</option>
-                                    <option value="vietnam" className="text-blue-600">Kabupaten Semarang</option>
-                                    <option value="vietnam" className="text-blue-600">Kabupaten Sragen</option>
-                                    <option value="vietnam" className="text-blue-600">Kabupaten Klaten</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
-                                    name="kecamatan"
-                                    style={{
-                                        appearance: 'none',
-                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                        backgroundSize: '1.5rem',
+                            <SelectWithArrow
+                                name="kabupaten"
+                                value={formData.kabupaten}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" className="text-black">Kabupaten</option>
+                                <option value="boyolali" className="text-blue-600">Kabupaten Boyolali</option>
+                                <option value="kebumen" className="text-blue-600">Kabupaten Kebumen</option>
+                                <option value="bayumas" className="text-blue-600">Kabupaten Bayumas</option>
+                                <option value="jember" className="text-blue-600">Kabupaten Jember</option>
+                                <option value="tulungagung" className="text-blue-600">Kabupaten Tulungagung</option>
+                                <option value="pacitan" className="text-blue-600">Kabupaten Pacitan</option>
+                                <option value="ciamis" className="text-blue-600">Kabupaten ciamis</option>
+                                <option value="indramayu" className="text-blue-600">Kabupaten Indramayu</option>
+                                <option value="subang" className="text-blue-600">Kabupaten Subang</option>
+                            </SelectWithArrow>
 
-                                    }}
-                                    value={formData.kecamatan}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="" className="text-black"> Kecamatan</option>
-                                    <option value="indonesia" className="text-blue-600">Kecamatan Mojosongo</option>
-                                    <option value="malaysia" className="text-blue-600">Kecamatan Boyolali</option>
-                                    <option value="vietnam" className="text-blue-600">Kecamatan Ampel</option>
-                                    <option value="vietnam" className="text-blue-600">Kecamatan Sambi</option>
-                                    <option value="vietnam" className="text-blue-600">Kecamatan Teras</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black"
-                                    name="kelurahan"
-                                    style={{
-                                        appearance: 'none',
-                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                        backgroundSize: '1.5rem',
-
-                                    }}
-                                    value={formData.kelurahan}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="" className="text-black"> Kelurahan</option>
-                                    <option value="indonesia" className="text-blue-600">Kelurahan Siswodipuran</option>
-                                    <option value="malaysia" className="text-blue-600">Kelurahan Pulisen</option>
-                                    <option value="vietnam" className="text-blue-600">Kelurahan Banaran</option>
-                                    <option value="vietnam" className="text-blue-600">Kelurahan Kemiri</option>
-
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
-                                    name="zonaWaktu"
-                                    value={formData.zonaWaktu}
-                                    onChange={handleChange}
-                                    style={{
-                                        appearance: 'none',
-                                        background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                        backgroundSize: '1.5rem',
-
-                                    }}
-                                    required
-                                >
-                                    <option value="" className='text-black'> Zona Waktu</option>
-                                    <option value="WIB" className='text-blue-600'>WIB</option>
-                                    <option value="WITA" className='text-blue-600'>WITA</option>
-                                    <option value="WIT" className='text-blue-600'>WIT</option>
-                                </select>
-                            </div>
                             <div>
                                 <label
                                     className={`block text-sm font-medium text-gray-700 mb-1 ${formData.alamat ? 'block' : 'hidden'}`}
@@ -310,15 +236,14 @@ const TambakForm = () => {
                             </div>
                         </div>
                     </div>
-                    {/*Informasi Kolam*/}
+
                     {formData.jumlahKolam > 0 && (
-                        <div className="p-4 bg-blue-100 rounded-lg shadow-md mb-4">
+                        <div className="p-4 bg-white mb-4">
                             <h3 className="text-md font-medium text-gray-700 mb-4">Informasi Kolam</h3>
                             {formData.kolamDetails.map((kolam, index) => (
-                                <div key={index} className="space-y-4 mb-4 border border-blue-200 rounded-lg p-4">
+                                <div key={index} className="space-y-4 mb-10  rounded-lg p-4 bg-blue-100 h-[350px]">
                                     <h4 className="font-semibold text-gray-800">Kolam {index + 1}</h4>
                                     <div className="space-y-4">
-
                                         <div>
                                             {labelVisible.NamaKolam && (
                                                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="NamaKolam">
@@ -326,7 +251,7 @@ const TambakForm = () => {
                                                 </label>
                                             )}
                                             <input
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2  placeholder-black text-black"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black text-black"
                                                 id="NamaKolam"
                                                 name="NamaKolam"
                                                 type="text"
@@ -338,53 +263,39 @@ const TambakForm = () => {
                                                 required
                                             />
                                         </div>
-                                        <div className="bg-white rounded-lg">
-                                            <select
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black "
-                                                style={{
-                                                    appearance: 'none',
-                                                    background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                                    backgroundSize: '1.5rem',
 
-                                                }}
-                                                id={`tipeKolam-${index}`}
+                                        <div className="bg-white rounded-lg">
+                                            <SelectWithArrow
                                                 name="tipeKolam"
-                                                required
                                                 value={kolam.tipeKolam}
                                                 onChange={(e) => handleKolamChange(index, e)}
+                                                required
                                             >
-                                                <option value="" className='text-black'> Tipe Kolam</option>
-                                                <option value="kolam-alam" className='text-blue-600'>Kolam Alam</option>
-                                                <option value="kolam-buatan" className='text-blue-600'>Kolam Buatan</option>
-                                                <option value="kolam-hybrid" className='text-blue-600'>Kolam Hybrid</option>
-                                            </select>
+                                                <option value="" className="text-black">Tipe Kolam</option>
+                                                <option value="kolam-alam" className="text-blue-600">Kolam Alam</option>
+                                                <option value="kolam-buatan" className="text-blue-600">Kolam Buatan</option>
+                                                <option value="kolam-hybrid" className="text-blue-600">Kolam Hybrid</option>
+                                            </SelectWithArrow>
                                         </div>
+
                                         <div className="flex space-x-4">
                                             {['Panjang (M)', 'Lebar (M)', 'Luas (M)', 'Kedalaman (M)'].map((dimension, idx) => (
                                                 <div className="flex-1" key={dimension}>
-                                                    <select
-                                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black select-component"
-                                                        style={{
-                                                            appearance: 'none',
-                                                            background: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 0.75rem center`,
-                                                            backgroundSize: '1.5rem',
-                                                        }}
-                                                        id={`${dimension}-${idx}`}
+                                                    <SelectWithArrow
                                                         name={dimension}
-                                                        required
                                                         value={kolam[dimension]}
                                                         onChange={(e) => handleKolamChange(idx, e)}
+                                                        required
                                                     >
-
-                                                        <option value=""> {dimension}</option>
-                                                        <option value="10" className='text-blue-600'>10</option>
-                                                        <option value="15" className='text-blue-600'>15</option>
-                                                        <option value="manual" className='text-blue-600'>Ketik Manual</option>
-                                                    </select>
+                                                        <option value="">{dimension}</option>
+                                                        <option value="10" className="text-blue-600">10</option>
+                                                        <option value="15" className="text-blue-600">15</option>
+                                                        <option value="manual" className="text-blue-600">Ketik Manual</option>
+                                                    </SelectWithArrow>
                                                     {kolam[dimension] === 'manual' && (
                                                         <input
                                                             type="number"
-                                                            placeholder={` ${dimension}`}
+                                                            placeholder={`${dimension}`}
                                                             className="mt-2 focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
                                                             value={kolam[`${dimension}Manual`] || ''}
                                                             onChange={(e) => {
@@ -396,6 +307,7 @@ const TambakForm = () => {
                                                 </div>
                                             ))}
                                         </div>
+
                                         <div>
                                             {labelVisible.jumlahAnco && (
                                                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="jumlahAnco">
@@ -403,7 +315,7 @@ const TambakForm = () => {
                                                 </label>
                                             )}
                                             <input
-                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black text-black"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black"
                                                 id="jumlahAnco"
                                                 name="jumlahAnco"
                                                 type="number"
@@ -420,21 +332,22 @@ const TambakForm = () => {
                             ))}
                         </div>
                     )}
-                    <>
+
+                    <div className="p-4">
                         <button
                             type="submit"
-                            onClick={handleSubmit}
-                            className="bg-blue-600 text-white rounded-lg px-40 py-2 transition duration-200 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50"
+                            className="bg-blue-500 text-white px-6 py-2 rounded-lg text-lg w-full"
                         >
-                            Kirim Data
+                            Simpan Data
                         </button>
-
-                    </>
+                    </div>
                 </form>
             </div>
         </div>
     );
 };
+
+
 
 
 

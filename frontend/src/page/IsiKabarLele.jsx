@@ -36,33 +36,35 @@ const KabarLeleArticleLayout = () => {
   }
 
   return (
-    <div className="bg-white w-full h-min-screen">
+    <div className="bg-white w-full min-h-screen">
       <Header />
-      <div className="flex flex-col items-start px-4 py-6 ml-8 mr-8">
+      <div className="flex flex-col items-start py-6 mx-auto max-w-6xl overflow-y-auto">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-blue-500 mb-4 text-xl"
+          className="flex items-center text-blue-500 mb-4 text-lg"
         >
-          <ChevronLeft className="w-10 h-10 font-semibold" />
+          <ChevronLeft className="w-8 h-8 font-semibold" />
           Kembali ke Blog
         </button>
         <article className="w-full">
-          <h1 className="font-bold text-gray-800 mb-8 text-center mt-4">{article.title}</h1>
+          <h1 className="font-bold text-gray-800 mb-8 text-center mt-4">
+            {article.title}
+          </h1>
           <img
             src={article.image}
             alt={article.title}
-            className="w-full h-auto mb-12 rounded-xl" 
+            className="w-full max-w-[80%] h-auto mb-8 rounded-xl mx-auto"
           />
-          <div className="flex items-center text-sm text-gray-500 mb-4">
+          <div className="flex items-center text-sm text-gray-500 mb-6 mt-2">
             <img
-              src={profileImg} 
+              src={profileImg}
               alt="Author"
               className="w-8 h-8 rounded-full mr-2"
             />
             <span className="font-semibold">Admin</span>
             <span className="ml-4">{article.date}</span>
           </div>
-          <section className="text-gray-700 text-lg leading-relaxed">
+          <section className="text-gray-700 text-lg leading-relaxed w-full mb-20">
             {article.content}
           </section>
         </article>
@@ -78,9 +80,7 @@ function KabarLeleArticle() {
       <div className="flex-1 overflow-auto h-full">
         <KabarLeleArticleLayout />
         <AIFloatingButton />
-        <div className="mt-20">
-          <Footer />
-        </div>
+        <Footer className="mt-20" />
       </div>
     </div>
   );

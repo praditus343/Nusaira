@@ -2,7 +2,8 @@ select {
     border: 1px solid #3B82F6; 
     border-radius: 0.375rem; 
     font-size: 1rem; 
-
+    max-height: 150px; 
+    overflow-y: auto;
 }
 
 input:focus,
