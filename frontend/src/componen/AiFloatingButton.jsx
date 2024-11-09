@@ -1,39 +1,32 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import imgAi from "../assets/img/landing_page_sebelum_daftar/landingsb17.png";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import imgAi from "../assets/img/landing_page_sebelum_daftar/landingsb6.png"; 
 
 const AIFloatingButton = () => {
-  const navigate = useNavigate(); 
+  const [isTwitching, setIsTwitching] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/ChatAi'); 
+    setIsTwitching(true);
+
+    setTimeout(() => {
+      navigate('/ChatAi');
+    }, 500); 
+    setTimeout(() => setIsTwitching(false), 500);
   };
 
   return (
-    <button 
-      className="fixed bottom-8 right-8 bg-blue-100 hover:bg-blue-200 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-[9999] w-32 h-32 flex flex-col items-center justify-center overflow-hidden p-2" 
+    <img 
+      src={imgAi}
+      alt="AI Assistant"
+      onClick={handleClick}
+      className={`fixed bottom-8 right-8 cursor-pointer z-[9999] animate-floating ${isTwitching ? 'animate-twitch' : ''}`}
       style={{
-        position: 'fixed',
-        zIndex: 2147483647 
+        width: '150px', 
+        height: '150px', 
+        filter: 'drop-shadow(8px 8px 10px rgba(0, 0, 0, 0.3))', 
       }}
-      aria-label="AI Assistant"
-      onClick={handleClick} 
-    >
-      <div className="flex flex-col items-center w-full h-full">
-        <div className="w-20 h-20 flex items-center justify-center mb-1"> 
-          <img 
-            src={imgAi}
-            alt="AI Assistant"
-            className="w-full h-full object-contain"
-          />
-        </div>
-        <div className="w-full text-center truncate px-1">
-          <span className="text-md font-medium text-blue-700 block truncate"> 
-            ChtNusAI
-          </span>
-        </div>
-      </div>
-    </button>
+    />
   );
 };
 

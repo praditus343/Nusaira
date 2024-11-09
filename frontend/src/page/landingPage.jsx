@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef ,useEffect } from 'react';
 import Footer from "../componen/Footer";
 import Navbar from "../componen/Navbar";
 import Testimonial from "../componen/Testimonical";
@@ -73,11 +73,36 @@ function LandingPage() {
         });
     };
 
+    const sectionRefs = useRef([]);
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("active");
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        sectionRefs.current.forEach((ref) => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => {
+            sectionRefs.current.forEach((ref) => {
+                if (ref) observer.unobserve(ref);
+            });
+        };
+    }, []);  
+
+
     return (
         <>
             <Navbar />
-            <div className="flex items-stretch justify-between p-8 bg-white mt-4 ml-4">
-                <div className="flex-1 pr-8 flex flex-col justify-between">
+            <div  ref={(el) => (sectionRefs.current[0] = el)} className="flex items-stretch justify-between p-8 bg-white mt-4 ml-4 fade-in-scroll">
+                <div className="flex-1 pr-8 flex flex-col justify-between fade-in">
                     <div>
                         <h1 className=" font-bold mb-4">
                             Maksimalkan Hasil Budidaya Lele<br /> Anda Dengan Pendekatan <br />Terintegrasi
@@ -106,7 +131,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="bg-white p-4 mb-6 relative ">
+            <div  ref={(el) => (sectionRefs.current[1] = el)}className="bg-white p-4 mb-6 relative fade-in-scroll-left ">
                 <p className="text-gray-600 text-xl  mb-4 text-left mt-10 ml-8">
                     Dipercaya Oleh:
                 </p>
@@ -119,19 +144,19 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="flex items-center bg-white mt-4 ">
-                <div className="flex-1 w-32 ml-6 mr-10">
-                    <div className="relative w-[300px] h-[300px] ">
+            <div ref={(el) => (sectionRefs.current[2] = el)}  className="flex items-center bg-white mt-2 fade-in-scroll-left">
+                <div className="flex-1 mr-10">
+                    <div className="relative w-[600px] h-[600px] ">
                         <img
                             src={imgAi}
                             alt="Robot Assistant"
-                            className="absolute inset-0 h-full w-full object-contain ml-[170px]"
+                            className="absolute inset-0 h-full w-full object-contain ml-[10px]"
                         />
                     </div>
                 </div>
                 <div className=" w-32 flex-1">
-                    <h2 className=" font-bold mb-6">Memastikan tambak berjalan lancar hingga <br />panen</h2>
-                    <p className=" text-gray-600 mb-6">
+                    <h2 className=" font-bold mb-6 mt-10">Memastikan tambak berjalan lancar hingga <br />panen</h2>
+                    <p className=" text-gray-600 mb-6 mt4">
                         Untuk memastikan tambak berjalan lancar hingga <br />panen, penting untuk melakukan perencanaan yang <br /> matang dengan menganalisis lokasi dan memilih jenis<br /> ikan yang tepat. Kualitas air harus dipantau secara rutin,<br />memastikan parameter seperti pH dan kadar oksigen<br /> dalam kondisi baik. Pakan yang berkualitas dan sesuai<br /> dengan kebutuhan ikan juga sangat penting untuk<br /> pertumbuhan optimal.
                     </p>
                     <div>
@@ -145,7 +170,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="flex items-center justify-between p-10 bg-white mt-[130px] ml-4">
+            <div ref={(el) => (sectionRefs.current[3] = el)} className="flex items-center justify-between p-10 bg-white mt-[20px] ml-4 fade-in-scroll-left">
                 <div className="flex-1 pr-8 pl-2">
                     <h2 className=" font-bold mb-2">Memastikan tambak berjalan lancar hingga <br /> panen</h2>
                     <p className=" text-gray-600 mb-4 mt-4 text-left max-w-lg">
@@ -171,7 +196,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="bg-white p-2 mt-5 ml-10 mr-10 ">
+            <div ref={(el) => (sectionRefs.current[4] = el)} className="bg-white p-2 mt-5 ml-10 mr-10 fade-in-scroll-left">
                 <h2 className="font-bold mb-4 text-center">Grafik Tren Harga Bibit Lele: Pantau Harga Secara Real Time</h2>
                 <p className="text-center mt-4 max-w-2x1 mx-auto">
                     Cek Harga Jual dan Beli Lele Secara Real Time: Pantau Perubahan Harga Setiap Detik,<br /> Temukan Waktu Terbaik untuk Transaksi, dan Maksimalkan Keuntungan Anda dengan Akses Langsung ke Informasi Harga Terbaru yang Selalu Diperbarui
@@ -226,7 +251,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="bg-white p-6 mt-10 ml-10 mr-8">
+            <div ref={(el) => (sectionRefs.current[5] = el)} className="bg-white p-6 mt-10 ml-10 mr-8 fade-in-scroll-left">
                 <h1 className="text-xl font-bold mb-4 text-center">
                     Ikuti Berita Terbaru Mengenai berita berita tentang<br />
                     budidaya
