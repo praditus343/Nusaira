@@ -99,20 +99,21 @@ const TambakForm = () => {
     const SelectWithArrow = ({ name, value, onChange, children, required }) => (
         <div className="relative">
             <select
-                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black appearance-none pr-10 relative z-10"
+                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black appearance-none pr-10"
                 name={name}
                 value={value}
                 onChange={onChange}
                 required={required}
-                style={{ position: 'relative', zIndex: 1 }} 
             >
                 {children}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-600 z-20">
+            {/* Arrow icon */}
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-600">
                 <FontAwesomeIcon icon={faChevronDown} className="h-4 w-4" />
             </div>
         </div>
     );
+    
     
     
 
