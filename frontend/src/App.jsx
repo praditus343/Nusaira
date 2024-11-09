@@ -13,7 +13,6 @@ import InputTambak from './page/InputTambakBaru';
 import Invoice from './page/Invoice';
 import KabarLele from './page/KabarLele';
 import LandingPage from './page/landingPage';
-import Laporan from './page/Laporan';
 import Login from './page/login';
 import LupaPass1 from './page/LupaPass1';
 import LupaPass2 from './page/LupaPass2';
@@ -37,6 +36,10 @@ import SupplierDetail from './page/SupplierDetail';
 import UserProfile from './page/UserProfile';
 import BukuFavorit from './page/BukuFavorit';
 import ELearning from './page/ELearning';
+import LaporanBudidaya from './page/LaporanBudidaya';
+import KabarLeleArticle from './page/IsiKabarLele';
+import HomeLearning from './page/HomeLearning';
+import Home2Learning from './page/Home2Learning';
 
 
 
@@ -64,7 +67,7 @@ function App() {
           <Route path="/FinalStep" element={<FinalStepUI />} />
           <Route path="/Pengeluaran" element={<Pengeluaran />} />
           <Route path="/Pemasukan" element={<Pemasukan />} />  
-          <Route path="/Laporan" element={<Laporan />} />  
+          <Route path="/LaporanBudidaya" element={<LaporanBudidaya />} />  
           <Route path="/KabarLele" element={<KabarLele />} /> 
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard />} /> 
           <Route path="/ChatAi" element={<ChatAi />} />
@@ -83,6 +86,9 @@ function App() {
           <Route path="/Pembayaran" element={<Pembayaran />} />
           <Route path="/BukuFavorit" element={<BukuFavorit />} />
           <Route path="/ELearning" element={<ELearning />} />
+          <Route path="/kabar-lele/:id" element={<KabarLeleArticle />} />
+          <Route path="/HomeLearning" element={<HomeLearning />} />
+          <Route path="/Home2Learning" element={<Home2Learning />} />
         </Routes>
       </Fragment>
     </Router>

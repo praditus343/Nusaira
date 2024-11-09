@@ -8,6 +8,7 @@ import Footer from '../componen/Footer';
 import Header from '../componen/Header';
 import Sidebar from '../componen/SideBar';
 import { useNavigate } from 'react-router-dom';
+import PermissionModals from '../componen/PengaturanModal';
 
 
 const TABS = [
@@ -42,9 +43,9 @@ const InfoCard = ({ title, value, subValue, buttonText, onClick }) => (
                     <p className="text-3xl font-bold text-blue-500">{value}</p>
                     {subValue && <p className="text-sm text-gray-600">{subValue}</p>}
                 </div>
-                <button 
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm" 
-                    onClick={onClick} 
+                <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm"
+                    onClick={onClick}
                 >
                     {buttonText}
                 </button>
@@ -91,9 +92,14 @@ const PengaturanDashboard = () => {
     const [activeTab, setActiveTab] = useState('tambak');
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [showCheckboxes, setShowCheckboxes] = useState(false);
-    const navigate = useNavigate(); 
+    const [showPermissions, setShowPermissions] = useState(false);
+    const [showAddMember, setShowAddMember] = useState(false);
+
+    const handleInfoClick = () => setShowPermissions(true);
+    const handleAddClick = () => setShowAddMember(true);
+    const navigate = useNavigate();
     const handleViewKolam = () => {
-        navigate('/DaftarKolam'); 
+        navigate('/DaftarKolam');
     };
 
     const handleCheckboxChange = (email) => {
@@ -147,13 +153,7 @@ const PengaturanDashboard = () => {
     styleElement.innerHTML = customStyles;
     document.head.appendChild(styleElement);
 
-    const handleInfoClick = () => {
-        Swal.fire('Informasi', 'Ini adalah informasi pengguna.', 'info');
-    };
 
-    const handleAddClick = () => {
-        Swal.fire('Tambah Pengguna', 'Form untuk menambah pengguna akan muncul.', 'info');
-    };
 
     const toggleDeleteCheckboxes = () => {
         setShowCheckboxes(!showCheckboxes);
@@ -168,19 +168,19 @@ const PengaturanDashboard = () => {
                     <div className="p-4">
                         <TambakProfile />
                         <div className="grid grid-cols-2 gap-4 mt-6">
-                            <InfoCard 
-                                title="Pengguna Yang Berhak" 
-                                value="1" 
-                                subValue="Pengguna" 
-                                buttonText="Lihat Daftar Pengguna" 
+                            <InfoCard
+                                title="Pengguna Yang Berhak"
+                                value="1"
+                                subValue="Pengguna"
+                                buttonText="Lihat Daftar Pengguna"
                                 onClick={() => setActiveTab('pengguna')}
                             />
-                            <InfoCard 
-                                title="Jumlah Kolam" 
-                                value="1" 
-                                subValue="1 Kolam Aktif" 
-                                buttonText="Lihat Daftar Kolam" 
-                                onClick={handleViewKolam} 
+                            <InfoCard
+                                title="Jumlah Kolam"
+                                value="1"
+                                subValue="1 Kolam Aktif"
+                                buttonText="Lihat Daftar Kolam"
+                                onClick={handleViewKolam}
                             />
                         </div>
                     </div>
@@ -190,19 +190,26 @@ const PengaturanDashboard = () => {
                     <div className="p-6">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-semibold">Daftar Pengguna</h2>
-                            <div className="flex space-x-2">
+                            <div className="flex">
                                 <button
                                     onClick={handleInfoClick}
-                                    className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                                    className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 mr-2"
                                 >
                                     <FaInfoCircle className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={handleAddClick}
-                                    className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                                    className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 mr-2"
                                 >
                                     <FaPlus className="w-4 h-4" />
                                 </button>
+
+                                <PermissionModals
+                                    showPermissions={showPermissions}
+                                    setShowPermissions={setShowPermissions}
+                                    showAddMember={showAddMember}
+                                    setShowAddMember={setShowAddMember}
+                                />
                                 <button
                                     onClick={() => {
                                         toggleDeleteCheckboxes();
@@ -260,7 +267,7 @@ const PengaturanDashboard = () => {
                         </p>
                         <p className="mt-2 text-red-600 flex items-center">
                             <span className="mr-2">
-                                <i className="fas fa-exclamation-circle"></i> 
+                                <i className="fas fa-exclamation-circle"></i>
                             </span>
                             Lengkapi data hingga minimal DoC 60 agar Tabel FR siap digunakan sebagai alat prediksi SR yang akurat.
                         </p>

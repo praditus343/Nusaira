@@ -16,7 +16,8 @@ import {
   faPlus,
   faTable,
   faTools,
-  faUser
+  faUser,
+  faFish 
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
@@ -128,6 +129,7 @@ const Sidebar = () => {
                 { icon: faTable, label: "Daftar kolam", path: "/DaftarKolam" },
                 { icon: faTools , label: "Management", path: "/ManajemenTambak" },
                 { icon: faChartLine, label: "Simulasi", path: "/Simulasi" },
+                { icon: faFish, label: "Laporan", path: "/LaporanBudidaya" },
               ]}
             />
             <MenuItem

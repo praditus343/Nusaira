@@ -138,19 +138,19 @@ const DashboardContent = () => {
                             <div className="p-4">
                                 <div className="space-y-4">
                                     <div className="bg-blue-500 rounded-md py-1">
-                                        <button className="w-full text-white flex items-center p-2 ml-2">
+                                        <button className="w-full text-white flex items-center p-3 ml-2">
                                             <FontAwesomeIcon icon={faYoutube} className="w-6 h-6 mr-2" />
                                             <span className="ml-2">YouTube NusAIra</span>
                                         </button>
                                     </div>
                                     <div className="bg-blue-500 rounded-md">
-                                        <button className="w-full text-white flex items-center p-2">
-                                            <img src={imgElearningNusaira} alt="Twitter" className="w-20 h-8 mr-2" />
+                                        <button className="w-full text-white flex items-center p-3">
+                                            <img src={imgElearningNusaira} alt="E-learning" className="w-20 h-8 mr-2" />
                                             <span>Belajar Bareng NusAira</span>
                                         </button>
                                     </div>
                                     <div className="bg-blue-500 rounded-md py-1">
-                                        <button className="w-full text-white flex items-center p-2 ml-2">
+                                        <button className="w-full text-white flex items-center p-3 ml-2">
                                             <FontAwesomeIcon icon={faTelegram} className="w-6 h-6 mr-2" />
                                             <span className="ml-2">Telegram NusAIra</span>
                                         </button>
