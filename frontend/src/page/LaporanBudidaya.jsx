@@ -200,7 +200,7 @@ function LaporanDashboard() {
             </div>
           </div>
 
-          <div className="text-center mb-10 mt-4">
+          <div className="text-center mb-10 mt-20">
             <h3 className="text-blue-700 inline-block border-b-4 border-blue-700 pb-1">
               Detail
             </h3>
@@ -245,15 +245,16 @@ function LaporanDashboard() {
           </div>
 
           {/* Performance Indicators */}
-          <div className="flex gap-6 mb-6">
+          <div className="flex gap-6 mb-6 mt-20">
             <Indicator color="yellow-500" text="Peforma Kolam Biasa" />
             <Indicator color="green-500" text="Peforma Kolam Terbaik" />
             <Indicator color="red-500" text="Peforma Kolam Terburuk" />
           </div>
 
           {/* Table Section */}
-          <TableSection />{/* Notes Section */}
-          <div className="mt-8">
+          <TableSection />
+          {/* Notes Section */}
+          <div className="mt-14 mb-10">
             <p className="font-medium mb-2">Keterangan:</p>
             <ul className="list-decimal list-inside space-y-1 keterangan">
               <li>Penilaian peforma kolam bersifat relatif</li>
@@ -296,7 +297,7 @@ function Indicator({ color, text }) {
 
 function TableSection() {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto mt-10">
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-blue-500 text-white">
