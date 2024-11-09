@@ -6,11 +6,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import InteractiveMap from '../componen/InteraktifMap';
 import { Search } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import { faShareAlt, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 import { useNavigate, Link } from 'react-router-dom';
-
 
 
 const PriceMonitoringDashboard = () => {
@@ -76,111 +75,36 @@ const PriceMonitoringDashboard = () => {
         console.log("Detail for row:", row);
     };
 
-
+    const locationOptions = [
+        { value: '1', label: 'Option 1' },
+        { value: '2', label: 'Option 2' },
+        { value: '3', label: 'Option 3' },
+    ];
 
 
 
 
     return (
-        <div className="  space-y-6 space-x-6 bg-white w-full min-h-screen">
+        <div  className="space-y-6 bg-white w-full min-h-screen">
             <Header />
 
-            <div className="space-y-4">
+            <div className="space-y-4 ml-10">
                 {/* Date Selector */}
+                <h3 className="font-bold">Budidaya Lele</h3>
                 <div className="flex items-center text-gray-500">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <span>10 Oktober 2024</span>
                 </div>
-
-
-                <div className="flex space-x-4">
-                    <div className="flex items-center border border-blue-600 rounded-full overflow-hidden">
-                        {/* Input Lokasi */}
-                        <div className="relative flex-1  ">
-                            <input
-                                type="text"
-                                placeholder="Pilih Lokasi"
-                                className="outline-none px-80 py-2 w-full text-left"
-                                style={{ paddingLeft: '40px' }}
-                            />
-                            <svg
-                                className="w-4 h-5 absolute left-3 top-3 text-blue-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </div>
-
-                        {/* Dropdown Lokasi */}
-                        <select
-                            value={selectedLocation}
-                            onChange={(e) => setSelectedLocation(e.target.value)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-r-full select"
-                            style={{
-                                color: 'white',
-                                appearance: 'none',
-                                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>')`,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'right 1rem center',
-                                backgroundSize: '1.5rem',
-                                paddingRight: '1.5rem',
-                            }}
-                        >
-                            <option value="" className="hidden"></option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
-                        </select>
-
-                    </div>
-                    <div className="flex items-center border border-blue-600 rounded-full overflow-hidden flex-grow-1">
-                        {/* Input Harga */}
-                        <input
-                            type="text"
-                            placeholder="Harga (KG)"
-                            className="outline-none px-4 py-2 w-full"
-                        />
-
-                        {/* Dropdown Harga */}
-                        <select
-                            value={selectedLocation}
-                            onChange={(e) => setSelectedLocation(e.target.value)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-r-full select"
-                            style={{
-                                color: 'white',
-                                appearance: 'none',
-                                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>')`,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'right 1rem center',
-                                backgroundSize: '1.5rem',
-                                paddingRight: '1.5rem',
-                            }}
-                        >
-                            <option value="" className="hidden"></option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
-                        </select>
-
-                    </div>
-                </div>
             </div>
             {/* Map Section */}
-            <div className="border border-blue-600 rounded-lg bg-white shadow rounded-lg p-6">
+            <div className="border border-blue-600 rounded-lg bg-white shadow rounded-lg p-6 mr-10 ml-10">
                 <InteractiveMap />
             </div>
 
             {/* Price Trends - New Layout */}
-            <div>
+            <div className='ml-10 mr-10'>
                 <h2 className="text-lg font-semibold mb-4">Tren Harga Lele Di Berbagai Provinsi</h2>
                 <div className="flex gap-4">
                     {/* Left Side - Big Chart */}
@@ -264,7 +188,7 @@ const PriceMonitoringDashboard = () => {
             </div>
 
             {/* Table Section */}
-            <div className="container mx-auto p-6 border border-blue-600 rounded-lg bg-white shadow rounded-lg">
+            <div className="p-6 border border-blue-600 rounded-lg bg-white shadow rounded-lg mr-10 ml-10">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">List Harga Lele Terbaru</h2>
                     <div className="flex items-center space-x-4">
