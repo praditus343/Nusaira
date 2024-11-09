@@ -156,18 +156,35 @@ const ExcelForm = () => {
               Detail Catatan Pengeluaran
             </h2>
             <div className="flex space-x-4">
-              {/* Search input */}
-              <div className="flex items-center justify-center px-4">
-                <div className="relative flex items-center w-full max-w-md">
-                  <input
-                    type="text"
-                    className="w-full pl-6 pr-12 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg shadow-md transition-all duration-300"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
+{/* Search input */}
+<div className="flex items-center justify-center px-4">
+  <div className="relative flex items-center w-full max-w-md"> {/* Mengurangi max-w-3xl menjadi max-w-md */}
+    <input
+      type="text"
+      className="w-full pl-6 pr-12 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg shadow-md transition-all duration-300"
+      placeholder="Search"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+    <button className="absolute right-0 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-2xl transition-all duration-300 ease-in-out shadow-lg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+
 
               <button
                 onClick={handleAddRow}
