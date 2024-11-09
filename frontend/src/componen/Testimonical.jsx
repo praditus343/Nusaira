@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import img1 from "../assets/img/assets_foto/f1.png";
@@ -23,25 +23,50 @@ const Testimonial = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-
+  const titleRef = useRef(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (testimonialContainerRef.current) {
-        const container = testimonialContainerRef.current;
-        const scrollWidth = container.scrollWidth;
-        const currentScroll = container.scrollLeft;
+    if (titleRef.current) {
+      titleRef.current.classList.add("title-animate");
+    }
+  }, []);
 
-        if (currentScroll + container.clientWidth >= scrollWidth) {
-          container.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          container.scrollBy({ left: container.clientWidth, behavior: "smooth" });
+  useEffect(() => {
+    const testimonials = document.querySelectorAll(".testimonial");
+    testimonials.forEach((testimonial, index) => {
+      setTimeout(() => {
+        testimonial.classList.add("slide-up");
+      }, index * 1000);
+    });
+  }, []);
+
+  useEffect(() => {
+    const startScrollDelay = testimonials.length * 300 + 3000;
+
+    const scrollTimeout = setTimeout(() => {
+      let animationFrame;
+      const scrollTestimonials = () => {
+        if (testimonialContainerRef.current) {
+          const container = testimonialContainerRef.current;
+          const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+          if (container.scrollLeft >= maxScrollLeft) {
+            container.scrollTo({ left: 0, behavior: "smooth" });
+          } else {
+            container.scrollBy({ left: container.clientWidth, behavior: "smooth" });
+          }
+
+          animationFrame = requestAnimationFrame(() => setTimeout(scrollTestimonials, 5000));
         }
-      }
-    }, 3000);
+      };
 
-    return () => clearInterval(interval);
-  }, [isDragging]);
+      animationFrame = requestAnimationFrame(scrollTestimonials);
+
+      return () => cancelAnimationFrame(animationFrame);
+    }, startScrollDelay);
+
+    return () => clearTimeout(scrollTimeout);
+  }, [isDragging, testimonials.length]);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -53,18 +78,15 @@ const Testimonial = () => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - testimonialContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; 
+    const walk = (x - startX) * 1.5;
     testimonialContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
+  const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="text-center py-10 relative mx-auto mb-32 max-w-7xl px-4">
-      <h2 className="text-2xl font-bold mb-10 no-select">Kata Mereka</h2>
+    <div className="text-center py-8 relative mx-auto mb-32 max-w-7xl px-4">
+      <h2 ref={titleRef} className="text-2xl font-bold mb-10 no-select">Kata Mereka</h2>
       <div
         ref={testimonialContainerRef}
         className="flex gap-6 overflow-x-auto scroll-smooth px-4"
@@ -77,12 +99,11 @@ const Testimonial = () => {
         {testimonials.map((testimonial) => (
           <div
             key={testimonial.id}
-            className="flex-shrink-0 w-[100px] sm:w-[40%] bg-blue-50 p-6 rounded-lg  flex flex-col items-center justify-between border-2 border-grey-300"
+            className="testimonial flex-shrink-0 w-[100px] sm:w-[40%] bg-blue-50 p-6 rounded-lg flex flex-col items-center justify-between border-2 border-grey-300 opacity-0"
           >
             <p className="text-lg mb-2 text-center line-clamp-3 overflow-hidden no-select">
               "{testimonial.text}"
             </p>
-            
             <div className="text-yellow-400 text-lg mb-4 flex justify-center no-select">
               {[...Array(testimonial.rating)].map((_, j) => (
                 <FontAwesomeIcon key={j} icon={faStar} className="mx-0.5" />

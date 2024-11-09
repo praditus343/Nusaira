@@ -101,8 +101,8 @@ const WrapBanner = () => {
                             Klik untuk info lebih lanjut
                         </button>
                     </div>
-                    <div className="flex-shrink-0 ml-4 no-select">
-                        <img src={imgAi} alt="Illustration" className="w-48 h-48 object-cover no-select" />
+                    <div className="flex-shrink-0  no-select">
+                        <img src={imgAi} alt="Illustration" className="w-52 h-52 object-cover no-select" />
                     </div>
                 </div>
             </div>
