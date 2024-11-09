@@ -4,14 +4,14 @@ import ElearningSidebar from "../componen/ElearningSidebar";
 import Header from "../componen/Header";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
-import img1 from "../assets/img/e-learning/el1.png"
-import img2 from "../assets/img/e-learning/el2.png"
-import img3 from "../assets/img/e-learning/el3.png"
-import img4 from "../assets/img/e-learning/el4.png"
-import img5 from "../assets/img/e-learning/el5.png"
-import img6 from "../assets/img/e-learning/el6.png"
-import img7 from "../assets/img/e-learning/el7.png"
-import img8 from "../assets/img/e-learning/el8.png"
+import img1 from "../assets/img/e-learning/el1.png";
+import img2 from "../assets/img/e-learning/el2.png";
+import img3 from "../assets/img/e-learning/el3.png";
+import img4 from "../assets/img/e-learning/el4.png";
+import img5 from "../assets/img/e-learning/el5.png";
+import img6 from "../assets/img/e-learning/el6.png";
+import img7 from "../assets/img/e-learning/el7.png";
+import img8 from "../assets/img/e-learning/el8.png";
 
 const books = [
   {
@@ -19,48 +19,55 @@ const books = [
     progress: 18,
     total: 100,
     pages: 20,
+    image: img1,
   },
   {
-    title: "Cara Budidaya Lele Menggunakan Metode Bioflok untuk Hasil Maksimal",
-    progress: 18,
+    title: "Cara Budidaya Udang di Tambak",
+    progress: 40,
     total: 100,
-    pages: 20,
+    pages: 30,
+    image: img2,
   },
   {
-    title: "Cara Budidaya Lele Menggunakan Metode Bioflok untuk Hasil Maksimal",
-    progress: 18,
+    title: "Pemanfaatan Air Bersih dalam Budidaya",
+    progress: 60,
     total: 100,
-    pages: 20,
+    pages: 25,
+    image: img3,
   },
   {
-    title: "Cara Budidaya Lele Menggunakan Metode Bioflok untuk Hasil Maksimal",
-    progress: 18,
+    title: "Teknik Filter Kolam yang Efektif",
+    progress: 80,
     total: 100,
-    pages: 20,
+    pages: 15,
+    image: img4,
   },
 ];
 
 const recommendations = [
   {
     title: "World Ocean's Day",
-    description:
-      "Teknik budidaya untuk menjaga lingkungan perairan tetap lestari",
+    description: "Teknik budidaya untuk menjaga lingkungan perairan tetap lestari",
     rating: 5,
+    image: img5,
   },
   {
     title: "Teknik Meminimalkan Sampah Laut",
     description: "Kampanye menjaga kebersihan laut untuk masa depan bumi",
     rating: 5,
+    image: img6,
   },
   {
     title: "Kampanye Menyelamatkan Terumbu Karang",
     description: "Upaya konservasi dan pemulihan ekosistem laut",
     rating: 5,
+    image: img7,
   },
   {
     title: "Cara Agar Budidaya Ramah Lingkungan",
     description: "Mengoptimalkan budidaya dengan pendekatan ramah lingkungan",
     rating: 5,
+    image: img8,
   },
 ];
 
@@ -110,17 +117,10 @@ function Dashboard() {
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
               {books.map((book, index) => (
-                <tr
-                  key={index}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
+                <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                   <td className="py-3 px-6 text-left">
                     <div className="flex items-center">
-                      <img
-                        src={img5}
-                        alt="Book cover"
-                        className="w-10 h-10 rounded mr-3"
-                      />
+                      <img src={book.image} alt="Book cover" className="w-10 h-10 rounded mr-3" />
                       <span>{book.title}</span>
                     </div>
                   </td>
@@ -144,21 +144,11 @@ function Dashboard() {
           <h3 className="text-lg font-semibold mb-4">Rekomendasi untuk kamu</h3>
           <div className="grid grid-cols-4 gap-4">
             {recommendations.map((rec, index) => (
-              <div
-                key={index}
-                className="bg-white p-4 rounded-lg shadow flex flex-col justify-between"
-                style={{ minHeight: "300px" }}
-              >
+              <div key={index} className="bg-white p-4 rounded-lg shadow flex flex-col justify-between" style={{ minHeight: "300px" }}>
                 <div>
-                  <img
-                    src={img1}
-                    alt="Recommendation cover"
-                    className="w-full h-32 object-cover rounded mb-4"
-                  />
+                  <img src={rec.image} alt="Recommendation cover" className="w-full h-32 object-cover rounded mb-4" />
                   <h4 className="text-md font-semibold mb-2">{rec.title}</h4>
-                  <p className="text-gray-500 text-sm mb-2">
-                    {rec.description}
-                  </p>
+                  <p className="text-gray-500 text-sm mb-2">{rec.description}</p>
                 </div>
                 <div className="flex justify-between items-center mt-4">
                   <button className="bg-blue-500 text-white font-semibold py-1 px-3 rounded-md">

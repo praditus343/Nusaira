@@ -11,7 +11,8 @@ import {
   faFileInvoice,
   faGraduationCap,
   faHeart,
-  faHome, faMoneyBill,
+  faHome, 
+  faMoneyBill,
   faNewspaper,
   faPlus,
   faTable,
@@ -29,7 +30,6 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isActive = location.pathname === path;
-
   const isAnyChildActive = children?.some((child) => location.pathname === child.path);
 
   const toggleDropdown = () => {
@@ -63,7 +63,7 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
         <div>
           <div
             className={`flex items-center justify-between py-2 px-4 text-white cursor-pointer hover:bg-blue-600`}
-            onClick={toggleDropdown} 
+            onClick={toggleDropdown}
           >
             <div className="flex items-center">
               <FontAwesomeIcon icon={icon} className="mr-2" />
@@ -107,7 +107,9 @@ const Sidebar = () => {
         <>
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center">
-              <img src={imgLogo} alt="Logo" className="w-12 h-12 rounded-full mr-2" />
+              <Link to="/Home">
+                <img src={imgLogo} alt="Logo" className="w-12 h-12 rounded-full mr-2 cursor-pointer" />
+              </Link>
               {isSidebarOpen && <span className="text-white text-xl mt-2 font-bold">NusAIra</span>}
             </div>
             <div className="cursor-pointer" onClick={toggleSidebar}>
@@ -149,7 +151,6 @@ const Sidebar = () => {
                 { icon: faNewspaper, label: "Blog", path: "/Blog" },
                 { icon: faHeart, label: "Penyakit Lele", path: "/PenyakitLele" },
                 { icon: faBell, label: "Notifikasi", path: "/Notifikasi" },
-                
               ]}
             />
             <MenuItem
