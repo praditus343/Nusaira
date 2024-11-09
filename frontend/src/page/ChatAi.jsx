@@ -3,14 +3,14 @@ import { Send } from 'lucide-react';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import Header from '../componen/Header';
-import imgAi from "../assets/img/landing_page_sebelum_daftar/landingsb17.png";
+import imgAi from "../assets/img/landing_page_sebelum_daftar/landingsb6.png";
 
 const ChatInterface = () => {
     return (
         <div className='bg-white w-full min-h-screen'>
             <Header />
-            <div className="flex flex-col items-center justify-center max-w-2xl mx-auto mb-10 mb-40">
-                <div className="w-96 h-96 mb-6">
+            <div className="flex flex-col items-center justify-center max-w-2xl mx-auto mb-10 ">
+                <div className="w-[500px] h-[500px]">
                     <img
                         src={imgAi}
                         alt="Robot Avatar"
