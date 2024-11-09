@@ -137,7 +137,7 @@ function Home1() {
 
         {/* Tombol Selanjutnya */}
         <div className="absolute bottom-1 left-4">
-          <Link to="/halaman-berikutnya" className="text-blue-500 font-bold flex items-center">
+          <Link to="/Home2Learning" className="text-blue-500 font-bold flex items-center">
             Selanjutnya <FontAwesomeIcon icon={faChevronRight} className="ml-2" />
           </Link>
         </div>
