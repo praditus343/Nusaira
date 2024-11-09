@@ -53,6 +53,7 @@ const Header = () => {
     '/BukuFavorit': 'Favorit / E-Learning',
     '/ELearning': 'E-Learning',
     '/HomeLearning': 'Beranda / E-Learning',
+    '/Home2Learning': 'Beranda / E-Learning'
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
