@@ -25,7 +25,7 @@ function Home2() {
   return (
     <>
       <Header />
-      <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6 relative">
+      <div className="max-w-7xl mx-auto p-6 rounded-lg shadow-md mt-6 relative border border-blue-500">
         <div className="flex justify-between items-center mb-6 ">
           <h1 className="text-xl font-bold mb-2">Beranda</h1>
         </div>
@@ -83,14 +83,14 @@ function Home2() {
 
 function Home2Learning() {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen"> {/* Menggunakan flex untuk memastikan sidebar tetap ada */}
       <ElearningSidebar />
-      <div className="flex-1 overflow-auto">
-        <Home2 />
-        <AIFloatingButton />
-        <div className="mt-10">
-          <Footer />
+      <div className="flex-1 flex flex-col"> {/* Konten utama akan menjadi kolom dengan scrollable area */}
+        <div className="flex-1 overflow-auto">
+          <Home2 />
+          <AIFloatingButton />
         </div>
+        <Footer className="mt-auto" /> {/* Footer tetap di bawah dengan margin-top auto */}
       </div>
     </div>
   );
