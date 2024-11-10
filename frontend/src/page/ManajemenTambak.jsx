@@ -201,7 +201,7 @@ const DashboardManagement = () => {
                             </div>
 
                             <button onClick={exportToPDF} className="px-10 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
-                                Ekpor Laporan
+                                Ekspor Laporan
                             </button>
                         </div>
                     </div>
