@@ -85,7 +85,7 @@ const PondTable = () => {
         <div className="bg-white w-full min-h-screen">
             <Header />
             {/* Location Info */}
-            <div className="mb-6 ml-4 mt-5">
+            <div className="mb-6 ml-10 mr-6 mt-5">
                 <h2 className="text-xl font-semibold mb-2">Tambak Lele Seger</h2>
                 <div className="flex items-center text-gray-600">
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ const PondTable = () => {
             </div>
 
             {/* Buttons for each modal */}
-            <div className="flex flex-wrap gap-2 ml-2 mt-2 mb-5">
+            <div className="flex flex-wrap gap-2 ml-8 mr-5 mt-2 mb-5">
                 {buttons.map((text) => (
                     <button
                         key={text}
@@ -119,7 +119,7 @@ const PondTable = () => {
             {activeModal === 'TambahJumlahAnco' && <TambahJumlahAnco isOpen={true} onClose={closeModal} />}
 
             {/* Main Card */}
-            <CustomCard className="p-4 ml-5 mr-5 border-2 border-gray-300">
+            <CustomCard className="p-4 ml-10 mr-8 border-2 border-gray-300">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-medium">Detail Daftar Kolam</h3>
                     <div className="flex items-center gap-4">

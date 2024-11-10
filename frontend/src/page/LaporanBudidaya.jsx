@@ -123,7 +123,7 @@ function LaporanDashboard() {
       <div className="p-6 ">
         {/* Header Section */}
         <div className="mb-20 mr-4">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 mr-1 ">
             <h2 className="font-bold">Laporan Budidaya Tambak Lele</h2>
             <div className="flex gap-4 items-end">
               <div className="flex-1 relative">
@@ -139,10 +139,10 @@ function LaporanDashboard() {
                 </div>
               </div>
               <div className="flex-1 relative">
-                <label className="block text-sm mb-2">Batch:</label>
+                <label className="block text-sm mb-2">Periode:</label>
                 <div className="relative">
                   <select className="w-[200px] p-2 pr-10 border rounded-md appearance-none">
-                    <option>10 Oktober 2024</option>
+                    <option>Oktober 2024</option>
                   </select>
                   <FontAwesomeIcon
                     icon={faChevronDown}

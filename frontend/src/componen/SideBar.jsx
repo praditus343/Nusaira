@@ -127,9 +127,9 @@ const Sidebar = () => {
               label="Budidaya/Tambak"
               isSidebarOpen={isSidebarOpen}
               children={[
-                { icon: faPlus, label: "Input tambak baru", path: "/InputTambak" },
+                { icon: faPlus, label: "Masukan tambak ", path: "/InputTambak" },
                 { icon: faTable, label: "Daftar kolam", path: "/DaftarKolam" },
-                { icon: faTools , label: "Management", path: "/ManajemenTambak" },
+                { icon: faTools , label: "Pengelolaan Air", path: "/ManajemenTambak" },
                 { icon: faChartLine, label: "Simulasi", path: "/Simulasi" },
                 { icon: faFish, label: "Laporan", path: "/LaporanBudidaya" },
               ]}

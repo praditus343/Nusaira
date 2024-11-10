@@ -85,7 +85,7 @@ const KabarLeleLayout = () => {
         <div className="bg-white w-full min-h-screen">
           <Header />
           <div className="mt-5">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-8xl mx-auto px-6 ml-4">
               <div className="flex items-center space-x-4 mb-4">
                 <h1 className="text-xl font-semibold text-gray-800">
                   Lele Nusantara Update Informasi dan <br /> Teknologi
@@ -135,7 +135,7 @@ const KabarLeleLayout = () => {
               </div>
               <div className="w-2/3">
                 <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-                <div className="space-y-4 overflow-y-auto max-h-[165vh]">
+                <div className="space-y-4 overflow-y-auto max-h-[150vh] mt-4">
                   {filteredPosts.map((post) => (
                     <RightCard
                       key={post.id}

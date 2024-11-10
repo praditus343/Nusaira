@@ -167,7 +167,7 @@ const PengaturanDashboard = () => {
                 return (
                     <div className="p-4">
                         <TambakProfile />
-                        <div className="grid grid-cols-2 gap-4 mt-6">
+                        <div className="grid grid-cols-2 gap-4 mt-10">
                             <InfoCard
                                 title="Pengguna Yang Berhak"
                                 value="1"
@@ -187,8 +187,8 @@ const PengaturanDashboard = () => {
                 );
             case 'pengguna':
                 return (
-                    <div className="p-6">
-                        <div className="flex justify-between items-center mb-4">
+                    <div className="p-4">
+                        <div className="flex justify-between items-center mb-4 ">
                             <h2 className="text-lg font-semibold">Daftar Pengguna</h2>
                             <div className="flex">
                                 <button
@@ -271,7 +271,7 @@ const PengaturanDashboard = () => {
                             </span>
                             Lengkapi data hingga minimal DoC 60 agar Tabel FR siap digunakan sebagai alat prediksi SR yang akurat.
                         </p>
-                        <table className="w-full mt-4">
+                        <table className="w-full mt-4 border border-gray-300">
                             <thead className="bg-blue-500 text-white">
                                 <tr>
                                     <th className="p-3 text-left">DoC</th>
@@ -304,7 +304,7 @@ const PengaturanDashboard = () => {
                     {TABS.map(tab => (
                         <button
                             key={tab.id}
-                            className={`px-4 py-2 text-lg font-semibold ${activeTab === tab.id ? 'text-blue-500 border-blue-500' : ''}`}
+                            className={`mr-4 py-2 text-lg font-semibold ${activeTab === tab.id ? 'text-blue-500 border-blue-500' : ''}`}
                             onClick={() => setActiveTab(tab.id)}
                         >
                             {tab.label}
@@ -324,10 +324,10 @@ const PengaturanTambak = () => {
             <div className="flex-1 flex flex-col overflow-auto">
                 <Header />
                 <main className="flex-grow p-8">
-                    <h1 className="text-2xl font-bold mb-4">Pengaturan Dashboard</h1>
+                    <h1 className="text-2xl font-bold mb-4 ml-11">Pengaturan Dashboard</h1>
                     <PengaturanDashboard />
                     <button
-                        className="mt-8 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition"
+                        className="mt-8 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition ml-11"
                         onClick={() => {
                             console.log("Perubahan disimpan!");
                         }}

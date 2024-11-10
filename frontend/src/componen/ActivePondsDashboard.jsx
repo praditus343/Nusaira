@@ -27,7 +27,7 @@ const ActivePondsDashboard = () => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md  ml-4 mr-4 border-2 mb-10 border-gray-300 mt-10">
+        <div className="bg-white rounded-lg shadow-md  ml-6 mr-16 border-2 mb-10 border-gray-300 mt-10">
             <div className="mb-4 flex justify-between items-center ml-6 mr-6 mt-6">
                 <h2 className="text-lg font-medium text-gray-500">Daftar Kolam Aktif</h2>
                 <div className="flex items-center mb-4">
