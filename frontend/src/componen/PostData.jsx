@@ -10,7 +10,7 @@ const AllPosts = [
   {
     id: 1,
     title: "Seluk Beluk Usaha Budidaya Ikan Lele",
-    date: "15 Oktober 2024",
+    date: "15 November 2024",
     image: img1,
     excerpt: "Kegiatan budidaya ikan lele merupakan salah satu sektor yang sangat menguntungkan dalam dunia perikanan.",
     content: `
@@ -30,7 +30,7 @@ const AllPosts = [
   {
     id: 2,
     title: "Sulap Sungon Kotor Jadi Tempat Budidaya",
-    date: "15 Oktober 2024",
+    date: "7 Oktober 2024",
     image: img2,
     excerpt: "Kerja keras komunitas Pecinta Sungai (KPS) dalam mengelola sungai dan memanfaatkan ruang terbatas untuk budidaya ikan lele.",
     content: `
@@ -48,7 +48,7 @@ const AllPosts = [
   {
     id: 3,
     title: "Budidaya Ikan nan Menguntungkan",
-    date: "15 Oktober 2024",
+    date: "18 Oktober 2024",
     image: img3,
     excerpt: "Pembersaran kolam dianggap paling sederhana dalam pengolahan budidaya lele, dan mudah diterapkan bagi peternak pemula.",
     content: `
@@ -64,7 +64,7 @@ const AllPosts = [
   {
     id: 4,
     title: "Menggabungkan Aquaponik",
-    date: "15 Oktober 2024",
+    date: "20 Oktober 2024",
     image: img4,
     excerpt: "Aquaponik adalah sistem yang menggabungkan budidaya ikan dengan hidroponik untuk meningkatkan efisiensi dan keberlanjutan usaha perikanan.",
     content: `
@@ -82,7 +82,7 @@ const AllPosts = [
   {
     id: 5,
     title: "Pembangunan Aquaponik",
-    date: "15 Oktober 2024",
+    date: "28 Oktober 2024",
     image: img5,
     excerpt: "Pembangunan aquaponik sebagai sistem yang mengintegrasikan perikanan dan pertanian untuk meningkatkan produktivitas.",
     content: `
@@ -100,7 +100,7 @@ const AllPosts = [
   {
     id: 6,
     title: "Potensi Budidaya Ikan",
-    date: "15 Oktober 2024",
+    date: "9 Oktober 2024",
     image: img6,
     excerpt: "Budidaya ikan di Indonesia memiliki potensi yang sangat besar dan bisa terus dikembangkan dengan teknologi yang tepat.",
     content: `
@@ -118,7 +118,7 @@ const AllPosts = [
   {
     id: 7,
     title: "Inovasi Kolam Terpal Ikan Lele",
-    date: "16 Oktober 2024",
+    date: "10 Oktober 2024",
     image: img7,
     excerpt: "Kolam terpal semakin diminati sebagai media budidaya lele karena biayanya yang lebih murah dan fleksibilitas penggunaannya.",
     content: `

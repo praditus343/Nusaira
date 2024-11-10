@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import img from "../assets/img/login_singup/ls1.png"; // Impor gambar
+import Swal from "sweetalert2";
+import img from "../assets/img/login_singup/ls1.png"; 
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -8,13 +9,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate(); // Untuk redirect setelah login
-
-  // Cek apakah user sudah login saat komponen di-mount
+  const navigate = useNavigate(); 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn) {
-      navigate("/Home"); // Redirect ke dashboard jika sudah login
+      navigate("/Home"); 
     }
   }, [navigate]);
 
@@ -23,23 +22,34 @@ const LoginPage = () => {
     setError("");
 
     if (!email || !password) {
-      setError("Email dan Kata Sandi harus diisi.");
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "Email dan Kata Sandi harus diisi.",
+      });
       return;
     }
 
     setLoading(true);
 
-    // Simulasi autentikasi sederhana
     setTimeout(() => {
       setLoading(false);
 
-      // Contoh validasi login (login default dengan email dan password)
       if (email === "user@gmail.com" && password === "user123") {
-        localStorage.setItem("isLoggedIn", "true"); // Simpan status login
-        alert("Login Berhasil! 🚀");
-        navigate("/Home"); // Redirect ke halaman dashboard
+        localStorage.setItem("isLoggedIn", "true");
+        Swal.fire({
+          icon: "success",
+          title: "Login Berhasil!",
+          text: "Selamat datang di dashboard",
+        }).then(() => {
+          navigate("/Home"); 
+        });
       } else {
-        setError("Email atau kata sandi salah.");
+        Swal.fire({
+          icon: "error",
+          title: "Login Gagal",
+          text: "Email atau kata sandi salah.",
+        });
       }
     }, 2000);
   };

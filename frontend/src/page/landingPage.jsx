@@ -101,7 +101,7 @@ function LandingPage() {
     return (
         <>
             <Navbar />
-            <div  ref={(el) => (sectionRefs.current[0] = el)} className="flex items-stretch justify-between p-8 bg-white mt-4 ml-4 fade-in-scroll">
+            <div  ref={(el) => (sectionRefs.current[0] = el)} className="flex items-stretch justify-between p-8 bg-white mt-4 ml-10 fade-in-scroll">
                 <div className="flex-1 pr-8 flex flex-col justify-between fade-in">
                     <div>
                         <h1 className=" font-bold mb-4">
@@ -132,10 +132,10 @@ function LandingPage() {
             </div>
 
             <div  ref={(el) => (sectionRefs.current[1] = el)}className="bg-white p-4 mb-6 relative fade-in-scroll-left ">
-                <p className="text-gray-600 text-xl  mb-4 text-left mt-10 ml-8">
+                <p className="text-gray-600 text-xl  mb-4 text-left mt-10 ml-14">
                     Dipercaya Oleh:
                 </p>
-                <div className="flex justify-start">
+                <div className="flex justify-start ml-6">
                     <img
                         src={imgSponsor}
                         alt="Sponsor"
@@ -170,11 +170,11 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div ref={(el) => (sectionRefs.current[3] = el)} className="flex items-center justify-between p-10 bg-white mt-[20px] ml-4 fade-in-scroll-left">
+            <div ref={(el) => (sectionRefs.current[3] = el)} className="flex items-center justify-between p-10 bg-white mt-[20px] ml-8 fade-in-scroll-left">
                 <div className="flex-1 pr-8 pl-2">
                     <h2 className=" font-bold mb-2">Memastikan tambak berjalan lancar hingga <br /> panen</h2>
                     <p className=" text-gray-600 mb-4 mt-4 text-left max-w-lg">
-                        Siap untuk Meningkatkan Keberhasilan Budidaya Lele<br /> Anda? Daftar di E-Learning Kami dan nikmati<br /> pengalaman belajar yang mendalam dengan <br />pengetahuan praktis dari para ahli di bidangnya. Anda <br />akan diajarkan cara mengidentifikasi masalah yang<br /> mungkin terjadi dan bagaimana cara mengatasinya,<br /> memastikan setiap langkah budidaya Anda berjalan <br />lancar
+                        Siap untuk Meningkatkan Keberhasilan Budidaya Lele<br /> Anda? Daftar di E-Learning Kami dan nikmati<br /> pengalaman belajar yang mendalam dengan <br />pengetahuan praktis dari para ahli di bidangnya. Anda akan diajarkan cara mengidentifikasi masalah yang mungkin terjadi dan bagaimana cara mengatasinya, memastikan setiap langkah budidaya Anda berjalan lancar
                     </p>
                     <div>
                         <button
@@ -196,7 +196,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div ref={(el) => (sectionRefs.current[4] = el)} className="bg-white p-2 mt-5 ml-10 mr-10 fade-in-scroll-left">
+            <div ref={(el) => (sectionRefs.current[4] = el)} className="bg-white p-2 mt-5 ml-14 mr-14 fade-in-scroll-left">
                 <h2 className="font-bold mb-4 text-center">Grafik Tren Harga Bibit Lele: Pantau Harga Secara Real Time</h2>
                 <p className="text-center mt-4 max-w-2x1 mx-auto">
                     Cek Harga Jual dan Beli Lele Secara Real Time: Pantau Perubahan Harga Setiap Detik,<br /> Temukan Waktu Terbaik untuk Transaksi, dan Maksimalkan Keuntungan Anda dengan Akses Langsung ke Informasi Harga Terbaru yang Selalu Diperbarui
@@ -204,7 +204,7 @@ function LandingPage() {
                 <div className="grid grid-cols-2 gap-4 mt-10">
                     {/* Left Column */}
                     <div className="space-y-4">
-                        <div className="border p-4 rounded">
+                        <div className="border border-gray-300 p-4 rounded">
                             <h4 className="font-medium mb-2">LAMPUNG</h4>
                             <div className="flex justify-between mb-2">
                                 <span>Rp 53.000</span>
@@ -212,7 +212,7 @@ function LandingPage() {
                             </div>
                             <div className="h-16 bg-gray-200 rounded"></div>
                         </div>
-                        <div className="border p-4 rounded">
+                        <div className="border border-gray-300 p-4 rounded">
                             <h4 className="font-medium mb-2">JAWA TENGAH</h4>
                             <div className="flex justify-between mb-2">
                                 <span>Rp 58.000</span>
@@ -220,7 +220,7 @@ function LandingPage() {
                             </div>
                             <div className="h-16 bg-gray-200 rounded"></div>
                         </div>
-                        <div className="border p-4 rounded">
+                        <div className="border border-gray-300 p-4 rounded">
                             <h4 className="font-medium mb-2">JAWA TENGAH</h4>
                             <div className="flex justify-between mb-2">
                                 <span>Rp 58.000</span>
@@ -235,7 +235,7 @@ function LandingPage() {
                             {[...Array(6)].map((_, i) => (
                                 <div
                                     key={i}
-                                    className="border p-4 rounded cursor-pointer"
+                                    className="border p-4 rounded cursor-pointer border-gray-300"
                                     onClick={() => openModal('priceChart')}
                                 >
                                     <h4 className="font-medium mb-2">JAWA TIMUR</h4>
