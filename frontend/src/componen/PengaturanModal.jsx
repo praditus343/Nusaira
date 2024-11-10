@@ -126,8 +126,8 @@ const PermissionModals = ({
             {/* Add Member Modal */}
             {showAddMember && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg w-full max-w-md p-6">
-                        <div className="flex justify-between items-center mb-4">
+                    <div className="bg-white rounded-lg w-full max-w-md">
+                        <div className="flex justify-between items-center mb-4 m-4">
                             <h2 className="text-xl font-semibold">Tambah anggota</h2>
                             <button
                                 onClick={() => setShowAddMember(false)}
@@ -136,8 +136,10 @@ const PermissionModals = ({
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
+                        <hr className="border-gray-300 mb-4" />
 
-                        <form className="space-y-4">
+
+                        <form className="space-y-4 m-6">
                             <div>
                                 <input
                                     type="email"
@@ -163,17 +165,17 @@ const PermissionModals = ({
                                 </select>
                                 <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-3 pointer-events-none text-blue-600" />
                             </div>
-                            <div className="flex justify-end gap-2 m-6">
+                            <div className="flex justify-end gap-2">
                                 <button
                                     type="button"
                                     onClick={() => setShowAddMember(false)}
-                                    className="px-16 py-2 border-2 border-gray-300 rounded hover:bg-gray-50"
+                                    className="w-52 px-2 py-2 border-2 border-gray-300 rounded hover:bg-gray-50"
                                 >
                                     Batal
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-10 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className="w-48 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                                 >
                                     Tambahkan
                                 </button>
