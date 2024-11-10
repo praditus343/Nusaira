@@ -114,16 +114,16 @@ const DashboardManagement = () => {
 
     const exportToPDF = () => {
         const doc = new jsPDF();
-        
+
         doc.setFontSize(20);
         doc.text("Laporan Analisis Kualitas Air", 105, 20, { align: "center" });
         doc.setFontSize(12);
         doc.text(`Lokasi: ${lokasi}`, 105, 30, { align: "center" });
         doc.text(`Tanggal: ${new Date().toLocaleDateString()}`, 105, 40, { align: "center" });
-        
+
         doc.setFontSize(16);
         doc.text("Analisis Parameter Kualitas Air", 20, 60);
-        
+
         const tableColumn = ["Parameter", "Nilai", "Status", "Deskripsi"];
         const tableRows = [
             ["pH", `${analysis.ph.value}`, `${analysis.ph.status}`, "Menunjukkan tingkat keasaman atau kebasaan air."],
@@ -139,12 +139,12 @@ const DashboardManagement = () => {
             styles: { fontSize: 10 },
             headStyles: { fillColor: [135, 206, 235], halign: 'center' },
         });
-        
-        
+
+
         let yPosition = doc.previousAutoTable.finalY + 20;
         doc.setFontSize(16);
         doc.text("Kesimpulan dan Rekomendasi", 20, yPosition);
-        
+
         yPosition += 10;
         doc.setFontSize(12);
         if (analysis.ph.status !== 'Normal') {
@@ -166,8 +166,8 @@ const DashboardManagement = () => {
         if (Object.values(analysis).every(param => param.status === 'Normal')) {
             doc.text("- Semua parameter dalam kondisi normal. Tidak ada tindakan khusus yang diperlukan.", 20, yPosition, { maxWidth: 170 });
         }
-        
-        
+
+
         doc.save(`Laporan_Kualitas_Air_${lokasi}.pdf`);
     };
 
@@ -175,7 +175,7 @@ const DashboardManagement = () => {
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
-            <div className="mt-4 ml-8 mr-8">
+            <div className="mt-4 ml-6 ">
                 <div className="p-4">
                     <div className="flex justify-between items-center">
                         <div>
@@ -185,23 +185,23 @@ const DashboardManagement = () => {
                                 <span>Boyolali, Jawa Tengah</span>
                             </div>
                         </div>
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4 mr-2">
                             <div className="flex items-center space-x-2 px-4">
                                 <span className="text-gray-600">Daftar Tambak :</span>
-                                <div className="relative flex items-center">
-                                    <select className="block w-[300px] pr-10 pl-4 border rounded-lg py-2 appearance-none">
+                                <div className="relative  items-center">
+                                    <select className="block w-[300px] pr-8 pl-4 border rounded-lg py-2 appearance-none">
                                         <option value="kolam1">Lele Segar</option>
                                         <option value="kolam2">Lele Jumbo</option>
                                     </select>
                                     <FontAwesomeIcon
                                         icon={faChevronDown}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 pointer-events-none"
                                     />
                                 </div>
                             </div>
 
                             <button onClick={exportToPDF} className="px-10 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
-                                Export Laporan
+                                Ekpor Laporan
                             </button>
                         </div>
                     </div>
@@ -252,7 +252,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">pH Air</h3>
                                 <p className="text-2xl mb-2">{analysis.ph ? analysis.ph.value : 'N/A'}</p>
-                                <p className={`text-md font-semibold ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-sm font-semibold ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
                                     Status: {analysis.ph ? analysis.ph.status : 'N/A'}
                                 </p>
                             </div>
@@ -261,7 +261,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Suhu Air</h3>
                                 <p className="text-2xl mb-2">{analysis.suhu ? analysis.suhu.value : 'N/A'}</p>
-                                <p className={`text-md font-semibold ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-sm font-semibold ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
                                     Status: {analysis.suhu ? analysis.suhu.status : 'N/A'}
                                 </p>
 
@@ -271,7 +271,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Oksigen Terlarut</h3>
                                 <p className="text-2xl mb-2">{analysis.oksigen ? analysis.oksigen.value : 'N/A'}</p>
-                                <p className={`text-md font-semibold ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-sm font-semibold ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
                                     Status: {analysis.oksigen ? analysis.oksigen.status : 'N/A'}
                                 </p>
 
@@ -281,7 +281,7 @@ const DashboardManagement = () => {
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Salinitas</h3>
                                 <p className="text-2xl mb-2">{analysis.salinitas ? analysis.salinitas.value : 'N/A'}</p>
-                                <p className={`text-md font-semibold ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-600'}`}>
+                                <p className={`text-sm font-semibold ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
                                     Status: {analysis.salinitas ? analysis.salinitas.status : 'N/A'}
                                 </p>
 
@@ -292,19 +292,19 @@ const DashboardManagement = () => {
                             <h3 className="font-bold mb-2">Rekomendasi Tindakan:</h3>
                             <ul className="list-disc pl-6">
                                 {analysis.ph.status !== 'Normal' && (
-                                    <li className="text-red-600 font-semibold text-lg">Perlu penyesuaian pH air</li>
+                                    <li className="text-red-500 font-semibold text-md">Perlu penyesuaian pH air</li>
                                 )}
                                 {analysis.suhu.status !== 'Normal' && (
-                                    <li className="text-red-600 font-semibold text-lg">Perlu pengaturan suhu air</li>
+                                    <li className="text-red-500 font-semibold text-md">Perlu pengaturan suhu air</li>
                                 )}
                                 {analysis.oksigen.status !== 'Normal' && (
-                                    <li className="text-red-600 font-semibold text-lg">Perlu penambahan aerasi</li>
+                                    <li className="text-red-500 font-semibold text-md">Perlu penambahan aerasi</li>
                                 )}
                                 {analysis.salinitas.status !== 'Normal' && (
-                                    <li className="text-red-600 font-semibold text-lg">Perlu penyesuaian salinitas</li>
+                                    <li className="text-red-500 font-semibold text-md">Perlu penyesuaian salinitas</li>
                                 )}
                                 {Object.values(analysis).every(param => param.status === 'Normal') && (
-                                    <li className="text-green-600 font-semibold text-lg">Semua parameter dalam kondisi normal</li>
+                                    <li className="text-green-500 font-semibold text-md">Semua parameter dalam kondisi normal</li>
                                 )}
                             </ul>
                         </div>

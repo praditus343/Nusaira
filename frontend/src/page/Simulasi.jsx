@@ -33,11 +33,11 @@ const SimulationChart = () => {
     };
 
     return (
-        <div className="bg-white w-full min-h-screen mb-10 ml-5">
+        <div className="bg-white w-full min-h-screen mb-10">
             <Header/>
 
             {/* Title Section */}
-            <div className="p-4 mt-5">
+            <div className="mt-5 ml-10">
                 <h1 className="text-xl font-medium">Tambak Lele Seger</h1>
                 <div className="flex items-center space-x-2 text-gray-600 mt-1">
                     <MapPin className="w-4 h-4" />
@@ -46,7 +46,7 @@ const SimulationChart = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex gap-6 p-4">
+            <div className="flex gap-6 p-4 ml-6">
                 {/* Left Side - Form */}
                 <div className="w-1/2">
                     <div className="bg-blue-100 rounded-lg shadow">

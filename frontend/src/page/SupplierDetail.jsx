@@ -136,7 +136,7 @@ const SupplierDashboard = () => {
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
-            <div className="flex items-center mb-4 ml-5 mr-10 mt-10">
+            <div className="flex items-center mb-8 ml-10 mr-10 mt-10">
                 <img src={supplier.Image} alt={supplierId} className="w-24 h-24 object-cover rounded-full border-4 border-blue-400 shadow-lg" />
                 <div className="ml-4">
                     <h2 className="text-3xl font-semibold">{supplierId}</h2>
@@ -144,13 +144,13 @@ const SupplierDashboard = () => {
                 </div>
             </div>
 
-            <div className="bg-white p-4 rounded-lg border border-gray-300 shadow-md mb-6 ml-10 mr-10 mt-5">
+            <div className="bg-white p-4 rounded-lg border border-gray-300 shadow-md mb-8 ml-10 mr-10 mt-5">
                 <h3 className="font-semibold text-xl">Detail Supplier:</h3>
                 <p>{supplier.description}</p>
                 <p><strong>Ketersediaan:</strong> {supplier.availability}</p>
             </div>
 
-            <div className="bg-white p-4 rounded-lg shadow-md mb-6 border border-gray-300 ml-10 mr-10 mt-5">
+            <div className="bg-white p-4 rounded-lg shadow-md mb-8 border border-gray-300 ml-10 mr-10 mt-5">
                 <h3 className="font-semibold text-xl">Rating dan Ulasan:</h3>
                 <p><strong>Rating:</strong> {supplier.rating} / 5</p>
                 <ul className="list-disc pl-5">
@@ -160,7 +160,7 @@ const SupplierDashboard = () => {
                 </ul>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-8">
                 <h3 className="font-semibold text-xl mb-2 ml-10">Katalog Produk:</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {supplier.products.map((product, index) => (
@@ -183,7 +183,7 @@ const SupplierDashboard = () => {
             </div>
 
             <div>
-                <button className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center ml-10 mt-4" onClick={handleContactSupplier}>
+                <button className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center ml-10 mt-10" onClick={handleContactSupplier}>
                     <FontAwesomeIcon icon={faWhatsapp} className="mr-2" />
                     Hubungi Supplier
                 </button>
