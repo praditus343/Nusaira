@@ -75,7 +75,7 @@ function Dashboard() {
   return (
     <>
       <Header />
-      <div className="bg-gray-100 p-6 font-sans">
+      <div className="bg-white-100 p-6 font-sans">
         {/* Top Section with Icons */}
         <div className="grid grid-cols-4 gap-4 text-center mb-6">
           <div className="p-4 bg-white rounded-lg shadow flex flex-col items-center">
@@ -170,7 +170,7 @@ function Dashboard() {
 
 function RingkasanLearning() {
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <ElearningSidebar />
       <div className="flex-1 overflow-auto">
         <Dashboard />
