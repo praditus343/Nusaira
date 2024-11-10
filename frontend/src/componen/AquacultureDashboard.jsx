@@ -225,7 +225,7 @@ const AquacultureDashboard = ({ data = {} }) => {
     </div>
 
       {/* Main Content Card */}
-      <Card className='border-2 w-[1180px] mt-10'>
+      <Card className='border-2 w-[1120px] mt-10 mr-20 ml-2'>
         <div className="flex justify-between items-center m-6">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
@@ -314,10 +314,10 @@ const AquacultureDashboard = ({ data = {} }) => {
           <div className="flex-1 space-y-6 m-6 w-[800px]">
 
             <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center space-x-4 mr-4 ">
+              <div className="flex items-center space-x-4 ">
                 <span>Menampilkan:</span>
                 <div className="relative">
-                  <select className="h-8 px-8 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-600 text-blue-600 appearance-none">
+                  <select className="h-8 px-6 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-1 focus:ring-blue-600 text-blue-600 appearance-none">
                     <option value="">MWB (Gram)</option>
                     <option value="1"> 10</option>
                     <option value="2"> 20</option>
@@ -331,7 +331,7 @@ const AquacultureDashboard = ({ data = {} }) => {
 
               {/* Bagian Kanan: Rentang DoC */}
               <div className="flex items-center space-x-2">
-                <span className='w-[120px]'>Rentang DoC:</span>
+                <span className='w-[120px] ml-4'>Rentang DoC:</span>
                 <div className="flex items-center space-x-1">
                   <input
                     type="text"

@@ -111,7 +111,7 @@ const FishDiseaseDashboard = () => {
                 </button>
             </div>
 
-            <div className="border border-blue-600 rounded-lg bg-white p-2 mr-8 ml-8 p-6 h-[800px] overflow-y-auto">
+            <div className="border border-blue-600 rounded-lg bg-white p-2 mr-8 ml-14 p-6 h-[800px] overflow-y-auto">
                 <div className={`${isGridLayout ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto' : 'flex flex-col gap-4'}`}>
                     {filteredDiseases.length > 0 ? (
                         filteredDiseases.map((disease) => (
@@ -152,7 +152,7 @@ function PenyakitLele() {
             <div className="flex-1 overflow-auto">
                 <FishDiseaseDashboard />
                 <AIFloatingButton />
-                <div className='mt-10'>
+                <div className='mt-20'>
                     <Footer />
                 </div>
             </div>

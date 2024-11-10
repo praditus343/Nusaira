@@ -31,7 +31,7 @@ const PriceCard = ({ supplier, location, price, province }) => {
     };
 
     return (
-        <div className="p-4 bg-blue-200 rounded-lg shadow-sm flex items-center justify-between">
+        <div className="p-6 bg-blue-200 rounded-lg shadow-sm flex items-center justify-between">
             <div className="flex flex-col w-full">
                 <div className="flex justify-between items-center mb-4">
                     <div>
@@ -82,7 +82,7 @@ const PriceDashboard = () => (
             </div>
 
             {/* Current Prices Table */}
-            <div className="mb-8 border border-blue-600 rounded-xl">
+            <div className="mb-8 border border-blue-600 rounded-xl mr-2">
                 <div className="flex justify-between mb-4 mr-4 ml-4 ">
                     <div className='mt-4'>
                         <h4 className='text-medium text-gray-500'>Boyolali</h4>
@@ -114,7 +114,7 @@ const PriceDashboard = () => (
                 </div>
             </div>
             <PriceHistoryAndPrediction />
-            <div>
+            <div className='w-full'>
                 <h3 className="mb-4">Harga Lainnya</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <PriceCard
@@ -148,7 +148,9 @@ function PriceHistory() {
             <div className="flex-1 overflow-auto">
                 <PriceDashboard />
                 <AIFloatingButton />
+                <div className='mt-10'>
                 <Footer />
+                </div>
             </div>
         </div>
     );

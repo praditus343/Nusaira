@@ -85,7 +85,7 @@ const Testimonial = () => {
   const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="text-center py-8 relative mx-auto mb-32 max-w-7xl px-4">
+    <div className="text-center py-8 relative ml-8 mr-8 mb-32 px-4">
       <h2 ref={titleRef} className="text-2xl font-bold mb-10 no-select">Kata Mereka</h2>
       <div
         ref={testimonialContainerRef}

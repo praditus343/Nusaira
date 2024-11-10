@@ -15,10 +15,10 @@ const predictionData = Array(8).fill({
 });
 
 const PriceHistoryAndPrediction = () => (
-    <div className="flex gap-6 mb-8">
+    <div className="flex gap-6 mb-8 mr-6">
         {/* Price History Chart - Takes up 60% of the space */}
         <div className="flex-[3]">
-            <div className="bg-white p-6 rounded-lg h-full">
+            <div className="bg-white w-full rounded-lg h-full">
                 <div className="flex justify-between mb-4">
                     <h3 className="font-medium">Riwayat Harga Lele Di Boyolali</h3>
                 </div>
@@ -60,7 +60,7 @@ const PriceHistoryAndPrediction = () => (
 
         {/* Price Prediction Table - Takes up 40% of the space */}
         <div className="flex-[2] mt-20">
-            <div className="bg-white p-6 rounded-lg h-full">
+            <div className="bg-white w-full rounded-lg h-full ml-4">
                 <h3 className="font-medium mb-4">Prediksi seminggu Kedepan</h3>
                 <div className="border rounded-xl overflow-hidden border-blue-600">
                     <h4 className='p-6 mt-2 text-center text-blue-600'>Prediksi</h4>

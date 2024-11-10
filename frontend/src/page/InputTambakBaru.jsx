@@ -99,7 +99,7 @@ const TambakForm = () => {
     const SelectWithArrow = ({ name, value, onChange, children, required }) => (
         <div className="relative z-10">
             <select
-                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black appearance-none pr-10"
+                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black appearance-none "
                 name={name}
                 value={value}
                 onChange={onChange}
@@ -108,13 +108,12 @@ const TambakForm = () => {
                 {children}
             </select>
             {/* Arrow icon */}
-
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-blue-600 z-20">
                 <FontAwesomeIcon icon={faChevronDown} className="h-4 w-4" />
             </div>
         </div>
     );
-        
+
 
 
 
@@ -123,13 +122,15 @@ const TambakForm = () => {
             <Header />
 
             <div className="bg-white p-6 w-full">
-                <h2 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                    <div className="w-5 h-5 bg-gray-500 rounded-full mr-2" />
-                    Input Data Tambak Lele Anda untuk Manajemen Kualitas yang<br />Terintegrasi
-                </h2>
-                <p className="text-sm text-gray-600 mb-6">
-                    Kelola Tambak Lele Anda Secara Efektif dengan Sistem<br />Pemantauan Data Kualitas yang Terpadu dan Mudah Digunakan!
-                </p>
+                <div className="ml-5 mr-5">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                        <div className="w-5 h-5 bg-gray-500 rounded-full mr-2" />
+                        Input Data Tambak Lele Anda untuk Manajemen Kualitas yang<br />Terintegrasi
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-6">
+                        Kelola Tambak Lele Anda Secara Efektif dengan Sistem<br />Pemantauan Data Kualitas yang Terpadu dan Mudah Digunakan!
+                    </p>
+                </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="p-4">
@@ -243,7 +244,7 @@ const TambakForm = () => {
                         <div className="p-4 bg-white mb-4">
                             <h3 className="text-md font-medium text-gray-700 mb-4">Informasi Kolam</h3>
                             {formData.kolamDetails.map((kolam, index) => (
-                                <div key={index} className="space-y-4 mb-10  rounded-lg p-4 bg-blue-100 h-[350px]">
+                                <div key={index} className="space-y-4 mb-10  rounded-lg p-4 pb-10 bg-blue-100 h-auto">
                                     <h4 className="font-semibold text-gray-800">Kolam {index + 1}</h4>
                                     <div className="space-y-4">
                                         <div>
@@ -281,15 +282,15 @@ const TambakForm = () => {
                                         </div>
 
                                         <div className="flex space-x-4">
-                                            {['Panjang (M)', 'Lebar (M)', 'Luas (M)', 'Kedalaman (M)'].map((dimension, idx) => (
+                                            {['panjang', 'lebar', 'luas', 'kedalaman'].map((dimension) => (
                                                 <div className="flex-1" key={dimension}>
                                                     <SelectWithArrow
                                                         name={dimension}
                                                         value={kolam[dimension]}
-                                                        onChange={(e) => handleKolamChange(idx, e)}
+                                                        onChange={(e) => handleKolamChange(index, e)}
                                                         required
                                                     >
-                                                        <option value="">{dimension}</option>
+                                                        <option value="">{`${dimension.charAt(0).toUpperCase() + dimension.slice(1)} (M)`}</option>
                                                         <option value="10" className="text-blue-600">10</option>
                                                         <option value="15" className="text-blue-600">15</option>
                                                         <option value="manual" className="text-blue-600">Ketik Manual</option>
@@ -297,7 +298,7 @@ const TambakForm = () => {
                                                     {kolam[dimension] === 'manual' && (
                                                         <input
                                                             type="number"
-                                                            placeholder={`${dimension}`}
+                                                            placeholder={`${dimension.charAt(0).toUpperCase() + dimension.slice(1)} (M)`}
                                                             className="mt-2 focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
                                                             value={kolam[`${dimension}Manual`] || ''}
                                                             onChange={(e) => {
@@ -312,7 +313,7 @@ const TambakForm = () => {
 
                                         <div>
                                             {labelVisible.jumlahAnco && (
-                                                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="jumlahAnco">
+                                                <label className="block text-sm font-medium text-gray-700" htmlFor="jumlahAnco">
                                                     Jumlah Anco
                                                 </label>
                                             )}
