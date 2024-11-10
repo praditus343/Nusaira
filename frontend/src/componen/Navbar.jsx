@@ -16,9 +16,8 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md border border-gray-300">
+        <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md border-2 border-gray-300">
             <div className="flex items-center space-x-8">
-                {/* Logo */}
                 <div>
                     <Link to="/" onClick={scrollToTop}>
                         <img
@@ -44,8 +43,8 @@ const Navbar = () => {
                             />
                         </button>
                         {activeDropdown === 'produk' && (
-                            <div className="absolute top-full left-0 mt-2 w-64 bg-white border rounded-md shadow-lg z-10">
-                            <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
+                            <div className="absolute top-full left-0 mt-2 w-64 bg-white border rounded-md shadow-lg z-10 select-none">
+                            <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center `}>
                                 <div className="w-8 flex justify-center">
                                     <FontAwesomeIcon icon={faRobot} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
                                 </div>

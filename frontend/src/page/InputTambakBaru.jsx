@@ -125,7 +125,7 @@ const TambakForm = () => {
                 <div className="ml-5 mr-5">
                     <h2 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
                         <div className="w-5 h-5 bg-gray-500 rounded-full mr-2" />
-                        Input Data Tambak Lele Anda untuk Manajemen Kualitas yang<br />Terintegrasi
+                        Masukkan Data Tambak Lele Anda untuk Manajemen Kualitas yang<br />Terintegrasi
                     </h2>
                     <p className="text-sm text-gray-600 mb-6">
                         Kelola Tambak Lele Anda Secara Efektif dengan Sistem<br />Pemantauan Data Kualitas yang Terpadu dan Mudah Digunakan!

@@ -1,11 +1,10 @@
-import React, { useState ,useRef } from 'react';
-import { Card } from './CardManagement';
-import { ChevronDown,  Edit3, RefreshCw } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { TambahDataKematianModal, TambahDataPakanModal, TambahDataPanenModal, TambahDataPenyakitModal, TambahJumlahAnco, TambahLeleSegerModal } from './ModalTambak';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import MetricModal from './MetricsModal';
+import { ChevronDown, Edit3, RefreshCw } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
+import { Card } from './CardManagement';
+import MetricModal from './MetricsModal';
 
 
 
@@ -26,54 +25,66 @@ const AquacultureDashboard = ({ data = {} }) => {
   const [firstInput, setFirstInput] = useState("0");
   const [secondInput, setSecondInput] = useState("100");
   const [selectedMetric, setSelectedMetric] = useState(null);
-  
+  const [isDragging, setIsDragging] = useState(false);
+  const [isClicking, setIsClicking] = useState(false); //
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [dragDistance, setDragDistance] = useState(0); 
+  const sliderRef = useRef(null);
+
   const openModal = (metric) => {
-    setSelectedMetric(metric);
+    if (isClicking) { 
+      setSelectedMetric(metric);
+    }
   };
 
   const closeModalMetric = () => {
     setSelectedMetric(null);
   };
-
-
-
-  const handleRefresh = () => {
-    setFirstInput("0");
-    setSecondInput("100");
-  };
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const sliderRef = useRef(null);
-
-  const onMouseDown = (e) => {
-    setIsDragging(true);
+  const handleMouseDown = (e) => {
+    const isCard = e.target.closest(".metric-card");
+  
+    if (isCard) {
+      setIsClicking(true); 
+      setDragDistance(0);  
+      return;  
+    }
+  
+    setIsDragging(true); 
     setStartX(e.pageX - sliderRef.current.offsetLeft);
     setScrollLeft(sliderRef.current.scrollLeft);
-    sliderRef.current.style.cursor = 'grabbing'; 
+    sliderRef.current.style.cursor = 'grabbing';
+    setIsClicking(false); 
+    setDragDistance(0);  
   };
 
-  const onMouseLeave = () => {
+  const handleMouseLeave = () => {
     setIsDragging(false);
-    sliderRef.current.style.cursor = 'grab'; 
+    sliderRef.current.style.cursor = 'grab';
   };
 
-  const onMouseUp = () => {
-    setIsDragging(false);
-    sliderRef.current.style.cursor = 'grab'; 
+  const handleMouseUp = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      sliderRef.current.style.cursor = 'grab';
+      if (dragDistance < 10) {
+        setIsClicking(true); 
+      }
+    }
+    
   };
 
-  const onMouseMove = (e) => {
-    if (!isDragging) return; 
-    e.preventDefault();
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    
     const x = e.pageX - sliderRef.current.offsetLeft;
     const walk = (x - startX) * 1; 
     sliderRef.current.scrollLeft = scrollLeft - walk;
+    
+    setDragDistance(Math.abs(walk)); 
   };
 
-
-
-
+  
   // Sample growth data for the chart
   const growthData = [
     { doc: '1.0d', pH: 7.2, satu: 28, dua: 15, tiga: 10 },
@@ -81,47 +92,10 @@ const AquacultureDashboard = ({ data = {} }) => {
     { doc: '3.0d', pH: 7.3, satu: 29, dua: 16, tiga: 11 }
   ];
 
-  const buttons = [
-    'Mulai siklus',
-    'Kematian',
-    'Penyakit',
-    'Pakan',
-    'Panen',
-    'Anco'
-  ];
-
-  const [activeModal, setActiveModal] = useState(null);
-
-  const handleButtonClick = (buttonText) => {
-    switch (buttonText) {
-      case 'Mulai siklus':
-        setActiveModal('TambahLeleSegerModal');
-        break;
-      case 'Kematian':
-        setActiveModal('TambahDataKematianModal');
-        break;
-      case 'Penyakit':
-        setActiveModal('TambahDataPenyakitModal');
-        break;
-      case 'Pakan':
-        setActiveModal('TambahDataPakanModal');
-        break;
-      case 'Panen':
-        setActiveModal('TambahDataPanenModal');
-        break;
-      case 'Anco':
-        setActiveModal('TambahJumlahAnco');
-        break;
-      default:
-        setActiveModal(null);
-        break;
-    }
-  };
-
-  const closeModal = () => setActiveModal(null);
 
   const metrics = [
     {
+      id: 1,
       label: 'Estimasi Biomassa',
       value: '0',
       unit: 'Kg dari 1 kolam',
@@ -130,7 +104,7 @@ const AquacultureDashboard = ({ data = {} }) => {
       tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Biomassa', 'Panen kumulatif'],
       tableRows: [['-', '-', '-', '-']]
     },
-    {
+    { id:2,
       label: 'Panen Kumulatif',
       value: '0',
       unit: 'Kg dari 1 kolam',
@@ -139,7 +113,7 @@ const AquacultureDashboard = ({ data = {} }) => {
       tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Panen (Kg)'],
       tableRows: [['-', '-', '-']]
     },
-    {
+    {id:3,
       label: 'Pakan Kumulatif',
       value: '0',
       unit: 'Kg dari 1 kolam',
@@ -148,7 +122,7 @@ const AquacultureDashboard = ({ data = {} }) => {
       tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Pakan (Kg)'],
       tableRows: [['K1', '-', '-']]
     },
-    {
+    { id:4,
       label: 'Estimasi SR',
       value: '0',
       unit: '% dari 1 kolam',
@@ -157,7 +131,7 @@ const AquacultureDashboard = ({ data = {} }) => {
       tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Survival Rate (SR) (%)'],
       tableRows: [['K1', '-', '-']]
     },
-    {
+    { id:5,
       label: 'Estimasi Nilai Jual',
       value: '0',
       unit: 'Kg dari 1 kolam',
@@ -169,42 +143,25 @@ const AquacultureDashboard = ({ data = {} }) => {
   ];
   
 
+  const handleRefresh = () => {
+    setFirstInput("0");
+    setSecondInput("100");
+  };
 
   return (
     <div className="w-full max-w-6xl p-4">
-      {/* Buttons for each modal */}
-      <div className="flex flex-wrap gap-2 mt-2 mb-5">
-        {buttons.map((text) => (
-          <button
-            key={text}
-            onClick={() => handleButtonClick(text)}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors ml-2"
-          >
-            {text}
-          </button>
-        ))}
-      </div>
-
-      {/* Render modals based on active modal */}
-      {activeModal === 'TambahLeleSegerModal' && <TambahLeleSegerModal isOpen={true} onClose={closeModal} />}
-      {activeModal === 'TambahDataKematianModal' && <TambahDataKematianModal isOpen={true} onClose={closeModal} />}
-      {activeModal === 'TambahDataPenyakitModal' && <TambahDataPenyakitModal isOpen={true} onClose={closeModal} />}
-      {activeModal === 'TambahDataPakanModal' && <TambahDataPakanModal isOpen={true} onClose={closeModal} />}
-      {activeModal === 'TambahDataPanenModal' && <TambahDataPanenModal isOpen={true} onClose={closeModal} />}
-      {activeModal === 'TambahJumlahAnco' && <TambahJumlahAnco isOpen={true} onClose={closeModal} />}
-
       <div
       className="overflow-x-auto flex space-x-5 py-4 cursor-grab"
       ref={sliderRef}
-      onMouseDown={onMouseDown}
-      onMouseLeave={onMouseLeave}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
     >
       {metrics.map((metric) => (
         <div
-          key={metric.label}
-          className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2"
+          key={metric.id}
+          className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2 select-none metric-card"
           onClick={() => openModal(metric)}
 
         >
@@ -317,7 +274,7 @@ const AquacultureDashboard = ({ data = {} }) => {
               <div className="flex items-center space-x-4 ">
                 <span>Menampilkan:</span>
                 <div className="relative">
-                  <select className="h-8 px-6 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-1 focus:ring-blue-600 text-blue-600 appearance-none">
+                  <select className="h-8 px-2 w-[150px] border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-blue-600 appearance-none">
                     <option value="">MWB (Gram)</option>
                     <option value="1"> 10</option>
                     <option value="2"> 20</option>

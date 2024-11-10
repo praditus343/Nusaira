@@ -124,15 +124,19 @@ const DashboardContent = () => {
 
                 <div className="flex space-x-4 mr-16 ml-6">
                     <div className="w-2/3 bg-white border-2 border-blue-600 rounded-lg shadow-md">
-                        <div className="p-3 bg-blue-400 rounded-lg ml-4 mr-4 mt-4 mb-4">
+                        <div className="p-3 bg-blue-400 rounded-lg ml-4 mr-4 mt-6 mb-4">
                             <div className="flex items-center space-x-4">
-                                <img src={imgConfusePeople} alt="Question mark" className="w-50 h-60 object-cover ml-4 mr-4" />
+                                <img src={imgConfusePeople} alt="Question mark" className="w-50 h-60 object-cover ml-4 mr-4" draggable="false" />
                                 <div>
                                     <h3 className="font-semibold mb-2 text-white">Rencanakan Proses Pertama Anda</h3>
                                     <p className="text-white mb-4">
                                         Anda Perlu Memulai Siklus agar Dapat<br /> Mencatat dan Mengelola Budidaya Secara<br /> Efisien.
                                     </p>
-                                    <button className="px-20 py-2 bg-blue-600 text-white rounded-md mt-4 hover:bg-blue-500 transition-colors duration-300">Mulai sekarang</button>
+                                    <Link to="/AksesPremium">
+                                        <button className="px-20 py-2 bg-blue-600 text-white rounded-md mt-5  no-select mb-10">
+                                            Mulai Sekarang
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -140,27 +144,31 @@ const DashboardContent = () => {
 
                     <div className="w-1/3 bg-white border-2 border-blue-600 rounded-lg shadow-md">
                         <div className="p-6">
-                            <h3 className="text-lg font-semibold mb-4">Budidaya Bersama NusAIra</h3>
+                            <h3 className="text-center text-xl text-gray-500 font-semibold mb-4">Budidaya Bersama NusAIra</h3>
                             <div className="p-4">
                                 <div className="space-y-4">
-                                    <div className="bg-blue-500 rounded-md py-1">
-                                        <button className="w-full text-white flex items-center p-3 ml-2">
-                                            <FontAwesomeIcon icon={faYoutube} className="w-6 h-6 mr-2" />
-                                            <span className="ml-2">YouTube NusAIra</span>
-                                        </button>
+                                    <div>
+                                        <Link to="/Elearning">
+                                            <button>
+                                                <img
+                                                    src={imgElearningNusaira}
+                                                    alt="E-learning"
+                                                    className="w-[500px] h-32 rounded-lg inline-block"
+                                                    draggable="false"
+                                                />
+                                            </button>
+                                        </Link>
                                     </div>
-                                    <div className="bg-blue-500 rounded-md">
-                                        <button className="w-full text-white flex items-center p-3">
-                                            <img src={imgElearningNusaira} alt="E-learning" className="w-20 h-8 mr-2" />
-                                            <span>Belajar Bareng NusAira</span>
-                                        </button>
-                                    </div>
-                                    <div className="bg-blue-500 rounded-md py-1">
-                                        <button className="w-full text-white flex items-center p-3 ml-2">
-                                            <FontAwesomeIcon icon={faTelegram} className="w-6 h-6 mr-2" />
-                                            <span className="ml-2">Telegram NusAIra</span>
-                                        </button>
-                                    </div>
+                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3">
+                                        <FontAwesomeIcon icon={faYoutube} className="w-6 h-6 mr-2" />
+                                        <span className="ml-2 text-sm">YouTube NusAIra</span>
+                                    </button>
+
+                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3 mt-4">
+                                        <FontAwesomeIcon icon={faTelegram} className="w-6 h-6 mr-2" />
+                                        <span className="ml-2 text-sm">Telegram NusAIra</span>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>

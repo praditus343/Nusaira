@@ -317,23 +317,26 @@ const PengaturanDashboard = () => {
         </div>
     );
 };
+
 const PengaturanTambak = () => {
     return (
-        <div className="flex h-screen">
+        <div className="flex min-h-screen">
             <Sidebar />
-            <div className="flex-1 flex flex-col overflow-auto">
+            <div className="flex-1 flex flex-col">
                 <Header />
                 <main className="flex-grow p-8">
-                    <h1 className="text-2xl font-bold mb-4 ml-11">Pengaturan Dashboard</h1>
-                    <PengaturanDashboard />
-                    <button
-                        className="mt-8 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition ml-11"
-                        onClick={() => {
-                            console.log("Perubahan disimpan!");
-                        }}
-                    >
-                        Simpan Perubahan
-                    </button>
+                    <h1 className="text-2xl font-bold mb-4 ml-20">Pengaturan Dashboard</h1>
+                    <div className="bg-white p-6 ml-11 mt-4 w-full max-w-4xl">
+                        <PengaturanDashboard />
+                        <button
+                            className="mt-8 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition ml-4"
+                            onClick={() => {
+                                console.log("Perubahan disimpan!");
+                            }}
+                        >
+                            Simpan Perubahan
+                        </button>
+                    </div>
                 </main>
                 <AIFloatingButton />
                 <Footer />
@@ -341,5 +344,7 @@ const PengaturanTambak = () => {
         </div>
     );
 };
+
+
 
 export default PengaturanTambak;
