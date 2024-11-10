@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChevronDown, faChevronUp, faUniversity
-  , faClock,
-  faBook, faStar, faChevronLeft, faChevronRight
+  faChevronDown, faChevronUp, faUniversity,
+  faClock, faBook, faStar, faChevronLeft, faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, Link } from 'react-router-dom';
 import imgLogo from "../assets/Logo.png";
@@ -13,7 +12,6 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isActive = location.pathname === path;
-
   const isAnyChildActive = children?.some((child) => location.pathname === child.path);
 
   const toggleDropdown = () => {
@@ -90,10 +88,12 @@ const ElearningSidebar = () => {
       {isSidebarOpen ? (
         <>
           <div className="flex items-center justify-between p-4">
-            <div className="flex items-center">
-              <img src={imgLogo} alt="Logo" className="w-12 h-12 rounded-full mr-2" />
-              {isSidebarOpen && <span className="text-white text-xl mt-2 font-bold">NusAIra</span>}
-            </div>
+            <Link to="/Home">  {/* Ganti "/home" dengan path tujuan halaman lainnya */}
+              <div className="flex items-center cursor-pointer">
+                <img src={imgLogo} alt="Logo" className="w-12 h-12 rounded-full mr-2" />
+                {isSidebarOpen && <span className="text-white text-xl mt-2 font-bold">NusAIra</span>}
+              </div>
+            </Link>
             <div className="cursor-pointer" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faChevronLeft} />
             </div>
