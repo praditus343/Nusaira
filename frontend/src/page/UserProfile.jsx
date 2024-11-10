@@ -63,22 +63,19 @@ const UserProfile = () => {
         <Header />
 
         {/* Pengaturan Akun */}
-        <span className="text-lg font-medium text-black ml-9 mr-18 mt-10">
-          Pengaturan Akun
-        </span>
-
-        <div className="flex items-center justify-between p-4 bg-white rounded-md mt-10 space-x-2">
-          <span className="text-lg font-medium text-gray-700 ml-6 mr-12">
+        <div className="flex items-center justify-center p-4 bg-white rounded-md space-x-4">
+          <span className="text-lg font-medium text-gray-700">
             Informasi User
           </span>
           <Edit
-            className="text-blue-500 cursor-pointer hover:text-blue-700"
+            className="text-blue-500 cursor-pointer hover:text-blue-700 ml-auto"
             onClick={handleOpenProfileModal}
           />
         </div>
 
         {/* User Information */}
-        <div className="max-w-4xl rounded-lg ml-10 mr-15 p-6 bg-white border border-gray-300 min-h-screen shadow-md">
+        <div className="max-w-4xl rounded-lg mx-auto p-6 bg-white border border-blue-500 min-h-screen shadow-md">
+
           <div className="mb-2">
             <h2 className="text-sm text-gray-600">Foto Profile</h2>
           </div>
@@ -216,7 +213,7 @@ const UserProfile = () => {
         </div>
 
         {/* Tambak Terdaftar */}
-        <div className="max-w-3xl ml-6 mr-12 p-4 bg-white min-h-screen">
+        <div className="max-w-4xl rounded-lg mx-auto bg-white border-blue-500 mb-5 mt-6 ">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-base font-medium">
               Tambak Yang Terhubung (2 Tambak)
