@@ -155,7 +155,7 @@ const ExcelForm = () => {
                 onClick={exportToPDF}
                 className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
               >
-                Export Laporan
+                Ekspor Laporan
               </button>
             </div>
           </div>
@@ -296,6 +296,14 @@ const ExcelForm = () => {
               </div>
               <div />
             </div>
+            <div className="mt-4 flex justify-end items-end w-full">
+  <button
+    onClick={() => alert("Data saved!")}  // Add your save functionality here
+    className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+  >
+    Simpan
+  </button>
+</div>
 
         </div>
       </div>

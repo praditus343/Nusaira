@@ -145,7 +145,7 @@ const Sidebar = () => {
               children={[
                 { icon: faCartPlus, label: "Pengeluaran", path: "/Pengeluaran" },
                 { icon: faMoneyBill, label: "Pemasukan", path: "/Pemasukan" },
-                { icon: faClipboardList, label: "Laporan", path: "/Laporan" },
+                { icon: faClipboardList, label: "Laporan", path: "/LaporanKeuangan" },
               ]}
             />
             <MenuItem

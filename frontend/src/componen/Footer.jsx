@@ -1,4 +1,5 @@
 import React from "react";
+import { FaTwitter, FaFacebook, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -16,13 +17,22 @@ const Footer = () => {
 
         {/* Sosial Media */}
         <div>
-          <h4 className="font-semibold text-lg mb-3">Sosial Media</h4>
-          <ul className="space-y-2">
-            <li>NusAlra</li>
-            <li>@NusAlra</li>
-            <li>@NusAlra</li>
-          </ul>
-        </div>
+      <h4 className="font-semibold text-lg mb-3">Sosial Media</h4>
+      <ul className="space-y-2">
+        <li className="flex items-center space-x-2">
+          <FaTwitter className="text-white" />
+          <span className="text-white">NusAlra</span>
+        </li>
+        <li className="flex items-center space-x-2">
+          <FaFacebook className="text-white" />
+          <span className="text-white">NusAlra</span>
+        </li>
+        <li className="flex items-center space-x-2">
+          <FaInstagram className="text-white" />
+          <span className="text-white">NusAlra</span>
+        </li>
+      </ul>
+    </div>
 
         {/* Kebijakan dan Ketentuan */}
         <div>
