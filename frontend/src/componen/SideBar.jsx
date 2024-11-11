@@ -162,14 +162,14 @@ const Sidebar = () => {
               label="Kursus"
               isSidebarOpen={isSidebarOpen}
               premiumChildren={true}
-              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/ELearning" }]}
+              children={[{ icon: faGraduationCap, label: "Kursus", path: "/ELearning" }]}
             />
             <MenuItem
               label="Berlangganan"
               isSidebarOpen={isSidebarOpen}
               children={[
                 { icon: faUser, label: "Akses Premium", path: "/AksesPremium" },
-                { icon: faFileInvoice, label: "Invoice", path: "/Invoice" },
+                { icon: faFileInvoice, label: "Tagihan", path: "/Invoice" },
               ]}
             />
           </nav>
