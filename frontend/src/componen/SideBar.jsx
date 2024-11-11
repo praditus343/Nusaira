@@ -163,7 +163,7 @@ const Sidebar = () => {
               isSidebarOpen={isSidebarOpen}
               children={[
                 { icon: faUser, label: "Akses Premium", path: "/AksesPremium" },
-                { icon: faFileInvoice, label: "Tagihan", path: "/Invoice" },
+                { icon: faFileInvoice, label: "Invoice", path: "/Invoice" },
               ]}
             />
           </nav>

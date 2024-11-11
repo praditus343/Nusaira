@@ -52,7 +52,7 @@ const Header = () => {
     '/PengaturanTambak': 'Pengaturan Tambak',
     '/BukuFavorit': 'Favorit / E-Learning',
     '/ELearning': 'E-Learning',
-    '/HomeLearning': 'Beranda / E-Learning',
+    '/HomeLearning': 'Beranda / E-Learning ',
     '/Home2Learning': 'Beranda / E-Learning'
   };
   const titlePenyakit = {

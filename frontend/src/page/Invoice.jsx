@@ -48,7 +48,7 @@ function Content() {
               <option value="sudah-bayar">Sudah Bayar</option>
             </select>
             <button className="bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 hover:bg-blue-600">
-              + Kolam
+              + Kolam 
             </button>
             <button className="bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 hover:bg-blue-600">
               <i className="fas fa-cog"></i>
