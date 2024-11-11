@@ -47,7 +47,7 @@ const Header = () => {
     '/PriceHistory': 'Harga Lele / 10 Oktober 2024',
     '/PriceTrend': 'Harga Lele / Trend',
     '/MyBooks': 'Buku Saya / Kursus',
-    '/Invoice': 'Invoice',
+    '/Invoice': 'Tagihan',
     '/RingkasanLearning': 'Ringkasan / Kursus',
     '/Pembayaran': 'Pembayaran',
     '/PengaturanTambak': 'Pengaturan Tambak',
