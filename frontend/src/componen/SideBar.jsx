@@ -162,7 +162,7 @@ const Sidebar = () => {
               label="Kursus"
               isSidebarOpen={isSidebarOpen}
               premiumChildren={true}
-              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/ELearning" }]}
+              children={[{ icon: faGraduationCap, label: "Kursus", path: "/ELearning" }]}
             />
             <MenuItem
               label="Berlangganan"
