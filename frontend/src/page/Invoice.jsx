@@ -49,12 +49,6 @@ function Content() {
                 <option value="sudah-bayar">Sudah Bayar</option>
               </select>
             </div>
-            <button className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600">
-              + Kolam
-            </button>
-            <button className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-600">
-              <i className="fas fa-cog"></i>
-            </button>
             <button className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-600">
               <i className="fas fa-th-large"></i>
             </button>
