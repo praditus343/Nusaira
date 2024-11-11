@@ -333,16 +333,15 @@ const ExcelForm = () => {
                 </span>
               </div>
               <div />
-              <div className="mt-4 flex justify-end items-end w-full">
+            </div>
+            <div className="mt-4 flex justify-end items-end w-full">
   <button
     onClick={() => alert("Data saved!")}  // Add your save functionality here
-    className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+    className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
   >
     Simpan
   </button>
 </div>
-
-            </div>
           </div>
         </div>
       </div>
