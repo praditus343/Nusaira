@@ -156,14 +156,14 @@ const Sidebar = () => {
             <MenuItem
               label="Bootcamp"
               isSidebarOpen={isSidebarOpen}
-              children={[{ icon: faGraduationCap, label: "Kursus", path: "/ELearning" }]}
+              children={[{ icon: faGraduationCap, label: "Budidaya", path: "/ELearning" }]}
             />
             <MenuItem
               label="Berlangganan"
               isSidebarOpen={isSidebarOpen}
               children={[
                 { icon: faUser, label: "Akses Premium", path: "/AksesPremium" },
-                { icon: faFileInvoice, label: "Tagihan", path: "/Invoice" },
+                { icon: faFileInvoice, label: "Invoice", path: "/Invoice" },
               ]}
             />
           </nav>
