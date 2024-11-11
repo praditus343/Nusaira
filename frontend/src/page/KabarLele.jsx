@@ -103,8 +103,8 @@ const KabarLeleLayout = () => {
 
           <div className="max-w-7xl mx-auto mt-10 ml-10 mr-10">
             <div className="mb-8 flex justify-start">
-              <div className="w-[800px] relative flex items-center border border-blue-600 rounded-2xl bg-white">
-                <div className="relative flex-1">
+              <div className="w-[600px] relative flex items-center border border-blue-600 rounded-2xl bg-white">
+                <div className="relative">
                   <Search className="w-4 h-5 absolute left-7 top-3 text-blue-600" />
                   <input
                     type="text"
@@ -114,9 +114,6 @@ const KabarLeleLayout = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
-                <button className="px-10 py-2.5 bg-blue-500 text-white rounded-r-2xl hover:bg-blue-600 transition-colors duration-200">
-                  <ListFilter size={24} />
-                </button>
               </div>
             </div>
 
