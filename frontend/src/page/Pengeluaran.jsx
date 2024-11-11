@@ -148,7 +148,7 @@ const ExcelForm = () => {
                 onClick={exportToPDF}
                 className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
               >
-                Export Laporan
+                Ekspor Laporan
               </button>
             </div>
           </div>

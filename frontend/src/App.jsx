@@ -40,6 +40,7 @@ import LaporanBudidaya from './page/LaporanBudidaya';
 import KabarLeleArticle from './page/IsiKabarLele';
 import HomeLearning from './page/HomeLearning';
 import Home2Learning from './page/Home2Learning';
+import LaporanKeuangan from './page/LaporanKeuangan';
 
 
 
@@ -89,6 +90,7 @@ function App() {
           <Route path="/kabar-lele/:id" element={<KabarLeleArticle />} />
           <Route path="/HomeLearning" element={<HomeLearning />} />
           <Route path="/Home2Learning" element={<Home2Learning />} />
+          <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
         </Routes>
       </Fragment>
     </Router>
