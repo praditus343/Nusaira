@@ -42,18 +42,20 @@ function Content() {
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold">Daftar Transaksi</h3>
           <div className="flex items-center space-x-3">
-            <label className="text-sm text-gray-600">Kelola Tagihan :</label>
-            <select className="bg-blue-50 text-blue-500 border border-blue-300 rounded-md px-3 py-1">
-              <option value="belum-bayar">Belum Bayar</option>
-              <option value="sudah-bayar">Sudah Bayar</option>
-            </select>
-            <button className="bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 hover:bg-blue-600">
+            <div className="flex items-center space-x-2">
+              <label className="text-sm text-gray-600">Tagihan:</label>
+              <select className="bg-blue-50 text-blue-500 border border-blue-300 rounded-md px-3 py-1">
+                <option value="belum-bayar">Belum Bayar</option>
+                <option value="sudah-bayar">Sudah Bayar</option>
+              </select>
+            </div>
+            <button className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600">
               + Kolam
             </button>
-            <button className="bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 hover:bg-blue-600">
+            <button className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-600">
               <i className="fas fa-cog"></i>
             </button>
-            <button className="bg-blue-500 text-white rounded-full flex items-center justify-center w-10 h-10 hover:bg-blue-600">
+            <button className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-600">
               <i className="fas fa-th-large"></i>
             </button>
           </div>
