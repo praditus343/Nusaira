@@ -30,7 +30,7 @@ const Header = () => {
     '/DaftarKolam': 'Daftar Kolam',
     '/ManajemenTambak': 'Manajemen Tambak',
     '/Simulasi': 'Tambak Simulation',
-    '/UserProfile': 'Profil Pengguna',
+    '/UserProfile': 'User Profile',
     '/HargaLele': 'Harga Lele',
     '/PenyakitLele': 'Penyakit Lele',
     '/Notifikasi': 'Notifikasi',
@@ -45,15 +45,15 @@ const Header = () => {
     '/ChatAi': 'NusAI',
     '/PriceHistory': 'Harga Lele / 10 Oktober 2024',
     '/PriceTrend': 'Harga Lele / Trend',
-    '/MyBooks': 'Buku Saya / Kursus',
-    '/Invoice': 'Tagihan',
-    '/RingkasanLearning': 'Ringkasan / Kursus',
+    '/MyBooks': 'Buku Saya / E-Learning',
+    '/Invoice': 'Invoice',
+    '/RingkasanLearning': 'Ringkasan / E-Learning',
     '/Pembayaran': 'Pembayaran',
     '/PengaturanTambak': 'Pengaturan Tambak',
-    '/BukuFavorit': 'Favorit / Kursus',
-    '/ELearning': 'Kursus',
-    '/HomeLearning': 'Beranda / Kursus',
-    '/Home2Learning': 'Beranda / Kursus'
+    '/BukuFavorit': 'Favorit / E-Learning',
+    '/ELearning': 'E-Learning',
+    '/HomeLearning': 'Beranda / E-Learning',
+    '/Home2Learning': 'Beranda / E-Learning'
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
