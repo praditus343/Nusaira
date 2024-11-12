@@ -110,24 +110,6 @@ export const TambahLeleSegerModal = ({ isOpen, onClose }) => {
 
           <div className={`space-y-4 transition-all duration-300 ${isExpanded ? 'block' : 'hidden'}`}>
             <div className='relative rounded-lg'>
-
-              <select className="block w-full border border-blue-400 rounded-lg p-2 appearance-none">
-                <option value="">Hatchery (opsional)</option>
-                <option value="hatchery1">Hatchery 1</option>
-                <option value="hatchery2">Hatchery 2</option>
-              </select>
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
-              />
-            </div>
-
-            <input
-              type="text"
-              placeholder="Broodstock"
-              className="focus:ring-blue-600 focus:border-blue-600 block w-full  border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-            />
-            <div className='relative rounded-lg'>
               <select className="block w-full border border-blue-400 p-2 appearance-none rounded-lg">
                 <option value="">Umur awal hari</option>
                 <option value="7">7 hari</option>
