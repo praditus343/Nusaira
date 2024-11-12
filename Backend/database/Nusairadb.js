@@ -18,5 +18,4 @@ db.connect((err) => {
   console.log('Connected to the database');
 });
 
-// Menggunakan ekspor default
 export default db;

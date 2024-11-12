@@ -6,7 +6,7 @@ import Header from "../componen/Header";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons"; // Menggunakan Chevron Right untuk tombol "Selanjutnya"
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import img1 from "../assets/img/e-learning/el1.png";
 import logo from "../assets/Logo.png";
 
@@ -51,7 +51,7 @@ function Home1() {
                 </div>
               </h1>
               <div className="text-gray-500 flex items-center space-y-1">
-                <p>Writer: Iqbal Saputra</p>
+                <p>Penulis: Iqbal Saputra</p>
                 <p className="ml-2">⭐ 5.0</p>
               </div>
               <div className="text-gray-500 flex items-center">

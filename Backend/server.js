@@ -17,13 +17,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3020',
   credentials: true,
 }));
 
 app.use(bodyParser.json());
 
 app.use('/api/tambak', tambakRoutes);
+
+const corsOptions = {
+  origin: 'http://localhost:5173',  
+  methods: 'GET, POST, PUT, DELETE',  
+  allowedHeaders: 'Content-Type, Authorization',  
+};
+
+app.use(cors(corsOptions));  
+
+app.use(express.json());
+
+
+app.post('/api/tambak', (req, res) => {
+  const formData = req.body;
+  console.log('Data diterima:', formData);
+
+  res.status(200).json({ message: 'Data berhasil diterima', data: formData });
+});
+
 
 
 
