@@ -41,6 +41,7 @@ import KabarLeleArticle from './page/IsiKabarLele';
 import HomeLearning from './page/HomeLearning';
 import Home2Learning from './page/Home2Learning';
 import LaporanKeuangan from './page/LaporanKeuangan';
+import ContactPage from './page/ContactUs';
 
 
 
@@ -91,6 +92,7 @@ function App() {
           <Route path="/HomeLearning" element={<HomeLearning />} />
           <Route path="/Home2Learning" element={<Home2Learning />} />
           <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
+          <Route path="/Contact" element={<ContactPage />} />
         </Routes>
       </Fragment>
     </Router>
