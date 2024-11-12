@@ -3,7 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AquacultureDashboard from './componen/AquacultureDashboard';
 import ElearningSidebar from './componen/ElearningSidebar';
 import ArticlePage from './page/ArtikelPenyakit';
-import MyBooks from './page/BukuSaya';
+import Perpustakaan from './page/Perpustakaan';
 import ChatAi from './page/ChatAi';
 import PondManagement from './page/DaftarKolam';
 import FinalStepUI from './page/FInalStep';
@@ -76,7 +76,7 @@ function App() {
           <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplierId" element={<SupplierDetail />} />
           <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
-          <Route path="/MyBooks" element={<MyBooks />} />
+          <Route path="/Perpustakaan" element={<Perpustakaan />} />
           <Route path="/Invoice" element={<Invoice />} />
           <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />

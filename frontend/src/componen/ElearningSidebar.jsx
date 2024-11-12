@@ -103,19 +103,13 @@ const ElearningSidebar = () => {
               icon={faUniversity}
               label="Perpustakaan"
               isSidebarOpen={isSidebarOpen}
-              path="/HomeLearning"
+              path="/Perpustakaan"
             />
             <MenuItem
               icon={faClock}
               label="Ringkasan"
               isSidebarOpen={isSidebarOpen}
               path="/RingkasanLearning"
-            />
-            <MenuItem
-              icon={faBook}
-              label="Buku saya"
-              isSidebarOpen={isSidebarOpen}
-              path="/MyBooks"
             />
             <MenuItem
               icon={faStar}
