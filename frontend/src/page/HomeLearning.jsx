@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ElearningSidebar from "../componen/ElearningSidebar";
 import Header from "../componen/Header";
@@ -17,10 +16,23 @@ function Home1() {
     pendahuluan: false,
   });
 
+  const [activeIcons, setActiveIcons] = useState({
+    like: false,
+    share: false,
+    bookmark: false,
+  });
+
   const toggleExpand = (section) => {
     setIsExpanded((prevState) => ({
       ...prevState,
       [section]: !prevState[section],
+    }));
+  };
+
+  const toggleIcon = (icon) => {
+    setActiveIcons((prevState) => ({
+      ...prevState,
+      [icon]: !prevState[icon],
     }));
   };
 
@@ -35,19 +47,36 @@ function Home1() {
             </h1>
           </div>
           <div className="flex items-start mb-6">
-            {/* Gambar Buku */}
             <img
-              src={img1} // Menggunakan import imgBookCover
+              src={img1}
               alt="World Ocean's Day"
               className="w-24 h-24 mr-4 rounded-lg object-cover"
             />
             <div className="flex flex-col w-full">
               <h1 className="text-2xl font-semibold mb-2 flex justify-between">
                 Cara Budidaya Lele Menggunakan Metode Bioflok untuk Hasil Maksimal
-                <div className="flex space-x-2 text-blue-500 text-lg">
-                  <button title="Like">👍</button>
-                  <button title="Share">🔗</button>
-                  <button title="Bookmark">🔖</button>
+                <div className="flex space-x-2 text-lg">
+                  <button
+                    title="Like"
+                    onClick={() => toggleIcon('like')}
+                    className={activeIcons.like ? "text-blue-500" : "text-gray-500"}
+                  >
+                    👍
+                  </button>
+                  <button
+                    title="Share"
+                    onClick={() => toggleIcon('share')}
+                    className={activeIcons.share ? "text-blue-500" : "text-gray-500"}
+                  >
+                    🔗
+                  </button>
+                  <button
+                    title="Bookmark"
+                    onClick={() => toggleIcon('bookmark')}
+                    className={activeIcons.bookmark ? "text-blue-500" : "text-gray-500"}
+                  >
+                    🔖
+                  </button>
                 </div>
               </h1>
               <div className="text-gray-500 flex items-center space-y-1">
@@ -56,7 +85,7 @@ function Home1() {
               </div>
               <div className="text-gray-500 flex items-center">
                 <img
-                  src={logo} // Menggunakan import logoNusAira
+                  src={logo}
                   alt="NusAira Logo"
                   className="w-5 h-5 mr-2"
                 />
@@ -66,17 +95,14 @@ function Home1() {
             </div>
           </div>
 
-          {/* Garis biru di atas "Kata Pengantar" */}
           <hr className="border-t-2 border-blue-500 mb-6" />
 
-          {/* Section Kata Pengantar */}
           <section className="mb-6">
             <div
               onClick={() => toggleExpand('kataPengantar')}
-              className="flex items-center justify-between cursor-pointer text-lg font-bold text-blue-600 mb-2"
+              className="flex items-center cursor-pointer text-lg font-bold text-blue-600 mb-2"
             >
               <span>Kata Pengantar</span>
-              {isExpanded.kataPengantar ? <FaChevronUp /> : <FaChevronDown />}
             </div>
             {isExpanded.kataPengantar && (
               <p className="text-gray-700 leading-relaxed">
@@ -88,14 +114,12 @@ function Home1() {
             )}
           </section>
 
-          {/* Section Daftar Isi */}
           <section className="mb-6">
             <div
               onClick={() => toggleExpand('daftarIsi')}
-              className="flex items-center justify-between cursor-pointer text-lg font-bold text-blue-600 mb-2"
+              className="flex items-center cursor-pointer text-lg font-bold text-blue-600 mb-2"
             >
               <span>Daftar Isi</span>
-              {isExpanded.daftarIsi ? <FaChevronUp /> : <FaChevronDown />}
             </div>
             {isExpanded.daftarIsi && (
               <ul className="list-disc ml-6 text-gray-700">
@@ -118,14 +142,12 @@ function Home1() {
             )}
           </section>
 
-          {/* Section Pendahuluan */}
           <section className="mb-6">
             <div
               onClick={() => toggleExpand('pendahuluan')}
-              className="flex items-center justify-between cursor-pointer text-lg font-bold text-blue-600 mb-2"
+              className="flex items-center cursor-pointer text-lg font-bold text-blue-600 mb-2"
             >
               <span>Pendahuluan</span>
-              {isExpanded.pendahuluan ? <FaChevronUp /> : <FaChevronDown />}
             </div>
             {isExpanded.pendahuluan && (
               <p className="text-gray-700 leading-relaxed">
@@ -136,7 +158,6 @@ function Home1() {
             )}
           </section>
 
-          {/* Tombol Selanjutnya */}
           <div className="absolute bottom-4 left-4 flex justify-between w-full px-4">
             <Link to="/Home2Learning" className="text-blue-500 font-bold flex items-center mr-10">
               Selanjutnya <FontAwesomeIcon icon={faChevronRight} className="ml-2" />
