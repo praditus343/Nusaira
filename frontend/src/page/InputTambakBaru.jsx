@@ -8,6 +8,7 @@ import Alert from '../componen/Atlert';
 import Footer from '../componen/Footer';
 import Header from '../componen/Header';
 import Sidebar from '../componen/SideBar';
+import axios from 'axios';
 
 const TambakForm = () => {
     const navigate = useNavigate();
@@ -77,7 +78,7 @@ const TambakForm = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let hasError = false;
         const errorMessage = [];
@@ -92,6 +93,16 @@ const TambakForm = () => {
         if (hasError) {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
+            try {
+                const response = await axios.post('http://localhost:3020/api/tambak', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                console.log('Data berhasil dikirim:', response.data);
+            } catch (error) {
+                console.error('Terjadi kesalahan saat mengirim data:', error);
+            }
             console.log("Form submitted:", formData);
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
         }
@@ -282,7 +293,7 @@ const TambakForm = () => {
                                         </div>
 
                                         <div className="flex space-x-4">
-                                            {['panjang', 'lebar', 'luas', 'kedalaman'].map((dimension) => (
+                                            {['panjang', 'lebar', 'kedalaman'].map((dimension) => (
                                                 <div className="flex-1" key={dimension}>
                                                     <SelectWithArrow
                                                         name={dimension}

@@ -153,7 +153,7 @@ const Sidebar = () => {
               isSidebarOpen={isSidebarOpen}
               children={[
                 { icon: faDollarSign, label: "Harga Lele", path: "/HargaLele" },
-                { icon: faNewspaper, label: "Blog", path: "/Blog" },
+                { icon: faNewspaper, label: "Berita", path: "/Blog" },
                 { icon: faHeart, label: "Penyakit Lele", path: "/PenyakitLele" },
                 { icon: faBell, label: "Notifikasi", path: "/Notifikasi" },
               ]}
