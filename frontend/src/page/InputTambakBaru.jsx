@@ -94,7 +94,7 @@ const TambakForm = () => {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
             try {
-                const response = await axios.post('http://localhost:3020/api/tambak', data, {
+                const response = await axios.post('https://nusaira-fmt4.vercel.app/api/tambak', data, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
