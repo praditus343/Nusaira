@@ -1,11 +1,23 @@
+import { faBell, faChartLine, faChevronDown, faFish, faLeaf, faNewspaper, faRobot, faSeedling, faThermometerHalf, faTint, faVirus, faWater } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faRobot, faFish, faTint, faChartLine,faWater, faLeaf, faThermometerHalf, faSeedling } from '@fortawesome/free-solid-svg-icons';
 import imgLogo from "../assets/Logo.png";
 
 const Navbar = () => {
     const [activeDropdown, setActiveDropdown] = useState(null);
+   
+    const handleScrollToContact = (event) => {
+        event.preventDefault();
+
+        setTimeout(() => {
+            const section = document.getElementById("hubungiKamiSection");
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }, 100);
+    };
+
 
     const toggleDropdown = (dropdownName) => {
         setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
@@ -44,38 +56,77 @@ const Navbar = () => {
                         </button>
                         {activeDropdown === 'produk' && (
                             <div className="absolute top-full left-0 mt-2 w-64 bg-white border rounded-md shadow-lg z-10 select-none">
-                            <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center `}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faRobot} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Chatbot</span>
-                            </span>
-                            <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faFish} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Pengelolaan Lele</span>
-                            </span>
-                            <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faTint} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Manajemen Air</span>
-                            </span>
-                            <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} flex items-center`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faChartLine} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Tren Harga</span>
-                            </span>
-                        </div>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center `}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faRobot} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Chatbot</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faFish} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Pengelolaan Lele</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faTint} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Manajemen Air</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'} flex items-center`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faChartLine} className={`${activeDropdown === 'produk' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Tren Harga</span>
+                                </span>
+                            </div>
                         )}
                     </div>
 
-                    {/* Tentang Kami */}
-                    <Link to="/tentang-kami#tentangKamiSection" className="hover:text-blue-600 transition-colors duration-200">
-                        Tentang Kami
-                    </Link>
+                    {/* Produk Dropdown */}
+                    <div className="relative">
+                        <button
+                            className="flex items-center space-x-1 hover:text-blue-600 transition-colors duration-200"
+                            onClick={() => toggleDropdown('Media')}
+                        >
+                            <span className={`${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'}`}>Media</span>
+                            <FontAwesomeIcon
+                                icon={faChevronDown}
+                                className={`w-3 h-3 transition-transform ${activeDropdown === 'Media' ? 'rotate-180 text-blue-600' : 'text-gray-700'}`}
+                            />
+                        </button>
+                        {activeDropdown === 'Media' && (
+                            <div className="absolute top-full left-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10 select-none">
+                                <span className={`block px-4 py-2 ${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center `}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faNewspaper} className={`${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Berita</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faChartLine} className={`${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Prediksi Harga</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faVirus} className={`${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Penyakit Lele</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'} flex items-center`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faBell} className={`${activeDropdown === 'Media' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Notifikasi</span>
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+
 
                     {/* E-Learning Dropdown */}
                     <div className="relative">
@@ -91,36 +142,39 @@ const Navbar = () => {
                         </button>
                         {activeDropdown === 'eLearning' && (
                             <div className="absolute top-full left-0 mt-2 w-80 bg-white border rounded-md shadow-lg z-10">
-                            <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center select-none`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faWater} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Teknik Pengelolaan Air</span>
-                            </span>
-                            <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center select-none`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faLeaf} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Teknik Pengelolaan Lingkungan</span>
-                            </span>
-                            <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center select-none`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faThermometerHalf} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Teknik Pengaturan Suhu</span>
-                            </span>
-                            <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} flex items-center select-none`}>
-                                <div className="w-8 flex justify-center">
-                                    <FontAwesomeIcon icon={faSeedling} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
-                                </div>
-                                <span className="flex-1">Teknik Budidaya Ikan</span>
-                            </span>
-                        </div>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center select-none`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faWater} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Teknik Pengelolaan Air</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center select-none`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faLeaf} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Teknik Pengelolaan Lingkungan</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} border-b flex items-center select-none`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faThermometerHalf} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Teknik Pengaturan Suhu</span>
+                                </span>
+                                <span className={`block px-4 py-2 ${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'} flex items-center select-none`}>
+                                    <div className="w-8 flex justify-center">
+                                        <FontAwesomeIcon icon={faSeedling} className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`} />
+                                    </div>
+                                    <span className="flex-1">Teknik Budidaya Ikan</span>
+                                </span>
+                            </div>
                         )}
                     </div>
 
-                    {/* Hubungi Kami */}
-                    <Link to="/hubungi-kami#hubungiKamiSection" className="hover:text-blue-600 transition-colors duration-200">
+                    <Link
+                        to="/hubungi-kami#hubungiKamiSection"
+                        onClick={handleScrollToContact}
+                        className="hover:text-blue-600 transition-colors duration-200"
+                    >
                         Hubungi Kami
                     </Link>
                 </div>

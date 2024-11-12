@@ -1,4 +1,4 @@
-import React, { useState,useRef ,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Footer from "../componen/Footer";
 import Navbar from "../componen/Navbar";
 import Testimonial from "../componen/Testimonical";
@@ -16,6 +16,8 @@ import img6 from "../assets/img/landing_page_sebelum_daftar/landingsb15.png"
 import img7 from "../assets/img/kabar_lele/kbl5.png"
 import img8 from "../assets/img/kabar_lele/kbl7.png"
 import PopupModal from "../componen/PopUpModal";
+import ContactPage from './ContactUs';
+import PromoBanner from '../componen/PromoSupplierBanner';
 
 function LandingPage() {
     const getRandomDate = () => {
@@ -25,7 +27,7 @@ function LandingPage() {
         return date.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' });
     };
 
-    
+
     const [modalContent, setModalContent] = useState({
         isOpen: false,
         title: '',
@@ -95,13 +97,14 @@ function LandingPage() {
                 if (ref) observer.unobserve(ref);
             });
         };
-    }, []);  
+    }, []);
 
 
     return (
         <>
             <Navbar />
-            <div  ref={(el) => (sectionRefs.current[0] = el)} className="flex items-stretch justify-between p-8 bg-white mt-4 ml-10 fade-in-scroll">
+            <PromoBanner />
+            <div ref={(el) => (sectionRefs.current[0] = el)} className="flex items-stretch justify-between p-8 bg-white mt-4 ml-10 fade-in-scroll">
                 <div className="flex-1 pr-8 flex flex-col justify-between fade-in">
                     <div>
                         <h1 className=" font-bold mb-4">
@@ -131,7 +134,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div  ref={(el) => (sectionRefs.current[1] = el)}className="bg-white p-4 mb-6 relative fade-in-scroll-left ">
+            <div ref={(el) => (sectionRefs.current[1] = el)} className="bg-white p-4 mb-6 relative fade-in-scroll-left ">
                 <p className="text-gray-600 text-xl  mb-4 text-left mt-10 ml-14">
                     Dipercaya Oleh:
                 </p>
@@ -144,7 +147,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div ref={(el) => (sectionRefs.current[2] = el)}  className="flex items-center bg-white mt-2 fade-in-scroll-left">
+            <div ref={(el) => (sectionRefs.current[2] = el)} className="flex items-center bg-white mt-2 fade-in-scroll-left">
                 <div className="flex-1 mr-10">
                     <div className="relative w-[600px] h-[600px] ">
                         <img
@@ -288,7 +291,7 @@ function LandingPage() {
                 </div>
                 <div className="flex justify-end mt-4">
                     <button
-                        onClick={() => openModal('news')} 
+                        onClick={() => openModal('news')}
                         className="flex items-center text-blue-500 hover:text-blue-700"
                     >
                         Selanjutnya
@@ -303,7 +306,10 @@ function LandingPage() {
                 onClose={closeModal}
             />
             <Testimonial />
-            <Footer />
+            <ContactPage />
+            <div className='mt-20'>
+                <Footer />
+            </div>
         </>
     );
 }
