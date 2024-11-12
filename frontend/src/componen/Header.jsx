@@ -46,7 +46,7 @@ const Header = () => {
     '/ChatAi': 'NusAI',
     '/PriceHistory': 'Harga Lele / 10 Oktober 2024',
     '/PriceTrend': 'Harga Lele / Trend',
-    '/MyBooks': 'Buku Saya / Kursus',
+    '/Perpustakaan': 'Perpustakaan / Kursus',
     '/Invoice': 'Tagihan',
     '/RingkasanLearning': 'Ringkasan / Kursus',
     '/Pembayaran': 'Pembayaran',
