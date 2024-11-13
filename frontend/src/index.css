@@ -108,6 +108,10 @@ select option[value=""] {
   cursor: pointer;
 }
 
-
+textarea:focus {
+  outline: none;
+  border-color: #2563EB;
+  color: #3B82F6; 
+}
 
 

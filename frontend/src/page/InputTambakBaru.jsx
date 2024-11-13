@@ -72,7 +72,6 @@ const TambakForm = () => {
                 tipeKolam: '',
                 panjang: '',
                 lebar: '',
-                luas: '',
                 kedalaman: '',
             })),
         });
