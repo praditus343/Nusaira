@@ -1,10 +1,23 @@
 const express = require("express")
+const helmet = require('helmet');
 const app = express()
+
+// Tambahkan CSP menggunakan helmet
+app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'none'"],
+        scriptSrc: ["'self'", "https://vercel.live"], // Izinkan script dari vercel.live
+      },
+    })
+  );
+
 
 require('dotenv').config()
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+
 
 const postsRouter = require('./routes/posts.router')
 const authRouter = require('./routes/auth.router')
