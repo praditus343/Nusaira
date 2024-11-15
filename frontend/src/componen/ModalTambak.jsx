@@ -1,7 +1,9 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCalendarAlt, faClock, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+// import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Button = ({ children, onClick, type = 'button', className }) => {
   return (
@@ -27,23 +29,59 @@ const Checkbox = ({ id, label }) => {
 
 //siklus
 export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
+  //  const { id } = useParams();
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initialData || {
-    kolamId: '',
-    lamaPersiapan: '',
-    totalTebar: '',
-    metodePenebaranBenih: '',
-    umurAwal: '',
-    batasBiomassPerLuas: '',
-    targetSize: '',
-    targetSR: '',
-    targetFCR: '',
-    hargaPakan: '',
-    jumlahAnco: '',
-    metodePrediksiSR: '',
+    kolam_id: '',
+    lama_persiapan: '',
+    total_tebar: '',
+    metode_penebaran_benih: '',
+    umur_awal: '',
+    batas_biomass_per_luas: '',
+    target_size: '',
+    target_sr: '',
+    target_fcr: '',
+    harga_pakan: '',
+    jumlah_anco: '',
+    metode_prediksi_sr: '',
     catatan: '',
     tanggal: '',
   });
+  console.log(initialData); 
+
+  // const [kolams, setKolams] = useState([]);
+
+  // useEffect(() => {
+  //   console.log("Fetching kolams for tambakId:", tambakId); // Cek nilai tambakId
+  
+  //   const fetchKolams = async () => {
+  //     try {
+  //       const response = await fetch(`http://localhost:3020/api/tambak/${id}`);
+  //       const data = await response.json();
+  
+  //       // Menangani response error
+  //       if (data.error) {
+  //         console.error("Error fetching tambak:", data.error);
+  //         return;
+  //       }
+  
+  //       if (data && data.kolamDetails) {
+  //         setKolams(data.kolamDetails);
+  //       } else {
+  //         setKolams([]); // Kolam kosong
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching kolams:', error);
+  //     }
+  //   };
+  
+  //   if (tambakId) {
+  //     fetchKolams();
+  //   }
+  // }, [tambakId]);
+  
+  
+  
 
   const [errors, setErrors] = useState([]);
 
@@ -57,35 +95,84 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     let hasError = false;
     let errorMessages = [];
-
+    console.log(formData);
+    
+  
+    // Validate form fields
     for (const key in formData) {
-      if (formData[key] === '' || (typeof formData[key] === 'number' && formData[key] < 0)) {
+      if (formData[key] === '' || formData[key] === null || formData[key] === undefined || (typeof formData[key] === 'number' && formData[key] < 0)) {
         hasError = true;
         errorMessages.push(`Field ${key} tidak boleh kosong atau negatif.`);
       }
     }
 
+    
+  
     if (hasError) {
       setErrors(errorMessages);
+      Swal.fire({
+        icon: 'error',
+        title: 'Terjadi kesalahan',
+        text: errorMessages.join('\n'), 
+      });
       return;
     }
-
+  
     try {
-      const response = await axios.post('YOUR_BACKEND_ENDPOINT_URL', formData);
-
+      const response = await axios.post('http://localhost:3020/api/siklus', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
       if (response.status === 200) {
         console.log('Data berhasil disimpan', response.data);
-        onClose();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Data berhasil disimpan!',
+        });
+        onClose(); 
       } else {
         console.error('Gagal menyimpan data', response.data);
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Terjadi masalah saat menyimpan data.',
+        });
       }
     } catch (error) {
       console.error('Terjadi kesalahan:', error.message || error);
+      if (error.response) {
+        console.error('Response error:', error.response.data);
+        console.error('Status:', error.response.status);
+        Swal.fire({
+          icon: 'error',
+          title: 'Kesalahan Server',
+          text: error.response.data.message || 'Terjadi kesalahan pada server.',
+        });
+      } else if (error.request) {
+        console.error('Request error:', error.request);
+        Swal.fire({
+          icon: 'error',
+          title: 'Kesalahan Request',
+          text: 'Permintaan tidak berhasil dikirim.',
+        });
+      } else {
+        console.error('Error:', error.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Kesalahan',
+          text: error.message,
+        });
+      }
     }
   };
+  
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -117,13 +204,18 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
           <div className="relative rounded-lg">
             <select
               className="block w-full border rounded-lg p-2 appearance-none"
-              name="kolamId"
-              value={formData.kolamId}
+              name="kolam_id"
+              value={formData.kolam_id}
               onChange={handleInputChange}
             >
               <option value="">Pilih Kolam</option>
-              <option value="kolam1">Kolam 1</option>
-              <option value="kolam2">Kolam 2</option>
+              <option value="1">Kolam 1</option>
+              <option value="2">Kolam 2</option>
+              {/* {kolams.map((kolam) => (
+                <option key={kolam.id} value={kolam.id}>
+                  {kolam.namaKolam}
+                </option>
+              ))} */}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -133,11 +225,11 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
           <input
             type="number"
-            name="lamaPersiapan"
+            name="lama_persiapan"
             placeholder="Lama Persiapan (Hari)"
             className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
             min="1"
-            value={formData.lamaPersiapan}
+            value={formData.lama_persiapan}
             onChange={handleInputChange}
           />
 
@@ -157,18 +249,18 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
           <input
             type="number"
-            name="totalTebar"
+            name="total_tebar"
             placeholder="Total Tebar (ekor)"
             className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-            value={formData.totalTebar}
+            value={formData.total_tebar}
             onChange={handleInputChange}
           />
 
           <div className="relative rounded-lg">
             <select
               className="block w-full border border-blue-400 rounded-lg p-2 appearance-none"
-              name="metodePenebaranBenih"
-              value={formData.metodePenebaranBenih}
+              name="metode_penebaran_benih"
+              value={formData.metode_penebaran_benih}
               onChange={handleInputChange}
             >
               <option value="">Pilih Metode Penebaran Benih</option>
@@ -188,8 +280,8 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
               <div className="relative rounded-lg">
                 <select
                   className="block w-full border border-blue-400 p-2 appearance-none rounded-lg"
-                  name="umurAwal"
-                  value={formData.umurAwal}
+                  name="umur_awal"
+                  value={formData.umur_awal}
                   onChange={handleInputChange}
                 >
                   <option value="">Umur Awal Hari</option>
@@ -209,67 +301,67 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
               <input
                 type="number"
-                name="batasBiomassPerLuas"
+                name="batas_biomass_per_luas"
                 placeholder="Batas biomass per luas (kg/m²)"
                 className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-                value={formData.batasBiomassPerLuas}
+                value={formData.batas_biomass_per_luas}
                 onChange={handleInputChange}
               />
 
               <input
                 type="number"
-                name="targetSize"
+                name="target_size"
                 placeholder="Target Size (Umur 100)"
                 className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-                value={formData.targetSize}
+                value={formData.target_size}
                 onChange={handleInputChange}
               />
 
               <input
                 type="number"
-                name="targetSR"
+                name="target_sr"
                 placeholder="Target SR (%)"
                 className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-                value={formData.targetSR}
+                value={formData.target_sr}
                 onChange={handleInputChange}
               />
 
               <input
                 type="number"
-                name="targetFCR"
+                name="target_fcr"
                 placeholder="Target FCR"
                 className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-                value={formData.targetFCR}
+                value={formData.target_fcr}
                 onChange={handleInputChange}
               />
 
               <input
                 type="number"
-                name="hargaPakan"
+                name="harga_pakan"
                 placeholder="Harga Pakan (Rp/kg)"
                 className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-                value={formData.hargaPakan}
+                value={formData.harga_pakan}
                 onChange={handleInputChange}
               />
 
               <input
                 type="number"
-                name="jumlahAnco"
+                name="jumlah_anco"
                 placeholder="Jumlah Anco"
                 className="focus:ring-blue-600 focus:border-blue-600 block w-full border border-blue-400 rounded-lg p-2 text-black placeholder-black"
-                value={formData.jumlahAnco}
+                value={formData.jumlah_anco}
                 onChange={handleInputChange}
               />
 
               <div className='relative'>
                 <select className="block w-full border border-blue-400 rounded-md p-2 appearance-none"
-                  name='metodePrediksiSR'
-                  value={formData.metodePrediksiSR}
+                  name='metode_prediksi_sr'
+                  value={formData.metode_prediksi_sr}
                   onChange={handleInputChange}>
                   <option value="">Metode Prediksi SR</option>
-                  <option value="method1">Kepadatan & Umur</option>
-                  <option value="method2">Kualitas Air</option>
-                  <option value="method3">Pakan & Lingkungan</option>
+                  <option value="kepadatan_umur">Kepadatan & Umur</option>
+                  <option value="Kualitas_air">Kualitas Air</option>
+                  <option value="pakan_lingkungan">Pakan & Lingkungan</option>
                 </select>
                 <FontAwesomeIcon
                   icon={faChevronDown}
@@ -315,41 +407,48 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
 //kematian
 export const TambahDataKematianModal = ({ isOpen, onClose }) => {
-  const [trackingMethod, setTrackingMethod] = useState('jumlahEkor');
+  const [trackingMethod, setTrackingMethod] = useState('jumlah_ekor');
   const [formData, setFormData] = useState({
-    kolam: '',
-    tanggalTebar: '',
+    kolam_id: '',
+    tanggal_tebar: '',
     umur: 0,
-    jumlahEkor: '',
-    totalBerat: '',
+    jumlah_ekor: '',
+    total_berat: '',
     multiplier: '',
   });
 
   const [errors, setErrors] = useState([]);
+  const [size, setSize] = useState(null);
 
   useEffect(() => {
     const fetchUmur = async () => {
       if (isOpen) {
         try {
-          const response = await axios.get('YOUR_BACKEND_ENDPOINT_URL/umur');
-          if (response.status === 200 && response.data) {
-            setFormData((prevData) => ({
-              ...prevData,
-              umur: response.data.umur,
-            }));
+          const response = await axios.get('http://localhost:3020/api/siklus');
+          if (response.status === 200 && response.data?.length > 0) {
+            const { umur_awal } = response.data[0];
+            if (umur_awal !== undefined) {
+              const today = new Date();
+              const startDate = new Date();
+              startDate.setDate(startDate.getDate() - umur_awal);
+              const ageInMilliseconds = today - startDate;
+              const ageInDays = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24));
+              setFormData((prevData) => ({
+                ...prevData,
+                umur: ageInDays,
+              }));
+            }
           }
         } catch (error) {
           console.error('Error fetching umur data:', error);
         }
       }
     };
-
     fetchUmur();
   }, [isOpen]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -359,14 +458,12 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
   const handleSelectChange = (e) => {
     const value = e.target.value;
     if (value === 'manual') {
-
       setFormData((prevData) => ({
         ...prevData,
         multiplier: '',
         useManualInput: true,
       }));
     } else {
-
       setFormData((prevData) => ({
         ...prevData,
         multiplier: value,
@@ -378,59 +475,98 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
   const handleTrackingMethodChange = (method) => {
     setTrackingMethod(method);
-    if (method === 'jumlahEkor') {
+    if (method === 'jumlah_ekor') {
       setFormData((prevData) => ({
         ...prevData,
-        totalBerat: '',
+        total_berat: '',
         multiplier: '',
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        jumlahEkor: '',
+        jumlah_ekor: '',
       }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     let hasError = false;
     let errorMessages = [];
-
-    if (trackingMethod === 'jumlahEkor') {
-      if (formData.jumlahEkor === '' || Number(formData.jumlahEkor) <= 0) {
+  
+    // Validasi input
+    if (trackingMethod === 'jumlah_ekor') {
+      if (formData.jumlah_ekor === '' || Number(formData.jumlah_ekor) <= 0) {
         hasError = true;
-        errorMessages.push('Field jumlahEkor tidak boleh kosong atau negatif.');
+        errorMessages.push('Field jumlah Ekor tidak boleh kosong atau negatif.');
       }
     } else if (trackingMethod === 'size') {
-      if (formData.totalBerat === '' || Number(formData.totalBerat) <= 0) {
+      if (formData.total_berat === '' || Number(formData.total_berat) <= 0) {
         hasError = true;
-        errorMessages.push('Field totalBerat tidak boleh kosong atau negatif.');
+        errorMessages.push('Field total berat tidak boleh kosong atau negatif.');
       }
       if (formData.multiplier === '' || Number(formData.multiplier) <= 0) {
         hasError = true;
         errorMessages.push('Field multiplier tidak boleh kosong atau negatif.');
       }
     }
-
+  
     if (hasError) {
       setErrors(errorMessages);
       return;
     }
-
+  
     try {
-      const response = await axios.post('YOUR_BACKEND_ENDPOINT_URL', formData);
+      // Kirim data ke server
+      const response = await axios.post('http://localhost:3020/api/kematian', formData);
+      
+      // Periksa status response dari server
       if (response.status === 200) {
-        console.log('Data berhasil disimpan', response.data);
-        onClose();
+        const { message, result } = response.data;
+  
+        if (message && message.includes('berhasil')) {
+          // Jika data berhasil disimpan
+          Swal.fire({
+            icon: 'success',
+            title: 'Data berhasil disimpan!',
+            text: message || 'Data kematian lele berhasil dikirim.',
+            confirmButtonColor: '#3085d6',
+          });
+          // Close modal setelah sukses
+          onClose();
+        } else {
+          // Jika ada masalah pada message atau result
+          console.error('Gagal menyimpan data:', response.data);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan Data!',
+            text: message || 'Terjadi kesalahan saat menyimpan data kematian.',
+            confirmButtonColor: '#d33',
+          });
+        }
       } else {
         console.error('Gagal menyimpan data', response.data);
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal Menyimpan Data!',
+          text: 'Terjadi kesalahan saat menyimpan data kematian.',
+          confirmButtonColor: '#d33',
+        });
       }
     } catch (error) {
       console.error('Terjadi kesalahan:', error.message || error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal Menyimpan Data!',
+        text: 'Terjadi kesalahan pada koneksi atau server.',
+        confirmButtonColor: '#d33',
+      });
     }
   };
+  
+  
+  
 
   const convertToKilograms = (weight, unit) => {
     switch (unit) {
@@ -444,24 +580,17 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
   };
 
   const calculateTotalDeaths = () => {
-    if (trackingMethod === 'jumlahEkor') {
-      return parseInt(formData.jumlahEkor) || 0;
+    if (trackingMethod === 'jumlah_ekor') {
+      return parseInt(formData.jumlah_ekor) || 0;
     } else {
-      const weight = parseFloat(formData.totalBerat) || 0;
+      const weight = parseFloat(formData.total_berat) || 0;
       const mult = parseFloat(formData.multiplier) || 0;
-
       const unit = formData.weightUnit || 'kg';
-
       const totalWeightInKg = convertToKilograms(weight, unit);
-
       const internationalAverageWeightPerEkor = 0.25;
-
-      const estimatedTotalDeaths = (totalWeightInKg * mult) / internationalAverageWeightPerEkor;
-
-      return Math.round(estimatedTotalDeaths);
+      return Math.round((totalWeightInKg * mult) / internationalAverageWeightPerEkor);
     }
   };
-
 
   if (!isOpen) return null;
 
@@ -469,24 +598,24 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Tambah data Kematian Lele</h2>
+          <h2 className="text-xl font-bold">Tambah Data Kematian Lele</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Kolam Dropdown */}
+          {/* kolam_id Dropdown */}
           <div className="relative">
             <select
-              name="kolam"
-              value={formData.kolam}
+              name="kolam_id"
+              value={formData.kolam_id}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 appearance-none"
+              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none focus:ring-blue-500 appearance-none"
             >
               <option value="">Pilih Kolam</option>
-              <option value="kolam1">Kolam 1</option>
-              <option value="kolam2">Kolam 2</option>
+              <option value="1">Kolam 1</option>
+              <option value="2">Kolam 2</option>
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -498,10 +627,10 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
           <div className="relative">
             <input
               type="text"
-              name="tanggalTebar"
-              value={formData.tanggalTebar}
+              name="tanggal_tebar"
+              value={formData.tanggal_tebar}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 placeholder-black"
+              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none focus:ring-blue-500 placeholder-black"
               placeholder="Tanggal Tebar"
             />
             <div className="absolute top-2 right-3">
@@ -515,7 +644,6 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
             <div className="text-2xl font-bold">{formData.umur || 0}</div>
           </div>
 
-
           {/* Berdasarkan dan Jumlah Ekor */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">Berdasarkan</label>
@@ -523,14 +651,14 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
               <div className="flex items-center space-x-2">
                 <input
                   type="radio"
-                  id="jumlahEkor"
+                  id="jumlah_ekor"
                   name="trackingMethod"
-                  value="jumlahEkor"
-                  checked={trackingMethod === 'jumlahEkor'}
-                  onChange={() => handleTrackingMethodChange('jumlahEkor')}
+                  value="jumlah_ekor"
+                  checked={trackingMethod === 'jumlah_ekor'}
+                  onChange={() => handleTrackingMethodChange('jumlah_ekor')}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-blue-400"
                 />
-                <label htmlFor="jumlahEkor" className="text-sm text-gray-700">Jumlah ekor</label>
+                <label htmlFor="jumlah_ekor" className="text-sm text-gray-700">Jumlah ekor</label>
               </div>
               <div className="flex items-center space-x-2">
                 <input
@@ -545,14 +673,14 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
                 <label htmlFor="size" className="text-sm text-gray-700">Size</label>
               </div>
             </div>
-          </div>
-          {trackingMethod === 'size' ? (
-            <>
+
+            {trackingMethod === 'size' ? (
+              <>
               <div className="relative">
                 <input
                   type="Number"
-                  name="totalBerat"
-                  value={formData.totalBerat}
+                  name="total_berat"
+                  value={formData.total_berat}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 placeholder-black"
                   placeholder="Total Berat (kg)"
@@ -583,49 +711,50 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
                 {formData.useManualInput && (
                   <input
                     type="number"
-                    name="manualMultiplier"
-                    value={formData.manualMultiplier}
+                    name="multiplier"
+                    value={formData.multiplier}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 mt-2"
+                    className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 mt-2 placeholder-black"
                     placeholder="Masukkan pengali"
                   />
                 )}
               </div>
             </>
-          ) : (
-            <div className="relative">
+            ) : (
+              <div className="relative">
               <input
                 type="text"
-                name="jumlahEkor"
-                value={formData.jumlahEkor}
+                name="jumlah_ekor"
+                value={formData.jumlah_ekor}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 placeholder-black"
                 placeholder="Jumlah ekor"
               />
             </div>
-          )}
-
+            )}
+          </div>
           <div className="mt-6">
             <p className="text-sm text-blue-600">*Prediksi potensi kematian Lele yang tidak teridentifikasi.</p>
             <p className="text-sm font-semibold text-gray-600 mt-4">Total kematian (ekor)</p>
             <div className='p-2 ml-12'>{calculateTotalDeaths()}</div>
           </div>
-
-          <button
+          {/* Error Messages */}
+          {errors.length > 0 && (
+            <div className="bg-red-100 text-red-700 p-4 rounded-md">
+              <ul>
+                {errors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+<button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
           >
             Simpan
           </button>
         </form>
-
-        {errors.length > 0 && (
-          <div className="mt-4 text-red-600 space-y-1">
-            {errors.map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -637,7 +766,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     kolam: '',
-    tanggalTebar: '',
+    tanggal_tebar: '',
     jenisPenyakit: '',
     catatan: '',
   });
@@ -690,7 +819,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
     try {
       const formDataToSend = new FormData();
-      
+
       Object.keys(formData).forEach(key => {
         formDataToSend.append(key, formData[key]);
       });
@@ -756,7 +885,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
             />
           </div>
-          
+
           <div className="relative flex-grow">
             <input
               type="text"
@@ -770,7 +899,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
               <FontAwesomeIcon icon={faCalendarAlt} className="text-blue-400" />
             </div>
           </div>
-          
+
           <div className="relative">
             <select
               name="jenisPenyakit"
@@ -859,15 +988,15 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await axios.post('/your-api-endpoint', formData);
       console.log("Form Data Posted Successfully:", response.data);
-      onClose(); 
+      onClose();
     } catch (error) {
       console.error("Error posting form data:", error);
     }
-    
+
   };
 
   return (
@@ -1006,7 +1135,7 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
     } catch (error) {
       console.error("Error:", error);
     }
-    
+
   };
 
   return (
@@ -1063,7 +1192,7 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
           </div>
 
           <div className="relative">
-          <input
+            <input
               type="text"
               name="size"
               className="w-full px-3 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-blue-500 placeholder-black"
@@ -1167,7 +1296,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
       console.error("Error:", error);
     }
 
-   
+
   };
 
   return (

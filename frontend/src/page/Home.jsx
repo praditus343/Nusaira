@@ -42,7 +42,7 @@ const DashboardContent = () => {
                                 <div className="relative">
                                     <button
                                         onClick={toggleDropdown}
-                                        className="flex items-center text-blue-500 font-medium px-4 py-2 text-lg ml-2"
+                                        className="flex items-center text-blue-500 font-medium px-4 py-2 text-lg ml-2 z-100"
                                     >
                                         {selectedOption} <ChevronDown className="ml-1 h-4 w-4" />
                                     </button>
