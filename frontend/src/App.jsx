@@ -93,6 +93,7 @@ function App() {
           <Route path="/Home2Learning" element={<Home2Learning />} />
           <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
           <Route path="/Contact" element={<ContactPage />} />
+          
         </Routes>
       </Fragment>
     </Router>
