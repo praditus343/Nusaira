@@ -57,10 +57,14 @@ const TambakForm = () => {
         const { name, value } = e.target;
         setFormData((prevData) => {
             const updatedKolamDetails = [...prevData.kolamDetails];
-            updatedKolamDetails[index] = { ...updatedKolamDetails[index], [name]: value };
+            updatedKolamDetails[index] = {
+                ...updatedKolamDetails[index],
+                [name]: value,  
+            };
             return { ...prevData, kolamDetails: updatedKolamDetails };
         });
     };
+    
 
     const handleJumlahKolamChange = (e) => {
         const jumlahKolam = e.target.value;
@@ -68,11 +72,12 @@ const TambakForm = () => {
             ...formData,
             jumlahKolam,
             kolamDetails: Array.from({ length: parseInt(jumlahKolam) || 0 }, () => ({
-                namaKolam: '',
+                NamaKolam: '',
                 tipeKolam: '',
                 panjang: '',
                 lebar: '',
                 kedalaman: '',
+                jumlahAnco: '',
             })),
         });
     };
@@ -81,19 +86,20 @@ const TambakForm = () => {
         e.preventDefault();
         let hasError = false;
         const errorMessage = [];
-
+    
         for (const key in formData) {
             if (formData[key] === '' || (typeof formData[key] === 'number' && formData[key] < 0)) {
                 hasError = true;
                 errorMessage.push(`Field ${key} tidak boleh kosong atau negatif.`);
             }
         }
-
+    
         if (hasError) {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
             try {
-                const response = await axios.post('https://nusaira-fmt4.vercel.app/api/tambak', data, {
+                // Ganti 'data' dengan 'formData'
+                const response = await axios.post('http://localhost:3020/api/tambak', formData, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -106,6 +112,7 @@ const TambakForm = () => {
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
         }
     };
+    
     const SelectWithArrow = ({ name, value, onChange, children, required }) => (
         <div className="relative z-10">
             <select
@@ -260,17 +267,17 @@ const TambakForm = () => {
                                         <div>
                                             {labelVisible.NamaKolam && (
                                                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="NamaKolam">
-                                                    Nama Awalan Kolam
+                                                    Nama Kolam
                                                 </label>
                                             )}
                                             <input
                                                 className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black text-black"
-                                                id="NamaKolam"
+                                                id={`NamaKolam-${index}`}
                                                 name="NamaKolam"
                                                 type="text"
-                                                placeholder=" Nama Awalan Kolam"
+                                                placeholder=" Nama Kolam"
                                                 value={formData.NamaKolam}
-                                                onChange={handleChange}
+                                                onChange={(e) => handleKolamChange(index, e)}
                                                 onFocus={() => handleFocus('NamaKolam')}
                                                 onBlur={() => handleBlur('NamaKolam')}
                                                 required
@@ -329,12 +336,12 @@ const TambakForm = () => {
                                             )}
                                             <input
                                                 className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 placeholder-black"
-                                                id="jumlahAnco"
+                                                id={`jumlahAnco-${index}`}
                                                 name="jumlahAnco"
                                                 type="number"
                                                 placeholder=" Jumlah Anco"
                                                 value={formData.jumlahAnco}
-                                                onChange={handleChange}
+                                                onChange={(e) => handleKolamChange(index, e)}
                                                 onFocus={() => handleFocus('jumlahAnco')}
                                                 onBlur={() => handleBlur('jumlahAnco')}
                                                 required
