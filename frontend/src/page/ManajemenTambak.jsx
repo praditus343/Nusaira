@@ -21,37 +21,77 @@ import Header from '../componen/Header';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 
-
 const DashboardManagement = () => {
+    const [tambakData, setTambakData] = useState(null);
+    const [tambakList, setTambakList] = useState([]);
+    const [selectedTambakId, setSelectedTambakId] = useState(null);
     const [waterData, setWaterData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
-    const [ph, setPh] = useState(null);
-    const [suhu, setSuhu] = useState(null);
-    const [oksigen, setOksigen] = useState(null);
-    const [salinitas, setSalinitas] = useState(null);
-
-    const lokasi = "Boyolali"; // Ganti dengan lokasi yang sesuai
 
     useEffect(() => {
-        console.log("Current water data in dashboard:", waterData);
-        if (waterData.length > 0) {
-            const latestData = waterData[waterData.length - 1];
-            console.log("Latest water analysis data:", latestData);
+        const fetchTambakData = async () => {
+            try {
+                const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    setTambakData(data[0]);
+                    setTambakList(data);
+                    setSelectedTambakId(data[0].id);
+                }
+            } catch (error) {
+                console.error('Error fetching tambak data:', error);
+            }
+        };
+        fetchTambakData();
+    }, []);
 
-            setPh(latestData.ph);
-            setSuhu(latestData.suhu);
-            setOksigen(latestData.oksigen);
-            setSalinitas(latestData.salinitas);
-        }
-    }, [waterData]);
+    useEffect(() => {
+        const fetchWaterData = async () => {
+            if (!selectedTambakId) {
+                console.log('No selectedTambakId');
+                return;
+            }
 
+            try {
+                console.log('Fetching data for tambak_id:', selectedTambakId);
+                const response = await fetch(`https://nusaira-be.vercel.app/api/air`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Raw API response:', data);
+
+                const flattenedData = data.flat().filter(item => item && !Array.isArray(item));
+                console.log('Flattened data:', flattenedData);
+
+                const filteredData = flattenedData
+                    .filter(item => item.tambak_id === selectedTambakId)
+                    .map(item => ({
+                        ...item,
+                        kabupaten: tambakData?.kabupaten || 'Unknown'
+                    }));
+                console.log('Filtered data:', filteredData);
+
+                setWaterData(filteredData);
+            } catch (error) {
+                console.error('Error fetching water quality data:', error);
+                setWaterData([]);
+            }
+        };
+        fetchWaterData();
+    }, [selectedTambakId]);
+
+    const handleTambakChange = (event) => {
+        const newTambakId = parseInt(event.target.value);
+        setSelectedTambakId(newTambakId);
+        const selectedTambak = tambakList.find(tambak => tambak.id === newTambakId);
+        setTambakData(selectedTambak);
+    };
 
     const analyzeData = (data) => {
-        console.log("Analyzing data:", data);
-
-        // Cek apakah data tidak kosong dan singleReading memiliki properti yang diharapkan
-        if (data.length === 0) {
-            console.warn("No data available for analysis.");
+        if (!data || data.length === 0) {
             return {
                 ph: { status: 'Data Tidak Tersedia', value: null },
                 suhu: { status: 'Data Tidak Tersedia', value: null },
@@ -60,57 +100,29 @@ const DashboardManagement = () => {
             };
         }
 
-        const singleReading = data[0];
-
-        // Cek jika properti ada pada singleReading
-        if (!singleReading.ph || !singleReading.suhu || !singleReading.oksigen || !singleReading.salinitas) {
-            console.warn("Incomplete data in single reading:", singleReading);
-            return {
-                ph: { status: 'Data Tidak Lengkap', value: singleReading.ph || null },
-                suhu: { status: 'Data Tidak Lengkap', value: singleReading.suhu || null },
-                oksigen: { status: 'Data Tidak Lengkap', value: singleReading.oksigen || null },
-                salinitas: { status: 'Data Tidak Lengkap', value: singleReading.salinitas || null }
-            };
-        }
+        const latestData = data[data.length - 1];
 
         return {
             ph: {
-                status: singleReading.ph >= 7.0 && singleReading.ph <= 8.5 ? 'Normal' : 'Perlu Perhatian',
-                value: singleReading.ph
+                status: latestData.ph >= 7.0 && latestData.ph <= 8.5 ? 'Normal' : 'Perlu Perhatian',
+                value: Number(latestData.ph.toFixed(1))
             },
             suhu: {
-                status: singleReading.suhu >= 25 && singleReading.suhu <= 32 ? 'Normal' : 'Perlu Perhatian',
-                value: singleReading.suhu
+                status: latestData.suhu >= 25 && latestData.suhu <= 32 ? 'Normal' : 'Perlu Perhatian',
+                value: Number(latestData.suhu.toFixed(1))
             },
             oksigen: {
-                status: singleReading.oksigen >= 4 ? 'Normal' : 'Perlu Perhatian',
-                value: singleReading.oksigen
+                status: latestData.oksigen >= 4 ? 'Normal' : 'Perlu Perhatian',
+                value: Number(latestData.oksigen.toFixed(1))
             },
             salinitas: {
-                status: singleReading.salinitas >= 10 && singleReading.salinitas <= 25 ? 'Normal' : 'Perlu Perhatian',
-                value: singleReading.salinitas
+                status: latestData.salinitas >= 10 && latestData.salinitas <= 25 ? 'Normal' : 'Perlu Perhatian',
+                value: Number(latestData.salinitas.toFixed(1))
             }
         };
     };
 
-
-
-    const handleOnSubmit = (data) => {
-        console.log("Data submitted:", data);
-        setWaterData((prevData) => [
-            ...prevData,
-            {
-                lokasi: lokasi, // Tambahkan lokasi di sini
-                ph: data.parsedPh,
-                suhu: data.parsedSuhu,
-                oksigen: data.parsedOksigen,
-                salinitas: data.parsedSalinitas
-            }
-        ]);
-    };
-
     const analysis = analyzeData(waterData);
-    console.log("Analysis results:", analysis);
 
     const exportToPDF = () => {
         const doc = new jsPDF();
@@ -118,7 +130,7 @@ const DashboardManagement = () => {
         doc.setFontSize(20);
         doc.text("Laporan Analisis Kualitas Air", 105, 20, { align: "center" });
         doc.setFontSize(12);
-        doc.text(`Lokasi: ${lokasi}`, 105, 30, { align: "center" });
+        doc.text(`Lokasi: ${tambakData?.lokasi || 'N/A'}`, 105, 30, { align: "center" });
         doc.text(`Tanggal: ${new Date().toLocaleDateString()}`, 105, 40, { align: "center" });
 
         doc.setFontSize(16);
@@ -126,11 +138,12 @@ const DashboardManagement = () => {
 
         const tableColumn = ["Parameter", "Nilai", "Status", "Deskripsi"];
         const tableRows = [
-            ["pH", `${analysis.ph.value}`, `${analysis.ph.status}`, "Menunjukkan tingkat keasaman atau kebasaan air."],
-            ["Suhu", `${analysis.suhu.value} °C`, `${analysis.suhu.status}`, "Menunjukkan suhu air dalam satuan Celsius (°C)."],
-            ["Oksigen", `${analysis.oksigen.value} mg/L`, `${analysis.oksigen.status}`, "Menunjukkan jumlah oksigen terlarut dalam air."],
-            ["Salinitas", `${analysis.salinitas.value} ppt`, `${analysis.salinitas.status}`, "Menunjukkan tingkat kandungan garam dalam air."]
+            ["pH", `${analysis.ph.value?.toFixed(1) || 'N/A'}`, `${analysis.ph.status}`, "Menunjukkan tingkat keasaman atau kebasaan air."],
+            ["Suhu", `${analysis.suhu.value?.toFixed(1) || 'N/A'} °C`, `${analysis.suhu.status}`, "Menunjukkan suhu air dalam satuan Celsius (°C)."],
+            ["Oksigen", `${analysis.oksigen.value?.toFixed(1) || 'N/A'} mg/L`, `${analysis.oksigen.status}`, "Menunjukkan jumlah oksigen terlarut dalam air."],
+            ["Salinitas", `${analysis.salinitas.value?.toFixed(1) || 'N/A'} ppt`, `${analysis.salinitas.status}`, "Menunjukkan tingkat kandungan garam dalam air."]
         ];
+
         doc.autoTable({
             head: [tableColumn],
             body: tableRows,
@@ -139,7 +152,6 @@ const DashboardManagement = () => {
             styles: { fontSize: 10 },
             headStyles: { fillColor: [135, 206, 235], halign: 'center' },
         });
-
 
         let yPosition = doc.previousAutoTable.finalY + 20;
         doc.setFontSize(16);
@@ -167,10 +179,8 @@ const DashboardManagement = () => {
             doc.text("- Semua parameter dalam kondisi normal. Tidak ada tindakan khusus yang diperlukan.", 20, yPosition, { maxWidth: 170 });
         }
 
-
-        doc.save(`Laporan_Kualitas_Air_${lokasi}.pdf`);
+        doc.save(`Laporan_Kualitas_Air_${tambakData?.nama || 'Tambak'}.pdf`);
     };
-
 
     return (
         <div className="bg-white w-full min-h-screen">
@@ -179,19 +189,27 @@ const DashboardManagement = () => {
                 <div className="p-4">
                     <div className="flex justify-between items-center">
                         <div>
-                            <h1 className="text-xl font-medium">Tambak Lele Seger</h1>
+                            <h1 className="text-xl font-medium">{tambakData?.nama || 'Loading...'}</h1>
                             <div className="flex items-center space-x-2 text-gray-600">
                                 <MapPin className="w-4 h-4" />
-                                <span>Boyolali, Jawa Tengah</span>
+                                <span>{tambakData?.provinsi || 'Loading...'},</span>
+                                <span>{tambakData?.kabupaten || 'Loading...'}</span>
                             </div>
                         </div>
                         <div className="flex items-center space-x-4 mr-2">
                             <div className="flex items-center space-x-2 px-4">
                                 <span className="text-gray-600">Daftar Tambak :</span>
-                                <div className="relative  items-center">
-                                    <select className="block w-[300px] pr-8 pl-4 border rounded-lg py-2 appearance-none">
-                                        <option value="kolam1">Lele Segar</option>
-                                        <option value="kolam2">Lele Jumbo</option>
+                                <div className="relative items-center">
+                                    <select
+                                        className="block w-[300px] pr-8 pl-4 border rounded-lg py-2 appearance-none"
+                                        value={selectedTambakId || ''}
+                                        onChange={handleTambakChange}
+                                    >
+                                        {tambakList.map(tambak => (
+                                            <option key={tambak.id} value={tambak.id}>
+                                                {tambak.nama}
+                                            </option>
+                                        ))}
                                     </select>
                                     <FontAwesomeIcon
                                         icon={faChevronDown}
@@ -225,11 +243,19 @@ const DashboardManagement = () => {
                     <CardContent>
                         <div className="h-80">
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={waterData}> {/* Ganti LineChart dengan BarChart */}
+                                <BarChart data={waterData}>
                                     <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="lokasi" /> {/* Ganti "id" dengan "lokasi" */}
+                                    <XAxis
+                                        dataKey="kabupaten"
+                                        label={{
+                                            position: 'bottom',
+                                            offset: 0
+                                        }}
+                                    />
                                     <YAxis />
-                                    <Tooltip />
+                                    <Tooltip
+                                        formatter={(value) => [Number(value).toFixed(1), ""]}
+                                    />
                                     <Legend />
                                     <Bar dataKey="ph" fill="#8884d8" name="pH" />
                                     <Bar dataKey="suhu" fill="#82ca9d" name="Suhu (°C)" />
@@ -251,42 +277,40 @@ const DashboardManagement = () => {
                             {/* pH Air */}
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">pH Air</h3>
-                                <p className="text-2xl mb-2">{analysis.ph ? analysis.ph.value : 'N/A'}</p>
-                                <p className={`text-sm font-semibold ${analysis.ph && analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
-                                    Status: {analysis.ph ? analysis.ph.status : 'N/A'}
+                                <p className="text-2xl mb-2">{analysis.ph.value?.toFixed(1) || 'N/A'}</p>
+                                <p className={`text-sm font-semibold ${analysis.ph.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
+                                    Status: {analysis.ph.status}
                                 </p>
                             </div>
 
                             {/* Suhu Air */}
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Suhu Air</h3>
-                                <p className="text-2xl mb-2">{analysis.suhu ? analysis.suhu.value : 'N/A'}</p>
-                                <p className={`text-sm font-semibold ${analysis.suhu && analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
-                                    Status: {analysis.suhu ? analysis.suhu.status : 'N/A'}
+                                <p className="text-2xl mb-2">{analysis.suhu.value?.toFixed(1) || 'N/A'}</p>
+                                <p className={`text-sm font-semibold ${analysis.suhu.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
+                                    Status: {analysis.suhu.status}
                                 </p>
-
                             </div>
 
                             {/* Oksigen Terlarut */}
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Oksigen Terlarut</h3>
-                                <p className="text-2xl mb-2">{analysis.oksigen ? analysis.oksigen.value : 'N/A'}</p>
-                                <p className={`text-sm font-semibold ${analysis.oksigen && analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
-                                    Status: {analysis.oksigen ? analysis.oksigen.status : 'N/A'}
+                                <p className="text-2xl mb-2">{analysis.oksigen.value?.toFixed(1) || 'N/A'}</p>
+                                <p className={`text-sm font-semibold ${analysis.oksigen.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
+                                    Status: {analysis.oksigen.status}
                                 </p>
-
                             </div>
 
                             {/* Salinitas */}
                             <div className="p-4 border rounded-lg border-gray-300">
                                 <h3 className="font-bold mb-2">Salinitas</h3>
-                                <p className="text-2xl mb-2">{analysis.salinitas ? analysis.salinitas.value : 'N/A'}</p>
-                                <p className={`text-sm font-semibold ${analysis.salinitas && analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
-                                    Status: {analysis.salinitas ? analysis.salinitas.status : 'N/A'}
+                                <p className="text-2xl mb-2">{analysis.salinitas.value?.toFixed(1) || 'N/A'}</p>
+                                <p className={`text-sm font-semibold ${analysis.salinitas.status === 'Normal' ? 'text-green-600' : 'text-red-500'}`}>
+                                    Status: {analysis.salinitas.status}
                                 </p>
-
                             </div>
                         </div>
+
                         {/* Rekomendasi */}
                         <div className="mt-6">
                             <h3 className="font-bold mb-2">Rekomendasi Tindakan:</h3>
@@ -310,19 +334,16 @@ const DashboardManagement = () => {
                         </div>
                     </CardContent>
                 </Card>
-
             </div>
             {modalOpen && (
                 <ManagementModal
                     isOpen={modalOpen}
                     onClose={() => setModalOpen(false)}
-                    onSubmit={handleOnSubmit}
                 />
             )}
         </div>
     );
 };
-
 
 function Management() {
     return (

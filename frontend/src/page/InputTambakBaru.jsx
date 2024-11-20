@@ -59,12 +59,12 @@ const TambakForm = () => {
             const updatedKolamDetails = [...prevData.kolamDetails];
             updatedKolamDetails[index] = {
                 ...updatedKolamDetails[index],
-                [name]: value,  
+                [name]: value,
             };
             return { ...prevData, kolamDetails: updatedKolamDetails };
         });
     };
-    
+
 
     const handleJumlahKolamChange = (e) => {
         const jumlahKolam = e.target.value;
@@ -82,24 +82,32 @@ const TambakForm = () => {
         });
     };
 
+   
     const handleSubmit = async (e) => {
         e.preventDefault();
         let hasError = false;
         const errorMessage = [];
-    
+
         for (const key in formData) {
             if (formData[key] === '' || (typeof formData[key] === 'number' && formData[key] < 0)) {
                 hasError = true;
                 errorMessage.push(`Field ${key} tidak boleh kosong atau negatif.`);
             }
         }
-    
+        for (const kolam of formData.kolamDetails) {
+            ['panjang', 'lebar', 'kedalaman'].forEach(dimension => {
+                const value = kolam[dimension];
+                if (!value || value <= 0) {
+                    hasError = true;
+                    errorMessage.push(`${dimension} kolam harus diisi dan lebih dari 0`);
+                }
+            });
+        }
         if (hasError) {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
             try {
-                // Ganti 'data' dengan 'formData'
-                const response = await axios.post('http://localhost:3020/api/tambak', formData, {
+                const response = await axios.post('https://nusaira-be.vercel.app/api/tambak', formData, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -112,7 +120,8 @@ const TambakForm = () => {
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
         }
     };
-    
+
+
     const SelectWithArrow = ({ name, value, onChange, children, required }) => (
         <div className="relative z-10">
             <select
@@ -299,33 +308,33 @@ const TambakForm = () => {
                                         </div>
 
                                         <div className="flex space-x-4">
-                                            {['panjang', 'lebar', 'kedalaman'].map((dimension) => (
-                                                <div className="flex-1" key={dimension}>
-                                                    <SelectWithArrow
-                                                        name={dimension}
-                                                        value={kolam[dimension]}
-                                                        onChange={(e) => handleKolamChange(index, e)}
-                                                        required
-                                                    >
-                                                        <option value="">{`${dimension.charAt(0).toUpperCase() + dimension.slice(1)} (M)`}</option>
-                                                        <option value="10" className="text-blue-600">10</option>
-                                                        <option value="15" className="text-blue-600">15</option>
-                                                        <option value="manual" className="text-blue-600">Ketik Manual</option>
-                                                    </SelectWithArrow>
-                                                    {kolam[dimension] === 'manual' && (
-                                                        <input
-                                                            type="number"
-                                                            placeholder={`${dimension.charAt(0).toUpperCase() + dimension.slice(1)} (M)`}
-                                                            className="mt-2 focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2"
-                                                            value={kolam[`${dimension}Manual`] || ''}
-                                                            onChange={(e) => {
-                                                                const newValue = e.target.value;
-                                                                handleKolamChange(index, { target: { name: `${dimension}Manual`, value: newValue } });
-                                                            }}
-                                                        />
-                                                    )}
-                                                </div>
-                                            ))}
+                                        <input
+                                        type="number"
+                                        name="panjang"
+                                        value={kolam.panjang}
+                                        onChange={(e) => handleKolamChange(index, e)}
+                                        placeholder="Panjang"
+                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
+                                        required
+                                    />
+                                    <input
+                                        type="number"
+                                        name="lebar"
+                                        value={kolam.lebar}
+                                        onChange={(e) => handleKolamChange(index, e)}
+                                        placeholder="Lebar"
+                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
+                                        required
+                                    />
+                                    <input
+                                        type="number"
+                                        name="kedalaman"
+                                        value={kolam.kedalaman}
+                                        onChange={(e) => handleKolamChange(index, e)}
+                                        placeholder="Kedalaman"
+                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
+                                        required
+                                    />
                                         </div>
 
                                         <div>
