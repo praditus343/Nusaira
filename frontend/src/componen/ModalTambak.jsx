@@ -17,22 +17,12 @@ const Button = ({ children, onClick, type = 'button', className }) => {
   );
 };
 
-
-const Checkbox = ({ id, label }) => {
-  return (
-    <div className="flex items-center space-x-2">
-      <input type="checkbox" id={id} className="h-4 w-4" />
-      <label htmlFor={id}>{label}</label>
-    </div>
-  );
-};
-
 //siklus
 export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
-  //  const { id } = useParams();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState(initialData || {
-    kolam_id: '',
+    kolam_id: selectedKolam,
     lama_persiapan: '',
     total_tebar: '',
     metode_penebaran_benih: '',
@@ -49,36 +39,40 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
   });
   console.log(initialData);
 
-  // const [kolams, setKolams] = useState([]);
+  const [kolams, setKolams] = useState([]);
 
-  // useEffect(() => {
-  //   console.log("Fetching kolams for tambakId:", tambakId); // Cek nilai tambakId
+  useEffect(() => {
+    const fetchKolams = async () => {
+      try {
+        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        const data = await response.json();
 
-  //   const fetchKolams = async () => {
-  //     try {
-  //       const response = await fetch(`http://localhost:3020/api/tambak/${id}`);
-  //       const data = await response.json();
+        console.log("API Response:", data);
+        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
 
-  //       // Menangani response error
-  //       if (data.error) {
-  //         console.error("Error fetching tambak:", data.error);
-  //         return;
-  //       }
+        console.log("Kolams Data:", kolams);
 
-  //       if (data && data.kolamDetails) {
-  //         setKolams(data.kolamDetails);
-  //       } else {
-  //         setKolams([]); // Kolam kosong
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching kolams:', error);
-  //     }
-  //   };
+        setKolams(kolams);
+      } catch (error) {
+        console.error('Error fetching kolams:', error);
+      }
+    };
 
-  //   if (tambakId) {
-  //     fetchKolams();
-  //   }
-  // }, [tambakId]);
+    fetchKolams();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("Kolams setelah set: ", kolams);
+  }, [kolams]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      kolam_id: selectedKolam,
+    }));
+  }, [selectedKolam]);
+
 
 
 
@@ -127,7 +121,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
     const dataToSend = {
       ...formData,
-      tanggal: formattedDate
+      tanggal: formattedDate,
     };
 
     for (const key in formData) {
@@ -150,13 +144,13 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
     }
 
     try {
-    const form = new FormData();
-    Object.keys(dataToSend).forEach(key => {
-      form.append(key, dataToSend[key]);
-    });
-      const response = await axios.post('http://localhost:3020/api/siklus', dataToSend, {
+      const form = new FormData();
+      Object.keys(dataToSend).forEach(key => {
+        form.append(key, dataToSend[key]);
+      });
+      const response = await axios.post('https://nusaira-be.vercel.app/api/siklus', dataToSend, {
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         }
       });
 
@@ -216,7 +210,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className={`bg-white rounded-lg p-6 w-full max-w-md ${isExpanded ? 'h-[90vh]' : 'h-auto'} overflow-y-auto transition-all duration-300`}>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Tambak Lele Seger</h2>
+          <h2 className="text-xl font-bold">Mulai Siklus</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
           </button>
@@ -237,23 +231,27 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
             <select
               className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
-              value={formData.kolam_id}
-              onChange={handleInputChange}
+              value={selectedKolam}
+              onChange={(e) => setSelectedKolam(e.target.value)}
             >
               <option value="">Pilih Kolam</option>
-              <option value="1">Kolam 1</option>
-              <option value="2">Kolam 2</option>
-              {/* {kolams.map((kolam) => (
-                <option key={kolam.id} value={kolam.id}>
-                  {kolam.namaKolam}
-                </option>
-              ))} */}
+              {kolams.length > 0 ? (
+                kolams.map((kolam, index) => (
+                  <option key={index} value={kolam.id}>
+                    {kolam.namaKolam}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No Kolams Available</option>
+              )}
             </select>
+
             <FontAwesomeIcon
               icon={faChevronDown}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
             />
           </div>
+
 
           <input
             type="number"
@@ -440,23 +438,59 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 //kematian
 export const TambahDataKematianModal = ({ isOpen, onClose }) => {
   const [trackingMethod, setTrackingMethod] = useState('jumlah_ekor');
+  const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState({
-    kolam_id: '',
+    kolam_id: selectedKolam,
     tanggal_tebar: '',
     umur: 0,
-    jumlah_ekor: '',
-    total_berat: '',
-    multiplier: '',
-  });
+    jumlah_ekor: 0,
+    total_berat: 0,  
+    multiplier: 0,
+});
+
+
+  const [kolams, setKolams] = useState([]);
+
+  useEffect(() => {
+    const fetchKolams = async () => {
+      try {
+        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+
+        console.log("Kolams Data:", kolams);
+
+        setKolams(kolams);
+      } catch (error) {
+        console.error('Error fetching kolams:', error);
+      }
+    };
+
+    fetchKolams();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("Kolams setelah set: ", kolams);
+  }, [kolams]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      kolam_id: selectedKolam,
+    }));
+  }, [selectedKolam]);
 
   const [errors, setErrors] = useState([]);
-  const [size, setSize] = useState(null);
+  
 
   useEffect(() => {
     const fetchUmur = async () => {
       if (isOpen) {
         try {
-          const response = await axios.get('http://localhost:3020/api/siklus');
+          const response = await axios.get('https://nusaira-be.vercel.app/api/siklus');
           if (response.status === 200 && response.data?.length > 0) {
             const { umur_awal } = response.data[0];
             if (umur_awal !== undefined) {
@@ -492,7 +526,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
     if (value === 'manual') {
       setFormData((prevData) => ({
         ...prevData,
-        multiplier: '',
+        multiplier: 0,
         useManualInput: true,
       }));
     } else {
@@ -500,7 +534,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
         ...prevData,
         multiplier: value,
         useManualInput: false,
-        manualMultiplier: '',
+        manualMultiplier: 0,
       }));
     }
   };
@@ -510,13 +544,13 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
     if (method === 'jumlah_ekor') {
       setFormData((prevData) => ({
         ...prevData,
-        total_berat: '',
-        multiplier: '',
+        total_berat: 0,
+        multiplier: 0,
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        jumlah_ekor: '',
+        jumlah_ekor: 0,
       }));
     }
   };
@@ -578,13 +612,13 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
     }
 
     try {
-    const form = new FormData();
-    Object.keys(dataToSend).forEach(key => {
-      form.append(key, dataToSend[key]);
-    });
-      const response = await axios.post('http://localhost:3020/api/kematian', dataToSend, {
+      const form = new FormData();
+      Object.keys(dataToSend).forEach(key => {
+        form.append(key, dataToSend[key]);
+      });
+      const response = await axios.post('https://nusaira-be.vercel.app/api/data-kematian', dataToSend, {
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         }
       });
 
@@ -592,7 +626,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
         const { message, result } = response.data;
 
         if (message && message.includes('berhasil')) {
-          
+
           Swal.fire({
             icon: 'success',
             title: 'Data berhasil disimpan!',
@@ -619,26 +653,26 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
         });
       }
     } catch (error) {
-      
+
       console.error('Terjadi kesalahan:', error.message || error);
       if (error.response) {
-          console.error('Response error:', error.response.data);
-          console.error('Response status:', error.response.status);
-          console.error('Response headers:', error.response.headers);
+        console.error('Response error:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
       } else if (error.request) {
-          console.error('Request error:', error.request);
+        console.error('Request error:', error.request);
       } else {
-          console.error('General error:', error.config);
+        console.error('General error:', error.config);
       }
-  
+
       Swal.fire({
-          icon: 'error',
-          title: 'Gagal Menyimpan Data!',
-          text: error.message || 'Terjadi kesalahan pada koneksi atau server.',
-          confirmButtonColor: '#d33',
+        icon: 'error',
+        title: 'Gagal Menyimpan Data!',
+        text: error.message || 'Terjadi kesalahan pada koneksi atau server.',
+        confirmButtonColor: '#d33',
       });
-  }
-  
+    }
+
   };
 
 
@@ -683,15 +717,22 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* kolam_id Dropdown */}
           <div className="relative">
-            <select
+          <select
+              className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
-              value={formData.kolam_id}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none focus:ring-blue-500 appearance-none"
+              value={selectedKolam}
+              onChange={(e) => setSelectedKolam(e.target.value)}
             >
               <option value="">Pilih Kolam</option>
-              <option value="1">Kolam 1</option>
-              <option value="2">Kolam 2</option>
+              {kolams.length > 0 ? (
+                kolams.map((kolam, index) => (
+                  <option key={index} value={kolam.id}>
+                    {kolam.namaKolam}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No Kolams Available</option>
+              )}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -840,8 +881,9 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
 //penyakit
 export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
+  const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState({
-    kolam_id: '',
+    kolam_id: selectedKolam,
     tanggal_tebar: '',
     jenis_penyakit: '',
     catatan: '',
@@ -849,6 +891,42 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const [images, setImages] = useState([null, null, null]);
   const [errors, setErrors] = useState([]);
   const fileInputRefs = [useRef(), useRef(), useRef()];
+
+  const [kolams, setKolams] = useState([]);
+
+  useEffect(() => {
+    const fetchKolams = async () => {
+      try {
+        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+
+        console.log("Kolams Data:", kolams);
+
+        setKolams(kolams);
+      } catch (error) {
+        console.error('Error fetching kolams:', error);
+      }
+    };
+
+    fetchKolams();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("Kolams setelah set: ", kolams);
+  }, [kolams]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      kolam_id: selectedKolam,
+    }));
+  }, [selectedKolam]);
+
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -956,7 +1034,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         }
       });
 
-      const response = await axios.post('http://localhost:3020/api/penyakit', formDataToSend, {
+      const response = await axios.post('https://nusaira-be.vercel.app/api/penyakit', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -1029,15 +1107,22 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <select
+          <select
+              className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
-              value={formData.kolam_id}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none  focus:ring-blue-500 appearance-none"
+              value={selectedKolam}
+              onChange={(e) => setSelectedKolam(e.target.value)}
             >
               <option value="">Pilih Kolam</option>
-              <option value="1">Kolam 1</option>
-              <option value="2">Kolam 2</option>
+              {kolams.length > 0 ? (
+                kolams.map((kolam, index) => (
+                  <option key={index} value={kolam.id}>
+                    {kolam.namaKolam}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No Kolams Available</option>
+              )}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -1126,14 +1211,51 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
 //pakan
 export const TambahDataPakanModal = ({ isOpen, onClose }) => {
+  const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState({
-    kolam_id: '',
+    kolam_id: selectedKolam,
     tanggal: '',
     waktu: '',
     puasa: false,
     jumlah: '',
     catatan: '',
   });
+
+  const [kolams, setKolams] = useState([]);
+
+  useEffect(() => {
+    const fetchKolams = async () => {
+      try {
+        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+
+        console.log("Kolams Data:", kolams);
+
+        setKolams(kolams);
+      } catch (error) {
+        console.error('Error fetching kolams:', error);
+      }
+    };
+
+    fetchKolams();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("Kolams setelah set: ", kolams);
+  }, [kolams]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      kolam_id: selectedKolam,
+    }));
+  }, [selectedKolam]);
+
+  const [errors, setErrors] = useState([]);
 
   if (!isOpen) return null;
 
@@ -1202,7 +1324,7 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3020/api/data-pakan', dataToSend);
+      const response = await axios.post('https://nusaira-be.vercel.app/api/data-pakan', dataToSend);
       console.log("Form Data Posted Successfully:", response.data);
 
       Swal.fire({
@@ -1234,15 +1356,22 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <select
+          <select
+              className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
-              value={formData.kolam_id}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-blue-400 rounded-lg focus:outline-none focus:ring-blue-500 appearance-none"
+              value={selectedKolam}
+              onChange={(e) => setSelectedKolam(e.target.value)}
             >
               <option value="">Pilih Kolam</option>
-              <option value="1">Kolam 1</option>
-              <option value="2">Kolam 2</option>
+              {kolams.length > 0 ? (
+                kolams.map((kolam, index) => (
+                  <option key={index} value={kolam.id}>
+                    {kolam.namaKolam}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No Kolams Available</option>
+              )}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -1321,9 +1450,9 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
 //panen
 export const TambahDataPanenModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
-
+  const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState({
-    kolam_id: '',
+    kolam_id: selectedKolam,
     tanggal: '',
     berat: '',
     size: '',
@@ -1331,6 +1460,42 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
     status: '',
     catatan: ''
   });
+
+  const [kolams, setKolams] = useState([]);
+
+  useEffect(() => {
+    const fetchKolams = async () => {
+      try {
+        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+
+        console.log("Kolams Data:", kolams);
+
+        setKolams(kolams);
+      } catch (error) {
+        console.error('Error fetching kolams:', error);
+      }
+    };
+
+    fetchKolams();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("Kolams setelah set: ", kolams);
+  }, [kolams]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      kolam_id: selectedKolam,
+    }));
+  }, [selectedKolam]);
+
+  const [errors, setErrors] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -1380,7 +1545,7 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
     });
 
     try {
-      const response = await axios.post("http://localhost:3020/api/data-panen", form, {
+      const response = await axios.post("https://nusaira-be.vercel.app/api/data-panen", form, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -1427,15 +1592,22 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <select
+          <select
+              className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
-              className="w-full px-3 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-blue-500 appearance-none"
-              value={formData.kolam_id}
-              onChange={handleChange}
+              value={selectedKolam}
+              onChange={(e) => setSelectedKolam(e.target.value)}
             >
               <option value="">Pilih Kolam</option>
-              <option value="1">Kolam 1</option>
-              <option value="2">Kolam 2</option>
+              {kolams.length > 0 ? (
+                kolams.map((kolam, index) => (
+                  <option key={index} value={kolam.id}>
+                    {kolam.namaKolam}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No Kolams Available</option>
+              )}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -1533,14 +1705,53 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
 //anco
 export const TambahJumlahAnco = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
+  const [selectedKolam, setSelectedKolam] = useState("");
 
   const [formData, setFormData] = useState({
-    kolam_id: '',
+    kolam_id: selectedKolam,
     tanggal_panen_parsial: '',
     waktu_pemberian_pakan: '',
     waktu_cek_anco: '',
     catatan: ''
   });
+
+  const [kolams, setKolams] = useState([]);
+
+  useEffect(() => {
+    const fetchKolams = async () => {
+      try {
+        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+
+        console.log("Kolams Data:", kolams);
+
+        setKolams(kolams);
+      } catch (error) {
+        console.error('Error fetching kolams:', error);
+      }
+    };
+
+    fetchKolams();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("Kolams setelah set: ", kolams);
+  }, [kolams]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      kolam_id: selectedKolam,
+    }));
+  }, [selectedKolam]);
+
+  const [errors, setErrors] = useState([]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -1599,7 +1810,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await axios.post("http://localhost:3020/api/anco", dataToSend, {
+      const response = await axios.post("https://nusaira-be.vercel.app/api/anco", dataToSend, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -1651,15 +1862,22 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Kolam Select */}
           <div className="relative">
-            <select
+          <select
+              className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
-              value={formData.kolam_id}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-blue-500 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 appearance-none"
+              value={selectedKolam}
+              onChange={(e) => setSelectedKolam(e.target.value)}
             >
-              <option value="" disabled>Pilih Kolam</option>
-              <option value="1">Kolam 1</option>
-              <option value="2">Kolam 2</option>
+              <option value="">Pilih Kolam</option>
+              {kolams.length > 0 ? (
+                kolams.map((kolam, index) => (
+                  <option key={index} value={kolam.id}>
+                    {kolam.namaKolam}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No Kolams Available</option>
+              )}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}

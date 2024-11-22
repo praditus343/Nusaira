@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../componen/SideBar';
 import Footer from '../componen/Footer';
 import AIFloatingButton from '../componen/AiFloatingButton';
@@ -51,7 +51,10 @@ const buttons = [
 const PondTable = () => {
     const [activeModal, setActiveModal] = useState(null);
     const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [tambakData, setTambakData] = useState(null);
 
+    const handleSearch = (e) => setSearchTerm(e.target.value);
 
     const handleButtonClick = (buttonText) => {
         switch (buttonText) {
@@ -79,22 +82,60 @@ const PondTable = () => {
         }
     };
 
+    useEffect(() => {
+        fetch('https://nusaira-be.vercel.app/api/tambak')
+            .then((response) => response.json())
+            .then((data) => {
+                setTambakData(data[0]);
+            })
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
+    
+
     const closeModal = () => setActiveModal(null);
 
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
-            {/* Location Info */}
-            <div className="mb-6 ml-10 mr-6 mt-5">
-                <h2 className="text-xl font-semibold mb-2">Tambak Lele Seger</h2>
-                <div className="flex items-center text-gray-600">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span>Boyolali, Jawa Tengah</span>
-                </div>
+           {/* Location Info */}
+<div className="mb-6 ml-10 mr-6 mt-5">
+    {tambakData ? (
+        <>
+            <h2 className="text-xl font-semibold mb-2 text-black">
+               Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
+            </h2>
+            <div className="flex items-center text-gray-600">
+                <svg
+                    className="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                </svg>
+                <span className="text-black">
+                    {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
+                    {` `}
+                    {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
+                </span>
             </div>
+        </>
+    ) : (
+        <p className="text-gray-500">Loading data...</p>
+    )}
+</div>
 
             {/* Buttons for each modal */}
             <div className="flex flex-wrap gap-2 ml-8 mr-5 mt-2 mb-5">
@@ -108,7 +149,6 @@ const PondTable = () => {
                     </button>
                 ))}
             </div>
-
 
             {/* Render modals based on active modal */}
             {activeModal === 'TambahLeleSegerModal' && <TambahLeleSegerModal isOpen={true} onClose={closeModal} />}
@@ -128,6 +168,8 @@ const PondTable = () => {
                                 type="text"
                                 placeholder="Cari Kolam"
                                 className="pl-8 pr-4 py-2 border rounded-lg block w-full sm:text-lg border border-blue-600 placeholder-blue-600 text-blue-600 z-30"
+                                value={searchTerm}
+                                onChange={handleSearch}
                                 autoFocus={false}
                             />
                             <FontAwesomeIcon
@@ -153,7 +195,7 @@ const PondTable = () => {
 
                 </div>
                 {/* Table */}
-                <FishTable />
+                <FishTable filterTerm={searchTerm} />
             </CustomCard>
         </div>
     );
@@ -166,7 +208,9 @@ function PondManagement() {
             <div className="flex-1 overflow-auto">
                 <PondTable />
                 <AIFloatingButton />
-                <Footer />
+                <div className='mt-20'>
+                    <Footer />
+                </div>
             </div>
         </div>
     );
