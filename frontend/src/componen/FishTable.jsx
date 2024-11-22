@@ -9,54 +9,75 @@ const formatDate = (date) => {
 const FishTable = ({ filterTerm = "" }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [banner, setBanner] = useState({ show: false, message: "" });
   const [refreshing, setRefreshing] = useState(false);
+  const [banner, setBanner] = useState(null);
 
-  const fetchData = async () => {
+  const fetchData = async (abortController) => {
     try {
-      const [siklusRes, panenRes, kematianRes, tambakRes] = await Promise.all([
-        fetch("https://nusaira-be.vercel.app/api/siklus").then((res) => res.json()),
-        fetch("https://nusaira-be.vercel.app/api/data-panen").then((res) => res.json()),
-        fetch("https://nusaira-be.vercel.app/api/data-kematian").then((res) => res.json()),
-        fetch("https://nusaira-be.vercel.app/api/tambak").then((res) => res.json()),
-      ]);
+      setRefreshing(true);
+      setLoading(true);
+      setBanner(null);
 
-      if (
-        !Array.isArray(siklusRes) ||
-        !Array.isArray(panenRes) ||
-        !Array.isArray(kematianRes) ||
-        !Array.isArray(tambakRes)
-      ) {
-        throw new Error("Data yang diterima tidak valid");
+
+      const cachedData = sessionStorage.getItem("siklusData");
+      if (cachedData) {
+        setData(JSON.parse(cachedData));
+        setLoading(false);
+        setRefreshing(false);
+        return;
       }
 
-      const formattedData = siklusRes.map((siklus) => {
+      const fetchOptions = {
+        signal: abortController.signal
+      };
+
+      const siklusRes = await fetch("https://nusaira-be.vercel.app/api/siklus", fetchOptions);
+      if (!siklusRes.ok) throw new Error("Gagal mengambil data siklus");
+      const siklusData = await siklusRes.json();
+      if (!Array.isArray(siklusData)) throw new Error("Data siklus tidak valid");
+
+      const panenRes = await fetch("https://nusaira-be.vercel.app/api/data-panen", fetchOptions);
+      if (!panenRes.ok) throw new Error("Gagal mengambil data panen");
+      const panenData = await panenRes.json();
+      if (!Array.isArray(panenData)) throw new Error("Data panen tidak valid");
+
+      const kematianRes = await fetch("https://nusaira-be.vercel.app/api/data-kematian", fetchOptions);
+      if (!kematianRes.ok) throw new Error("Gagal mengambil data kematian");
+      const kematianData = await kematianRes.json();
+      if (!Array.isArray(kematianData)) throw new Error("Data kematian tidak valid");
+
+      const tambakRes = await fetch("https://nusaira-be.vercel.app/api/tambak", fetchOptions);
+      if (!tambakRes.ok) throw new Error("Gagal mengambil data tambak");
+      const tambakData = await tambakRes.json();
+      if (!Array.isArray(tambakData)) throw new Error("Data tambak tidak valid");
+
+      const formattedData = siklusData.map((siklus) => {
         const kolamId = siklus.kolam_id;
-        const matchedTambakData = tambakRes.find((tambak) =>
+        const matchedTambakData = tambakData.find((tambak) =>
           tambak.kolamDetails?.some((kolam) => kolam.id === kolamId)
         );
 
         const kolamData = matchedTambakData?.kolamDetails.find((kolam) => kolam.id === kolamId);
         const kolamNama = kolamData?.namaKolam || "-";
 
-        const panenData = panenRes.find((panen) => panen.id_siklus === siklus.id_siklus);
+        const panenDataForSiklus = panenData.find((panen) => panen.id_siklus === siklus.id_siklus);
 
-        const kematianData = kematianRes.filter((kematian) => kematian.id_siklus === siklus.id_siklus);
-        const totalKematianEkor = kematianData.reduce((sum, kematian) => sum + (kematian.jumlah_ekor || 0), 0);
+        const kematianDataForSiklus = kematianData.filter((kematian) => kematian.id_siklus === siklus.id_siklus);
+        const totalKematianEkor = kematianDataForSiklus.reduce((sum, kematian) => sum + (kematian.jumlah_ekor || 0), 0);
 
         const jumlahTebar = siklus.total_tebar || 0;
         const jumlahIkanHidup = Math.max(jumlahTebar - totalKematianEkor, 0);
 
-        const mbw = panenData && jumlahIkanHidup > 0 && panenData.berat > 0
-          ? (Number(panenData.berat) / jumlahIkanHidup / 1000).toFixed(5)
+        const mbw = panenDataForSiklus && jumlahIkanHidup > 0 && panenDataForSiklus.berat > 0
+          ? (Number(panenDataForSiklus.berat) / jumlahIkanHidup / 1000).toFixed(5)
           : "-";
 
-        const adg = siklus.tanggal && siklus.umur_awal > 0 && panenData?.berat
-          ? (Number(panenData.berat) / 1000 / siklus.umur_awal).toFixed(5)
+        const adg = siklus.tanggal && siklus.umur_awal > 0 && panenDataForSiklus?.berat
+          ? (Number(panenDataForSiklus.berat) / 1000 / siklus.umur_awal).toFixed(5)
           : "-";
 
-        const hargaPerIkan = panenData?.harga_jual
-          ? `Rp. ${new Intl.NumberFormat("id-ID").format(panenData.harga_jual)}`
+        const hargaPerIkan = panenDataForSiklus?.harga_jual
+          ? `Rp. ${new Intl.NumberFormat("id-ID").format(panenDataForSiklus.harga_jual)}`
           : "-";
 
         return {
@@ -72,43 +93,69 @@ const FishTable = ({ filterTerm = "" }) => {
           fcr: siklus.target_fcr || "-",
           adg,
           mbw,
-          size: panenData?.size || "-",
+          size: panenDataForSiklus?.size || "-",
           hargaPerIkan,
         };
       });
 
       setData(formattedData);
+      sessionStorage.setItem("siklusData", JSON.stringify(formattedData));
+
+      const hasInvalidData = formattedData.some((row) => {
+        return (
+          row.tebaran === "-" ||
+          row.fcr === "-" ||
+          row.adg === "-" ||
+          row.mbw === "-" ||
+          row.size === "-" ||
+          row.tebaran < 0 ||
+          row.fcr < 0 ||
+          row.adg < 0 ||
+          row.mbw < 0 ||
+          row.size < 0
+        );
+      });
+
+      if (hasInvalidData) {
+        setBanner({
+          type: "error",
+          message: "Data tidak valid ditemukan (nilai negatif atau kosong).",
+        });
+      } else if (formattedData.length === 0) {
+        setBanner({ type: "warning", message: "Tidak ada data yang tersedia" });
+      }
+
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+        return;
+      }
+      console.error("Error:", error);
+    } finally {
       setLoading(false);
       setRefreshing(false);
-    } catch (error) {
-      console.error("Error detail:", {
-        message: error.message,
-        stack: error.stack,
-      });
-      setLoading(false);
-      setRefreshing(true);
-      setBanner({
-        show: true,
-        message: `Error: ${error.message}. Silakan coba refresh halaman.`,
-      });
     }
   };
 
   useEffect(() => {
-    fetchData();
+    const abortController = new AbortController();
+
+    fetchData(abortController);
+
+    return () => {
+      abortController.abort();
+      sessionStorage.removeItem("siklusData");
+    };
   }, []);
 
-  useEffect(() => {
-    if (refreshing) {
-      const timer = setTimeout(() => fetchData(), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [refreshing]);
-
-  if (loading) {
+  if (loading || refreshing) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="w-16 h-16 border-4 border-t-4 border-blue-600 border-solid rounded-full animate-spin"></div>
+        <div className="flex space-x-2">
+          <div className="w-6 h-6 bg-blue-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-blue-600 rounded-full animate-bounce delay-200"></div>
+          <div className="w-6 h-6 bg-blue-600 rounded-full animate-bounce delay-400"></div>
+        </div>
       </div>
     );
   }
@@ -126,22 +173,22 @@ const FishTable = ({ filterTerm = "" }) => {
     })
     : data;
 
-
-
   return (
     <div>
-      {banner.show && (
-        <div className="bg-yellow-300 text-black p-4 text-center">
-          <strong className="font-bold">Peringatan: </strong>
-          {banner.message}
+      {banner && !loading && !refreshing && (
+        <div
+          className={`p-4 ${banner.type === "error" ? "bg-red-600" : "bg-yellow-400"} text-white text-center`}
+        >
+          <strong>Peringatan:</strong> {banner.message}
         </div>
       )}
+
       <div className="overflow-x-auto mt-10 mb-10">
         <table className="w-full border-collapse border border-gray-400">
           <thead>
             <tr className="bg-blue-600 text-white">
               {["Kolam", "Umur", "Tgl Tebar", "Tgl Selesai", "Tebaran", "FCR", "ADG", "MBW", "Size", "Harga/Ikan"].map((header) => (
-                <th key={header} className="p-3 border border-gray-400 ">
+                <th key={header} className="p-3 border border-gray-400">
                   {header}
                 </th>
               ))}
@@ -151,21 +198,21 @@ const FishTable = ({ filterTerm = "" }) => {
             {filteredData.length > 0 ? (
               filteredData.map((row, idx) => (
                 <tr key={idx} className="bg-blue-50">
-                   <td className="p-3 border border-gray-400">{row.kolam}</td>
-          <td className="p-3 border border-gray-400">{row.umur}</td>
-          <td className="p-3 border border-gray-400">{row.tglTebar}</td>
-          <td className="p-3 border border-gray-400">{row.tglSelesai}</td>
-          <td className="p-3 border border-gray-400">{row.tebaran}</td>
-          <td className="p-3 border border-gray-400">{row.fcr}</td>
-          <td className="p-3 border border-gray-400">{row.adg}</td>
-          <td className="p-3 border border-gray-400">{row.mbw}</td>
-          <td className="p-3 border border-gray-400">{row.size}</td>
-          <td className="p-3 border border-gray-400">{row.hargaPerIkan}</td>
+                  <td className="p-3 border border-gray-400">{row.kolam}</td>
+                  <td className="p-3 border border-gray-400">{row.umur}</td>
+                  <td className="p-3 border border-gray-400">{row.tglTebar}</td>
+                  <td className="p-3 border border-gray-400">{row.tglSelesai}</td>
+                  <td className="p-3 border border-gray-400">{row.tebaran}</td>
+                  <td className="p-3 border border-gray-400">{row.fcr}</td>
+                  <td className="p-3 border border-gray-400">{row.adg}</td>
+                  <td className="p-3 border border-gray-400">{row.mbw}</td>
+                  <td className="p-3 border border-gray-400">{row.size}</td>
+                  <td className="p-3 border border-gray-400">{row.hargaPerIkan}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="py-2 px-4 text-center">No data available</td>
+                <td colSpan="10" className="p-3 text-center">Tidak ada data</td>
               </tr>
             )}
           </tbody>

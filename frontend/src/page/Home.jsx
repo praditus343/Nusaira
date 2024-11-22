@@ -1,36 +1,73 @@
-import React, { useState } from 'react';
-import { Home, ChevronDown, MapPin } from 'lucide-react';
-import Sidebar from '../componen/SideBar.jsx';
-import Footer from '../componen/Footer.jsx';
-import AIFloatingButton from '../componen/AiFloatingButton.jsx';
-import Header from '../componen/Header.jsx';
-import WrapBanner from '../componen/WrapBanner.jsx';
-import imgConfusePeople from "../assets/img/landing_page_sudah_daftar/landingsub3.png";
+import { faTelegram, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faYoutube, faTelegram } from '@fortawesome/free-brands-svg-icons';
-import imgElearningNusaira from "../assets/img/landing_page_sudah_daftar/landingsub2.png";
-import AquacultureDashboard from '../componen/AquacultureDashboard.jsx';
-import ActivePondsDashboard from '../componen/ActivePondsDashboard.jsx';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-
+import imgElearningNusaira from "../assets/img/landing_page_sudah_daftar/landingsub2.png";
+import imgConfusePeople from "../assets/img/landing_page_sudah_daftar/landingsub3.png";
+import AIFloatingButton from '../componen/AiFloatingButton.jsx';
+import AquacultureDashboard from '../componen/AquacultureDashboard.jsx';
+import Footer from '../componen/Footer.jsx';
+import Header from '../componen/Header.jsx';
+import Sidebar from '../componen/SideBar.jsx';
+import WrapBanner from '../componen/WrapBanner.jsx';
+import { 
+    fetchTambak, 
+    fetchSiklus, 
+    fetchKematian, 
+    fetchPakan, 
+    fetchPanen, 
+    fetchAnco 
+  } from '../../service/AxiosConfig.js';
+  
 
 const DashboardContent = () => {
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
-    const [isDashboardView, setIsDashboardView] = useState(true);
-    const [selectedOption, setSelectedOption] = useState('Lele Segar');
+    const [isDashboardView, setIsDashboardView] = useState(false);
+    const [tambakData, setTambakData] = useState(null);
+    const [siklusData, setSiklusData] = useState(null);
+    const [kematianData, setKematianData] = useState(null);
+    const [pakanData, setPakanData] = useState(null);
+    const [panenData, setPanenData] = useState(null);
+    const [ancoData, setAncoData] = useState(null);
 
-    const options = ['Lele Segar', 'Lele Asin', 'Lele Bakar'];
+   
 
-    const handleOptionSelect = (option) => {
-        setSelectedOption(option);
-        setDropdownOpen(false);
-    };
-
-    const toggleDropdown = () => {
-        setDropdownOpen(!isDropdownOpen);
-    };
-
+    useEffect(() => {
+        const fetchAllDataSequentially = async () => {
+            try {
+                // Fetch data tambak terlebih dahulu
+                const tambakResponse = await fetchTambak();
+                setTambakData(tambakResponse[0]);
+    
+                // Fetch data siklus
+                const siklusResponse = await fetchSiklus();
+                setSiklusData(siklusResponse);
+    
+                // Fetch data kematian
+                const kematianResponse = await fetchKematian();
+                setKematianData(kematianResponse);
+    
+                // Fetch data pakan
+                const pakanResponse = await fetchPakan();
+                setPakanData(pakanResponse);
+    
+                // Fetch data panen
+                const panenResponse = await fetchPanen();
+                setPanenData(panenResponse);
+    
+                // Fetch data anco
+                const ancoResponse = await fetchAnco();
+                setAncoData(ancoResponse);
+    
+                // Setelah semua data di-fetch, aktifkan tampilan dashboard
+                setIsDashboardView(true);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchAllDataSequentially();
+    }, []);
+    
     return (
         <div className="bg-white w-full min-h-screen mb-10">
             <Header />
@@ -38,80 +75,91 @@ const DashboardContent = () => {
                 {isDashboardView ? (
                     <div>
                         <div className="flex justify-between items-center">
-                            <div className="space-y-2">
-                                <div className="relative">
-                                    <button
-                                        onClick={toggleDropdown}
-                                        className="flex items-center text-blue-500 font-medium px-4 py-2 text-lg ml-2 z-100"
-                                    >
-                                        {selectedOption} <ChevronDown className="ml-1 h-4 w-4" />
-                                    </button>
-                                    {isDropdownOpen && (
-                                        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
-                                            {options.map((option) => (
-                                                <button
-                                                    key={option}
-                                                    onClick={() => handleOptionSelect(option)}
-                                                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
-                                                >
-                                                    {option}
-                                                </button>
-                                            ))}
+                            {tambakData ? (
+                                <>
+                                    <div className="flex flex-col ml-6">
+                                        <h2 className="text-xl font-semibold mb-2 text-black">
+                                            Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
+                                        </h2>
+                                        <div className="flex items-center text-gray-600">
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                                />
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                                />
+                                            </svg>
+                                            <span className="text-gray-500">
+                                                {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
+                                                {` `}
+                                                {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
+                                            </span>
+
                                         </div>
-                                    )}
-                                </div>
-                                <div className="flex items-center space-x-2 text-sm ml-6">
-                                    <MapPin className="h-4 w-4 text-gray-400" />
-                                    <span className="text-gray-600">Provinsi, Kecamatan, Kelurahan</span>
-                                    <Link to="/DaftarKolam" className="text-blue-500">Lihat daftar kolam</Link>
-                                    <span>•</span>
-                                    <Link to="/PengaturanTambak" className="text-blue-500">Pengaturan tambak</Link>
-                                </div>
-                            </div>
-                            <div className="flex items-center space-x-2 mr-16">
-                                <span className="text-gray-600">Periode :</span>
-                                <div className="relative  items-center">
-                                    <select className="block w-[200px] pr-8 pl-4 border rounded-lg py-2 appearance-none">
-                                        <option value="Oktober24">Oktober 2024</option>
-                                        <option value="November24">November 2024</option>
-                                    </select>
-                                    <FontAwesomeIcon
-                                        icon={faChevronDown}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 pointer-events-none"
-                                    />
-                                </div>
-                            </div>
+                                    </div>
+                                </>
+
+                            ) : (
+                                <p className="text-gray-500">Loading data...</p>
+                            )}
                         </div>
                         <AquacultureDashboard />
-                        <ActivePondsDashboard />
                     </div>
                 ) : (
                     <div className="flex justify-between items-center mb-6 ml-6">
-                        <div>
-                            <h2 className="text-2xl font-bold text-gray-800">Budidaya Lele</h2>
-                            <p className="text-gray-600 flex items-center">
-                                <Home className="w-4 h-4 mr-1" /> Boyolali, Jawa Tengah
-                            </p>
-                        </div>
-                        <div className="flex items-center space-x-2 mr-16">
-                            <span className="text-gray-700">Periode :</span>
-                            <div className="relative">
-                                <button
-                                    onClick={toggleDropdown}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center"
-                                >
-                                    Pilih Periode
-                                    <ChevronDown className="ml-2 w-4 h-4" />
-                                </button>
-                                {isDropdownOpen && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
-                                        <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Oktober 2024</a>
-                                        <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">November 2024</a>
-                                        <a href="#" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Desember 2024</a>
+                         {tambakData ? (
+                                <>
+                                    <div className="flex flex-col">
+                                        <h2 className="text-xl font-semibold mb-2 text-black">
+                                            Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
+                                        </h2>
+                                        <div className="flex items-center text-gray-600">
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                                />
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                                />
+                                            </svg>
+                                            <span className="text-gray-500">
+                                                {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
+                                                {` `}
+                                                {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
+                                            </span>
+
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                        </div>
+                                </>
+
+                            ) : (
+                                <p className="text-gray-500">Loading data...</p>
+                            )}
                     </div>
                 )}
 
