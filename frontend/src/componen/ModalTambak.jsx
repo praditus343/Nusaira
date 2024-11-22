@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCalendarAlt, faClock, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-// import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import imageCompression from 'browser-image-compression';
 
 const Button = ({ children, onClick, type = 'button', className }) => {
   return (
@@ -444,9 +444,9 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
     tanggal_tebar: '',
     umur: 0,
     jumlah_ekor: 0,
-    total_berat: 0,  
+    total_berat: 0,
     multiplier: 0,
-});
+  });
 
 
   const [kolams, setKolams] = useState([]);
@@ -484,7 +484,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
   }, [selectedKolam]);
 
   const [errors, setErrors] = useState([]);
-  
+
 
   useEffect(() => {
     const fetchUmur = async () => {
@@ -717,7 +717,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* kolam_id Dropdown */}
           <div className="relative">
-          <select
+            <select
               className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
               value={selectedKolam}
@@ -879,7 +879,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
 
 
-//penyakit
+//penyakit masih dalam tahap penelitian
 export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState({
@@ -891,198 +891,286 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const [images, setImages] = useState([null, null, null]);
   const [errors, setErrors] = useState([]);
   const fileInputRefs = [useRef(), useRef(), useRef()];
-
   const [kolams, setKolams] = useState([]);
+
+  // Logging state changes
+  useEffect(() => {
+    console.log('State Update - Selected Kolam:', selectedKolam);
+    console.log('State Update - Form Data:', formData);
+    console.log('State Update - Images:', images);
+    console.log('State Update - Errors:', errors);
+  }, [selectedKolam, formData, images, errors]);
 
   useEffect(() => {
     const fetchKolams = async () => {
+      console.log('Initiating kolam fetch...');
       try {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
+        console.log('Raw API Response:', response);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
+        console.log('Parsed API Response:', data);
 
-        console.log("API Response:", data);
-        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+        if (!data || !Array.isArray(data) || data.length === 0) {
+          console.warn('API returned empty or invalid data structure:', data);
+          setErrors(prev => [...prev, 'Tidak ada data kolam yang tersedia']);
+          return;
+        }
 
-        console.log("Kolams Data:", kolams);
+        const kolams = data[0]?.kolamDetails || [];
+        console.log('Processed Kolams Data:', kolams);
+
+        if (kolams.length === 0) {
+          console.warn('No kolams found in the response');
+          setErrors(prev => [...prev, 'Tidak ada kolam yang tersedia']);
+        }
 
         setKolams(kolams);
       } catch (error) {
-        console.error('Error fetching kolams:', error);
+        console.error('Error in fetchKolams:', error);
+        setErrors(prev => [...prev, `Error fetching kolams: ${error.message}`]);
       }
     };
 
     fetchKolams();
   }, []);
 
-
   useEffect(() => {
-    console.log("Kolams setelah set: ", kolams);
-  }, [kolams]);
-
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      kolam_id: selectedKolam,
-    }));
+    console.log('Updating form data with selected kolam:', selectedKolam);
+    setFormData((prevData) => {
+      const newData = {
+        ...prevData,
+        kolam_id: selectedKolam,
+      };
+      console.log('Updated form data:', newData);
+      return newData;
+    });
   }, [selectedKolam]);
-
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    console.log(`Form field change - ${name}:`, value);
+    setFormData((prevData) => {
+      const newData = {
+        ...prevData,
+        [name]: value,
+      };
+      console.log('Updated form data:', newData);
+      return newData;
+    });
   };
 
   const handleImageClick = (index) => {
+    console.log(`Image click handler triggered for index ${index}`);
     fileInputRefs[index].current.click();
   };
 
-  const handleImageChange = async (e, index) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors([...errors, `File ${file.name} terlalu besar. Maksimal 5MB.`]);
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        setErrors([...errors, `File ${file.name} bukan gambar yang valid.`]);
-        return;
-      }
-
-      const imageUrl = URL.createObjectURL(file);
-      const newImages = [...images];
-      newImages[index] = {
-        file,
-        preview: imageUrl,
-      };
-      setImages(newImages);
-    }
-  };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    let hasError = false;
-    let errorMessages = [];
-    const fieldErrors = {};
-
-
-    let dateValue = formData.tanggal_tebar;
-    if (!dateValue) {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Tanggal belum diisi.',
-        icon: 'error',
-        confirmButtonText: 'Try Again'
-      });
-      return;
-    }
-
-    let [day, month, year] = dateValue.split("-");
-    let formattedDate = new Date(`${year}-${month}-${day}`).toISOString().split('T')[0];
-
-
-    if (isNaN(new Date(formattedDate).getTime())) {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Format tanggal tidak valid.',
-        icon: 'error',
-        confirmButtonText: 'Try Again'
-      });
-      return;
-    }
-
-    const dataToSend = {
-      ...formData,
-      tanggal_tebar: formattedDate
-    };
-
-    if (!dataToSend.kolam_id) fieldErrors.kolam_id = 'Kolam ID tidak boleh kosong.';
-    if (!dataToSend.tanggal_tebar) fieldErrors.tanggal_tebar = 'Tanggal Tebar tidak boleh kosong.';
-    if (!dataToSend.jenis_penyakit) fieldErrors.jenis_penyakit = 'Jenis Penyakit tidak boleh kosong.';
-
-    if (Object.keys(fieldErrors).length > 0) {
-      setErrors(fieldErrors);
-      return;
-    }
-
-    for (const key in formData) {
-      if (formData[key] === '') {
-        hasError = true;
-        errorMessages.push(`Field ${key} tidak boleh kosong.`);
-      }
-    }
-
-    if (hasError) {
-      setErrors(errorMessages);
-      return;
-    }
-
+    console.log('Form submission initiated');
+  
     try {
-      const formDataToSend = new FormData();
-      Object.keys(dataToSend).forEach(key => {
-        formDataToSend.append(key, dataToSend[key]);
-      });
-
-      images.forEach((image) => {
+      // Format tanggal
+      let [day, month, year] = formData.tanggal_tebar.split("-");
+      let formattedDate = new Date(`${year}-${month}-${day}`).toISOString().split('T')[0];
+  
+      // Siapkan FormData untuk backend
+      const dataToSend = new FormData();
+  
+      // Tambahkan field form
+      dataToSend.append('kolam_id', selectedKolam);
+      dataToSend.append('tanggal_tebar', formattedDate);
+      dataToSend.append('jenis_penyakit', formData.jenis_penyakit);
+      dataToSend.append('catatan', formData.catatan);
+  
+      // Validasi dan upload gambar
+      const validImages = images.filter((img) => img && img.file); // Hanya gambar valid
+      console.log('Valid images count:', validImages.length);
+  
+      const imageUrls = [];
+      for (const image of validImages) {
         if (image && image.file) {
-          formDataToSend.append('images', image.file);
+          const formDataForImage = new FormData();
+          formDataForImage.append('file', image.file);
+          formDataForImage.append('upload_preset', 'Nusaira');
+  
+          try {
+            const response = await axios.post(
+              'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
+              formDataForImage,
+              {
+                headers: { 'Content-Type': 'multipart/form-data' },
+              }
+            );
+            console.log('Cloudinary response:', response.data);
+            imageUrls.push(response.data.secure_url); 
+          } catch (error) {
+            console.error('Cloudinary upload error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Gagal mengunggah gambar ke Cloudinary.',
+            });
+            return; // Hentikan jika ada error
+          }
+        }
+      }
+
+
+  
+      // Tambahkan URL gambar ke FormData
+      images.forEach((image, index) => {
+        if (image && image.file) {
+          // Gunakan nama file asli jika tersedia
+          const filename = image.name || `image-${index}.jpg`;
+          dataToSend.append('images', image.file, filename);
         }
       });
-
-      const response = await axios.post('https://nusaira-be.vercel.app/api/penyakit', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
+      // Log isi FormData
+      for (let pair of dataToSend.entries()) {
+        console.log('FormData entry:', pair[0], pair[1]);
+      }
+  
+      // Kirim data ke backend
+      const response = await axios.post(
+        'https://nusaira-be.vercel.app/api/penyakit',
+        dataToSend,
+        {
+          method: 'POST',
+          body: dataToSend,
+        }
+      );
+  
+      console.log('API Response:', response);
+  
+      // Tampilkan pesan sukses
       if (response.status === 200) {
-        console.log('Data berhasil disimpan', response.data);
         Swal.fire({
           icon: 'success',
           title: 'Data berhasil disimpan!',
           text: 'Penyakit entry telah berhasil dibuat.',
         });
-        console.log('Formatted Date:', formattedDate);
-
+  
+        // Reset form
         setFormData({
           kolam_id: '',
           tanggal_tebar: '',
           jenis_penyakit: '',
           catatan: '',
         });
+        setSelectedKolam('');
         setImages([null, null, null]);
         setErrors([]);
         onClose();
-      } else {
-        console.error('Gagal menyimpan data', response.data);
-        setErrors(['Terjadi kesalahan saat menyimpan data']);
       }
     } catch (error) {
+      console.error('Upload error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.response?.headers,
+      });
+  
+      let errorMessage = 'Terjadi kesalahan saat mengunggah data.';
       if (error.response) {
-        setErrors([error.response.data.message || 'Terjadi kesalahan pada server']);
-      } else {
-        setErrors(['Terjadi kesalahan saat menyimpan data']);
+        if (error.response.status === 500) {
+          errorMessage = 'Terjadi kesalahan pada server. Mohon cek ukuran dan format file.';
+        } else if (error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (error.request) {
+        errorMessage = 'Tidak dapat terhubung ke server. Mohon cek koneksi internet.';
       }
+  
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorMessage,
+      });
+  
+      setErrors((prev) => [...prev, errorMessage]);
     }
   };
+  
 
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+  // Add image validation function
+  const validateImage = (file) => {
+    // Check file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      throw new Error(`File ${file.name} terlalu besar. Maksimal 5MB`);
+    }
+
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error(`File ${file.name} harus berformat JPG, JPEG, atau PNG`);
+    }
+
+    return true;
+  };
+
+  // Modified image change handler
+  const handleImageChange = async (e, index) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      // Validate image
+      validateImage(file);
+
+      // Compress image
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1, // Ukuran maksimum 1MB
+        maxWidthOrHeight: 1024, // Maksimum resolusi 1024px
+        useWebWorker: true,
+      });
+
+      console.log('Compressed image:', {
+        name: compressedFile.name,
+        type: compressedFile.type,
+        size: compressedFile.size,
+      });
+
+      // Create blob from compressed file
+      const compressedBlob = new Blob([compressedFile], { type: compressedFile.type });
+
+      // Create object URL
+      const imageUrl = URL.createObjectURL(compressedBlob);
+
+      // Update images state
+      setImages(prevImages => {
+        const newImages = [...prevImages];
+        newImages[index] = {
+          file: compressedBlob,
+          preview: imageUrl,
+          name: compressedFile.name,
+          type: compressedFile.type,
+        };
+        return newImages;
+      });
+    } catch (error) {
+      console.error('Image compression error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: error.message,
+      });
+    }
+  };
+  console.log("Payload:", {
+    kolam_id: formData.kolam_id,
+    tanggal_tebar: formData.tanggal_tebar,
+    jenis_penyakit: formData.jenis_penyakit,
+    catatan: formData.catatan,
+    images: images // Ensure images are properly serialized
+  });
+
 
 
   if (!isOpen) return null;
@@ -1107,7 +1195,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-          <select
+            <select
               className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
               value={selectedKolam}
@@ -1356,7 +1444,7 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-          <select
+            <select
               className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
               value={selectedKolam}
@@ -1592,7 +1680,7 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-          <select
+            <select
               className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
               value={selectedKolam}
@@ -1862,7 +1950,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Kolam Select */}
           <div className="relative">
-          <select
+            <select
               className="block w-full border rounded-lg p-2 appearance-none"
               name="kolam_id"
               value={selectedKolam}
