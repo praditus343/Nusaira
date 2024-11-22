@@ -1,60 +1,116 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { fetchTambak, fetchSiklus, fetchPakan, fetchPanen } from '../../service/AxiosConfig'; 
 
-const MetricCard = ({ onSelect }) => {
+const MetricCard = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
-  
+  const [metrics, setMetrics] = useState([]); 
   const sliderRef = useRef(null);
 
-  const metrics = [
-    {
-      id: 1,
-      label: 'Estimasi Biomassa',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-weight-hanging',
-      color: 'text-blue-500',
-    },
-    {
-      id: 2,
-      label: 'Panen Kumulatif',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-fish',
-      color: 'text-green-500',
-    },
-    {
-      id: 3,
-      label: 'Pakan Kumulatif',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-utensils',
-      color: 'text-yellow-500',
-    },
-    {
-      id: 4,
-      label: 'Estimasi SR',
-      value: '0',
-      unit: '% dari 1 kolam',
-      icon: 'fas fa-chart-line',
-      color: 'text-red-500',
-    },
-    {
-      id: 5,
-      label: 'Estimasi Nilai Jual',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-database',
-      color: 'text-cyan-500',
-    }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tambak = await fetchTambak();
+        const siklus = await fetchSiklus();
+        const pakan = await fetchPakan();
+        const panen = await fetchPanen();
+  
+        const estimasiBiomassa = tambak[0]?.kolamDetails.reduce(
+          (total, kolam) =>
+            total +
+            (parseFloat(kolam.panjang) *
+              parseFloat(kolam.lebar) *
+              parseFloat(kolam.kedalaman)) /
+              1000, 
+          0
+        );
+  
+        const totalPakan = pakan.reduce(
+          (total, item) => total + parseFloat(item.jumlah || 0),
+          0
+        );
+  
+        const totalPanen = panen.reduce(
+          (total, item) => total + parseFloat(item.berat || 0),
+          0
+        );
+  
+        const estimasiNilaiJual = panen.reduce(
+          (total, item) =>
+            total + parseFloat(item.berat || 0) * parseFloat(item.harga_jual),
+          0
+        );
+  
+        const estimasiSR = siklus[0]?.target_sr || 0;
+  
+        const formatRupiah = (number) =>
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0, 
+          }).format(number);
+        
+  
+        const formatWithoutDecimal = (number) => Math.round(number);
+  
+    
+        setMetrics([
+          {
+            id: 1,
+            label: "Estimasi Biomassa",
+            value: `${estimasiBiomassa.toFixed(2)} kg`,
+            unit: "dari semua kolam",
+            icon: "fas fa-weight-hanging",
+            color: "text-blue-500",
+          },
+          {
+            id: 2,
+            label: "Panen Kumulatif",
+            value: `${totalPanen.toFixed(2)} kg`,
+            unit: "dari semua kolam",
+            icon: "fas fa-fish",
+            color: "text-green-500",
+          },
+          {
+            id: 3,
+            label: "Pakan Kumulatif",
+            value: `${totalPakan.toFixed(2)} kg`,
+            unit: "dari semua kolam",
+            icon: "fas fa-utensils",
+            color: "text-yellow-500",
+          },
+          {
+            id: 4,
+            label: "Estimasi SR",
+            value: `${formatWithoutDecimal(estimasiSR)}%`, 
+            unit: "dari target SR",
+            icon: "fas fa-chart-line",
+            color: "text-red-500",
+          },
+          {
+            id: 5,
+            label: "Estimasi Nilai Jual",
+            value: formatRupiah(estimasiNilaiJual), 
+            unit: "Total dari semua panen",
+            icon: "fas fa-database",
+            color: "text-cyan-500",
+          },
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
- 
-
+  
   const handleMouseDown = (e) => {
-    const isCard = e.target.closest(".metric-card");
+    const isCard = e.target.closest('.metric-card');
 
     if (isCard) {
       setDragDistance(0);
@@ -77,9 +133,6 @@ const MetricCard = ({ onSelect }) => {
     if (isDragging) {
       setIsDragging(false);
       sliderRef.current.style.cursor = 'grab';
-      if (dragDistance < 10) {
-        setIsClicking(true);
-      }
     }
   };
 
@@ -87,7 +140,7 @@ const MetricCard = ({ onSelect }) => {
     if (!isDragging) return;
 
     const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 1;
+    const walk = x - startX;
     sliderRef.current.scrollLeft = scrollLeft - walk;
 
     setDragDistance(Math.abs(walk));
@@ -105,9 +158,7 @@ const MetricCard = ({ onSelect }) => {
       {metrics.map((metric) => (
         <div
           key={metric.id}
-          className={`bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2 select-none metric-card`
-            
-          }
+          className={`bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2 select-none metric-card`}
         >
           <div className={`absolute top-2 right-2 ${metric.color} rounded-full p-2`}>
             <i className={`${metric.icon} ${metric.color} text-lg`}></i>
