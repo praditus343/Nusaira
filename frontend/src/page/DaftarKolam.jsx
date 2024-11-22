@@ -90,52 +90,52 @@ const PondTable = () => {
             })
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
-    
+
 
     const closeModal = () => setActiveModal(null);
 
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
-           {/* Location Info */}
-<div className="mb-6 ml-10 mr-6 mt-5">
-    {tambakData ? (
-        <>
-            <h2 className="text-xl font-semibold mb-2 text-black">
-               Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
-            </h2>
-            <div className="flex items-center text-gray-600">
-                <svg
-                    className="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                </svg>
-                <span className="text-black">
-                    {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
-                    {` `}
-                    {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
-                </span>
+            {/* Location Info */}
+            <div className="mb-6 ml-10 mr-6 mt-5">
+                {tambakData ? (
+                    <>
+                        <h2 className="text-xl font-semibold mb-2 text-black">
+                            Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
+                        </h2>
+                        <div className="flex items-center text-gray-600">
+                            <svg
+                                className="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                            </svg>
+                            <span className="text-black">
+                                {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
+                                {` `}
+                                {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
+                            </span>
+                        </div>
+                    </>
+                ) : (
+                    <p className="text-gray-500">Loading data...</p>
+                )}
             </div>
-        </>
-    ) : (
-        <p className="text-gray-500">Loading data...</p>
-    )}
-</div>
 
             {/* Buttons for each modal */}
             <div className="flex flex-wrap gap-2 ml-8 mr-5 mt-2 mb-5">

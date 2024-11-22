@@ -1,10 +1,14 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ChevronDown, Edit3, RefreshCw } from 'lucide-react';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card } from './CardManagement';
-import MetricModal from './MetricsModal';
+import MetricCard from './MetricsCard';
+import { fetchTambak, fetchSiklus, fetchPakan, fetchKematian, fetchPanen, fetchAnco } from '../../service/AxiosConfig';
+import RentangRasioTooltip from './RentangTooltip';
+
+
 
 
 
@@ -20,167 +24,142 @@ const Button = ({ children, onClick, type = 'button', className }) => {
   );
 };
 
-const AquacultureDashboard = ({ data = {} }) => {
-  const [value, setValue] = useState(1);
-  const [firstInput, setFirstInput] = useState("0");
-  const [secondInput, setSecondInput] = useState("100");
-  const [selectedMetric, setSelectedMetric] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isClicking, setIsClicking] = useState(false); //
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const [dragDistance, setDragDistance] = useState(0); 
-  const sliderRef = useRef(null);
+const AquacultureDashboard = () => {
+  const [tambakData, setTambakData] = useState([]);
+  const [siklusData, setSiklusData] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const [metrics, setMetrics] = useState([]);
+  const [growthData, setGrowthData] = useState([]);
+  const [selectedKolam, setSelectedKolam] = useState(null);
+  const [filteredMetrics, setFilteredMetrics] = useState([]);
+  const [selectedMetric, setSelectedMetric] = useState('mbw');
+  const [docRange, setDocRange] = useState({ start: 0, end: 100 });
 
-  const openModal = (metric) => {
-    if (isClicking) { 
-      setSelectedMetric(metric);
-    }
-  };
+  const value = progress;
 
-  const closeModalMetric = () => {
-    setSelectedMetric(null);
-  };
-  const handleMouseDown = (e) => {
-    const isCard = e.target.closest(".metric-card");
-  
-    if (isCard) {
-      setIsClicking(true); 
-      setDragDistance(0);  
-      return;  
-    }
-  
-    setIsDragging(true); 
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
-    sliderRef.current.style.cursor = 'grabbing';
-    setIsClicking(false); 
-    setDragDistance(0);  
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tambak = await fetchTambak();
+        setTambakData(tambak);
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    sliderRef.current.style.cursor = 'grab';
-  };
+        const siklus = await fetchSiklus();
+        setSiklusData(siklus);
 
-  const handleMouseUp = () => {
-    if (isDragging) {
-      setIsDragging(false);
-      sliderRef.current.style.cursor = 'grab';
-      if (dragDistance < 10) {
-        setIsClicking(true); 
+        const kematian = await fetchKematian();
+        const panen = await fetchPanen();
+        if (selectedKolam === null && tambak[0]) {
+          setSelectedKolam(tambak[0].kolamDetails[0].id);
+        }
+
+        const metricsData = calculateMetrics(siklus, tambak, kematian, panen);
+        setMetrics(metricsData);
+
+        setProgress(calculateProgress(metricsData));
+        const growthDatas = generateGrowthData(metricsData);
+        setGrowthData(growthDatas);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    }
-    
+    };
+
+    fetchData();
+  }, []);
+
+  const calculateMetrics = (siklus, tambak, kematian, panen) => {
+    return siklus.map((s) => {
+      const kolam = tambak.find((t) => t.kolamDetails.some((k) => k.id === s.kolam_id))?.kolamDetails.find((k) => k.id === s.kolam_id);
+      console.log("Kolam:", kolam);
+      const matchedPanen = panen.find((p) => p.id_siklus === s.id_siklus);
+      const totalKematian = kematian.filter((k) => k.id_siklus === s.id_siklus).reduce((sum, k) => sum + (k.jumlah_ekor || 0), 0);
+
+      const jumlahTebar = s.total_tebar || 0;
+      const jumlahIkanHidup = Math.max(jumlahTebar - totalKematian, 0);
+
+      return {
+        kolamNama: kolam?.namaKolam || "-",
+        fcr: s.target_fcr || "-",
+        adg: s.umur_awal > 0 ? (matchedPanen?.berat / 1000 / s.umur_awal).toFixed(2) : "-",
+        sr: jumlahTebar > 0 ? ((jumlahIkanHidup / jumlahTebar) * 100).toFixed(2) : "-",
+        mbw: matchedPanen?.berat && jumlahIkanHidup > 0 ? (matchedPanen.berat / jumlahIkanHidup).toFixed(2) : "-",
+        size: matchedPanen?.size || "-",
+        kolamId: kolam?.id,
+        tebaran: s.total_tebar || "-"
+      };
+    });
   };
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    
-    const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 1; 
-    sliderRef.current.scrollLeft = scrollLeft - walk;
-    
-    setDragDistance(Math.abs(walk)); 
+  const calculateProgress = (metricsData) => {
+    const requiredFields = ['adg', 'fcr', 'mbw', 'sr', 'size'];
+
+    const completedMetrics = metricsData.filter((metric) =>
+      requiredFields.every((field) =>
+        metric[field] !== '-' && metric[field] !== null && metric[field] !== undefined
+      )
+    );
+
+    const total = metricsData.length;
+    const filled = completedMetrics.length;
+
+    return Math.round((filled / total) * 100);
   };
 
-  
-  // Sample growth data for the chart
-  const growthData = [
-    { doc: '1.0d', pH: 7.2, satu: 28, dua: 15, tiga: 10 },
-    { doc: '2.0d', pH: 7.1, satu: 27, dua: 14, tiga: 9 },
-    { doc: '3.0d', pH: 7.3, satu: 29, dua: 16, tiga: 11 }
-  ];
+  const generateGrowthData = (metrics) => {
+    console.log("Metrics received:", metrics);
+    const data = metrics.map((m) => ({
+      doc: m.kolamNama,
+      mbw: Number(m.mbw) || 0,
+      adg: Number(m.adg) || 0,
+      fcr: Number(m.fcr) || 0,
+      sr: Number(m.sr) || 0,
+      size: Number(m.size) || 0
+    }));
+    console.log("Generated growth data:", data);
+    return data;
+  };
+
+  const filteredGrowthData = useMemo(() => {
+    console.log("Filtering growth data:", growthData);
+    console.log("Current selected metric:", selectedMetric);
+    console.log("Current doc range:", docRange);
+
+    return growthData.filter((item) => {
+      const metricValue = Number(item[selectedMetric]) || 0;
+      console.log(`Metric value for ${item.doc}:`, metricValue);
+      return metricValue >= docRange.start && metricValue <= docRange.end;
+    });
+  }, [growthData, docRange, selectedMetric]);
 
 
-  const metrics = [
-    {
-      id: 1,
-      label: 'Estimasi Biomassa',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-weight-hanging',
-      color: 'text-blue-500',
-      tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Biomassa', 'Panen kumulatif'],
-      tableRows: [['-', '-', '-', '-']]
-    },
-    { id:2,
-      label: 'Panen Kumulatif',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-fish',
-      color: 'text-green-500',
-      tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Panen (Kg)'],
-      tableRows: [['-', '-', '-']]
-    },
-    {id:3,
-      label: 'Pakan Kumulatif',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-utensils',
-      color: 'text-yellow-500',
-      tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Pakan (Kg)'],
-      tableRows: [['K1', '-', '-']]
-    },
-    { id:4,
-      label: 'Estimasi SR',
-      value: '0',
-      unit: '% dari 1 kolam',
-      icon: 'fas fa-chart-line',
-      color: 'text-red-500',
-      tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Survival Rate (SR) (%)'],
-      tableRows: [['K1', '-', '-']]
-    },
-    { id:5,
-      label: 'Estimasi Nilai Jual',
-      value: '0',
-      unit: 'Kg dari 1 kolam',
-      icon: 'fas fa-database',
-      color: 'text-cyan-500',
-      tableHeaders: ['Nama Kolam', 'DoC (Hari)', 'Size (ekor/kg)', 'Harga/kg', 'Estimasi Nilai Jual'],
-      tableRows: [['-', '-', '-', 'Rp.16.000,00', 'Rp.106.000,00']]
-    }
-  ];
-  
+  const handleMetricChange = (e) => {
+    setSelectedMetric(e.target.value);
+  };
 
   const handleRefresh = () => {
-    setFirstInput("0");
-    setSecondInput("100");
+    setDocRange({ start: 0, end: 100 }); 
+    console.log('Rentang direset ke:', { start: 0, end: 100 });
+  };
+  
+
+  useEffect(() => {
+    if (selectedKolam) {
+      const newFilteredMetrics = metrics.filter((metric) => String(metric.kolamId) === String(selectedKolam));
+      setFilteredMetrics(newFilteredMetrics);
+    }
+  }, [selectedKolam, metrics]);
+
+  const handleKolamChange = (e) => {
+    const kolamId = e.target.value;
+    setSelectedKolam(kolamId);
   };
 
+
+
+
   return (
-    <div className="w-full max-w-6xl p-4">
-      <div
-      className="overflow-x-auto flex space-x-5 py-4 cursor-grab"
-      ref={sliderRef}
-      onMouseDown={handleMouseDown}
-      onMouseLeave={handleMouseLeave}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-    >
-      {metrics.map((metric) => (
-        <div
-          key={metric.id}
-          className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2 select-none metric-card"
-          onClick={() => openModal(metric)}
-
-        >
-          <div className={`absolute top-2 right-2 ${metric.color} rounded-full p-2`}>
-            <i className={`${metric.icon} ${metric.color} text-lg`}></i>
-          </div>
-
-          <div>
-            <h4 className="text-gray-500 text-sm font-medium mb-2">{metric.label}</h4>
-            <p className={`${metric.color} text-3xl font-bold`}>{metric.value}</p>
-          </div>
-          <p className="text-gray-500 text-sm">{metric.unit}</p>
-        </div>
-      ))}
-      {selectedMetric && (
-        <MetricModal metric={selectedMetric} onClose={closeModalMetric} />
-      )}
-    </div>
-
+    <div className="w-full max-w-6xl p-4 mb-6">
+      {/* Metric card */}
+      <MetricCard />
       {/* Main Content Card */}
       <Card className='border-2 w-[1120px] mt-10 mr-20 ml-2'>
         <div className="flex justify-between items-center m-6">
@@ -188,10 +167,16 @@ const AquacultureDashboard = ({ data = {} }) => {
             <div className="flex items-center space-x-2">
               <span className="text-gray-600">Kolam:</span>
               <div className="relative">
-                <select className="h-8 px-8 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-600 text-blue-600 appearance-none">
-                  <option value="k1">k1</option>
-                  <option value="k2">k2</option>
-                  <option value="k3">k3</option>
+                <select className="h-8 px-8 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-600 text-blue-600 appearance-none"
+                  onChange={handleKolamChange}
+                  value={selectedKolam || ''}>
+                  {tambakData.flatMap((tambak) =>
+                    tambak.kolamDetails.map((kolam) => (
+                      <option key={kolam.id} value={kolam.id}>
+                        {kolam.namaKolam}
+                      </option>
+                    ))
+                  )}
                 </select>
                 <ChevronDown className="absolute right-2 top-2 pointer-events-none h-4 w-4 text-blue-600" />
               </div>
@@ -226,34 +211,42 @@ const AquacultureDashboard = ({ data = {} }) => {
                 ></div>
               </div>
             </div>
-
-            <div className="flex justify-between">
-              <span>Tebaran:</span>
-              <span className='mr-2'>31</span>
-            </div>
-            <div className="text-lg font-medium mt-6 mb-2">Estimasi pertumbuhan</div>
             <div className="">
-              <div className="flex justify-between bg-blue-50 p-2 ">
-                <span>FCR:</span>
-                <span>1.01</span>
-              </div>
-              <div className="flex justify-between bg-blue-200 p-2 ">
-                <span>ADG:</span>
-                <span>0.06 g</span>
-              </div>
-              <div className="flex justify-between bg-blue-100 p-2 ">
-                <span>SR:</span>
-                <span>100%</span>
-              </div>
-              <div className="flex justify-between bg-blue-200 p-2 ">
-                <span>MBW:</span>
-                <span>0.06 g</span>
-              </div>
-              <div className="flex justify-between bg-blue-100 p-2 mb-6 ">
-                <span>Size:</span>
-                <span>16,256.33</span>
-              </div>
+              {filteredMetrics.length > 0 ? (
+                filteredMetrics.map((metric, index) => (
+                  <div key={index}>
+                    <div className="flex justify-between">
+                      <span>Tebaran:</span>
+                      <span className='mr-2'>{metric.tebaran || '-'}</span>
+                    </div>
+                    <div className="text-lg font-medium mt-6 mb-2">Estimasi pertumbuhan</div>
+                    <div className="flex justify-between bg-blue-50 p-2">
+                      <span>FCR:</span>
+                      <span>{metric.fcr || '-'}</span>
+                    </div>
+                    <div className="flex justify-between bg-blue-200 p-2">
+                      <span>ADG:</span>
+                      <span>{metric.adg || '-'}</span>
+                    </div>
+                    <div className="flex justify-between bg-blue-100 p-2">
+                      <span>SR:</span>
+                      <span>{metric.sr || '-'}</span>
+                    </div>
+                    <div className="flex justify-between bg-blue-200 p-2">
+                      <span>MBW:</span>
+                      <span>{metric.mbw || '-'}</span>
+                    </div>
+                    <div className="flex justify-between bg-blue-100 p-2">
+                      <span>Size:</span>
+                      <span>{metric.size || '-'}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div>No metrics found for the selected kolam.</div>
+              )}
             </div>
+
             <Button className="w-full bg-blue-500">Konsultasi</Button>
             <div className="flex justify-center">
               <button
@@ -269,74 +262,97 @@ const AquacultureDashboard = ({ data = {} }) => {
           <div className="w-px bg-gray-300 self-stretch m-0"></div>
           {/* Kolom Kanan - Grafik */}
           <div className="flex-1 space-y-6 m-6 w-[800px]">
-
             <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center space-x-4 ">
+              <div className="flex items-center space-x-4">
                 <span>Menampilkan:</span>
                 <div className="relative">
-                  <select className="h-8 px-2 w-[150px] border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-blue-600 appearance-none">
-                    <option value="">MWB (Gram)</option>
-                    <option value="1"> 10</option>
-                    <option value="2"> 20</option>
-                    <option value="3"> 30</option>
-                    <option value="4"> 40</option>
-
+                  <select
+                    className="h-8 px-2 w-[150px] border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-blue-600 appearance-none"
+                    value={selectedMetric}
+                    onChange={handleMetricChange}
+                  >
+                    <option value="mbw">MBW (Gram)</option>
+                    <option value="adg">ADG</option>
+                    <option value="fcr">FCR</option>
+                    <option value="sr">SR</option>
+                    <option value="size">Size</option>
                   </select>
                   <ChevronDown className="absolute right-2 top-2 pointer-events-none h-4 w-4 text-blue-600" />
                 </div>
               </div>
 
-              {/* Bagian Kanan: Rentang DoC */}
               <div className="flex items-center space-x-2">
-                <span className='w-[120px] ml-4'>Rentang DoC:</span>
-                <div className="flex items-center space-x-1">
+                <RentangRasioTooltip/>
+                <div className="flex items-center space-x-2">
                   <input
-                    type="text"
+                    type="number"
                     className="w-12 h-8 bg-blue-200 rounded-lg px-2 text-center"
-                    defaultValue="0"
-                    value={firstInput}
-                    onChange={(e) => setFirstInput(e.target.value)}
+
+                    value={docRange.start}
+                    onChange={(e) => setDocRange(prev => ({ ...prev, start: Number(e.target.value) }))}
+                    min="0"
+                    max="100"
+                    style={{ appearance: 'none', MozAppearance: 'none', WebkitAppearance: 'none' }}
                   />
                   <span>—</span>
                   <input
-                    type="text"
-                    className="w-12 h-8 bg-blue-200 rounded-lg px-2 text-center"
-                    defaultValue="100"
-                    value={secondInput}
-                    onChange={(e) => setSecondInput(e.target.value)}
+                    type="number"
+                    className="w-14 h-8 bg-blue-200 rounded-lg px-2 text-center"
+                    value={docRange.end}
+                    onChange={(e) => setDocRange(prev => ({ ...prev, end: Number(e.target.value) }))}
+                    min="0"
+                    max="100"
+                    style={{ appearance: 'none', MozAppearance: 'none', WebkitAppearance: 'none' }}
                   />
-                </div> <button className="h-8 w-8 p-0 text-center flex items-center justify-center bg-blue-200 rounded-full"
-                  onClick={handleRefresh} >
-                  <RefreshCw className="h-5 w-5" />
-                </button>
 
+                  <button
+                    className="h-8 w-8 p-0 text-center flex items-center justify-center bg-blue-200 rounded-full ml-4"
+                    onClick={handleRefresh}
+                  >
+                    <RefreshCw className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
-
             </div>
 
-            {/* Grafik LineChart */}
-            <LineChart width={500} height={300} data={growthData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="doc" />
-              <YAxis />
-              <Line type="monotone" dataKey="pH" stroke="#8884d8" />
-              <Line type="monotone" dataKey="satu" stroke="#82ca9d" />
-              <Line type="monotone" dataKey="dua" stroke="#ffc658" />
-            </LineChart>
-
+            {/* Grafik BarChart */}
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={filteredGrowthData}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="doc" />
+                <YAxis />
+                <Tooltip
+                  formatter={(value, name) => {
+                    const displayName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                    return [`${value}`, displayName];
+                  }}
+                  cursor={{ fill: "rgba(200, 200, 200, 0.3)" }}
+                />
+                <Bar
+                  dataKey={selectedMetric}
+                  fill="#3b82f6"
+                  name={selectedMetric.charAt(0).toUpperCase() + selectedMetric.slice(1).toLowerCase()}
+                  label={{ position: "top", fill: "#3b82f6", fontSize: 12 }}
+                />
+              </BarChart>
+            </ResponsiveContainer>
             {/* Legenda */}
             <div className="flex justify-center mt-4 space-x-8">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span>Aktual</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span>Estimasi</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <span>Target</span>
+                <span>
+                  {selectedMetric === "size"
+                    ? "Size"
+                    : selectedMetric.toUpperCase()}
+                </span>
               </div>
             </div>
           </div>
