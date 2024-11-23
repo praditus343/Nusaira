@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { fetchTambak, fetchSiklus, fetchKematian, fetchPanen } from '../../service/AxiosConfig';
+
 
 const formatDate = (date) => {
   if (!date) return "-";
@@ -12,13 +14,12 @@ const FishTable = ({ filterTerm = "" }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [banner, setBanner] = useState(null);
 
-  const fetchData = async (abortController) => {
+  const fetchData = async () => {
     try {
       setRefreshing(true);
       setLoading(true);
       setBanner(null);
-
-
+  
       const cachedData = sessionStorage.getItem("siklusData");
       if (cachedData) {
         setData(JSON.parse(cachedData));
@@ -26,60 +27,48 @@ const FishTable = ({ filterTerm = "" }) => {
         setRefreshing(false);
         return;
       }
-
-      const fetchOptions = {
-        signal: abortController.signal
-      };
-
-      const siklusRes = await fetch("https://nusaira-be.vercel.app/api/siklus", fetchOptions);
-      if (!siklusRes.ok) throw new Error("Gagal mengambil data siklus");
-      const siklusData = await siklusRes.json();
-      if (!Array.isArray(siklusData)) throw new Error("Data siklus tidak valid");
-
-      const panenRes = await fetch("https://nusaira-be.vercel.app/api/data-panen", fetchOptions);
-      if (!panenRes.ok) throw new Error("Gagal mengambil data panen");
-      const panenData = await panenRes.json();
-      if (!Array.isArray(panenData)) throw new Error("Data panen tidak valid");
-
-      const kematianRes = await fetch("https://nusaira-be.vercel.app/api/data-kematian", fetchOptions);
-      if (!kematianRes.ok) throw new Error("Gagal mengambil data kematian");
-      const kematianData = await kematianRes.json();
-      if (!Array.isArray(kematianData)) throw new Error("Data kematian tidak valid");
-
-      const tambakRes = await fetch("https://nusaira-be.vercel.app/api/tambak", fetchOptions);
-      if (!tambakRes.ok) throw new Error("Gagal mengambil data tambak");
-      const tambakData = await tambakRes.json();
-      if (!Array.isArray(tambakData)) throw new Error("Data tambak tidak valid");
-
+  
+      const [tambakData, siklusData, kematianData, panenData] = await Promise.all([
+        fetchTambak(),
+        fetchSiklus(),
+        fetchKematian(),
+        fetchPanen(),
+        
+      ]);
+  
+      if (!Array.isArray(siklusData) || !Array.isArray(panenData) || !Array.isArray(kematianData) || !Array.isArray(tambakData)) {
+        throw new Error("Data tidak valid");
+      }
+  
       const formattedData = siklusData.map((siklus) => {
         const kolamId = siklus.kolam_id;
         const matchedTambakData = tambakData.find((tambak) =>
           tambak.kolamDetails?.some((kolam) => kolam.id === kolamId)
         );
-
+  
         const kolamData = matchedTambakData?.kolamDetails.find((kolam) => kolam.id === kolamId);
         const kolamNama = kolamData?.namaKolam || "-";
-
+  
         const panenDataForSiklus = panenData.find((panen) => panen.id_siklus === siklus.id_siklus);
-
+  
         const kematianDataForSiklus = kematianData.filter((kematian) => kematian.id_siklus === siklus.id_siklus);
         const totalKematianEkor = kematianDataForSiklus.reduce((sum, kematian) => sum + (kematian.jumlah_ekor || 0), 0);
-
+  
         const jumlahTebar = siklus.total_tebar || 0;
         const jumlahIkanHidup = Math.max(jumlahTebar - totalKematianEkor, 0);
-
+  
         const mbw = panenDataForSiklus && jumlahIkanHidup > 0 && panenDataForSiklus.berat > 0
           ? (Number(panenDataForSiklus.berat) / jumlahIkanHidup / 1000).toFixed(5)
           : "-";
-
+  
         const adg = siklus.tanggal && siklus.umur_awal > 0 && panenDataForSiklus?.berat
           ? (Number(panenDataForSiklus.berat) / 1000 / siklus.umur_awal).toFixed(5)
           : "-";
-
+  
         const hargaPerIkan = panenDataForSiklus?.harga_jual
           ? `Rp. ${new Intl.NumberFormat("id-ID").format(panenDataForSiklus.harga_jual)}`
           : "-";
-
+  
         return {
           kolamId,
           kolamNama,
@@ -97,10 +86,10 @@ const FishTable = ({ filterTerm = "" }) => {
           hargaPerIkan,
         };
       });
-
+  
       setData(formattedData);
       sessionStorage.setItem("siklusData", JSON.stringify(formattedData));
-
+  
       const hasInvalidData = formattedData.some((row) => {
         return (
           row.tebaran === "-" ||
@@ -115,7 +104,7 @@ const FishTable = ({ filterTerm = "" }) => {
           row.size < 0
         );
       });
-
+  
       if (hasInvalidData) {
         setBanner({
           type: "error",
@@ -126,16 +115,13 @@ const FishTable = ({ filterTerm = "" }) => {
       }
 
     } catch (error) {
-      if (error.name === 'AbortError') {
-        console.log('Fetch aborted');
-        return;
-      }
       console.error("Error:", error);
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
+  
 
   useEffect(() => {
     const abortController = new AbortController();
