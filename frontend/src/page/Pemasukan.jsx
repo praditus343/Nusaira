@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Sidebar from "../componen/SideBar";
@@ -6,27 +6,39 @@ import Header from "../componen/Header";
 import Footer from "../componen/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import axios from 'axios';
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
 const ExcelForm = () => {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      tanggal: "",
-      KategoriPemasukan: "",
-      Jumlah: 0,
-      Harga: 0,
-      Keterangan: "",
-    },
-  ]);
+  const [rows, setRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch data from the backend when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get('https://nusaira-be.vercel.app/api/pemasukan');
+        setRows(response.data);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError('Gagal mengambil data. Silakan coba lagi.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleAddRow = () => {
     setRows([
       ...rows,
       {
-        id: rows.length + 1,
+        id: rows.length + 1, // Ensure unique ID
         tanggal: "",
         KategoriPemasukan: "",
         Jumlah: 0,
@@ -49,10 +61,7 @@ const ExcelForm = () => {
       row.id === id
         ? {
             ...row,
-            [field]:
-              field === "Jumlah" || field === "Harga"
-                ? parseFloat(value.replace(/\./g, "")) || 0  // Remove thousands separators
-                : value,
+            [field]: field === "Jumlah" || field === "Harga" ? parseFloat(value.replace(/\./g, "")) || 0 : value,
           }
         : row
     );
@@ -60,7 +69,7 @@ const ExcelForm = () => {
   };
 
   const formatNumber = (number) => {
-    return number.toLocaleString("id-ID");  // Add thousand separators
+    return number.toLocaleString("id-ID");
   };
 
   const formatRupiah = (number) => {
@@ -71,19 +80,16 @@ const ExcelForm = () => {
     }).format(number);
   };
 
-  // Filter rows based on search term
   const filteredRows = rows.filter(
     (row) =>
       row.KategoriPemasukan.toLowerCase().includes(searchTerm.toLowerCase()) ||
       row.Keterangan.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Calculate the total pemasukan per row (Jumlah * Harga)
   const calculateTotalPemasukan = (row) => {
     return row.Jumlah * row.Harga;
   };
 
-  // Calculate the total pengeluaran for all rows
   const totalPemasukan = rows.reduce(
     (total, row) => total + calculateTotalPemasukan(row),
     0
@@ -125,16 +131,42 @@ const ExcelForm = () => {
     doc.save("laporan_pemasukan.pdf");
   };
 
+  const handleSubmit = async () => {
+    const isValid = rows.every(row => 
+      row.tanggal && row.KategoriPemasukan && row.Jumlah > 0 && row.Harga > 0
+    );
+
+    if (!isValid) {
+      setError('Semua kolom harus diisi dengan benar sebelum menyimpan.');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await axios.post('https://nusaira-be.vercel.app/api/pemasukan', {
+        data: rows,
+      });
+      
+      alert('Data berhasil disimpan!');
+      setRows([]); // Clear rows after successful save
+    } catch (err) {
+      console.error('Error saving data:', err.response ? err.response.data : err.message);
+      setError('Gagal menyimpan data. Silakan coba lagi.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white w-full min-h-screen">
-              <Header />
+      <Header />
       <div className="mt-4 px-4">
         <div className="p-4">
           <div className="flex flex-col sm:flex-row justify-between items-center">
-          <div>
-              <h1 className="text-xl font-medium">
-              PemasukanTambak Lele Segar
-              </h1>
+            <div>
+              <h1 className="text-xl font-medium">Pemasukan Tambak Lele Segar</h1>
               <div className="flex items-center space-x-2 text-gray-600">
                 <MapPin className="w-4 h-4" />
                 <span>Boyolali, Jawa Tengah</span>
@@ -166,36 +198,35 @@ const ExcelForm = () => {
       <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
         <div className="p-6">
           <div className="mb-4 flex justify-between items-center">
-            <h2 className="text-lg font-medium text-gray-800">Detail Catatan Pengeluaran</h2>
+            <h2 className="text-lg font-medium text-gray-800">Detail Catatan Pemasukan</h2>
             <div className="flex space-x-4">
-{/* Search input */}
-<div className="flex items-center justify-center px-4">
-  <div className="relative flex items-center w-full max-w-md"> {/* Mengurangi max-w-3xl menjadi max-w-md */}
-    <input
-      type="text"
-      className="w-full pl-6 pr-12 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg shadow-md transition-all duration-300"
-      placeholder="Search"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-    />
-    <button className="absolute right-0 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-2xl transition-all duration-300 ease-in-out shadow-lg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-        />
-      </svg>
-    </button>
-  </div>
-</div>
+              <div className="flex items-center justify-center px-4">
+                <div className="relative flex items-center w-full max-w-md">
+                  <input
+                    type="text"
+                    className="w-full pl-6 pr-12 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg shadow-md transition-all duration-300"
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button className="absolute right-0 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-2xl transition-all duration-300 ease-in-out shadow-lg">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
               <button
                 onClick={handleAddRow}
                 className="flex items-center space-x-1 px-8 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
@@ -249,8 +280,8 @@ const ExcelForm = () => {
                     <td className="p-2 border">
                       <input
                         type="text"
-                        value={formatNumber(row.Jumlah)} // Format with thousand separators
-                        onChange={(e) => handleInputChange(row.id, "Jumlah", e.target.value.replace(/\./g, ""))} // Clean thousands separators
+                        value={formatNumber(row.Jumlah)}
+                        onChange={(e) => handleInputChange(row.id, "Jumlah", e.target.value.replace(/\./g, ""))}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300"
                       />
                     </td>
@@ -288,23 +319,25 @@ const ExcelForm = () => {
           </div>
 
           <div className="mt-4 flex justify-end">
-              <div className="flex flex-col items-end">
-                <span className="text-lg font-medium">Total Pemasukan:</span>
-                <span className="text-xl font-bold text-green-600">
-                  {formatRupiah(totalPemasukan)}
-                </span>
-              </div>
-              <div />
+            <div className="flex flex-col items-end">
+              <span className="text-lg font-medium">Total Pemasukan:</span>
+              <span className="text-xl font-bold text-green-600">
+                {formatRupiah(totalPemasukan)}
+              </span>
             </div>
-            <div className="mt-4 flex justify-end items-end w-full">
-  <button
-    onClick={() => alert("Data saved!")}  // Add your save functionality here
-    className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-  >
-    Simpan
-  </button>
-</div>
+          </div>
 
+          <div className="mt-4 flex justify-end items-end w-full">
+            <button
+              onClick={handleSubmit}
+              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            >
+              Simpan
+            </button>
+          </div>
+
+          {isLoading && <div>Loading...</div>}
+          {error && <div className="text-red-500">{error}</div>}
         </div>
       </div>
     </div>
@@ -312,17 +345,16 @@ const ExcelForm = () => {
 };
 
 function Pemasukan() {
-    return (
-      <div className="flex h-screen">
-        <Sidebar />
-        <div className="flex-1 overflow-auto">
-          <ExcelForm />
-          <AIFloatingButton />
-          <Footer />
-        </div>
+  return (
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex-1 overflow-auto">
+        <ExcelForm />
+        <AIFloatingButton />
+        <Footer />
       </div>
-    );
-  }
-  
-  export default Pemasukan;
-  
+    </div>
+  );
+}
+
+export default Pemasukan;
