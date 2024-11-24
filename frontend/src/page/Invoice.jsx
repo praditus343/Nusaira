@@ -99,7 +99,7 @@ function Content() {
             filteredTagihan.map((item) => (
               <TransactionItem
                 key={item.id} // Pastikan key unik
-                title={item.name} // Misalnya ingin menampilkan nama paket jika ada
+                title={item.name} 
                 date={item.dueDate}
                 status={item.status}
               />
