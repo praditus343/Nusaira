@@ -14,7 +14,7 @@ const SimulationChart = () => {
         tanggalTebar: '',
         biomassa: ''
     });
-    
+
     const [chartData, setChartData] = useState([]);
 
     const handleSave = () => {
@@ -24,8 +24,8 @@ const SimulationChart = () => {
         const newChartData = Array.from({ length: 10 }, (_, index) => {
             return {
                 hari: index,
-                nilai1: (biomassa * jumlah * index * 0.1).toFixed(2), 
-                nilai2: (biomassa * jumlah * index * 0.05).toFixed(2) 
+                nilai1: (biomassa * jumlah * index * 0.1).toFixed(2),
+                nilai2: (biomassa * jumlah * index * 0.05).toFixed(2)
             };
         });
 
@@ -34,16 +34,20 @@ const SimulationChart = () => {
 
     return (
         <div className="bg-white w-full min-h-screen mb-10">
-            <Header/>
+            <Header />
 
             {/* Title Section */}
-            <div className="mt-5 ml-10">
-                <h1 className="text-xl font-medium">Tambak Lele Seger</h1>
+            <div className="mt-5 ml-10 mb-6">
+                <h1 className="text-2xl font-semibold text-gray-800">Simulasi Tambak Lele</h1>
                 <div className="flex items-center space-x-2 text-gray-600 mt-1">
-                    <MapPin className="w-4 h-4" />
-                    <span>Boyolali, Jawa Tengah</span>
+                    <MapPin className="w-5 h-5 text-cyan-500" />
+                    <span className="text-lg font-medium">Boyolali, Jawa Tengah</span>
                 </div>
+                <p className=" text-gray-500 mt-3">
+                    Halaman ini dibuat sebagai simulasi untuk menampilkan data tambak lele. Informasi yang ditampilkan bersifat fiktif dan digunakan untuk keperluan Pengujian.
+                </p>
             </div>
+
 
             {/* Main Content */}
             <div className="flex gap-6 p-4 ml-6">
@@ -56,7 +60,7 @@ const SimulationChart = () => {
                         </div>
                         <div className="p-4 space-y-4">
                             <div>
-                                <label className="block text-gray-700 mb-2">Nama</label>
+                                <label className="block text-gray-700 mb-2">Nama Tambak</label>
                                 <input
                                     type="text"
                                     value={formData.nama}
@@ -101,9 +105,9 @@ const SimulationChart = () => {
                                 />
                             </div>
                             <div className="flex justify-end">
-                                <button 
+                                <button
                                     className="px-10 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-10 mb-10"
-                                    onClick={handleSave} 
+                                    onClick={handleSave}
                                 >
                                     Simpan
                                 </button>
@@ -141,7 +145,7 @@ function TambakSimulation() {
             <Sidebar />
             <div className="flex-1 overflow-auto">
                 <SimulationChart />
-                <AIFloatingButton/>
+                <AIFloatingButton />
                 <Footer />
             </div>
         </div>
