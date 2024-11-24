@@ -20,6 +20,7 @@ import ManagementModal from '../componen/ManajemenModal';
 import Header from '../componen/Header';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
+import { fetchTambak, fetchAir } from '../../service/AxiosConfig';
 
 const DashboardManagement = () => {
     const [tambakData, setTambakData] = useState(null);
@@ -31,8 +32,7 @@ const DashboardManagement = () => {
     useEffect(() => {
         const fetchTambakData = async () => {
             try {
-                const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-                const data = await response.json();
+                const data = await fetchTambak();
                 if (data && data.length > 0) {
                     setTambakData(data[0]);
                     setTambakList(data);
@@ -53,13 +53,7 @@ const DashboardManagement = () => {
             }
 
             try {
-                const response = await fetch(`https://nusaira-be.vercel.app/api/air`);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
+                const data = await fetchAir();
                 const flattenedData = data.flat().filter(item => item && !Array.isArray(item));
 
 

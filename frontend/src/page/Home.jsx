@@ -34,31 +34,24 @@ const DashboardContent = () => {
     useEffect(() => {
         const fetchAllDataSequentially = async () => {
             try {
-                // Fetch data tambak terlebih dahulu
                 const tambakResponse = await fetchTambak();
                 setTambakData(tambakResponse[0]);
     
-                // Fetch data siklus
                 const siklusResponse = await fetchSiklus();
                 setSiklusData(siklusResponse);
     
-                // Fetch data kematian
                 const kematianResponse = await fetchKematian();
                 setKematianData(kematianResponse);
     
-                // Fetch data pakan
                 const pakanResponse = await fetchPakan();
                 setPakanData(pakanResponse);
     
-                // Fetch data panen
                 const panenResponse = await fetchPanen();
                 setPanenData(panenResponse);
     
-                // Fetch data anco
                 const ancoResponse = await fetchAnco();
                 setAncoData(ancoResponse);
     
-                // Setelah semua data di-fetch, aktifkan tampilan dashboard
                 setIsDashboardView(true);
             } catch (error) {
                 console.error("Error fetching data:", error);
