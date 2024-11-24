@@ -64,7 +64,7 @@ const AquacultureDashboard = () => {
     };
 
     fetchData();
-   
+
   }, []);
 
   const calculateMetrics = (siklus, tambak, kematian, panen) => {
@@ -130,9 +130,9 @@ const AquacultureDashboard = () => {
   };
 
   const handleRefresh = () => {
-    setDocRange({ start: 0, end: 100 }); 
+    setDocRange({ start: 0, end: 100 });
   };
-  
+
 
   useEffect(() => {
     if (selectedKolam) {
@@ -240,13 +240,12 @@ const AquacultureDashboard = () => {
               )}
             </div>
 
-            <Button className="w-full bg-blue-500">Konsultasi</Button>
+            <Button className="w-full bg-blue-500"> Konsultasi dengan AI</Button>
             <div className="flex justify-center">
               <button
-                onClick={() => console.log("Ubah Pengaturan Siklus")}
-                className="text-blue-500  hover:text-blue-700 focus:outline-none"
+                className="text-blue-500 hover:text-blue-700 focus:outline-none"
               >
-                Ubah Pengaturan Siklus
+                <Link to="/DaftarKolam">Tambahkan Siklus Baru</Link>
               </button>
             </div>
 
@@ -275,7 +274,7 @@ const AquacultureDashboard = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <RentangRasioTooltip/>
+                <RentangRasioTooltip />
                 <div className="flex items-center space-x-2">
                   <input
                     type="number"

@@ -43,7 +43,7 @@ export const fetchKematian = () => fetchData('/data-kematian');
 export const fetchPakan = () => fetchData('/data-pakan');
 export const fetchPanen = () => fetchData('/data-panen');
 export const fetchAnco = () => fetchData('/anco');
-
+export const fetchAir = () => fetchData('/air');
 
 export const debouncedFetchTambak = createDebouncedFetch('/tambak');
 
