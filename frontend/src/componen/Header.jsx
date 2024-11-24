@@ -29,7 +29,7 @@ const Header = () => {
     '/InputTambak': 'Input Tambak Baru',
     '/DaftarKolam': 'Daftar Kolam',
     '/ManajemenTambak': 'Manajemen Tambak',
-    '/Simulasi': 'Tambak Simulation',
+    '/Simulasi': 'Simulasi Tambak',
     '/UserProfile': 'Profil Pengguna',
     '/HargaLele': 'Harga Lele',
     '/PenyakitLele': 'Penyakit Lele',
