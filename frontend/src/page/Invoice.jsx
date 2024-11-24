@@ -1,8 +1,9 @@
 import Footer from "../componen/Footer";
 import Sidebar from "../componen/SideBar";
-import React from "react";
+import React, { useEffect } from "react";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
+import { tagihan } from "../lib/database";
 
 function TransactionItem({ title, date, status }) {
   return (
@@ -19,13 +20,42 @@ function TransactionItem({ title, date, status }) {
         </div>
       </div>
       <div className="flex items-center">
-        <i className="fas fa-chevron-right text-blue-500 mt-7"></i>{" "}
+        <i className="fas fa-chevron-right text-blue-500 mt-7"></i>
       </div>
     </div>
   );
 }
 
 function Content() {
+  const [istagihan, settagihan] = React.useState([]);
+  const [filter, setFilter] = React.useState("belum-bayar"); // State untuk filter
+
+  useEffect(() => {
+    const fetchtagihan = async () => {
+      try {
+        const response = await tagihan();
+        // Pastikan data yang diterima sudah sesuai dengan format yang diharapkan
+        console.log("Response Data:", response.data);
+        // Konversi status jika diperlukan
+        const formattedData = response.data.map((item) => ({
+          ...item,
+          status: item.status === 0 ? "Belum Bayar" : "Sudah Bayar", // Menyesuaikan status
+        }));
+        settagihan(formattedData);
+      } catch (error) {
+        console.error("Error fetching tagihan:", error);
+      }
+    };
+    fetchtagihan();
+  }, []);
+
+  // Filter data berdasarkan status
+  const filteredTagihan = istagihan.filter((item) =>
+    filter === "belum-bayar"
+      ? item.status === "Belum Bayar"
+      : item.status === "Sudah Bayar"
+  );
+
   return (
     <div className="w-full min-h-screen">
       <Header />
@@ -44,7 +74,11 @@ function Content() {
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <label className="text-sm text-gray-600">Tagihan:</label>
-              <select className="bg-blue-50 text-blue-500 border border-blue-300 rounded-md px-3 py-1">
+              <select
+                className="bg-blue-50 text-blue-500 border border-blue-300 rounded-md px-3 py-1"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)} // Ubah filter
+              >
                 <option value="belum-bayar">Belum Bayar</option>
                 <option value="sudah-bayar">Sudah Bayar</option>
               </select>
@@ -56,13 +90,23 @@ function Content() {
         </div>
 
         <div className="bg-white border border-blue-200 rounded-lg p-6">
-          <h4 className="text-blue-500 font-semibold mb-4">Belum dibayar</h4>
+          <h4 className="text-blue-500 font-semibold mb-4">
+            {filter === "belum-bayar" ? "Belum Dibayar" : "Sudah Dibayar"}
+          </h4>
 
-          <TransactionItem
-            title="Premium 6 bulan"
-            date="10 Oktober 2024"
-            status="Kamu Belum Menyelesaikan Pembayaran Akses Premium, Segera Selesaikan agar dapat mengakses semua fitur kami"
-          />
+          {/* Menampilkan transaksi berdasarkan filter */}
+          {filteredTagihan.length > 0 ? (
+            filteredTagihan.map((item) => (
+              <TransactionItem
+                key={item.id} // Pastikan key unik
+                title={item.name} // Misalnya ingin menampilkan nama paket jika ada
+                date={item.dueDate}
+                status={item.status}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500">Tidak ada transaksi ditemukan.</p>
+          )}
         </div>
       </div>
     </div>
