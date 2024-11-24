@@ -540,11 +540,18 @@ function LaporanDashboard() {
           <ul className="list-decimal list-inside space-y-1 keterangan">
             {kolamPerformances.map((performance, index) => (
               <li key={index}>
-                {performance.kolam}: Performa {performance.performance}.
+                {performance.kolam} : Performa {performance.performance}.
+                <ul className="list-disc list-inside ml-6">
+                  <li>{performance.details.fcr}</li>
+                  <li>{performance.details.sr}</li>
+                  <li>{performance.details.adg}</li>
+                  <li>{performance.details.produksi}</li>
+                </ul>
               </li>
             ))}
           </ul>
         </div>
+
       </div>
     );
   }
