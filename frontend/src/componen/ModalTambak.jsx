@@ -893,7 +893,6 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const fileInputRefs = [useRef(), useRef(), useRef()];
   const [kolams, setKolams] = useState([]);
 
-  // Logging state changes
   useEffect(() => {
     console.log('State Update - Selected Kolam:', selectedKolam);
     console.log('State Update - Form Data:', formData);
@@ -974,88 +973,70 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
     console.log('Form submission initiated');
   
     try {
-      // Format tanggal
+      if (!selectedKolam || !formData.tanggal_tebar || !formData.jenis_penyakit) {
+        throw new Error('Mohon lengkapi data yang diperlukan');
+      }
+
       let [day, month, year] = formData.tanggal_tebar.split("-");
       let formattedDate = new Date(`${year}-${month}-${day}`).toISOString().split('T')[0];
   
-      // Siapkan FormData untuk backend
-      const dataToSend = new FormData();
-  
-      // Tambahkan field form
-      dataToSend.append('kolam_id', selectedKolam);
-      dataToSend.append('tanggal_tebar', formattedDate);
-      dataToSend.append('jenis_penyakit', formData.jenis_penyakit);
-      dataToSend.append('catatan', formData.catatan);
-  
-      // Validasi dan upload gambar
-      const validImages = images.filter((img) => img && img.file); // Hanya gambar valid
-      console.log('Valid images count:', validImages.length);
-  
+      const validImages = images.filter((img) => img && img.file);
       const imageUrls = [];
-      for (const image of validImages) {
-        if (image && image.file) {
-          const formDataForImage = new FormData();
-          formDataForImage.append('file', image.file);
-          formDataForImage.append('upload_preset', 'Nusaira');
-  
-          try {
-            const response = await axios.post(
+      
+      if (validImages.length > 0) {
+        for (const image of validImages) {
+          if (image && image.file) {
+            const formDataForImage = new FormData();
+            formDataForImage.append('file', image.file);
+            formDataForImage.append('upload_preset', 'Nusaira');
+            
+            const cloudinaryResponse = await axios.post(
               'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
               formDataForImage,
               {
-                headers: { 'Content-Type': 'multipart/form-data' },
+                headers: { 
+                  'Content-Type': 'multipart/form-data'
+                }
               }
             );
-            console.log('Cloudinary response:', response.data);
-            imageUrls.push(response.data.secure_url); 
-          } catch (error) {
-            console.error('Cloudinary upload error:', error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error!',
-              text: 'Gagal mengunggah gambar ke Cloudinary.',
-            });
-            return; // Hentikan jika ada error
+            
+            imageUrls.push(cloudinaryResponse.data.secure_url);
           }
         }
       }
 
+      
+      const payload = {
+        kolam_id: parseInt(selectedKolam),
+        tanggal_tebar: formattedDate,
+        jenis_penyakit: formData.jenis_penyakit,
+        catatan: formData.catatan || '', 
+        gambar: imageUrls 
+      };
 
-  
-      // Tambahkan URL gambar ke FormData
-      images.forEach((image, index) => {
-        if (image && image.file) {
-          // Gunakan nama file asli jika tersedia
-          const filename = image.name || `image-${index}.jpg`;
-          dataToSend.append('images', image.file, filename);
-        }
-      });
-      // Log isi FormData
-      for (let pair of dataToSend.entries()) {
-        console.log('FormData entry:', pair[0], pair[1]);
-      }
-  
-      // Kirim data ke backend
-      const response = await axios.post(
+      console.log('Sending payload to backend:', payload);
+
+      
+      const backendResponse = await axios.post(
         'https://nusaira-be.vercel.app/api/penyakit',
-        dataToSend,
+        payload,
         {
-          method: 'POST',
-          body: dataToSend,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
         }
       );
   
-      console.log('API Response:', response);
+      console.log('Backend API Response:', backendResponse);
   
-      // Tampilkan pesan sukses
-      if (response.status === 200) {
+      if (backendResponse.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Data berhasil disimpan!',
           text: 'Penyakit entry telah berhasil dibuat.',
         });
   
-        // Reset form
         setFormData({
           kolam_id: '',
           tanggal_tebar: '',
@@ -1068,45 +1049,39 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         onClose();
       }
     } catch (error) {
-      console.error('Upload error details:', {
+      console.error('Error details:', {
         message: error.message,
         response: error.response?.data,
         status: error.response?.status,
-        headers: error.response?.headers,
+        data: error.response?.config?.data
       });
-  
-      let errorMessage = 'Terjadi kesalahan saat mengunggah data.';
-      if (error.response) {
-        if (error.response.status === 500) {
-          errorMessage = 'Terjadi kesalahan pada server. Mohon cek ukuran dan format file.';
-        } else if (error.response.data && error.response.data.message) {
-          errorMessage = error.response.data.message;
-        }
-      } else if (error.request) {
-        errorMessage = 'Tidak dapat terhubung ke server. Mohon cek koneksi internet.';
-      }
-  
+      
+      const errorMessage = 
+        error.response?.data?.errors || 
+        error.response?.data?.message || 
+        error.message || 
+        'Terjadi kesalahan saat mengunggah data.';
+      
       Swal.fire({
         icon: 'error',
         title: 'Error!',
         text: errorMessage,
       });
   
-      setErrors((prev) => [...prev, errorMessage]);
+      setErrors(prev => [...prev, errorMessage]);
     }
   };
+
   
 
 
-  // Add image validation function
+  
   const validateImage = (file) => {
-    // Check file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    const maxSize = 5 * 1024 * 1024; 
     if (file.size > maxSize) {
       throw new Error(`File ${file.name} terlalu besar. Maksimal 5MB`);
     }
 
-    // Check file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (!allowedTypes.includes(file.type)) {
       throw new Error(`File ${file.name} harus berformat JPG, JPEG, atau PNG`);
@@ -1115,7 +1090,6 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
     return true;
   };
 
-  // Modified image change handler
   const handleImageChange = async (e, index) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -1168,7 +1142,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
     tanggal_tebar: formData.tanggal_tebar,
     jenis_penyakit: formData.jenis_penyakit,
     catatan: formData.catatan,
-    images: images // Ensure images are properly serialized
+    images: images 
   });
 
 

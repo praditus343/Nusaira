@@ -1,11 +1,11 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ChevronDown, Edit3, RefreshCw } from 'lucide-react';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { fetchKematian, fetchPanen, fetchSiklus, fetchTambak } from '../../service/AxiosConfig';
 import { Card } from './CardManagement';
 import MetricCard from './MetricsCard';
-import { fetchTambak, fetchSiklus, fetchPakan, fetchKematian, fetchPanen, fetchAnco } from '../../service/AxiosConfig';
 import RentangRasioTooltip from './RentangTooltip';
 
 
@@ -64,12 +64,12 @@ const AquacultureDashboard = () => {
     };
 
     fetchData();
+
   }, []);
 
   const calculateMetrics = (siklus, tambak, kematian, panen) => {
     return siklus.map((s) => {
       const kolam = tambak.find((t) => t.kolamDetails.some((k) => k.id === s.kolam_id))?.kolamDetails.find((k) => k.id === s.kolam_id);
-      console.log("Kolam:", kolam);
       const matchedPanen = panen.find((p) => p.id_siklus === s.id_siklus);
       const totalKematian = kematian.filter((k) => k.id_siklus === s.id_siklus).reduce((sum, k) => sum + (k.jumlah_ekor || 0), 0);
 
@@ -105,7 +105,6 @@ const AquacultureDashboard = () => {
   };
 
   const generateGrowthData = (metrics) => {
-    console.log("Metrics received:", metrics);
     const data = metrics.map((m) => ({
       doc: m.kolamNama,
       mbw: Number(m.mbw) || 0,
@@ -114,15 +113,10 @@ const AquacultureDashboard = () => {
       sr: Number(m.sr) || 0,
       size: Number(m.size) || 0
     }));
-    console.log("Generated growth data:", data);
     return data;
   };
 
   const filteredGrowthData = useMemo(() => {
-    console.log("Filtering growth data:", growthData);
-    console.log("Current selected metric:", selectedMetric);
-    console.log("Current doc range:", docRange);
-
     return growthData.filter((item) => {
       const metricValue = Number(item[selectedMetric]) || 0;
       console.log(`Metric value for ${item.doc}:`, metricValue);
@@ -136,10 +130,9 @@ const AquacultureDashboard = () => {
   };
 
   const handleRefresh = () => {
-    setDocRange({ start: 0, end: 100 }); 
-    console.log('Rentang direset ke:', { start: 0, end: 100 });
+    setDocRange({ start: 0, end: 100 });
   };
-  
+
 
   useEffect(() => {
     if (selectedKolam) {
@@ -247,13 +240,12 @@ const AquacultureDashboard = () => {
               )}
             </div>
 
-            <Button className="w-full bg-blue-500">Konsultasi</Button>
+            <Button className="w-full bg-blue-500"> Konsultasi dengan AI</Button>
             <div className="flex justify-center">
               <button
-                onClick={() => console.log("Ubah Pengaturan Siklus")}
-                className="text-blue-500  hover:text-blue-700 focus:outline-none"
+                className="text-blue-500 hover:text-blue-700 focus:outline-none"
               >
-                Ubah Pengaturan Siklus
+                <Link to="/DaftarKolam">Tambahkan Siklus Baru</Link>
               </button>
             </div>
 
@@ -282,7 +274,7 @@ const AquacultureDashboard = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <RentangRasioTooltip/>
+                <RentangRasioTooltip />
                 <div className="flex items-center space-x-2">
                   <input
                     type="number"
