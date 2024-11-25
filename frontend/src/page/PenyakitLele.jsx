@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, List } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
@@ -39,8 +39,7 @@ const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [diseases, setDiseases] = useState([]);
-    const navigate = useNavigate(); // Initialize useNavigate for navigation
-
+    const navigate = useNavigate();
     useEffect(() => {
         const diseaseData = [
             { id: 1, title: diseasesTitles[0], date: randomDate(), image: pyl1 },
@@ -59,8 +58,6 @@ const FishDiseaseDashboard = () => {
     const filteredDiseases = diseases.filter(disease =>
         disease.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    // Function to handle redirection when a disease item is clicked
     const handleDiseaseClick = (id) => {
         navigate(`/artikel/${id}`);
     };
@@ -119,7 +116,7 @@ const FishDiseaseDashboard = () => {
                                 key={disease.id}
                                 className={`bg-white rounded-lg border border-gray-300 overflow-hidden transform transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg
                                 ${isGridLayout ? 'flex flex-col' : 'flex flex-row'}`}
-                                onClick={() => handleDiseaseClick(disease.id)} // Attach click handler
+                                onClick={() => handleDiseaseClick(disease.id)} 
                             >
                                 <div className={`${isGridLayout ? 'w-full' : 'w-48'} relative`}>
                                     <img
