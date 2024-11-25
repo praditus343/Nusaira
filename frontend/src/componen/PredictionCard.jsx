@@ -35,7 +35,7 @@ const PriceTrendsDashboard = () => {
         const city = cities[i];
         try {
           const response = await fetchCityPrediction(city);
-          // console.log(`Response untuk ${city}:`, response);
+          console.log(`Response untuk ${city}:`, response);
 
           cityData.push({
             city,
