@@ -37,6 +37,30 @@ const fetchData = async (endpoint) => {
 };
 
 
+export const fetchCityPrediction = (city) => fetchData(`/predictions/city/${city}`);
+
+export const CITIES = {
+  'JAWA BARAT': ['Bandung', 'Bekasi', 'Bogor', 'Cirebon', 'Subang'],
+  'JAWA TIMUR': ['Tulungagung', 'Malang', 'Jember', 'Blitar', 'Kediri'],
+  'JAWA TENGAH': ['Magelang', 'Pekalongan', 'Boyolali', 'Cilacap', 'Kebumen']
+};
+
+
+export const fetchMultipleCitiesPredictions = async (cities) => {
+  try {
+    const predictions = await Promise.all(
+      cities.map(city => fetchCityPrediction(city))  
+    );
+    return cities.reduce((acc, city, index) => {
+      acc[city] = predictions[index];
+      return acc;
+    }, {});
+  } catch (error) {
+    console.error('Error fetching multiple cities:', error);
+    throw error;
+  }
+};
+
 export const fetchTambak = () => fetchData('/tambak');
 export const fetchSiklus = () => fetchData('/siklus');
 export const fetchKematian = () => fetchData('/data-kematian');
