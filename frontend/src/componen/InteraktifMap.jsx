@@ -36,29 +36,24 @@ const locationData = [
   { id: 3, lat: -6.5944, lng: 106.7896, title: "Bogor" },
   { id: 4, lat: -6.7074, lng: 108.5568, title: "Cirebon" },
   { id: 5, lat: -6.5714, lng: 107.7601, title: "Subang" },
-  
   { id: 6, lat: -7.2504, lng: 112.7688, title: "Surabaya" },
   { id: 7, lat: -7.9794, lng: 112.6300, title: "Malang" },
   { id: 8, lat: -8.0941, lng: 112.1676, title: "Blitar" },
   { id: 9, lat: -7.8313, lng: 112.0153, title: "Kediri" },
   { id: 10, lat: -8.0666, lng: 111.9022, title: "Tulungagung" },
-  
-
   { id: 11, lat: -7.7038, lng: 110.4204, title: "Magelang" },
   { id: 12, lat: -6.8898, lng: 109.6747, title: "Pekalongan" },
   { id: 13, lat: -7.5386, lng: 110.7291, title: "Boyolali" },
   { id: 14, lat: -7.7273, lng: 109.0095, title: "Cilacap" },
   { id: 15, lat: -7.6772, lng: 109.6504, title: "Kebumen" },
-  
   { id: 16, lat: -7.7956, lng: 110.3695, title: "Yogyakarta" }
 ];
 
-
 const getProvinceColor = (city) => {
-  if (CITIES['JAWA TIMUR'].includes(city)) return '#F97316'; 
-  if (CITIES['JAWA TENGAH'].includes(city)) return '#8B5CF6'; 
-  if (CITIES['JAWA BARAT'].includes(city)) return '#D97706'; 
-  return '#6B7280'; 
+  if (CITIES['JAWA TIMUR'].includes(city)) return '#F97316';
+  if (CITIES['JAWA TENGAH'].includes(city)) return '#8B5CF6';
+  if (CITIES['JAWA BARAT'].includes(city)) return '#D97706';
+  return '#6B7280';
 };
 
 const InteractiveMap = () => {
@@ -84,7 +79,7 @@ const InteractiveMap = () => {
 
     function initializeMap() {
       if (mapInstanceRef.current) return;
-      const map = L.map(mapRef.current).setView([-7.5, 111.0], 6); 
+      const map = L.map(mapRef.current).setView([-7.5, 111.0], 6);
       mapInstanceRef.current = map;
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -144,37 +139,36 @@ const InteractiveMap = () => {
           <div ref={mapRef} className="w-full h-full" />
         </div>
         {/* Legend */}
-        <div className="flex items-center space-x-4 mt-4 ml-80">
-  <div className="flex items-center">
-    <div
-      className="w-4 h-4 rounded-full mr-2"
-      style={{ backgroundColor: '#D97706' }}
-    ></div>
-    <span>Jawa Barat</span>
-  </div>
-  <div className="flex items-center">
-    <div
-      className="w-4 h-4 rounded-full mr-2"
-      style={{ backgroundColor: '#F97316' }}
-    ></div>
-    <span>Jawa Timur</span>
-  </div>
-  <div className="flex items-center">
-    <div
-      className="w-4 h-4 rounded-full mr-2"
-      style={{ backgroundColor: '#8B5CF6' }}
-    ></div>
-    <span>Jawa Tengah</span>
-  </div>
-  <div className="flex items-center">
-    <div
-      className="w-4 h-4 rounded-full mr-2"
-      style={{ backgroundColor: '#6B7280' }} 
-    ></div>
-    <span>DIY</span>
-  </div>
-</div>
-
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
+          <div className="flex items-center">
+            <div
+              className="w-4 h-4 rounded-full mr-2"
+              style={{ backgroundColor: '#D97706' }}
+            ></div>
+            <span>Jawa Barat</span>
+          </div>
+          <div className="flex items-center">
+            <div
+              className="w-4 h-4 rounded-full mr-2"
+              style={{ backgroundColor: '#F97316' }}
+            ></div>
+            <span>Jawa Timur</span>
+          </div>
+          <div className="flex items-center">
+            <div
+              className="w-4 h-4 rounded-full mr-2"
+              style={{ backgroundColor: '#8B5CF6' }}
+            ></div>
+            <span>Jawa Tengah</span>
+          </div>
+          <div className="flex items-center">
+            <div
+              className="w-4 h-4 rounded-full mr-2"
+              style={{ backgroundColor: '#6B7280' }}
+            ></div>
+            <span>DIY</span>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
