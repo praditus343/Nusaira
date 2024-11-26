@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { ChevronRight, Search, ListFilter } from "lucide-react";
+import { ChevronRight, Search } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AllPosts from "../componen/PostData";
-import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import Header from "../componen/Header";
+import Sidebar from "../componen/SideBar";
 
 const LeftCard = ({ post, isVisible }) => {
   const navigate = useNavigate();
@@ -18,9 +17,9 @@ const LeftCard = ({ post, isVisible }) => {
     <div
       className={`bg-white rounded-lg shadow-md overflow-hidden mb-4 border border-gray-300 ${isVisible ? "opacity-100" : "opacity-20"}`}
     >
-      <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />
+      <img src={`/${post.image}`} alt={post.title} className="w-full h-48 object-cover" />
       <div className="p-4">
-        <div className="text-sm text-gray-500 mb-2">{post.date}</div>
+        <div className="text-sm text-gray-500 mb-2">{new Date(post.date).toLocaleDateString()}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
         <p className="text-sm text-gray-600 mb-3">{post.excerpt}</p>
         <button className="text-blue-500 text-sm flex items-center" onClick={handleReadMore}>
@@ -46,7 +45,7 @@ const RightCard = ({ post, highlight }) => {
       }`}
     >
       <div className="flex-1 p-4">
-        <div className="text-sm text-gray-500 mb-2">{post.date}</div>
+        <div className="text-sm text-gray-500 mb-2">{new Date(post.date).toLocaleDateString()}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
         <p className="text-sm text-gray-600">{post.excerpt}</p>
         <button className="text-blue-500 text-sm flex items-center mt-2" onClick={handleReadMore}>
@@ -63,21 +62,62 @@ const KabarLeleLayout = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [randomLeftPosts, setRandomLeftPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const shuffled = [...AllPosts].sort(() => 0.5 - Math.random());
-    setRandomLeftPosts(shuffled.slice(0, 3));
+    const fetchPosts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('https://nusaira-be.vercel.app/api/berita');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        
+        const data = await response.json();
+        
+        const shuffled = [...data].sort(() => 0.5 - Math.random());
+        setRandomLeftPosts(shuffled.slice(0, 3));
+        setFilteredPosts(data);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Error fetching posts:', err);
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   useEffect(() => {
-    const sortedPosts = AllPosts.sort((a, b) => {
-      const aMatch = a.title.toLowerCase().includes(searchTerm.toLowerCase());
-      const bMatch = b.title.toLowerCase().includes(searchTerm.toLowerCase());
-      return bMatch - aMatch; 
-    });
+    const sortedPosts = filteredPosts.filter(post => 
+      post.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     setFilteredPosts(sortedPosts);
   }, [searchTerm]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-red-100 p-6 rounded-lg shadow-lg">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Ups! Terjadi Kesalahan</h2>
+          <p className="text-lg text-red-500">{error}</p>
+        </div>
+      </div>
+    );
+  }
+  
 
   return (
     <div className="flex h-screen">
@@ -132,7 +172,7 @@ const KabarLeleLayout = () => {
               </div>
               <div className="w-2/3">
                 <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-                <div className="space-y-4 overflow-y-auto max-h-[150vh] mt-4">
+                <div className="space-y-4 overflow-y-auto max-h-[160vh] mt-4">
                   {filteredPosts.map((post) => (
                     <RightCard
                       key={post.id}

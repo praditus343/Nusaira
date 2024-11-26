@@ -135,38 +135,42 @@ const InteractiveMap = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="w-full h-[600px] relative rounded-lg overflow-hidden border border-gray-200">
-          <div ref={mapRef} className="w-full h-full" />
-        </div>
-        {/* Legend */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
-          <div className="flex items-center">
-            <div
-              className="w-4 h-4 rounded-full mr-2"
-              style={{ backgroundColor: '#D97706' }}
-            ></div>
-            <span>Jawa Barat</span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className="w-4 h-4 rounded-full mr-2"
-              style={{ backgroundColor: '#F97316' }}
-            ></div>
-            <span>Jawa Timur</span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className="w-4 h-4 rounded-full mr-2"
-              style={{ backgroundColor: '#8B5CF6' }}
-            ></div>
-            <span>Jawa Tengah</span>
-          </div>
-          <div className="flex items-center">
-            <div
-              className="w-4 h-4 rounded-full mr-2"
-              style={{ backgroundColor: '#6B7280' }}
-            ></div>
-            <span>DIY</span>
+        <div className="w-full h-[600px] relative rounded-lg overflow-hidden flex flex-col">
+          {/* Map */}
+          <div ref={mapRef} className="w-full h-full flex-1 rounded-lg" />
+
+          {/* Legend */}
+          <div className="bg-white p-4 w-full max-w-lg mx-auto mt-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <div
+                  className="w-4 h-4 rounded-full mr-2"
+                  style={{ backgroundColor: '#D97706' }}
+                ></div>
+                <span>Jawa Barat</span>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className="w-4 h-4 rounded-full mr-2"
+                  style={{ backgroundColor: '#F97316' }}
+                ></div>
+                <span>Jawa Timur</span>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className="w-4 h-4 rounded-full mr-2"
+                  style={{ backgroundColor: '#8B5CF6' }}
+                ></div>
+                <span>Jawa Tengah</span>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className="w-4 h-4 rounded-full mr-2"
+                  style={{ backgroundColor: '#6B7280' }}
+                ></div>
+                <span>DIY</span>
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>

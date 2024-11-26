@@ -34,6 +34,12 @@ function LandingPage() {
         description: ''
     });
 
+    const CITIES = [
+        'Bandung', 'Bekasi', 'Bogor', 'Cirebon', 'Subang',
+        'Tulungagung', 'Malang', 'Jember', 'Blitar', 'Kediri',
+        'Magelang', 'Pekalongan', 'Boyolali', 'Cilacap', 'Kebumen'
+    ];
+
 
     const modalContents = {
         features: {
@@ -208,43 +214,61 @@ function LandingPage() {
                     {/* Left Column */}
                     <div className="space-y-4">
                         <div className="border border-gray-300 p-4 rounded">
-                            <h4 className="font-medium mb-2">LAMPUNG</h4>
+                            <h4 className="font-medium mb-2">Boyolali</h4>
                             <div className="flex justify-between mb-2">
-                                <span>Rp 53.000</span>
-                                <span className="text-red-500">Rp 1.000</span>
+                                <button
+                                    className="text-blue-600 hover:text-blue-800"
+                                    onClick={() => openModal('priceChart')}
+                                >
+                                    Klik Lebih Lanjut
+                                </button>
                             </div>
                             <div className="h-16 bg-gray-200 rounded"></div>
                         </div>
                         <div className="border border-gray-300 p-4 rounded">
-                            <h4 className="font-medium mb-2">JAWA TENGAH</h4>
+                            <h4 className="font-medium mb-2">Magelang</h4>
                             <div className="flex justify-between mb-2">
-                                <span>Rp 58.000</span>
-                                <span className="text-green-500">Rp 2.000</span>
+                                <button
+                                    className="text-blue-600 hover:text-blue-800"
+                                    onClick={() => openModal('priceChart')}
+                                >
+                                    Klik Lebih Lanjut
+                                </button>
                             </div>
                             <div className="h-16 bg-gray-200 rounded"></div>
                         </div>
                         <div className="border border-gray-300 p-4 rounded">
-                            <h4 className="font-medium mb-2">JAWA TENGAH</h4>
+                            <h4 className="font-medium mb-2">Jember</h4>
                             <div className="flex justify-between mb-2">
-                                <span>Rp 58.000</span>
-                                <span className="text-green-500">Rp 2.000</span>
+                                <button
+                                    className="text-blue-600 hover:text-blue-800"
+                                    onClick={() => openModal('priceChart')}
+                                >
+                                    Klik Lebih Lanjut
+                                </button>
                             </div>
                             <div className="h-16 bg-gray-200 rounded"></div>
                         </div>
                     </div>
+
                     <div>
                         {/* Right Column */}
                         <div className="grid grid-cols-2 gap-4">
-                            {[...Array(6)].map((_, i) => (
+                            {CITIES.slice(0, 6).map((city, i) => (
                                 <div
                                     key={i}
                                     className="border p-4 rounded cursor-pointer border-gray-300"
                                     onClick={() => openModal('priceChart')}
                                 >
-                                    <h4 className="font-medium mb-2">JAWA TIMUR</h4>
+                                    <h4 className="font-medium mb-2">{city}</h4>
                                     <div className="flex justify-between mb-2">
-                                        <span>Rp 53.000</span>
-                                        <span className="text-green-500">Rp 1.000</span>
+                                        <button
+                                            className="text-blue-600 hover:text-blue-800 focus:outline-none"
+                                            onClick={() => openModal('priceChart')}
+                                        >
+                                            Klik Lebih Lanjut
+                                        </button>
+
                                     </div>
                                     <div className="h-16 bg-gray-200 rounded"></div>
                                 </div>
@@ -268,7 +292,7 @@ function LandingPage() {
                         { img: img5, title: "Memilih Bibit Lele yang Berkualitas" },
                         { img: img6, title: "Tips Pemanenan Lele yang Efisien" },
                         { img: img7, title: "Inovasi Teknologi Untuk Budidaya Lele" },
-                        { img: img8, title: "Peluang Usaha Budidaya Lele yang Menjanjikan" },
+                        { img: img8, title: "Peluang Usaha  Lele yang Menjanjikan" },
                     ].map((item, i) => (
                         <div
                             key={i}
