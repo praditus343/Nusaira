@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import Footer from '../componen/Footer';
-import Header from '../componen/Header';
 import { Search, Share2 } from 'lucide-react';
 import Logo from '../assets/Logo.png';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import AIFloatingButton from '../componen/AIFloatingButton';
-import Sidebar from '../componen/Sidebar';
+
 import axios from 'axios';
+import Header from '../componen/Header';
+import Sidebar from '../componen/Sidebar';
+import AIFloatingButton from '../componen/AIFloatingButton';
+import Footer from '../componen/Footer';
 
 
 
@@ -142,7 +143,7 @@ const ArticleDashboard = () => {
 
     return (
         <div className='bg-white w-full min-h-screen'>
-            <Header title={article.title} />
+            <Header />
             <div className="bg-white ml-5 mr-5">
                 {/* Search Section */}
                 <div className="flex items-center justify-between mb-8 mt-5 mr-8 ml-8">
