@@ -4,8 +4,8 @@ import React from "react";
 
 import Header from "../componen/Header";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import AIFloatingButton from "../componen/AIFloatingButton";
-import Sidebar from "../componen/Sidebar";
+import AIFloatingButton from "../componen/AiFloatingButton";
+import Sidebar from "../componen/SideBar";
 
 function SubscriptionCard({ title, price, discount, duration, originalPrice }) {
   const navigate = useNavigate(); // Initialize useNavigate
