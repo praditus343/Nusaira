@@ -1,5 +1,5 @@
+import { Check, Copy, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { Copy, X, Check, MapPin } from 'lucide-react';
 
 // Data kontak untuk setiap supplier
 const supplierContacts = {
