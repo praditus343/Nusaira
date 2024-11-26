@@ -8,7 +8,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Header from '../componen/Header';
 import Sidebar from '../componen/SideBar';
-import AIFloatingButton from '../componen/AIFloatingButton';
+import AIFloatingButton from '../componen/AiFloatingButton';
 import Footer from '../componen/Footer';
 
 
