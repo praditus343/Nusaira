@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Grid, List } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../componen/Footer';
-import Sidebar from '../componen/Sidebar';
-import AIFloatingButton from '../componen/AIFloatingButton';
+import Sidebar from '../componen/SideBar';
+import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 
 const FishDiseaseDashboard = () => {
