@@ -29,6 +29,15 @@ const DashboardContent = () => {
     const [panenData, setPanenData] = useState(null);
     const [ancoData, setAncoData] = useState(null);
 
+    const handleOpenYoutube = () => {
+        window.open("https://www.youtube.com/@Nusai_ra", "_blank");
+      };   
+
+      const handleOpenTelegram = () => {
+        window.open("https://t.me/+h3tvLhSnoWI3M2Q9", "_blank");
+      };
+    
+
    
 
     useEffect(() => {
@@ -200,12 +209,12 @@ const DashboardContent = () => {
                                             </button>
                                         </Link>
                                     </div>
-                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3">
+                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3"  onClick={handleOpenYoutube}>
                                         <FontAwesomeIcon icon={faYoutube} className="w-6 h-6 mr-2" />
                                         <span className="ml-2 text-sm">YouTube NusAIra</span>
                                     </button>
 
-                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3 mt-4">
+                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3 mt-4"  onClick={handleOpenTelegram}>
                                         <FontAwesomeIcon icon={faTelegram} className="w-6 h-6 mr-2" />
                                         <span className="ml-2 text-sm">Telegram NusAIra</span>
                                     </button>
