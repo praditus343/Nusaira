@@ -58,8 +58,8 @@ const Header = () => {
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
-    "2": "Penyakit Jamur",
-    "3": "Penyakit Kulit",
+    "2": "Penyakit Luka Ulkus",
+    "3": "Penyakit Busuk Sirip",
     "4": "Penyakit Bercak Merah",
     "5": "Penyakit Kembung",
     "6": "Jamur Pada Insang",
