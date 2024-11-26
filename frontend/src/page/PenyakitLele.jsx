@@ -2,76 +2,68 @@ import React, { useState, useEffect } from 'react';
 import { Grid, List } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../componen/Footer';
-import Sidebar from '../componen/SideBar';
-import AIFloatingButton from '../componen/AiFloatingButton';
+import Sidebar from '../componen/Sidebar';
+import AIFloatingButton from '../componen/AIFloatingButton';
 import Header from '../componen/Header';
-
-const randomDate = () => {
-    const start = new Date(2024, 9, 1);
-    const end = new Date(2024, 9, 31);
-    const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    return date.toLocaleDateString();
-};
-
-const diseasesTitles = [
-    'Penyakit Bintik Putih Pada Lele',
-    'Penyakit Jamur Air',
-    'Penyakit Kulit Mengelupas',
-    'Hama Dan Penyakit Pada Lele',
-    'Tantangan Iklim Dalam Pembibitan',
-    'Penyakit Aeromonas Pada Lele',
-    'Meminimalisir penyakit pada lele',
-    'Penyebab lele Kembung',
-    'Penyebab lele mengambang',
-];
-
-import pyl1 from '../assets/img/penyakit_lele/pyl1.png';
-import pyl2 from '../assets/img/penyakit_lele/pyl2.png';
-import pyl3 from '../assets/img/penyakit_lele/pyl3.png';
-import pyl4 from '../assets/img/penyakit_lele/pyl4.png';
-import pyl5 from '../assets/img/penyakit_lele/pyl5.png';
-import pyl6 from '../assets/img/penyakit_lele/pyl6.png';
-import pyl7 from '../assets/img/penyakit_lele/pyl7.png';
-import pyl8 from '../assets/img/penyakit_lele/pyl8.png';
-import pyl9 from '../assets/img/penyakit_lele/pyl9.png';
 
 const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [diseases, setDiseases] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
+
     useEffect(() => {
-        const diseaseData = [
-            { id: 1, title: diseasesTitles[0], date: randomDate(), image: pyl1 },
-            { id: 2, title: diseasesTitles[1], date: randomDate(), image: pyl2 },
-            { id: 3, title: diseasesTitles[2], date: randomDate(), image: pyl3 },
-            { id: 4, title: diseasesTitles[3], date: randomDate(), image: pyl4 },
-            { id: 5, title: diseasesTitles[4], date: randomDate(), image: pyl5 },
-            { id: 6, title: diseasesTitles[5], date: randomDate(), image: pyl6 },
-            { id: 7, title: diseasesTitles[6], date: randomDate(), image: pyl7 },
-            { id: 8, title: diseasesTitles[7], date: randomDate(), image: pyl8 },
-            { id: 9, title: diseasesTitles[8], date: randomDate(), image: pyl9 },
-        ];
-        setDiseases(diseaseData);
+        const fetchDiseases = async () => {
+            try {
+                const response = await fetch('https://nusaira-be.vercel.app/api/penyakit-lele');
+                const { success, message, data } = await response.json();
+                if (success && Array.isArray(data)) {
+                    setDiseases(data);
+                } else {
+                    throw new Error(message);
+                }
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDiseases();
     }, []);
 
-    const filteredDiseases = diseases.filter(disease =>
+    const filteredDiseases = diseases.filter((disease) =>
         disease.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
     const handleDiseaseClick = (id) => {
         navigate(`/artikel/${id}`);
     };
+
+    if (loading) {
+        return (
+            <div className="w-full h-screen flex items-center justify-center">
+                <div className="w-16 h-16 border-4 border-t-4 border-blue-600 border-solid rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
+
 
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
             <div className="mb-8 mr-14 ml-14 mt-5">
-                <h1 className="text-2xl font-bold mb-2">
-                    Mengenal Penyakit dan Tantangan dalam Budidaya Lele
-                </h1>
+                <h1 className="text-2xl font-bold mb-2">Mengenal Penyakit dan Tantangan dalam Budidaya Lele</h1>
                 <p className="text-gray-600">
                     Pelajari Cara Mengatasi Penyakit dan Tantangan Budidaya Lele <br />
-                    dengan Solusi Tepat! Dapatkan Tips Praktis untuk Meningkatkan<br /> 
+                    dengan Solusi Tepat! Dapatkan Tips Praktis untuk Meningkatkan<br />
                     Kualitas dan Produktivitas Tambak Anda
                 </p>
             </div>
@@ -114,19 +106,18 @@ const FishDiseaseDashboard = () => {
                         filteredDiseases.map((disease) => (
                             <div
                                 key={disease.id}
-                                className={`bg-white rounded-lg border border-gray-300 overflow-hidden transform transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg
-                                ${isGridLayout ? 'flex flex-col' : 'flex flex-row'}`}
-                                onClick={() => handleDiseaseClick(disease.id)} 
+                                className={`bg-white rounded-lg border border-gray-300 overflow-hidden transform transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg ${isGridLayout ? 'flex flex-col' : 'flex flex-row'}`}
+                                onClick={() => handleDiseaseClick(disease.id)}
                             >
                                 <div className={`${isGridLayout ? 'w-full' : 'w-48'} relative`}>
                                     <img
-                                        src={disease.image}
+                                        src={`/${disease.image}`}
                                         alt={disease.title}
                                         className="w-full h-48 object-cover"
                                     />
                                 </div>
                                 <div className={`p-4 ${isGridLayout ? '' : 'flex-1'}`}>
-                                    <p className="text-sm text-gray-500 mb-2">{disease.date}</p>
+                                    <p className="text-sm text-gray-500 mb-2">{new Date(disease.date).toLocaleDateString()}</p>
                                     <h3 className="font-semibold text-lg">{disease.title}</h3>
                                 </div>
                             </div>
@@ -140,21 +131,17 @@ const FishDiseaseDashboard = () => {
     );
 };
 
-
-
-function PenyakitLele() {
-    return (
-        <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex-1 overflow-auto">
-                <FishDiseaseDashboard />
-                <AIFloatingButton />
-                <div className='mt-20'>
-                    <Footer />
-                </div>
+const PenyakitLele = () => (
+    <div className="flex h-screen">
+        <Sidebar />
+        <div className="flex-1 overflow-auto">
+            <FishDiseaseDashboard />
+            <AIFloatingButton />
+            <div className='mt-20'>
+                <Footer />
             </div>
         </div>
-    );
-}
+    </div>
+);
 
 export default PenyakitLele;
