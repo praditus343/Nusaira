@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import ElearningSidebar from "../componen/ElearningSidebar";
 import Header from "../componen/Header";
-import AIFloatingButton from "../componen/AiFloatingButton";
+
 import Footer from "../componen/Footer";
 import { Star } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,7 @@ import img5 from "../assets/img/e-learning/el5.png";
 import img6 from "../assets/img/e-learning/el6.png";
 import img7 from "../assets/img/e-learning/el7.png";
 import img8 from "../assets/img/e-learning/el8.png";
+import AIFloatingButton from "../componen/AiFloatingButton";
 
 const PerpustakaanBooks = () => {
   const [searchTerm, setSearchTerm] = useState("");

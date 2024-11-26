@@ -1,33 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import AIFloatingButton from '../componen/AiFloatingButton';
-import Footer from '../componen/Footer';
-import Sidebar from '../componen/SideBar';
-import articlesData from '../componen/DataArtikel';
-import Header from '../componen/Header';
 import { Search, Share2 } from 'lucide-react';
 import Logo from '../assets/Logo.png';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import Header from '../componen/Header';
+import Sidebar from '../componen/SideBar';
+import AIFloatingButton from '../componen/AiFloatingButton';
+import Footer from '../componen/Footer';
+
 
 
 const ArticleDashboard = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [article, setArticle] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filter, setFilter] = useState('all'); 
-    const article = articlesData.find((art) => art.id === parseInt(id));
-    if (!article) return <p>Artikel tidak ditemukan.</p>;
+    const [filter, setFilter] = useState('all');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const handleSearch = () => {
-        const matchedArticle = articlesData.find((art) =>
-            art.title.toLowerCase().includes(searchTerm.toLowerCase())
+    useEffect(() => {
+        const fetchArticle = async () => {
+            try {
+                console.log(`Fetching article with ID: ${id}`);
+                const response = await axios.get(`https://nusaira-be.vercel.app/api/penyakit-lele/${id}`, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response:', response.data);
+
+                if (response.data) {
+                    setArticle(response.data.data);
+                    console.log('Article data:', response.data);
+                    console.log('Indikasi:', response.data.indikasi);
+                } else {
+                    setError('Artikel tidak ditemukan');
+                }
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching article:', err);
+                setError(err.response?.data?.message || 'Artikel tidak ditemukan');
+                setLoading(false);
+            }
+        };
+
+        fetchArticle();
+    }, [id]);
+
+    if (loading) {
+        return (
+          <div className="w-full h-screen flex items-center justify-center">
+            <div className="w-16 h-16 border-4 border-t-4 border-blue-600 border-solid rounded-full animate-spin"></div>
+          </div>
         );
-        if (matchedArticle) {
-            navigate(`/artikel/${matchedArticle.id}`);
-        } else {
-            alert('Artikel tidak ditemukan');
+      }
+      
+      if (error) {
+        return <div>{error}</div>;
+      }
+      
+      if (!article) {
+        return <div>Artikel tidak ditemukan</div>;
+      }
+      
+
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`https://nusaira-be.vercel.app/api/penyakit-lele?search=${searchTerm}`);
+            if (response.data.length > 0) {
+                navigate(`/artikel/${response.data[0].id}`);
+            } else {
+                Swal.fire({
+                    title: 'Artikel Tidak Ditemukan',
+                    text: 'Tidak ada artikel yang sesuai dengan pencarian Anda.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (err) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Terjadi kesalahan saat mencari artikel',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
         }
     };
 
@@ -52,23 +113,38 @@ const ArticleDashboard = () => {
             });
     };
 
-    const indikasiItems = article.indikasi.split('\n').map(item => item.trim()).filter(item => item);
-    const penyebabItems = article.penyebab.split('\n').map(item => item.trim()).filter(item => item);
-    const penangananItems = article.penanganan.split('\n').map(item => item.trim()).filter(item => item);
-    const pencegahanItems = article.pencegahan.split('\n').map(item => item.trim()).filter(item => item);
-    const gejalaTambahanItems = article.gejalaTambahan.split('\n').map(item => item.trim()).filter(item => item);
-    const referensiItems = article.referensi;
-
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
-        };
+    };
+
+    const processItems = (text) => {
+        if (!text) return [];
+        return text.split('.').map(item => item.trim()).filter(item => item).map(item => item + '.');
+      };
+      
+
+    const indikasiItems = processItems(article.indikasi);
+    const penyebabItems = processItems(article.penyebab);
+    const penangananItems = processItems(article.penanganan);
+    const pencegahanItems = processItems(article.pencegahan);
+    const gejalaTambahanItems = processItems(article.gejalaTambahan);
+    const referensiItems = JSON.parse(article.referensi || '[]');
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+    
 
     return (
         <div className='bg-white w-full min-h-screen'>
-            <Header title={article.title} />
+            <Header />
             <div className="bg-white ml-5 mr-5">
                 {/* Search Section */}
-                <div className="flex items-center justify-between mb-8 mt-5">
+                <div className="flex items-center justify-between mb-8 mt-5 mr-8 ml-8">
                     <div className="flex flex-grow">
                         <input
                             type="text"
@@ -95,13 +171,17 @@ const ArticleDashboard = () => {
                         <img src={Logo} alt="Nusaira Logo" className="h-8 mr-2" />
                         <span className="font-semibold">Nusaira</span>
                         <span className="mx-2">|</span>
-                        <span>{article.date}</span>
+                        <span>{formatDate(article.date)}</span>
                     </div>
                 </div>
 
                 {/* Image Section */}
                 <div className="flex justify-center mb-6 ml-8 mr-8">
-                    <img src={article.image} alt={article.title} className="w-full h-[700px] rounded-xl shadow-lg mb-4" />
+                    <img
+                        src={`/${article.image}`}
+                        alt={article.title}
+                        className="w-full h-[700px] rounded-xl shadow-lg mb-4"
+                    />
                 </div>
 
                 {/* Dropdown Filter Section */}
@@ -130,11 +210,11 @@ const ArticleDashboard = () => {
                     {filter === 'indikasi' && (
                         <>
                             <h2 className="font-semibold mb-2">Indikasi</h2>
-                            <ul className="list-disc pl-5 text-lg text-gray-800 mb-4">
-                                {indikasiItems.map((item, index) => (
-                                    <li key={index}>{item}</li>
-                                ))}
-                            </ul>
+                            {article.indikasi ? (
+                                <p>{article.indikasi}</p>
+                            ) : (
+                                <p>No indikasi data available.</p>
+                            )}
                         </>
                     )}
                     {filter === 'penyebab' && (
@@ -215,13 +295,20 @@ const ArticleDashboard = () => {
                             </ul>
                         </>
                     )}
+
                     <h2 className="font-semibold mb-2">Referensi</h2>
-                    <p className="text-lg text-gray-800 mb-4">{referensiItems}</p>
+                    <ul className="list-disc pl-5 text-lg text-gray-800">
+                        {referensiItems.map((item, index) => (
+                            <li key={index}>{item}</li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
     );
 };
+
+
 
 
 
