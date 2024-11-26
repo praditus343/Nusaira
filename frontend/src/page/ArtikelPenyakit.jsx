@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
 import { Search, Share2 } from 'lucide-react';
 import Logo from '../assets/Logo.png';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-
 import axios from 'axios';
 import Header from '../componen/Header';
-import Sidebar from '../componen/Sidebar';
+import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AIFloatingButton';
 import Footer from '../componen/Footer';
 
