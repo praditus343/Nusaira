@@ -292,7 +292,7 @@ function LandingPage() {
                         { img: img5, title: "Memilih Bibit Lele yang Berkualitas" },
                         { img: img6, title: "Tips Pemanenan Lele yang Efisien" },
                         { img: img7, title: "Inovasi Teknologi Untuk Budidaya Lele" },
-                        { img: img8, title: "Peluang Usaha Budidaya Lele yang Menjanjikan" },
+                        { img: img8, title: "Peluang Usaha  Lele yang Menjanjikan" },
                     ].map((item, i) => (
                         <div
                             key={i}

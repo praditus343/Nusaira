@@ -17,22 +17,42 @@ const Footer = () => {
 
         {/* Sosial Media */}
         <div>
-      <h4 className="font-semibold text-lg mb-3">Sosial Media</h4>
-      <ul className="space-y-2">
-        <li className="flex items-center space-x-2">
-          <FaTwitter className="text-white" />
-          <span className="text-white">NusAlra</span>
-        </li>
-        <li className="flex items-center space-x-2">
-          <FaFacebook className="text-white" />
-          <span className="text-white">NusAlra</span>
-        </li>
-        <li className="flex items-center space-x-2">
-          <FaInstagram className="text-white" />
-          <span className="text-white">NusAlra</span>
-        </li>
-      </ul>
-    </div>
+          <h4 className="font-semibold text-lg mb-3">Sosial Media</h4>
+          <ul className="space-y-2">
+            <li className="flex items-center space-x-2">
+              <a
+                href="https://twitter.com/nusa_ira"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2"
+              >
+                <FaTwitter className="text-white" />
+                <span className="text-white">NusAlra</span>
+              </a>
+            </li>
+            <li className="flex items-center space-x-2">
+              <a
+                href="https://www.facebook.com/profile.php?id=61569492390896&mibextid=ZbWKwL"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2"
+              >
+                <FaFacebook className="text-white" />
+                <span className="text-white">NusAlra</span>
+              </a>
+            </li>
+            <li className="flex items-center space-x-2">
+              <a
+                href="https://www.instagram.com/nusai_ra/"
+                target="_blank"
+                className="flex items-center space-x-2"
+              >
+                <FaInstagram className="text-white" />
+                <span className="text-white">NusAlra</span>
+              </a>
+            </li>
+          </ul>
+        </div>
 
         {/* Kebijakan dan Ketentuan */}
         <div>
