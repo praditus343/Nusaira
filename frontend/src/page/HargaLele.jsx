@@ -62,6 +62,7 @@ const PriceMonitoringDashboard = () => {
             {/* Map Section */}
             <div className="border border-blue-600 rounded-lg bg-white shadow rounded-lg p-6 mr-10 ml-10">
                 <InteractiveMap />
+                
             </div>
 
             {/* Price Trends - New Layout */}
