@@ -159,10 +159,10 @@ const Sidebar = () => {
               ]}
             />
             <MenuItem
-              label="Kursus"
+              label="Perpustakaan"
               isSidebarOpen={isSidebarOpen}
               premiumChildren={true}
-              children={[{ icon: faGraduationCap, label: "Kursus", path: "/Perpustakaan" }]}
+              children={[{ icon: faGraduationCap, label: "Perpustakaan", path: "/Perpustakaan" }]}
             />
             <MenuItem
               label="Berlangganan"
