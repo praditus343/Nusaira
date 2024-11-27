@@ -42,6 +42,7 @@ import HomeLearning from './page/HomeLearning';
 import Home2Learning from './page/Home2Learning';
 import LaporanKeuangan from './page/LaporanKeuangan';
 import ContactPage from './page/ContactUs';
+import AdminDashboard from './page/Admin';
 
 
 
@@ -93,7 +94,7 @@ function App() {
           <Route path="/Home2Learning" element={<Home2Learning />} />
           <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
           <Route path="/Contact" element={<ContactPage />} />
-          
+          <Route path="/Admin" element={<AdminDashboard />} />
         </Routes>
       </Fragment>
     </Router>
