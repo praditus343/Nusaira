@@ -91,7 +91,7 @@ function Content() {
           <SubscriptionCard
             title="Per 6 Bulan"
             price="Rp.240.000"
-            originalPrice="Rp.1.000.000"
+            originalPrice="Rp.300.000"
             discount={20}
             duration="Kolam/Bootcamp"
           />

@@ -3,9 +3,14 @@ import Sidebar from "../componen/SideBar";
 import React, { useEffect } from "react";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
-import { tagihan } from "../lib/database";
 
 function TransactionItem({ title, date, status }) {
+  const formattedDate = new Date(date).toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div className="flex items-start bg-blue-50 p-6 rounded-lg border border-blue-200 mb-4 w-full">
       <div className="bg-blue-500 w-3 h-3 rounded-full mr-4 mt-2"></div>
@@ -13,7 +18,7 @@ function TransactionItem({ title, date, status }) {
         <h3 className="text-blue-500 font-semibold text-lg">{title}</h3>
         <div className="flex items-center text-sm text-gray-500 mb-2">
           <i className="fas fa-calendar-alt mr-2"></i>
-          <span>{date}</span>
+          <span>{formattedDate}</span>
         </div>
         <div className="flex items-center">
           <p className="text-sm text-gray-600 mr-2 break-words">{status}</p>
@@ -25,6 +30,7 @@ function TransactionItem({ title, date, status }) {
     </div>
   );
 }
+
 
 function Content() {
   const [istagihan, settagihan] = React.useState([]);
