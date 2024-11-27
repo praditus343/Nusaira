@@ -46,15 +46,15 @@ const Header = () => {
     '/ChatAi': 'NusAI',
     '/PriceHistory': 'Harga Lele / 10 Oktober 2024',
     '/PriceTrend': 'Harga Lele / Trend',
-    '/Perpustakaan': 'Perpustakaan / Kursus',
+    '/Perpustakaan': 'Perpustakaan',
     '/Invoice': 'Tagihan',
-    '/RingkasanLearning': 'Ringkasan / Kursus',
+    '/RingkasanLearning': 'Ringkasan / Perpustakaan',
     '/Pembayaran': 'Pembayaran',
     '/PengaturanTambak': 'Pengaturan Tambak',
-    '/BukuFavorit': 'Favorit / Kursus',
-    '/ELearning': 'Kursus',
-    '/HomeLearning': 'Beranda / Kursus',
-    '/Home2Learning': 'Beranda / Kursus'
+    '/BukuFavorit': 'Favorit / Perpustakaan',
+    '/ELearning': 'Perpustakaan',
+    '/HomeLearning': 'Beranda / Perpustakaan',
+    '/Home2Learning': 'Beranda / Perpustakaan'
   };
   const titlePenyakit = {
     "1": "Penyakit Bintik Putih",
