@@ -35,7 +35,7 @@ const PriceTrendsDashboard = () => {
         const city = cities[i];
         try {
           const response = await fetchCityPrediction(city);
-          console.log(`Response untuk ${city}:`, response);
+          // console.log(`Response untuk ${city}:`, response);
 
           cityData.push({
             city,
@@ -74,9 +74,8 @@ const PriceTrendsDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="ml-4 mr-4 p-6">
-        <h2 className="text-lg font-semibold mb-4">Memuat Data...</h2>
-        <p className="text-gray-600">Sedang mengambil data prediksi harga...</p>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }

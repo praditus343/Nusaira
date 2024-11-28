@@ -119,7 +119,7 @@ const AquacultureDashboard = () => {
   const filteredGrowthData = useMemo(() => {
     return growthData.filter((item) => {
       const metricValue = Number(item[selectedMetric]) || 0;
-      console.log(`Metric value for ${item.doc}:`, metricValue);
+      // console.log(`Metric value for ${item.doc}:`, metricValue);
       return metricValue >= docRange.start && metricValue <= docRange.end;
     });
   }, [growthData, docRange, selectedMetric]);

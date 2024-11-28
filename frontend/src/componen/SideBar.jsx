@@ -43,6 +43,7 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path, premiumChildren 
     }
   }, [isAnyChildActive]);
 
+  // Jika sidebar tertutup, jangan render
   if (!isSidebarOpen) return null;
 
   return (
@@ -100,6 +101,7 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path, premiumChildren 
     </div>
   );
 };
+
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
