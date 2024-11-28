@@ -4,11 +4,13 @@ import imgProfile from "../assets/img/landing_page_sebelum_daftar/landingsb2.png
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import BenderaIndonesia from "../assets/img/Indonesia.png"
 
 
 const Header = () => {
   const navigate = useNavigate();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isLanguageBannerVisible, setIsLanguageBannerVisible] = useState(false);
   const menuRef = useRef(null);
   const location = useLocation();
 
@@ -78,8 +80,7 @@ const Header = () => {
       : location.pathname.includes('/supplier/')
         ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
 
-  console.log('Artikel ID:', artikelId);
-  console.log('Judul dari titlePenyakit:', artikelTitle);
+ 
 
   const handleProfileClick = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
@@ -94,13 +95,26 @@ const Header = () => {
           <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
           <div className="flex items-center space-x-4">
             <span className="text-blue-600 font-medium">Informasi Terbaru NusAIra</span>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-300">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg"
-                alt="Bendera Indonesia"
-                className="w-full h-full object-cover"
-              />
+            <div
+              className="relative w-8 h-8 rounded-full border-2 border-gray-300"
+              onMouseEnter={() => setIsLanguageBannerVisible(true)}
+              onMouseLeave={() => setIsLanguageBannerVisible(false)}
+            >
+              <div className="bg-gray-300 w-full h-full rounded-full">
+                <img
+                  src={BenderaIndonesia}
+                  alt="Placeholder Image"
+                  className="w-full h-full object-cover rounded-full"
+                />
+
+              </div>
+              {isLanguageBannerVisible && (
+                <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded whitespace-nowrap">
+                Bahasa yang digunakan
+              </div>              
+              )}
             </div>
+
             <div className="relative" ref={menuRef}>
               <button
                 onClick={handleProfileClick}

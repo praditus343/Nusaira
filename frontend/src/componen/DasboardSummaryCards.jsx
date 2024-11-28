@@ -21,9 +21,7 @@ export const DashboardSummaryCards = ({
     </div>
     <div className="bg-blue-600 text-white p-4 rounded shadow">
       <h3 className="font-bold text-xl">Notifikasi Baru</h3>
-      <p className="text-3xl">
-        {notifikasiData.filter(notif => notif.status === 'Baru').length}
-      </p>
+      <p className="text-3xl">{notifikasiData.length}</p>
     </div>
   </div>
 );
