@@ -131,7 +131,6 @@ export const PesanMasukTable = ({ pesanData }) => {
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
-
       <button
         onClick={handleToggleDeleteMode}
         className={`absolute top-4 right-4 ${isDeleteMode ? 'bg-red-600 text-white rounded-lg px-4 py-2' : 'bg-red-600 text-white rounded-full w-12 h-12'} flex items-center justify-center hover:bg-red-700 mb-10`}
@@ -144,7 +143,7 @@ export const PesanMasukTable = ({ pesanData }) => {
       <div className="bg-yellow-500 text-white text-center p-2 mb-4 font-bold rounded-lg mb-8">
         Perhatian: Pesan dengan subjek yang mengandung 'Supplier' harus diperhatikan dan didahulukan.
       </div>
-        <table className="w-full bg-white rounded shadow-lg">
+        <table className="w-full bg-white rounded shadow-lg border border-gray-300">
           <thead>
             <tr className="bg-blue-600 text-white">
               <th className="py-2 px-4 text-left">

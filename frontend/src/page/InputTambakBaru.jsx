@@ -189,7 +189,7 @@ const TambakForm = () => {
                                 required
                             >
                                 <option value="" className="text-black">Negara</option>
-                                <option value="indonesia" className="text-blue-600">Indonesia</option>
+                                <option value="Indonesia" className="text-blue-600">Indonesia</option>
                             </SelectWithArrow>
 
                             <SelectWithArrow
@@ -199,9 +199,9 @@ const TambakForm = () => {
                                 required
                             >
                                 <option value="" className="text-black">Provinsi</option>
-                                <option value="jawa tengah" className="text-blue-600">Jawa Tengah</option>
-                                <option value="jawa timur" className="text-blue-600">Jawa Timur</option>
-                                <option value="jawa barat" className="text-blue-600">Jawa Barat</option>
+                                <option value="Jawa Tengah" className="text-blue-600">Jawa Tengah</option>
+                                <option value="Jawa Timur" className="text-blue-600">Jawa Timur</option>
+                                <option value="Jawa Barat" className="text-blue-600">Jawa Barat</option>
                             </SelectWithArrow>
 
                             <SelectWithArrow
@@ -211,15 +211,15 @@ const TambakForm = () => {
                                 required
                             >
                                 <option value="" className="text-black">Kabupaten</option>
-                                <option value="boyolali" className="text-blue-600">Kabupaten Boyolali</option>
-                                <option value="kebumen" className="text-blue-600">Kabupaten Kebumen</option>
-                                <option value="bayumas" className="text-blue-600">Kabupaten Bayumas</option>
-                                <option value="jember" className="text-blue-600">Kabupaten Jember</option>
-                                <option value="tulungagung" className="text-blue-600">Kabupaten Tulungagung</option>
+                                <option value="Boyolali" className="text-blue-600">Kabupaten Boyolali</option>
+                                <option value="Kebumen" className="text-blue-600">Kabupaten Kebumen</option>
+                                <option value="Bayumas" className="text-blue-600">Kabupaten Bayumas</option>
+                                <option value="Jember" className="text-blue-600">Kabupaten Jember</option>
+                                <option value="Tulungagung" className="text-blue-600">Kabupaten Tulungagung</option>
                                 <option value="pacitan" className="text-blue-600">Kabupaten Pacitan</option>
-                                <option value="ciamis" className="text-blue-600">Kabupaten ciamis</option>
-                                <option value="indramayu" className="text-blue-600">Kabupaten Indramayu</option>
-                                <option value="subang" className="text-blue-600">Kabupaten Subang</option>
+                                <option value="Ciamis" className="text-blue-600">Kabupaten ciamis</option>
+                                <option value="Indramayu" className="text-blue-600">Kabupaten Indramayu</option>
+                                <option value="Subang" className="text-blue-600">Kabupaten Subang</option>
                             </SelectWithArrow>
 
                             <div>

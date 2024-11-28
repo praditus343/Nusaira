@@ -20,22 +20,24 @@ const AdminDashboard = () => {
         const beritaResponse = await fetch('https://nusaira-be.vercel.app/api/berita');
         const penyakitResponse = await fetch('https://nusaira-be.vercel.app/api/penyakit-lele');
         const pesanResponse = await fetch('https://nusaira-be.vercel.app/api/contact/messages');
-        // const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
+        const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
 
         const beritaJson = await beritaResponse.json();
         const penyakitJson = await penyakitResponse.json();
         const pesanJson = await pesanResponse.json();
-        // const notifikasiJson = await notifikasiResponse.json();
+        const notifikasiJson = await notifikasiResponse.json();
 
         console.log('Berita Response:', beritaJson);
         console.log('Penyakit Response:', penyakitJson);
         console.log('Pesan Response:', pesanJson);
-        // console.log('Notifikasi Response:', notifikasiJson);
+        console.log('Notifikasi Response:', notifikasiJson);
 
         setBeritaData(beritaJson || []);
         setPenyakitData(penyakitJson.data || []);
         setPesanData(pesanJson.data || []);
-        // setNotifikasiData(notifikasiJson.data || []);
+        setNotifikasiData(notifikasiJson.data || notifikasiJson || []);
+        
+        
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -111,7 +113,7 @@ const AdminDashboard = () => {
         {activeTab === 'berita' && <BeritaCards beritaData={beritaData} />}
         {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} />}
         {activeTab === 'pesan' && <PesanMasukTable pesanData={pesanData} />}
-        {/* {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />} */}
+        {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
       </div>
     </div>
   );
