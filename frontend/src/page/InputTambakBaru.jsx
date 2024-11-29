@@ -7,7 +7,7 @@ import AIFloatingButton from '../componen/AiFloatingButton';
 import Alert from '../componen/Atlert';
 import Footer from '../componen/Footer';
 import Header from '../componen/Header';
-import Sidebar from '../componen/Sidebar';
+import Sidebar from './componen/SideBar';
 import axios from 'axios';
 
 const TambakForm = () => {
