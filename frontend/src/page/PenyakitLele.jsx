@@ -16,16 +16,21 @@ const FishDiseaseDashboard = () => {
 
     useEffect(() => {
         const fetchDiseases = async () => {
+            setLoading(true);
+            setError(null);
+
             try {
                 const response = await fetch('https://nusaira-be.vercel.app/api/penyakit-lele');
-                const { success, message, data } = await response.json();
-                if (success && Array.isArray(data)) {
-                    setDiseases(data);
-                } else {
-                    throw new Error(message);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            } catch (err) {
-                setError(err.message);
+
+                const data = await response.json();
+                console.log('Fetched data:', data);
+                setDiseases(data.data || []); // Pastikan hanya "data" yang disimpan
+            } catch (error) {
+                console.error('Error fetching diseases:', error.message);
+                setError('Gagal mengambil data penyakit lele.');
             } finally {
                 setLoading(false);
             }
@@ -34,9 +39,12 @@ const FishDiseaseDashboard = () => {
         fetchDiseases();
     }, []);
 
-    const filteredDiseases = diseases.filter((disease) =>
-        disease.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredDiseases = Array.isArray(diseases)
+        ? diseases.filter(disease =>
+            disease.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
+    console.log('Filtered diseases:', filteredDiseases);
 
     const handleDiseaseClick = (id) => {
         navigate(`/artikel/${id}`);
@@ -51,10 +59,8 @@ const FishDiseaseDashboard = () => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div className="text-center text-red-500">{error}</div>;
     }
-
-
 
     return (
         <div className="bg-white w-full min-h-screen">
@@ -111,13 +117,24 @@ const FishDiseaseDashboard = () => {
                             >
                                 <div className={`${isGridLayout ? 'w-full' : 'w-48'} relative`}>
                                     <img
-                                        src={`/${disease.image}`}
+                                        src={
+                                            disease.image
+                                                ? (disease.image.startsWith('http') ? disease.image : `/${disease.image}`)
+                                                : '/images/default-image.png'
+                                        }
                                         alt={disease.title}
                                         className="w-full h-48 object-cover"
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = '/images/default-image.png';
+                                        }}
                                     />
+
                                 </div>
                                 <div className={`p-4 ${isGridLayout ? '' : 'flex-1'}`}>
-                                    <p className="text-sm text-gray-500 mb-2">{new Date(disease.date).toLocaleDateString()}</p>
+                                    <p className="text-sm text-gray-500 mb-2">
+                                        {new Date(disease.date).toLocaleDateString()}
+                                    </p>
                                     <h3 className="font-semibold text-lg">{disease.title}</h3>
                                 </div>
                             </div>
@@ -137,7 +154,7 @@ const PenyakitLele = () => (
         <div className="flex-1 overflow-auto">
             <FishDiseaseDashboard />
             <AIFloatingButton />
-            <div className='mt-20'>
+            <div className="mt-20">
                 <Footer />
             </div>
         </div>

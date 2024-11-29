@@ -18,6 +18,7 @@ import {
     fetchPanen, 
     fetchAnco 
   } from '../../service/AxiosConfig.js';
+  import "./pageCss/Home.css"
   
 
 const DashboardContent = () => {
@@ -115,7 +116,7 @@ const DashboardContent = () => {
                                 </>
 
                             ) : (
-                                <p className="text-gray-500">Loading data...</p>
+                                <p className="text-gray-500 blinking-text">Loading data...</p>
                             )}
                         </div>
                         <AquacultureDashboard />
