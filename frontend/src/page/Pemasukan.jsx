@@ -7,7 +7,7 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
 import AIFloatingButton from "../componen/AiFloatingButton";
-import Sidebar from "../componen/Sidebar";
+import Sidebar from "../componen/SideBar";
 import Header from "../componen/Header";
 import Footer from "../componen/Footer";
 
