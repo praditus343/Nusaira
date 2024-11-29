@@ -109,14 +109,14 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 bg-gray-100">
         {activeTab === 'dashboard' && (
-          <DashboardSummaryCards
-            beritaData={beritaData}
-            penyakitData={penyakitData}
-            pesanData={pesanData}
-            notifikasiData={notifikasiData}
-          />
+          <DashboardSummaryCards 
+          beritaData={beritaData} 
+          penyakitData={penyakitData} 
+          pesanData={pesanData} 
+          notifikasiData={notifikasiData} 
+        />        
         )}
-        {activeTab === 'berita' && <BeritaCards beritaData={beritaData} />}
+        {activeTab === 'berita' && <BeritaCards beritaData={beritaData.berita || beritaData} />}
         {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} onDataUpdate={handleDataUpdate} />}
         {activeTab === 'pesan' && <PesanMasukTable pesanData={pesanData} />}
         {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
