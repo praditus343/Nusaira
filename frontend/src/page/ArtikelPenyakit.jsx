@@ -55,19 +55,19 @@ const ArticleDashboard = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
         );
-      }
-      
-      if (error) {
+    }
+
+    if (error) {
         return <div>{error}</div>;
-      }
-      
-      if (!article) {
+    }
+
+    if (!article) {
         return <div>Artikel tidak ditemukan</div>;
-      }
-      
+    }
+
 
     const handleSearch = async () => {
         try {
@@ -120,8 +120,8 @@ const ArticleDashboard = () => {
     const processItems = (text) => {
         if (!text) return [];
         return text.split('.').map(item => item.trim()).filter(item => item).map(item => item + '.');
-      };
-      
+    };
+
 
     const indikasiItems = processItems(article.indikasi);
     const penyebabItems = processItems(article.penyebab);
@@ -132,12 +132,12 @@ const ArticleDashboard = () => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0'); 
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
         return `${day}-${month}-${year}`;
     };
-    
+
 
     return (
         <div className='bg-white w-full min-h-screen'>
@@ -178,11 +178,20 @@ const ArticleDashboard = () => {
                 {/* Image Section */}
                 <div className="flex justify-center mb-6 ml-8 mr-8">
                     <img
-                        src={`/${article.image}`}
+                        src={
+                            article.image
+                                ? (article.image.startsWith('http') ? article.image : `/${article.image}`)
+                                : '/images/default-image.png'
+                        }
                         alt={article.title}
                         className="w-full h-[700px] rounded-xl shadow-lg mb-4"
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = '/images/default-image.png';
+                        }}
                     />
                 </div>
+
 
                 {/* Dropdown Filter Section */}
                 <div className="mb-6 flex justify-start relative ml-8">

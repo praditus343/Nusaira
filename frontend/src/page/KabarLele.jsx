@@ -70,6 +70,7 @@ const KabarLeleLayout = () => {
       try {
         setIsLoading(true);
         const response = await fetch('https://nusaira-be.vercel.app/api/berita');
+        console.log(response)
         
         if (!response.ok) {
           throw new Error('Failed to fetch posts');

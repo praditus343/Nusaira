@@ -25,14 +25,16 @@ export const PenyakitLeleUpload = ({ onClose }) => {
 
     const handleImageUpload = async (e) => {
         const files = Array.from(e.target.files);
+        console.log('Files selected for upload:', files);
         setIsLoading(true);
-
+    
         try {
             const uploadPromises = files.map(async (file) => {
                 const imageFormData = new FormData();
                 imageFormData.append('file', file);
                 imageFormData.append('upload_preset', 'Nusaira');
-
+                console.log('Uploading file:', file.name);
+    
                 const response = await axios.post(
                     'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
                     imageFormData,
@@ -40,11 +42,12 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
                 );
-
+                console.log('Upload successful:', response.data.secure_url);
                 return response.data.secure_url;
             });
-
+    
             const uploadedUrls = await Promise.all(uploadPromises);
+            console.log('All images uploaded:', uploadedUrls);
             setImages(uploadedUrls);
             setFormData((prev) => ({
                 ...prev,
@@ -52,6 +55,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             }));
             setIsLoading(false);
         } catch (error) {
+            console.error('Image upload failed:', error);
             setIsLoading(false);
             Swal.fire({
                 icon: 'error',
@@ -60,31 +64,42 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             });
         }
     };
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Form submission started with full data:', JSON.stringify(formData, null, 2));
         setIsLoading(true);
-
+    
         try {
-            if (!formData.title || !formData.date || !formData.image) {
-                throw new Error('Mohon lengkapi data yang diperlukan');
+            const missingFields = [];
+            if (!formData.title) missingFields.push('Title');
+            if (!formData.date) missingFields.push('Date');
+            if (!formData.image) missingFields.push('Image');
+    
+            if (missingFields.length > 0) {
+                throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
-
-            const payload = {
-                ...formData
-            };
-
+    
+            const payload = { ...formData };
+            console.log('Detailed payload for submission:', JSON.stringify(payload, null, 2));
+    
             const response = await axios.post(
                 'https://nusaira-be.vercel.app/api/penyakit-lele',
-                payload
+                payload,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
             );
-
+            console.log('Form submission response:', response.data);
+    
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
                 text: 'Data penyakit berhasil disimpan'
             });
-
+    
             setFormData({
                 title: '',
                 date: '',
@@ -99,15 +114,41 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             setImages([]);
             setIsLoading(false);
             onClose();
+    
         } catch (error) {
+            console.error('Complete error object:', error);
+            console.error('Error response:', error.response ? JSON.stringify(error.response, null, 2) : 'No response');
+            console.error('Error saat mengirim data:', error.response ? error.response.data : error.message);
+          
+    
+            if (error.response) {
+                console.error('Server error:', error.response);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: `Server error: ${error.response.data.message || 'Terjadi kesalahan di server'}`,
+                });
+            } else if (error.request) {
+                console.error('No response received:', error.request);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Tidak ada respons dari server. Coba lagi nanti.',
+                });
+            } else {
+                console.error('Error:', error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: `Kesalahan: ${error.message || 'Terjadi kesalahan tak terduga'}`,
+                });
+            }
+    
             setIsLoading(false);
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: error.response?.data?.message || error.message || 'Terjadi kesalahan'
-            });
         }
     };
+    
+    
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">

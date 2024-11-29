@@ -47,6 +47,12 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
+  const handleDataUpdate = (deletedId) => {
+    setPenyakitData((prevData) =>
+      prevData.filter((item) => item.id !== deletedId)
+    );
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <div className="w-64 bg-blue-600 text-white p-4">
@@ -111,7 +117,7 @@ const AdminDashboard = () => {
           />
         )}
         {activeTab === 'berita' && <BeritaCards beritaData={beritaData} />}
-        {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} />}
+        {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} onDataUpdate={handleDataUpdate} />}
         {activeTab === 'pesan' && <PesanMasukTable pesanData={pesanData} />}
         {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
       </div>
