@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../componen/Footer";
-import Sidebar from "../componen/SideBar";
+import Sidebar from '../componen/SideBar';
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
