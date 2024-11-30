@@ -1,12 +1,4 @@
-import React from "react";
-import {
-  BarChart3,
-  Droplets,
-  Activity,
-  Database,
-  LineChart,
-  TrendingUp,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
 import Footer from "../componen/Footer";
 import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
@@ -16,8 +8,134 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
-function LaporanDashboard() {
+function formatRupiah(amount) {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
 
+function RincianPengeluaran() {
+  const [pengeluaran, setPengeluaran] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('https://nusaira-be.vercel.app/api/pengeluaran');
+        if (!res.ok) throw new Error('Failed to fetch pengeluaran');
+        const data = await res.json();
+        setPengeluaran(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const totalSisaTagihan = pengeluaran.reduce((total, item) => total + parseFloat(item.sisa_tagihan), 0);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <section className="my-8">
+      <h3 className="text-lg font-semibold mb-4">Rincian Pengeluaran</h3>
+      <table className="w-full border border-gray-300">
+        <thead>
+          <tr className="bg-blue-500 text-left text-white">
+            <th className="border border-gray-300 p-2">Jenis Pengeluaran</th>
+            <th className="border border-gray-300 p-2">Nama Barang</th>
+            <th className="border border-gray-300 p-2">Catatan</th>
+            <th className="border border-gray-300 p-2">Status</th>
+            <th className="border border-gray-300 p-2">Sisa Tagihan (Rp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pengeluaran.map(item => (
+            <tr key={item.id}>
+              <td className="border border-gray-300 p-2">{item.jenis_pengeluaran}</td>
+              <td className="border border-gray-300 p-2">{item.nama_barang}</td>
+              <td className="border border-gray-300 p-2">{item.catatan}</td>
+              <td className="border border-gray-300 p-2">{item.status}</td>
+              <td className="border border-gray-300 p-2">{formatRupiah(item.sisa_tagihan)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="mt-4 font-bold">
+        <span>Total Sisa Tagihan: </span>
+        <span>{formatRupiah(totalSisaTagihan)}</span>
+      </div>
+    </section>
+  );
+}
+
+function RincianPemasukan() {
+  const [pemasukan, setPemasukan] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('https://nusaira-be.vercel.app/api/pemasukan');
+        if (!res.ok) throw new Error('Failed to fetch pemasukan');
+        const data = await res.json();
+        setPemasukan(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const totalPendapatan = pemasukan.reduce((total, item) => total + parseFloat(item.total), 0);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <section className="my-8">
+      <h3 className="text-lg font-semibold mb-4">Rincian Pemasukan</h3>
+      <table className="w-full border border-gray-300">
+        <thead>
+          <tr className="bg-blue-500 text-left text-white">
+            <th className="border border-gray-300 p-2">Nama Barang</th>
+            <th className="border border-gray-300 p-2">Kuantitas</th>
+            <th className="border border-gray-300 p-2">Harga Satuan (Rp)</th>
+            <th className="border border-gray-300 p-2">Pendapatan (Rp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pemasukan.map(item => (
+            <tr key={item.id}>
+              <td className="border border-gray-300 p-2">{item.kategori}</td>
+              <td className="border border-gray-300 p-2">{item.jumlah}</td>
+              <td className="border border-gray-300 p-2">{formatRupiah(item.harga)}</td>
+              <td className="border border-gray-300 p-2">{formatRupiah(item.total)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="mt-4 font-bold">
+        <span>Total Pendapatan: </span>
+        <span>{formatRupiah(totalPendapatan)}</span>
+      </div>
+    </section>
+  );
+}
+
+function LaporanDashboard() {
   async function handleExport() {
     const input = document.getElementById("dashboard-content");
   
@@ -50,16 +168,6 @@ function LaporanDashboard() {
         font-family: Arial, sans-serif;  
       }
   
-      #dashboard-content .keterangan {
-        white-space: normal; 
-        word-break: break-word;  
-        font-size: 14px;  
-        list-style-type: none !important;  
-        padding-left: 0 !important; 
-      }
-  
-      
-  
       #dashboard-content select, 
       #dashboard-content button {
         outline: none !important;
@@ -67,13 +175,6 @@ function LaporanDashboard() {
         box-shadow: none !important;
         background-color: transparent !important;
         color: inherit !important;
-      }
-  
-      #dashboard-content select, 
-      #dashboard-content button,
-      #dashboard-content .select-label, 
-      #dashboard-content .export-label {
-        display: none !important;
       }
     `;
     document.head.appendChild(style);
@@ -113,17 +214,13 @@ function LaporanDashboard() {
       });
     }
   }
-  
-
-
 
   return (
-    <div className="space-y-6 space-x-6 bg-white w-full min-h-screen ">
+    <div className="space-y-6 space-x-6 bg-white w-full min-h-screen">
       <Header />
-      <div className="p-6 ">
-        {/* Header Section */}
+      <div className="p-6">
         <div className="mb-20 mr-4">
-          <div className="flex justify-between items-center mb-4 mr-1 ">
+          <div className="flex justify-between items-center mb-4 mr-1">
             <h2 className="font-bold">Laporan Keuangan Tambak Lele</h2>
             <div className="flex gap-4 items-end">
               <div className="flex-1 relative">
@@ -154,14 +251,12 @@ function LaporanDashboard() {
           </div>
         </div>
 
-        {/* Main Content Card */}
-        <div id="dashboard-content" className="bg-white p-6 rounded-lg border  border-blue-500 mr-4">
-          {/* Card Header */}
+        <div id="dashboard-content" className="bg-white p-6 rounded-lg border border-blue-500 mr-4">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Tambak Lele Segar</h2>
             <div className="flex gap-2">
               <div className="relative">
-                <select id="#select-element-id" className="w-[200px] border p-2 pr-10 rounded-md appearance-none">
+                <select className="w-[200px] border p-2 pr-10 rounded-md appearance-none">
                   <option>Pilih Kolam</option>
                 </select>
                 <FontAwesomeIcon
@@ -169,19 +264,17 @@ function LaporanDashboard() {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
                 />
               </div>
-              <button id="#export-button-id" className="w-[100px] bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleExport}>
+              <button className="w-[100px] bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleExport}>
                 Ekspor
               </button>
             </div>
           </div>
 
-          {/* Report Title */}
           <div className="text-center mb-8">
             <h2 className="text-xl font-bold">LAPORAN KEUANGAN</h2>
             <h3 className="text-blue-500">Lele Segar</h3>
           </div>
 
-          {/* Info Section */}
           <div className="mb-8 mt-10">
             <div className="flex mb-1">
               <span className="font-medium w-32">Lokasi Tambak</span>
@@ -200,245 +293,34 @@ function LaporanDashboard() {
             </div>
           </div>
 
-          <div className="text-center mb-10 mt-20">
-            <h3 className="text-blue-700 inline-block border-b-4 border-blue-700 pb-1">
-              Detail
-            </h3>
-          </div>
+          <RincianPengeluaran />
+          <RincianPemasukan />
 
-          {/* Metrics First Row */}
-          <div className="grid grid-cols-3 gap-8 mb-10">
-            <MetricCard
-              icon={<BarChart3 />}
-              title="Hasil Panen"
-              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
-            />
-            <MetricCard
-              icon={<Activity />}
-              title="Nilai SFR"
-              description="Nilai Survival Rate (SR) dalam nilai yang baik (&gt;80%)"
-            />
-            <MetricCard
-              icon={<Database />}
-              title="Nilai FCR"
-              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
-            />
-          </div>
-
-          {/* Metrics Second Row */}
-          <div className="grid grid-cols-3 gap-8 mb-10">
-            <MetricCard
-              icon={<Droplets />}
-              title="Kualitas Air"
-              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
-            />
-            <MetricCard
-              icon={<LineChart />}
-              title="Daya Dukung Lahan"
-              description="Daya dukung lahan sudah dipertimbangkan dengan baik"
-            />
-            <MetricCard
-              icon={<TrendingUp />}
-              title="Pertumbuhan Lele"
-              description="Data pada Kolam B3, Kolam B4 tidak lengkap"
-            />
-          </div>
-
-
-
-      <section className="my-8">
-        <h3 className="text-lg font-semibold mb-4">Rincian Pengeluaran</h3>
-        <table className="w-full border border-gray-300">
-          <thead>
-            <tr className="bg-blue-500 text-left text-white">
-              <th className="border border-gray-300 p-2">Kategori</th>
-              <th className="border border-gray-300 p-2">Rincian (Nama Barang)</th>
-              <th className="border border-gray-300 p-2">Kuantitas</th>
-              <th className="border border-gray-300 p-2">Harga Satuan (Rp)</th>
-              <th className="border border-gray-300 p-2">Total Biaya (Rp)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Example row */}
-            <tr>
-              <td className="border border-gray-300 p-2">Pakan</td>
-              <td className="border border-gray-300 p-2">Pelet</td>
-              <td className="border border-gray-300 p-2">50</td>
-              <td className="border border-gray-300 p-2">10000</td>
-              <td className="border border-gray-300 p-2">500000</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Pakan</td>
-              <td className="border border-gray-300 p-2">Pelet</td>
-              <td className="border border-gray-300 p-2">50</td>
-              <td className="border border-gray-300 p-2">10000</td>
-              <td className="border border-gray-300 p-2">500000</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Pakan</td>
-              <td className="border border-gray-300 p-2">Pelet</td>
-              <td className="border border-gray-300 p-2">50</td>
-              <td className="border border-gray-300 p-2">10000</td>
-              <td className="border border-gray-300 p-2">500000</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section className="my-8">
-        <h3 className="text-lg font-semibold mb-4">Rincian Pemasukan</h3>
-        <table className="w-full border border-gray-300">
-          <thead>
-            <tr className="bg-blue-500 text-left text-white">
-              <th className="border border-gray-300 p-2">Nama Barang</th>
-              <th className="border border-gray-300 p-2">Kuantitas</th>
-              <th className="border border-gray-300 p-2">Harga Jual Satuan (Rp)</th>
-              <th className="border border-gray-300 p-2">Total Pendapatan (Rp)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Example row */}
-            <tr>
-              <td className="border border-gray-300 p-2">Lele</td>
-              <td className="border border-gray-300 p-2">100</td>
-              <td className="border border-gray-300 p-2">20000</td>
-              <td className="border border-gray-300 p-2">2000000</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Lele</td>
-              <td className="border border-gray-300 p-2">100</td>
-              <td className="border border-gray-300 p-2">20000</td>
-              <td className="border border-gray-300 p-2">2000000</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Lele</td>
-              <td className="border border-gray-300 p-2">100</td>
-              <td className="border border-gray-300 p-2">20000</td>
-              <td className="border border-gray-300 p-2">2000000</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section className="my-8">
-        <h3 className="text-lg font-semibold mb-4">Rekapitulasi Keuangan</h3>
-        <table className="w-full border border-gray-300">
-          <thead>
-            <tr className="bg-blue-500 text-left text-white">
-              <th className="border border-gray-300 p-2">Keterangan</th>
-              <th className="border border-gray-300 p-2">Jumlah (Rp)</th>
-              <th className="border border-gray-300 p-2">Laba / Rugi Bersih</th>
-              <th className="border border-gray-300 p-2">Rp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Example row */}
-            <tr>
-              <td className="border border-gray-300 p-2">Pendapatan Total</td>
-              <td className="border border-gray-300 p-2">2000000</td>
-              <td className="border border-gray-300 p-2">500000</td>
-              <td className="border border-gray-300 p-2">1500000</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Pendapatan Total</td>
-              <td className="border border-gray-300 p-2">2000000</td>
-              <td className="border border-gray-300 p-2">500000</td>
-              <td className="border border-gray-300 p-2">1500000</td>
-            </tr>
-            <tr>
-              <td className="border border-gray-300 p-2">Pendapatan Total</td>
-              <td className="border border-gray-300 p-2">2000000</td>
-              <td className="border border-gray-300 p-2">500000</td>
-              <td className="border border-gray-300 p-2">1500000</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-
-        </div> 
-      <div />
+          <section className="my-8">
+            <h3 className="text-lg font-semibold mb-4">Rekapitulasi Keuangan</h3>
+            <table className="w-full border border-gray-300">
+              <thead>
+                <tr className="bg-blue-500 text-left text-white">
+                  <th className="border border-gray-300 p-2">Keterangan</th>
+                  <th className="border border-gray-300 p-2">Jumlah (Rp)</th>
+                  <th className="border border-gray-300 p-2">Laba / Rugi Bersih</th>
+                  <th className="border border-gray-300 p-2">Rp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* Example row */}
+                <tr>
+                  <td className="border border-gray-300 p-2">Pendapatan Total</td>
+                  <td className="border border-gray-300 p-2">2,000,000</td>
+                  <td className="border border-gray-300 p-2">500,000</td>
+                  <td className="border border-gray-300 p-2">1,500,000</td>
+                </tr>
+                {/* Duplicate rows can be removed or replaced with dynamic data */}
+              </tbody>
+            </table>
+          </section>
+        </div>
       </div>
-    </div>
-  );
-}
-
-function MetricCard({ icon, title, description }) {
-  return (
-    <div className="text-center">
-      {React.cloneElement(icon, {
-        className: "w-12 h-12 mx-auto mb-2 text-blue-500",
-      })}
-      <p className="font-medium mb-2">{title}</p>
-      <p className="text-sm text-gray-600">{description}</p>
-    </div>
-  );
-}
-
-function Indicator({ color, text }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className={`w-3 h-3 rounded-full bg-${color}`}></div>
-      <span>{text}</span>
-    </div>
-  );
-}
-
-function TableSection() {
-  return (
-    <div className="overflow-x-auto mt-10">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-blue-500 text-white">
-            <th className="py-2 px-4 border">Nomor Kolam</th>
-            <th className="py-2 px-4 border">Luas Kolam</th>
-            <th className="py-2 px-4 border">DOC (Hari)</th>
-            <th className="py-2 px-4 border">Jumlah Benih</th>
-            <th className="py-2 px-4 border">Padat Tebar</th>
-            <th className="py-2 px-4 border">Total Pakan</th>
-            <th className="py-2 px-4 border">Biomassa Panen</th>
-            <th className="py-2 px-4 border">Size Panen</th>
-            <th className="py-2 px-4 border">FCR</th>
-            <th className="py-2 px-4 border">SR</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="bg-green-500">
-            <td className="py-2 px-4 border">Kolam B3</td>
-            <td className="py-2 px-4 border">1900 m²</td>
-            <td className="py-2 px-4 border">60</td>
-            <td className="py-2 px-4 border">100.000</td>
-            <td className="py-2 px-4 border">60(mg/m²)</td>
-            <td className="py-2 px-4 border">15 kg</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">100%</td>
-          </tr>
-          <tr className="bg-yellow-500">
-            <td className="py-2 px-4 border">Kolam B4</td>
-            <td className="py-2 px-4 border">1800 m²</td>
-            <td className="py-2 px-4 border">60</td>
-            <td className="py-2 px-4 border">100.000</td>
-            <td className="py-2 px-4 border">48(mg/m²)</td>
-            <td className="py-2 px-4 border">12 kg</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">100%</td>
-          </tr>
-          <tr className="bg-blue-500 text-white">
-            <td colSpan="5" className="py-2 px-4 text-center">
-              Total
-            </td>
-            <td className="py-2 px-4 border">12 kg</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border">0</td>
-            <td className="py-2 px-4 border"> </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   );
 }
@@ -450,7 +332,7 @@ function LaporanBudidaya() {
       <div className="flex-1">
         <LaporanDashboard />
         <div className="mt-20">
-        <Footer />
+          <Footer />
         </div>
         <AIFloatingButton />
       </div>
