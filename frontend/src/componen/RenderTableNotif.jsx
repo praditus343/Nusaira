@@ -76,7 +76,7 @@ const RendaTableNotif = () => {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Notifikasi</h2>
+        <h2 className="text-xl font-bold"> Pemberitahuan Umum</h2>
         <TambahNotifikasiModal onNotifikasiAdded={handleNotifikasiAdded} />
       </div>
       {loading ? (

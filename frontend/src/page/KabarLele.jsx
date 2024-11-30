@@ -10,6 +10,7 @@ const LeftCard = ({ post, isVisible }) => {
   const navigate = useNavigate();
 
   const handleReadMore = () => {
+    console.log("Navigating to:", `/kabar-lele/${post.id}`);
     navigate(`/kabar-lele/${post.id}`, { state: { post } });
   };
 
@@ -35,6 +36,7 @@ const RightCard = ({ post, highlight }) => {
   const navigate = useNavigate();
 
   const handleReadMore = () => {
+    console.log("Navigating to:", `/kabar-lele/${post.id}`);
     navigate(`/kabar-lele/${post.id}`, { state: { post } });
   };
 
@@ -69,38 +71,50 @@ const KabarLeleLayout = () => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
+        setError(null);
+        // console.log('Fetching posts...');
+        
         const response = await fetch('https://nusaira-be.vercel.app/api/berita');
-        console.log(response)
+        // console.log('Fetch response:', response);
         
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
-        
+    
         const data = await response.json();
-        
-        const shuffled = [...data].sort(() => 0.5 - Math.random());
+        // console.log('Fetched posts data:', data);
+    
+        if (!Array.isArray(data.berita)) {
+          throw new Error('Data is not iterable');
+        }
+    
+        const shuffled = [...data.berita].sort(() => 0.5 - Math.random());
         setRandomLeftPosts(shuffled.slice(0, 3));
-        setFilteredPosts(data);
-        setIsLoading(false);
+        setFilteredPosts(data.berita);
       } catch (err) {
         console.error('Error fetching posts:', err);
         setError(err.message);
+      } finally {
         setIsLoading(false);
       }
     };
+    
+    
 
     fetchPosts();
   }, []);
 
   useEffect(() => {
-    const sortedPosts = filteredPosts.filter(post => 
+    // console.log("Filtering posts with searchTerm:", searchTerm);
+    const sortedPosts = filteredPosts.filter((post) =>
       post.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+    // console.log("Filtered posts:", sortedPosts);
     setFilteredPosts(sortedPosts);
   }, [searchTerm]);
 
   if (isLoading) {
+    console.log("Loading...");
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
@@ -109,6 +123,7 @@ const KabarLeleLayout = () => {
   }
 
   if (error) {
+    // console.log("Error state:", error);
     return (
       <div className="flex justify-center items-center h-screen bg-red-100 p-6 rounded-lg shadow-lg">
         <div className="text-center">
@@ -118,7 +133,6 @@ const KabarLeleLayout = () => {
       </div>
     );
   }
-  
 
   return (
     <div className="flex h-screen">
@@ -173,7 +187,7 @@ const KabarLeleLayout = () => {
               </div>
               <div className="w-2/3">
                 <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-                <div className="space-y-4 overflow-y-auto max-h-[160vh] mt-4">
+                <div className="space-y-4 overflow-y-auto max-h-[130vh] mt-4">
                   {filteredPosts.map((post) => (
                     <RightCard
                       key={post.id}

@@ -44,6 +44,19 @@ export const PenyakitLeleCards = ({ penyakitData, onDataUpdate }) => {
 
   return (
     <>
+      <div className="bg-gradient-to-r from-blue-800 via-blue-700 to-blue-600
+ py-10 px-8 rounded-lg shadow-lg ml-4 mr-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold text-white mb-4">Penulisan Referensi Penyakit Ikan Lele</h2>
+            <p className="text-lg text-white">
+              <span className="font-medium">Format Referensi:</span> <span className="italic"> ["Nama, Inisial. (Tahun). Judul Buku/Artikel. <em>Nama Penerbit/Jurnal.</em>",
+                "Nama, Inisial. (Tahun). Judul Buku/Artikel. <em>Nama Penerbit/Jurnal.</em>"]</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
       <button
         onClick={openModal}
         className="bg-blue-500 text-white px-4 py-2 rounded mb-4 mt-8 ml-4"
@@ -53,7 +66,7 @@ export const PenyakitLeleCards = ({ penyakitData, onDataUpdate }) => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-8 ">
               <h2 className="text-xl font-bold text-gray-800 text-left">
                 Tambah Penyakit Lele
               </h2>

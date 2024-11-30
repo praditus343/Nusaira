@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, FileText, MessageCircle, Bell, Heart } from 'lucide-react';
+import { LayoutGrid, FileText, MessageCircle, Bell, Heart,LogOut  } from 'lucide-react';
 import DashboardSummaryCards from '../componen/DasboardSummaryCards';
 import PenyakitLeleCards from '../componen/PenyakitLeleCards';
 import BeritaCards from '../componen/BeritaCards';
 import PesanMasukTable from '../componen/PesanMasukTable';
 import RendaTableNotif from '../componen/RenderTableNotif';
 import Logo from '../assets/Logo.png'
+import { useNavigate } from 'react-router-dom'; 
 
 const AdminDashboard = () => {
   const [beritaData, setBeritaData] = useState([]);
@@ -13,6 +14,15 @@ const AdminDashboard = () => {
   const [pesanData, setPesanData] = useState([]);
   const [notifikasiData, setNotifikasiData] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const navigate = useNavigate(); 
+
+  const handleLogout = () => {
+    // Lakukan proses logout di sini (misalnya menghapus token, dll)
+    // Contoh sederhana:
+    // localStorage.removeItem('authToken'); // Sesuaikan dengan cara Anda menyimpan token
+    navigate('/'); // Navigasi ke halaman login/home
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,10 +37,10 @@ const AdminDashboard = () => {
         const pesanJson = await pesanResponse.json();
         const notifikasiJson = await notifikasiResponse.json();
 
-        console.log('Berita Response:', beritaJson);
-        console.log('Penyakit Response:', penyakitJson);
-        console.log('Pesan Response:', pesanJson);
-        console.log('Notifikasi Response:', notifikasiJson);
+        // console.log('Berita Response:', beritaJson);
+        // console.log('Penyakit Response:', penyakitJson);
+        // console.log('Pesan Response:', pesanJson);
+        // console.log('Notifikasi Response:', notifikasiJson);
 
         setBeritaData(beritaJson || []);
         setPenyakitData(penyakitJson.data || []);
@@ -64,7 +74,6 @@ const AdminDashboard = () => {
           />
           <h1 className="text-2xl font-bold">Nusaira Admin</h1>
         </div>
-
         <nav>
           <ul>
             <li
@@ -105,21 +114,39 @@ const AdminDashboard = () => {
           </ul>
         </nav>
       </div>
+     
 
-      {/* Main Content */}
-      <div className="flex-1 bg-gray-100">
-        {activeTab === 'dashboard' && (
-          <DashboardSummaryCards
-            beritaData={beritaData}
-            penyakitData={penyakitData}
-            pesanData={pesanData}
-            notifikasiData={notifikasiData}
-          />
-        )}
-        {activeTab === 'berita' && <BeritaCards beritaData={beritaData} />}
-        {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} onDataUpdate={handleDataUpdate} />}
-        {activeTab === 'pesan' && <PesanMasukTable pesanData={pesanData} />}
-        {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
+      <div className="flex-1 bg-white flex flex-col">
+        {/* Header Baru */}
+        <header className="bg-white shadow-md p-4 flex justify-between items-center">
+          <div className="flex items-center">
+            <h2 className="text-2xl font-bold text-gray-800 capitalize">
+              {activeTab} 
+            </h2>
+          </div>
+          <button 
+            onClick={handleLogout}
+            className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
+          >
+            <LogOut className="mr-2" size={20} /> Keluar
+          </button>
+        </header>
+
+        {/* Konten utama */}
+        <div className="p-6 flex-1">
+          {activeTab === 'dashboard' && (
+            <DashboardSummaryCards 
+              beritaData={beritaData} 
+              penyakitData={penyakitData} 
+              pesanData={pesanData} 
+              notifikasiData={notifikasiData} 
+            />        
+          )}
+          {activeTab === 'berita' && <BeritaCards beritaData={beritaData.berita || beritaData} />}
+          {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} onDataUpdate={handleDataUpdate} />}
+          {activeTab === 'pesan' && <PesanMasukTable pesanData={pesanData} />}
+          {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
+        </div>
       </div>
     </div>
   );
