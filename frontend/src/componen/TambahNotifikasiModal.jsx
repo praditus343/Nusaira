@@ -52,7 +52,7 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
                 onNotifikasiAdded();
             }
 
-            // SweetAlert success notification
+            
             Swal.fire({
                 icon: "success",
                 title: "Berhasil!",
@@ -61,9 +61,8 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
                 confirmButtonText: "Oke",
             });
         } catch (error) {
-            console.error("Error:", error);
+            // console.error("Error:", error);
 
-            // SweetAlert error notification
             Swal.fire({
                 icon: "error",
                 title: "Gagal!",

@@ -30,7 +30,7 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                 const imageFormData = new FormData();
                 imageFormData.append('file', file);
                 imageFormData.append('upload_preset', 'Nusaira');
-                console.log('Uploading file:', file.name);
+                // console.log('Uploading file:', file.name);
 
                 const response = await axios.post(
                     'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',

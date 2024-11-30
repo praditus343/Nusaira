@@ -78,7 +78,7 @@ export const BeritaCards = ({ onAddBerita }) => {
           </button>
   
           {data.berita.map((item) => ( 
-            <div key={item.id} className="bg-white rounded shadow p-4 relative">
+            <div key={item.id} className="bg-white rounded shadow p-4 relative border border-gray-300">
               <img
                 src={item.image || "https://via.placeholder.com/150"}
                 alt={item.title || "Gambar Berita"}
