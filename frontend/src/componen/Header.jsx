@@ -58,25 +58,14 @@ const Header = () => {
     '/HomeLearning': 'Beranda / Perpustakaan',
     '/Home2Learning': 'Beranda / Perpustakaan'
   };
-  const titlePenyakit = {
-    "1": "Penyakit Bintik Putih",
-    "2": "Penyakit Luka Ulkus",
-    "3": "Penyakit Busuk Sirip",
-    "4": "Penyakit Insang Merah",
-    "5": "Penyakit Kembung Perut",
-    "6": "Jamur Pada Lele",
-    "7": "Pucat Insang",
-    "8": "Penyakit Mata Bengkak",
-    "9": "Penyakit Perut kembung Akut",
-  };
+ 
 
 
-  const artikelId = location.pathname.split('/').pop();
-  const artikelTitle = titlePenyakit[artikelId] || `Artikel ID: ${artikelId}`;
+  const artikelTitle = ""; 
   const title = location.pathname.startsWith('/kabar-lele')
     ? 'Artikel & Blog'
     : location.pathname.startsWith('/artikel/')
-      ? `Penyakit Lele / ${artikelTitle}`
+      ? `Penyakit Lele  ${artikelTitle}`
       : location.pathname.includes('/supplier/')
         ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
 

@@ -33,7 +33,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                 const imageFormData = new FormData();
                 imageFormData.append('file', file);
                 imageFormData.append('upload_preset', 'Nusaira');
-                console.log('Uploading file:', file.name);
+                // console.log('Uploading file:', file.name);
     
                 const response = await axios.post(
                     'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
@@ -42,7 +42,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
                 );
-                console.log('Upload successful:', response.data.secure_url);
+                // console.log('Upload successful:', response.data.secure_url);
                 return response.data.secure_url;
             });
     
@@ -81,7 +81,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             }
     
             const payload = { ...formData };
-            console.log('Detailed payload for submission:', JSON.stringify(payload, null, 2));
+            // console.log('Detailed payload for submission:', JSON.stringify(payload, null, 2));
     
             const response = await axios.post(
                 'https://nusaira-be.vercel.app/api/penyakit-lele',
@@ -92,7 +92,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                     }
                 }
             );
-            console.log('Form submission response:', response.data);
+            // console.log('Form submission response:', response.data);
     
             Swal.fire({
                 icon: 'success',

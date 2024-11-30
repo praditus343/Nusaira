@@ -25,19 +25,19 @@ const ArticleDashboard = () => {
     useEffect(() => {
         const fetchArticle = async () => {
             try {
-                console.log(`Fetching article with ID: ${id}`);
+                // console.log(`Fetching article with ID: ${id}`);
                 const response = await axios.get(`https://nusaira-be.vercel.app/api/penyakit-lele/${id}`, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
 
-                console.log('Response:', response.data);
+                // console.log('Response:', response.data);
 
                 if (response.data) {
                     setArticle(response.data.data);
-                    console.log('Article data:', response.data);
-                    console.log('Indikasi:', response.data.indikasi);
+                    // console.log('Article data:', response.data);
+                    // console.log('Indikasi:', response.data.indikasi);
                 } else {
                     setError('Artikel tidak ditemukan');
                 }

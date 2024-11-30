@@ -26,8 +26,8 @@ const FishDiseaseDashboard = () => {
                 }
 
                 const data = await response.json();
-                console.log('Fetched data:', data);
-                setDiseases(data.data || []); // Pastikan hanya "data" yang disimpan
+                // console.log('Fetched data:', data);
+                setDiseases(data.data || []);
             } catch (error) {
                 console.error('Error fetching diseases:', error.message);
                 setError('Gagal mengambil data penyakit lele.');
@@ -44,7 +44,7 @@ const FishDiseaseDashboard = () => {
             disease.title.toLowerCase().includes(searchTerm.toLowerCase())
         )
         : [];
-    console.log('Filtered diseases:', filteredDiseases);
+    // console.log('Filtered diseases:', filteredDiseases);
 
     const handleDiseaseClick = (id) => {
         navigate(`/artikel/${id}`);

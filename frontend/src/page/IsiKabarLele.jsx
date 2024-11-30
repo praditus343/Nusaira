@@ -50,7 +50,7 @@ const KabarLeleArticleLayout = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">Ups! Terjadi Kesalahan</h2>
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Ups! Terjadi Kesalahan</h2>
           <strong className="font-bold">Error: </strong>
           <span className="block sm:inline">{error}</span>
           <button
@@ -78,12 +78,27 @@ const KabarLeleArticleLayout = () => {
       {article && (
         <div>
           <div className="flex flex-col">
-            <h1 className="text-3xl font-bold mb-4 ml-72">{article.title}</h1>
-            <img
-              src={`/${article.image}`}
-              alt={article.title}
-              className="max-w-[90%] h-auto rounded-lg mb-6"
-            />
+            <h1 className="text-3xl font-bold mb-4 text-center">{article.title}</h1>
+            <div>
+              <img
+                src={
+                  article.image
+                    ? (article.image.startsWith('http')
+                      ? article.image
+                      : `/${article.image}`)
+                    : '/images/default-image.png'
+                }
+                alt={article.title}
+                className={
+                  article.image.startsWith('http')
+                    ? 'w-full h-[900px] object-cover rounded-lg mb-6 mx-auto block'
+                    : 'w-full h-auto rounded-lg mb-6 object-cover'
+                }
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = '/images/default-image.png';
+                }}
+              /></div>
           </div>
 
           <div className="flex items-center mb-4 text-gray-600">
@@ -101,7 +116,7 @@ const KabarLeleArticleLayout = () => {
               })}</p>
             </div>
           </div>
-          <div className="prose max-w-[90%] ">{article.content}</div>
+          <div className="prose w-full ">{article.content}</div>
         </div>
       )}
     </div>
