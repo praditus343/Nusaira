@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapPin } from "lucide-react";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Sidebar from "../componen/SideBar";
@@ -6,59 +6,81 @@ import Header from "../componen/Header";
 import Footer from "../componen/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+import axios from 'axios'; // Tambahkan import axios
 
 const ExcelForm = () => {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      tanggal: "",
-      jenisPengeluaran: "",
-      namaBarang: "",
-      catatan: "",
-      status: "",
-      sisaTagihan: "",
-    },
-  ]);
+  const [rows, setRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    fetchPengeluaran();
+  }, []);
+
+  const fetchPengeluaran = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get('https://nusaira-be.vercel.app/api/pengeluaran');
+      setRows(response.data.map(item => ({
+        ...item,
+        date: item.date.split("T")[0], // Mengambil hanya bagian tanggal
+        id: item.id || Date.now() + Math.random(),
+      })));
+    } catch (error) {
+      console.error("Error fetching pengeluaran data:", error);
+      setError("Gagal mengambil data. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   const handleAddRow = () => {
     const newRow = {
-      id: rows.length + 1,
-      tanggal: "",
-      jenisPengeluaran: "",
-      namaBarang: "",
+      id: Date.now() + Math.random(), // Tambahkan ID unik
+      date: new Date().toISOString().split('T')[0],
+      jenis_pengeluaran: "",
+      nama_barang: "",
       catatan: "",
-      status: "",
-      sisaTagihan: "",
+      status: "belum",
+      sisa_tagihan: 0,
     };
     setRows([...rows, newRow]);
   };
 
-  const handleDeleteRow = (id) => {
-    const updatedRows = rows.filter((row) => row.id !== id);
-    setRows(updatedRows);
+  const handleDeleteRow = async (id) => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
+    
+    try {
+      // Cek apakah row sudah tersimpan di backend (memiliki ID)
+      if (id) {
+        await axios.delete(`https://nusaira-be.vercel.app/api/pengeluaran/${id}`);
+      }
+      
+      // Hapus dari state lokal
+      setRows(rows.filter(row => row.id !== id));
+    } catch (error) {
+      console.error("Error deleting pengeluaran:", error);
+      setError("Gagal menghapus data. Silakan coba lagi.");
+    }
   };
 
   const handleDeleteAllRows = () => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus semua data?")) return;
     setRows([]);
   };
 
   const handleInputChange = (id, field, value) => {
-    const updatedRows = rows.map((row) => {
-      if (row.id === id) {
-        if (field === "status" && value === "lunas") {
-          value = "lunas"; // Jika status diubah ke "Lunas", set sisaTagihan menjadi kosong
-          return { ...row, [field]: value, sisaTagihan: "" }; // Set sisaTagihan menjadi kosong
-        }
-        if (field === "status" && value === "belum") {
-          value = "belum"; // Jika status diubah kembali ke "Belum", biarkan sisaTagihan bisa diubah lagi
-        }
-        return { ...row, [field]: value };
-      }
-      return row;
-    });
+    const updatedRows = rows.map(row => 
+      row.id === id 
+        ? {
+            ...row, 
+            [field]: field === 'sisa_tagihan' 
+              ? parseFloat(value.replace(/[^0-9]/g, '')) || 0 
+              : value
+          } 
+        : row
+    );
     setRows(updatedRows);
   };
 
@@ -67,55 +89,59 @@ const ExcelForm = () => {
       style: "currency",
       currency: "IDR",
       minimumFractionDigits: 0,
-    }).format(number);
+    }).format(number || 0);
   };
 
-  // Filter rows based on search term
   const filteredRows = rows.filter(
     (row) =>
-      row.jenisPengeluaran.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.namaBarang.toLowerCase().includes(searchTerm.toLowerCase())
+      row.jenis_pengeluaran.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.nama_barang.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Calculate the total "sisaTagihan"
   const totalPengeluaran = rows.reduce((total, row) => {
-    return total + (parseFloat(row.sisaTagihan) || 0); // Ensure it adds numbers and handles empty values
+    return total + (parseFloat(row.sisa_tagihan) || 0);
   }, 0);
 
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-    const tableColumn = [
-      "No",
-      "Tanggal",
-      "Jenis Pengeluaran",
-      "Nama Barang",
-      "Catatan",
-      "Status",
-      "Sisa Tagihan",
-    ];
-    const tableRows = filteredRows.map((row) => [
-      row.id,
-      row.tanggal,
-      row.jenisPengeluaran,
-      row.namaBarang,
-      row.catatan,
-      row.status,
-      formatRupiah(row.sisaTagihan), // Format dengan formatRupiah
-    ]);
-
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      theme: "grid",
-    });
-
-    doc.text(
-      `Total Pengeluaran: ${formatRupiah(totalPengeluaran)}`,
-      14,
-      doc.lastAutoTable.finalY + 10
+  const handleSubmit = async () => {
+    // Validasi data sebelum submit
+    const invalidRows = rows.filter(row => 
+      !row.date || 
+      !row.jenis_pengeluaran || 
+      !row.nama_barang || 
+      !row.catatan || 
+      !row.status || 
+      row.sisa_tagihan <= 0
     );
 
-    doc.save("laporan_pengeluaran.pdf");
+    if (invalidRows.length > 0) {
+      setError('Pastikan semua kolom terisi dengan benar');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Kirim data yang sudah divalidasi
+      const dataToSend = rows.map(row => ({
+        date: row.date,
+        jenis_pengeluaran: row.jenis_pengeluaran,
+        nama_barang: row.nama_barang,
+        catatan: row.catatan,
+        status: row.status,
+        sisa_tagihan: row.sisa_tagihan
+      }));
+
+      const response = await axios.post('https://nusaira-be.vercel.app/api/pengeluaran', dataToSend);
+      
+      alert("Data berhasil disimpan!");
+      fetchPengeluaran(); // Refresh data setelah submit
+    } catch (error) {
+      console.error("Error saving pengeluaran:", error);
+      setError(error.response?.data?.message || "Gagal menyimpan data. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -125,9 +151,7 @@ const ExcelForm = () => {
         <div className="p-4">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div>
-              <h1 className="text-xl font-medium">
-                Pengeluaran Tambak Lele Segar
-              </h1>
+              <h1 className="text-xl font-medium">Pengeluaran Tambak Lele Segar</h1>
               <div className="flex items-center space-x-2 text-gray-600">
                 <MapPin className="w-4 h-4" />
                 <span>Boyolali, Jawa Tengah</span>
@@ -141,59 +165,26 @@ const ExcelForm = () => {
                 </select>
                 <FontAwesomeIcon
                   icon={faChevronDown}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400"
                 />
               </div>
-              <button
-                onClick={exportToPDF}
-                className="px-6 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
-              >
-                Ekspor Laporan
-              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
         <div className="p-6">
           <div className="mb-4 flex justify-between items-center">
-            <h2 className="text-lg font-medium text-gray-800">
-              Detail Catatan Pengeluaran
-            </h2>
+            <h2 className="text-lg font-medium text-gray-800">Detail Catatan Pengeluaran</h2>
             <div className="flex space-x-4">
-              {/* Search input */}
-              <div className="flex items-center justify-center px-4">
-                <div className="relative flex items-center w-full max-w-md">
-                  {" "}
-                  {/* Mengurangi max-w-3xl menjadi max-w-md */}
-                  <input
-                    type="text"
-                    className="w-full pl-6 pr-12 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg shadow-md transition-all duration-300"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <button className="absolute right-0 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-2xl transition-all duration-300 ease-in-out shadow-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
+              <input
+                type="text"
+                className="w-full max-w-md pl-6 pr-12 py-2 rounded-2xl border border-gray-300"
+                placeholder="Cari Jenis Pengeluaran atau Nama Barang"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               <button
                 onClick={handleAddRow}
                 className="flex items-center space-x-1 px-8 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
@@ -201,7 +192,6 @@ const ExcelForm = () => {
                 <span className="text-lg font-bold">+</span>
                 <span className="text-lg">Catatan</span>
               </button>
-
               <button
                 onClick={handleDeleteAllRows}
                 className="px-6 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
@@ -217,10 +207,8 @@ const ExcelForm = () => {
                 <tr className="bg-blue-500 text-white">
                   <th className="p-2 border border-blue-600">No</th>
                   <th className="p-2 border border-blue-600">Tanggal</th>
-                  <th className="p-2 border border-blue-600">
-                    Jenis Pengeluaran
-                  </th>
-                  <th className="p-2 border border-blue-600">Nama barang</th>
+                  <th className="p-2 border border-blue-600">Jenis Pengeluaran</th>
+                  <th className="p-2 border border-blue-600">Nama Barang</th>
                   <th className="p-2 border border-blue-600">Catatan</th>
                   <th className="p-2 border border-blue-600">Status</th>
                   <th className="p-2 border border-blue-600">Sisa Tagihan</th>
@@ -228,89 +216,63 @@ const ExcelForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredRows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="bg-blue-50 hover:bg-blue-100 transition-colors"
-                  >
-                    <td className="p-2 border text-center">{row.id}</td>
+                {filteredRows.map((row, index) => (
+                  <tr key={row.id} className="bg-blue-50 hover:bg-blue-100 transition-colors">
+                    <td className="p-2 border text-center">{index + 1}</td>
                     <td className="p-2 border">
                       <input
                         type="date"
-                        value={row.tanggal}
-                        onChange={(e) =>
-                          handleInputChange(row.id, "tanggal", e.target.value)
-                        }
+                        value={row.date}
+                        onChange={(e) => handleInputChange(row.id, "date", e.target.value)}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300"
                       />
                     </td>
                     <td className="p-2 border">
                       <input
                         type="text"
-                        value={row.jenisPengeluaran}
-                        onChange={(e) =>
-                          handleInputChange(
-                            row.id,
-                            "jenisPengeluaran",
-                            e.target.value
-                          )
-                        }
+                        value={row.jenis_pengeluaran}
+                        onChange={(e) => handleInputChange(row.id, "jenis_pengeluaran", e.target.value)}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                        placeholder="Contoh: Pakan"
                       />
                     </td>
                     <td className="p-2 border">
                       <input
                         type="text"
-                        value={row.namaBarang}
-                        onChange={(e) =>
-                          handleInputChange(
-                            row.id,
-                            "namaBarang",
-                            e.target.value
-                          )
-                        }
+                        value={row.nama_barang}
+                        onChange={(e) => handleInputChange(row.id, "nama_barang", e.target.value)}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                        placeholder="Contoh: Pakan Lele"
                       />
                     </td>
                     <td className="p-2 border">
                       <input
                         type="text"
                         value={row.catatan}
-                        onChange={(e) =>
-                          handleInputChange(row.id, "catatan", e.target.value)
-                        }
+                        onChange={(e) => handleInputChange(row.id, "catatan", e.target.value)}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                        placeholder="Catatan tambahan"
                       />
                     </td>
                     <td className="p-2 border">
                       <select
                         value={row.status}
-                        onChange={(e) =>
-                          handleInputChange(row.id, "status", e.target.value)
-                        }
+                        onChange={(e) => handleInputChange(row.id, "status", e.target.value)}
                         className="w-full px-4 py-2 rounded-lg border border-gray-300"
                       >
                         <option value="belum">Belum Lunas</option>
                         <option value="lunas">Lunas</option>
                       </select>
                     </td>
-
                     <td className="p-2 border">
                       <input
-                        type="text" // Ubah dari 'number' menjadi 'text' untuk mengizinkan format
-                        className="w-full p-1 border rounded focus:outline-none focus:border-blue-500"
-                        value={formatRupiah(row.sisaTagihan)} // Format saat ditampilkan
-                        onChange={(e) => {
-                          if (row.status !== "lunas") {
-                            // Hanya mengizinkan perubahan jika status bukan "Lunas"
-                            const value = e.target.value.replace(/[^\d]/g, ""); // Hapus karakter non-digit
-                            handleInputChange(row.id, "sisaTagihan", value);
-                          }
-                        }}
-                        disabled={row.status === "lunas"} // Menonaktifkan kolom jika statusnya "Lunas"
+                        type="text"
+                        value={formatRupiah(row.sisa_tagihan)}
+                        onChange={(e) => handleInputChange(row.id, "sisa_tagihan", e.target.value)}
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                        placeholder="Nominal"
                       />
                     </td>
-
                     <td className="p-2 border text-center">
                       <button
                         onClick={() => handleDeleteRow(row.id)}
@@ -324,7 +286,6 @@ const ExcelForm = () => {
               </tbody>
             </table>
 
-            {/* Display Total Expenditure */}
             <div className="mt-4 flex justify-end">
               <div className="flex flex-col items-end">
                 <span className="text-lg font-medium">Total Pengeluaran:</span>
@@ -332,19 +293,21 @@ const ExcelForm = () => {
                   {formatRupiah(totalPengeluaran)}
                 </span>
               </div>
-              <div />
             </div>
-            <div className="mt-4 flex justify-end items-end w-full">
-  <button
-    onClick={() => alert("Data saved!")}  // Add your save functionality here
-    className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-  >
-    Simpan
-  </button>
-</div>
+
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={handleSubmit}
+                className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Simpan
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      {isLoading && <div className="text-center">Loading...</div>}
+      {error && <div className="text-red-500 text-center">{error}</div>}
     </div>
   );
 };
