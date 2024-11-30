@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'sweetalert2';
 import { Upload, X } from 'lucide-react';
+import axios from 'axios'; 
+import Swal from 'sweetalert2'; 
 
 export const BeritaInputModal = ({ isOpen, onClose }) => {
     const [formData, setFormData] = useState({
@@ -28,8 +29,9 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
             const uploadPromises = files.map(async (file) => {
                 const imageFormData = new FormData();
                 imageFormData.append('file', file);
-                imageFormData.append('upload_preset', 'default_preset');
-    
+                imageFormData.append('upload_preset', 'Nusaira');
+                console.log('Uploading file:', file.name);
+
                 const response = await axios.post(
                     'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
                     imageFormData,
@@ -67,6 +69,7 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
             if (!formData.title) missingFields.push('Title');
             if (!formData.date) missingFields.push('Date');
             if (!formData.image) missingFields.push('Image');
+            if (!formData.excerpt) missingFields.push('Excerpt');
     
             if (missingFields.length > 0) {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
