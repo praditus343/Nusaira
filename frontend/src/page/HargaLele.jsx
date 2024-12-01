@@ -11,6 +11,7 @@ import InteractiveMap from '../componen/InteraktifMap';
 import PricePredictionsDashboard from '../componen/PredictionCard';
 import Sidebar from '../componen/SideBar';
 import PriceHistory from './PriceHistory';
+import LeleDataTable from '../componen/HargaPasar';
 
 
 const PriceMonitoringDashboard = () => {
@@ -67,6 +68,10 @@ const PriceMonitoringDashboard = () => {
 
             {/* Price Trends - New Layout */}
             <PricePredictionsDashboard />
+            <div className='mr-20'>
+            <LeleDataTable/>
+            </div>
+            
 
             {/* Table Section */}
             <div className="p-6 border border-blue-600 rounded-lg bg-white shadow rounded-lg mr-10 ml-10">
