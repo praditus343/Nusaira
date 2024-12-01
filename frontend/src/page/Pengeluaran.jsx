@@ -110,32 +110,32 @@ const ExcelForm = () => {
       !row.nama_barang || 
       !row.catatan || 
       !row.status || 
-      row.sisa_tagihan <0
+      row.sisa_tagihan < 0
     );
-console.log(invalidRows); // dari bang kevin
-console.log(rows); // dari bang kevin
-
+  
     if (invalidRows.length > 0) {
       setError('Pastikan semua kolom terisi dengan benar');
       return;
     }
-
+  
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      // Kirim data yang sudah divalidasi
-      const dataToSend = rows.map(row => ({
-        date: row.date,
-        jenis_pengeluaran: row.jenis_pengeluaran,
-        nama_barang: row.nama_barang,
-        catatan: row.catatan,
-        status: row.status,
-        sisa_tagihan: row.sisa_tagihan
+      // Kirim data yang sudah divalidasi satu per satu
+      await Promise.all(rows.map(async (row) => {
+        const dataToSend = {
+          date: row.date,
+          jenis_pengeluaran: row.jenis_pengeluaran,
+          nama_barang: row.nama_barang,
+          catatan: row.catatan,
+          status: row.status,
+          sisa_tagihan: row.sisa_tagihan,
+        };
+  
+        await axios.post('https://nusaira-be.vercel.app/api/pengeluaran', dataToSend);
       }));
-
-      const response = await axios.post('https://nusaira-be.vercel.app/api/pengeluaran', dataToSend);
-      
+  
       alert("Data berhasil disimpan!");
       fetchPengeluaran(); // Refresh data setelah submit
     } catch (error) {
@@ -145,7 +145,7 @@ console.log(rows); // dari bang kevin
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className="bg-white w-full min-h-screen">
       <Header />

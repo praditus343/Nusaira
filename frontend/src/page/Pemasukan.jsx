@@ -121,29 +121,33 @@ const ExcelForm = () => {
              row.total > 0 &&
              row.tambak_id;
     });
-
+  
     if (!isValid) {
       setError('Semua kolom harus diisi dengan benar sebelum menyimpan.');
       return;
     }
-
+  
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      const dataToSend = rows.map(row => ({
-        date: row.date,
-        kategori: row.kategori,
-        jumlah: row.jumlah,
-        harga: row.harga,
-        keterangan: row.keterangan,
-        total: calculateTotalPemasukan(row),
-        tambak_id: row.tambak_id,
+      // Kirim setiap baris sebagai objek terpisah
+      await Promise.all(rows.map(async (row) => {
+        const dataToSend = {
+          date: row.date,
+          kategori: row.kategori,
+          jumlah: row.jumlah,
+          harga: row.harga,
+          keterangan: row.keterangan,
+          total: calculateTotalPemasukan(row),
+          tambak_id: row.tambak_id,
+        };
+  
+        await axios.post('https://nusaira-be.vercel.app/api/pemasukan', dataToSend);
       }));
-
-      await axios.post('https://nusaira-be.vercel.app/api/pemasukan', { data: dataToSend });
+  
       alert('Data berhasil disimpan!');
-      setRows([]);
+      setRows([]); // Kosongkan form setelah berhasil
     } catch (err) {
       console.error('Error saving data:', err.response ? err.response.data : err.message);
       setError(err.response?.data?.message || 'Gagal menyimpan data. Silakan coba lagi.');
