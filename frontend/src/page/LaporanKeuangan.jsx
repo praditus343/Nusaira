@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../componen/Footer";
-import Sidebar from "../componen/SideBar";
+import Sidebar from '../componen/SideBar';
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,7 @@ function formatRupiah(amount) {
   }).format(amount);
 }
 
-function RincianPengeluaran() {
+function RincianPengeluaran({ onTotalChange }) {
   const [pengeluaran, setPengeluaran] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,6 +29,8 @@ function RincianPengeluaran() {
         if (!res.ok) throw new Error('Failed to fetch pengeluaran');
         const data = await res.json();
         setPengeluaran(data);
+        const totalSisaTagihan = data.reduce((total, item) => total + parseFloat(item.sisa_tagihan), 0);
+        onTotalChange(totalSisaTagihan); // Notify parent about total
       } catch (error) {
         setError(error.message);
       } finally {
@@ -37,9 +39,7 @@ function RincianPengeluaran() {
     };
 
     fetchData();
-  }, []);
-
-  const totalSisaTagihan = pengeluaran.reduce((total, item) => total + parseFloat(item.sisa_tagihan), 0);
+  }, [onTotalChange]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -69,15 +69,11 @@ function RincianPengeluaran() {
           ))}
         </tbody>
       </table>
-      <div className="mt-4 font-bold">
-        <span>Total Sisa Tagihan: </span>
-        <span>{formatRupiah(totalSisaTagihan)}</span>
-      </div>
     </section>
   );
 }
 
-function RincianPemasukan() {
+function RincianPemasukan({ onTotalChange }) {
   const [pemasukan, setPemasukan] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -89,6 +85,8 @@ function RincianPemasukan() {
         if (!res.ok) throw new Error('Failed to fetch pemasukan');
         const data = await res.json();
         setPemasukan(data);
+        const totalPendapatan = data.reduce((total, item) => total + parseFloat(item.total), 0);
+        onTotalChange(totalPendapatan); // Notify parent about total
       } catch (error) {
         setError(error.message);
       } finally {
@@ -97,9 +95,7 @@ function RincianPemasukan() {
     };
 
     fetchData();
-  }, []);
-
-  const totalPendapatan = pemasukan.reduce((total, item) => total + parseFloat(item.total), 0);
+  }, [onTotalChange]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -127,15 +123,14 @@ function RincianPemasukan() {
           ))}
         </tbody>
       </table>
-      <div className="mt-4 font-bold">
-        <span>Total Pendapatan: </span>
-        <span>{formatRupiah(totalPendapatan)}</span>
-      </div>
     </section>
   );
 }
 
 function LaporanDashboard() {
+  const [totalPendapatan, setTotalPendapatan] = useState(0);
+  const [totalSisaTagihan, setTotalSisaTagihan] = useState(0);
+
   async function handleExport() {
     const input = document.getElementById("dashboard-content");
   
@@ -215,6 +210,9 @@ function LaporanDashboard() {
     }
   }
 
+  const labaRugiBersih = totalPendapatan - totalSisaTagihan;
+  const statusKeuangan = labaRugiBersih >= 0 ? "Keuntungan" : "Kerugian";
+
   return (
     <div className="space-y-6 space-x-6 bg-white w-full min-h-screen">
       <Header />
@@ -293,8 +291,8 @@ function LaporanDashboard() {
             </div>
           </div>
 
-          <RincianPengeluaran />
-          <RincianPemasukan />
+          <RincianPengeluaran onTotalChange={setTotalSisaTagihan} />
+          <RincianPemasukan onTotalChange={setTotalPendapatan} />
 
           <section className="my-8">
             <h3 className="text-lg font-semibold mb-4">Rekapitulasi Keuangan</h3>
@@ -303,19 +301,25 @@ function LaporanDashboard() {
                 <tr className="bg-blue-500 text-left text-white">
                   <th className="border border-gray-300 p-2">Keterangan</th>
                   <th className="border border-gray-300 p-2">Jumlah (Rp)</th>
-                  <th className="border border-gray-300 p-2">Laba / Rugi Bersih</th>
-                  <th className="border border-gray-300 p-2">Rp</th>
+                  <th className="border border-gray-300 p-2">Status Keuangan</th>
                 </tr>
               </thead>
               <tbody>
-                {/* Example row */}
                 <tr>
-                  <td className="border border-gray-300 p-2">Pendapatan Total</td>
-                  <td className="border border-gray-300 p-2">2,000,000</td>
-                  <td className="border border-gray-300 p-2">500,000</td>
-                  <td className="border border-gray-300 p-2">1,500,000</td>
+                  <td className="border border-gray-300 p-2">Total Pemasukan</td>
+                  <td className="border border-gray-300 p-2">{formatRupiah(totalPendapatan)}</td>
+                  <td className="border border-gray-300 p-2">{statusKeuangan}</td>
                 </tr>
-                {/* Duplicate rows can be removed or replaced with dynamic data */}
+                <tr>
+                  <td className="border border-gray-300 p-2">Total Sisa Tagihan</td>
+                  <td className="border border-gray-300 p-2">{formatRupiah(totalSisaTagihan)}</td>
+                  <td className="border border-gray-300 p-2"></td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 p-2 font-bold">Laba / Rugi Bersih</td>
+                  <td className="border border-gray-300 p-2 font-bold">{formatRupiah(labaRugiBersih)}</td>
+                  <td className="border border-gray-300 p-2 font-bold">{statusKeuangan}</td>
+                </tr>
               </tbody>
             </table>
           </section>
