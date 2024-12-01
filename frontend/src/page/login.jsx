@@ -44,7 +44,20 @@ const LoginPage = () => {
         }).then(() => {
           navigate("/Home"); 
         });
-      } else {
+      } 
+      
+      if (email === "admin@gmail.com" && password === "admin123") {
+        localStorage.setItem("isLoggedIn", "true");
+        Swal.fire({
+          icon: "success",
+          title: "Login Berhasil!",
+          text: "Selamat datang di dashboard",
+        }).then(() => {
+          navigate("/Admin"); 
+        });
+      } 
+      
+      else {
         Swal.fire({
           icon: "error",
           title: "Login Gagal",
