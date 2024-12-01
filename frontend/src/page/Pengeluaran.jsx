@@ -110,8 +110,10 @@ const ExcelForm = () => {
       !row.nama_barang || 
       !row.catatan || 
       !row.status || 
-      row.sisa_tagihan <= 0
+      row.sisa_tagihan <0
     );
+console.log(invalidRows); // dari bang kevin
+console.log(rows); // dari bang kevin
 
     if (invalidRows.length > 0) {
       setError('Pastikan semua kolom terisi dengan benar');
