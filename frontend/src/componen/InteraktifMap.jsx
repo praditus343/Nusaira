@@ -26,8 +26,8 @@ const CardContent = ({ children }) => (
 
 const CITIES = {
   'JAWA BARAT': ['Bandung', 'Bekasi', 'Bogor', 'Cirebon', 'Subang'],
-  'JAWA TIMUR': ['Tulungagung', 'Malang', 'Surabaya', 'Blitar', 'Kediri'],
-  'JAWA TENGAH': ['Magelang', 'Pekalongan', 'Boyolali', 'Cilacap', 'Kebumen']
+  'JAWA TIMUR': ['Tulungagung', 'Malang',  'Blitar',],
+  'JAWA TENGAH': ['Pekalongan', 'Boyolali', 'Cilacap', 'Kebumen']
 };
 
 const locationData = [
@@ -36,17 +36,13 @@ const locationData = [
   { id: 3, lat: -6.5944, lng: 106.7896, title: "Bogor" },
   { id: 4, lat: -6.7074, lng: 108.5568, title: "Cirebon" },
   { id: 5, lat: -6.5714, lng: 107.7601, title: "Subang" },
-  { id: 6, lat: -7.2504, lng: 112.7688, title: "Surabaya" },
-  { id: 7, lat: -7.9794, lng: 112.6300, title: "Malang" },
-  { id: 8, lat: -8.0941, lng: 112.1676, title: "Blitar" },
-  { id: 9, lat: -7.8313, lng: 112.0153, title: "Kediri" },
-  { id: 10, lat: -8.0666, lng: 111.9022, title: "Tulungagung" },
-  { id: 11, lat: -7.7038, lng: 110.4204, title: "Magelang" },
-  { id: 12, lat: -6.8898, lng: 109.6747, title: "Pekalongan" },
-  { id: 13, lat: -7.5386, lng: 110.7291, title: "Boyolali" },
-  { id: 14, lat: -7.7273, lng: 109.0095, title: "Cilacap" },
-  { id: 15, lat: -7.6772, lng: 109.6504, title: "Kebumen" },
-  { id: 16, lat: -7.7956, lng: 110.3695, title: "Yogyakarta" }
+  { id: 6, lat: -7.9794, lng: 112.6300, title: "Malang" },
+  { id: 7, lat: -8.0941, lng: 112.1676, title: "Blitar" },
+  { id: 8, lat: -8.0666, lng: 111.9022, title: "Tulungagung" },,
+  { id: 9, lat: -6.8898, lng: 109.6747, title: "Pekalongan" },
+  { id: 10, lat: -7.5386, lng: 110.7291, title: "Boyolali" },
+  { id: 11, lat: -7.7273, lng: 109.0095, title: "Cilacap" },
+  { id: 12, lat: -7.6772, lng: 109.6504, title: "Kebumen" },
 ];
 
 const getProvinceColor = (city) => {
@@ -162,13 +158,6 @@ const InteractiveMap = () => {
                   style={{ backgroundColor: '#8B5CF6' }}
                 ></div>
                 <span>Jawa Tengah</span>
-              </div>
-              <div className="flex items-center">
-                <div
-                  className="w-4 h-4 rounded-full mr-2"
-                  style={{ backgroundColor: '#6B7280' }}
-                ></div>
-                <span>DIY</span>
               </div>
             </div>
           </div>
