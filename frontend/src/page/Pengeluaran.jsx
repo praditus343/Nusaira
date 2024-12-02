@@ -8,6 +8,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 
+const LoadingSpinner = () => (
+  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white p-5 rounded-lg flex flex-col items-center">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+      <p className="mt-3 text-gray-700">Menyimpan data...</p>
+    </div>
+  </div>
+);
+
+const ErrorMessage = ({ message }) => (
+  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    <span className="block sm:inline">{message}</span>
+  </div>
+);
+
 const PengeluaranTable = ({ rows, onDelete, formatRupiah }) => {
   return (
     <div className="overflow-x-auto">
@@ -26,7 +41,7 @@ const PengeluaranTable = ({ rows, onDelete, formatRupiah }) => {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={row.id} className="bg-blue-50 hover:bg-blue-100 transition-colors">
+            <tr key={row.id || `row-${index}`} className="bg-blue-50 hover:bg-blue-100 transition-colors">
               <td className="p-2 border text-center">{index + 1}</td>
               <td className="p-2 border">{row.date}</td>
               <td className="p-2 border">{row.jenis_pengeluaran}</td>
@@ -50,7 +65,7 @@ const PengeluaranTable = ({ rows, onDelete, formatRupiah }) => {
   );
 };
 
-const PengeluaranForm = ({ onSave, formatRupiah }) => {
+const PengeluaranForm = ({ onSave, formatRupiah, isLoading, error }) => {
   const [newRow, setNewRow] = useState({
     date: new Date().toISOString().split('T')[0],
     jenis_pengeluaran: "",
@@ -61,22 +76,45 @@ const PengeluaranForm = ({ onSave, formatRupiah }) => {
   });
 
   const handleInputChange = (field, value) => {
-    setNewRow((prevRow) => ({
+    if (field === "sisa_tagihan") {
+      // Hapus semua karakter non-numerik dan konversi ke number
+      const cleanValue = value.toString().replace(/[^0-9]/g, '');
+      value = cleanValue ? Number(cleanValue) : 0;
+    }
+    
+    setNewRow(prevRow => ({
       ...prevRow,
       [field]: value,
     }));
   };
 
-  const handleSave = () => {
-    onSave(newRow);
-    setNewRow({
-      date: new Date().toISOString().split('T')[0],
-      jenis_pengeluaran: "",
-      nama_barang: "",
-      catatan: "",
-      status: "belum",
-      sisa_tagihan: 0,
-    });
+  const handleSave = async () => {
+    if (!newRow.jenis_pengeluaran.trim()) {
+      alert("Jenis pengeluaran harus diisi");
+      return;
+    }
+
+    if (!newRow.nama_barang.trim()) {
+      alert("Nama barang harus diisi");
+      return;
+    }
+
+    try {
+      await onSave(newRow);
+      
+      if (!error) {
+        setNewRow({
+          date: new Date().toISOString().split('T')[0],
+          jenis_pengeluaran: "",
+          nama_barang: "",
+          catatan: "",
+          status: "belum",
+          sisa_tagihan: 0,
+        });
+      }
+    } catch (err) {
+      console.error("Error in handleSave:", err);
+    }
   };
 
   return (
@@ -106,6 +144,7 @@ const PengeluaranForm = ({ onSave, formatRupiah }) => {
             onChange={(e) => handleInputChange("jenis_pengeluaran", e.target.value)}
             className="w-full px-4 py-2 rounded-lg border border-gray-300"
             placeholder="Contoh: Pakan"
+            required
           />
         </div>
         <div>
@@ -119,6 +158,7 @@ const PengeluaranForm = ({ onSave, formatRupiah }) => {
             onChange={(e) => handleInputChange("nama_barang", e.target.value)}
             className="w-full px-4 py-2 rounded-lg border border-gray-300"
             placeholder="Contoh: Pakan Lele"
+            required
           />
         </div>
         <div>
@@ -156,7 +196,10 @@ const PengeluaranForm = ({ onSave, formatRupiah }) => {
             type="text"
             id="sisa_tagihan"
             value={formatRupiah(newRow.sisa_tagihan)}
-            onChange={(e) => handleInputChange("sisa_tagihan", parseFloat(e.target.value.replace(/[^0-9]/g, '')) || 0)}
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^0-9]/g, '');
+              handleInputChange("sisa_tagihan", Number(value) || 0);
+            }}
             className="w-full px-4 py-2 rounded-lg border border-gray-300"
             placeholder="Nominal"
           />
@@ -164,24 +207,27 @@ const PengeluaranForm = ({ onSave, formatRupiah }) => {
       </div>
       <button
         onClick={handleSave}
-        className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+        disabled={isLoading}
+        className={`mt-4 px-6 py-2 ${
+          isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-blue-600'
+        } text-white rounded-md transition-colors`}
       >
-        Simpan
+        {isLoading ? 'Menyimpan...' : 'Simpan'}
       </button>
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };
-
 const ExcelForm = () => {
   const [rows, setRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
+ 
   useEffect(() => {
     fetchPengeluaran();
   }, []);
-
+ 
   const fetchPengeluaran = async () => {
     setIsLoading(true);
     try {
@@ -191,6 +237,7 @@ const ExcelForm = () => {
         date: item.date.split("T")[0],
         id: item.id || Date.now() + Math.random().toString(36).substring(2, 10),
       })));
+      setError(null);
     } catch (error) {
       console.error("Error fetching pengeluaran data:", error);
       setError("Gagal mengambil data. Silakan coba lagi.");
@@ -198,30 +245,88 @@ const ExcelForm = () => {
       setIsLoading(false);
     }
   };
-
+ 
   const handleDeleteRow = async (id) => {
     if (!window.confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
     
     try {
-      if (id) {
-        await axios.delete(`https://nusaira-be.vercel.app/api/pengeluaran/${id}`);
-      }
+      setIsLoading(true);
+      await axios.delete(`https://nusaira-be.vercel.app/api/pengeluaran/${id}`);
       setRows(rows.filter(row => row.id !== id));
+      setError(null);
     } catch (error) {
       console.error("Error deleting pengeluaran:", error);
       setError("Gagal menghapus data. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  const handleDeleteAllRows = () => {
+ 
+  const handleSaveNewRow = async (newRow) => {
+    try {
+      setIsLoading(true);
+  
+      const requestData = {
+        date: newRow.date,
+        jenis_pengeluaran: String(newRow.jenis_pengeluaran).trim(),
+        nama_barang: String(newRow.nama_barang).trim(),
+        catatan: String(newRow.catatan || "").trim(),
+        status: newRow.status,
+        sisa_tagihan: Number(newRow.sisa_tagihan)
+      };
+  
+      // Simpan data ke state terlebih dahulu
+      const tempId = Date.now();
+      setRows(prevRows => [...prevRows, { ...requestData, id: tempId }]);
+  
+      // Coba kirim ke server
+      try {
+        const response = await axios.post(
+          'https://nusaira-be.vercel.app/api/pengeluaran',
+          requestData,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 10000
+          }
+        );
+  
+        if (response.data) {
+          // Update ID dengan yang dari server
+          setRows(prevRows => prevRows.map(row => 
+            row.id === tempId ? { ...row, id: response.data.id } : row
+          ));
+        }
+      } catch (serverError) {
+        console.error("Server error:", serverError);
+        // Tetap tampilkan data meski gagal simpan ke server
+        setError("Data ditampilkan tapi belum tersimpan di server. Akan dicoba simpan kembali nanti.");
+      }
+  
+      return true;
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Terjadi kesalahan saat memproses data.");
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleDeleteAllRows = async () => {
     if (!window.confirm("Apakah Anda yakin ingin menghapus semua data?")) return;
-    setRows([]);
+    
+    try {
+      setIsLoading(true);
+      await axios.delete('https://nusaira-be.vercel.app/api/pengeluaran');
+      setRows([]);
+      setError(null);
+    } catch (error) {
+      console.error("Error deleting all pengeluaran:", error);
+      setError("Gagal menghapus semua data. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  const handleSaveNewRow = (newRow) => {
-    setRows([...rows, newRow]);
-  };
-
+ 
   const formatRupiah = (number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -229,17 +334,17 @@ const ExcelForm = () => {
       minimumFractionDigits: 0,
     }).format(number || 0);
   };
-
+ 
   const filteredRows = rows.filter(
     (row) =>
       row.jenis_pengeluaran.toLowerCase().includes(searchTerm.toLowerCase()) ||
       row.nama_barang.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+ 
   const totalPengeluaran = rows.reduce((total, row) => {
     return total + (parseFloat(row.sisa_tagihan) || 0);
   }, 0);
-
+ 
   return (
     <div className="bg-white w-full min-h-screen">
       <Header />
@@ -268,7 +373,7 @@ const ExcelForm = () => {
           </div>
         </div>
       </div>
-
+ 
       <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
         <div className="p-6">
           <div className="mb-4 flex justify-between items-center">
@@ -283,17 +388,32 @@ const ExcelForm = () => {
               />
               <button
                 onClick={handleDeleteAllRows}
-                className="px-6 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+                disabled={isLoading}
+                className={`px-6 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
                 Hapus Semua
               </button>
             </div>
           </div>
-
-          <PengeluaranForm onSave={handleSaveNewRow} formatRupiah={formatRupiah} />
-
-          <PengeluaranTable rows={filteredRows} onDelete={handleDeleteRow} formatRupiah={formatRupiah} />
-
+ 
+          <PengeluaranForm 
+            onSave={handleSaveNewRow} 
+            formatRupiah={formatRupiah} 
+            isLoading={isLoading}
+            error={error}
+          />
+ 
+          {isLoading && <LoadingSpinner />}
+          {error && <ErrorMessage message={error} />}
+ 
+          <PengeluaranTable 
+            rows={filteredRows} 
+            onDelete={handleDeleteRow} 
+            formatRupiah={formatRupiah} 
+          />
+ 
           <div className="mt-4 flex justify-end">
             <div className="flex flex-col items-end">
               <span className="text-lg font-medium">Total Pengeluaran:</span>
@@ -304,13 +424,11 @@ const ExcelForm = () => {
           </div>
         </div>
       </div>
-      {isLoading && <div className="text-center">Loading...</div>}
-      {error && <div className="text-red-500 text-center">{error}</div>}
     </div>
   );
-};
-
-function Pengeluaran() {
+ };
+ 
+ function Pengeluaran() {
   return (
     <div className="flex h-screen">
       <Sidebar />
@@ -321,6 +439,6 @@ function Pengeluaran() {
       </div>
     </div>
   );
-}
-
-export default Pengeluaran;
+ }
+ 
+ export default Pengeluaran;
