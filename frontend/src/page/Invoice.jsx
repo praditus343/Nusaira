@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // Import axios
 import Footer from "../componen/Footer";
 import Sidebar from "../componen/SideBar";
-import React, { useEffect } from "react";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
 
@@ -31,32 +32,31 @@ function TransactionItem({ title, date, status }) {
   );
 }
 
-
 function Content() {
-  const [istagihan, settagihan] = React.useState([]);
-  const [filter, setFilter] = React.useState("belum-bayar"); // State untuk filter
+  const [tagihan, setTagihan] = useState([]); // Inisialisasi state dengan array kosong
+  const [filter, setFilter] = useState("belum-bayar"); // Filter untuk status tagihan
 
   useEffect(() => {
-    const fetchtagihan = async () => {
+    const fetchTagihan = async () => {
       try {
-        const response = await tagihan();
-        // Pastikan data yang diterima sudah sesuai dengan format yang diharapkan
+        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan"); // Ganti dengan URL API yang sesuai
         console.log("Response Data:", response.data);
-        // Konversi status jika diperlukan
+
+        // Pastikan data yang diterima benar
         const formattedData = response.data.map((item) => ({
           ...item,
           status: item.status === 0 ? "Belum Bayar" : "Sudah Bayar", // Menyesuaikan status
         }));
-        settagihan(formattedData);
+        setTagihan(formattedData); // Menyimpan data tagihan ke state
       } catch (error) {
         console.error("Error fetching tagihan:", error);
       }
     };
-    fetchtagihan();
-  }, []);
+    fetchTagihan();
+  }, []); // Hanya dijalankan sekali saat komponen pertama kali dimuat
 
-  // Filter data berdasarkan status
-  const filteredTagihan = istagihan.filter((item) =>
+  // Filter tagihan berdasarkan status
+  const filteredTagihan = tagihan.filter((item) =>
     filter === "belum-bayar"
       ? item.status === "Belum Bayar"
       : item.status === "Sudah Bayar"
@@ -66,24 +66,20 @@ function Content() {
     <div className="w-full min-h-screen">
       <Header />
       <div className="max-w-6xl mx-auto p-8">
-        <h2 className="text-xl font-semibold mb-1">
-          Mengenal Penyakit dan Tantangan dalam Budidaya Lele
-        </h2>
+        <h2 className="text-xl font-semibold mb-1">Tagihan Terkini</h2>
         <p className="text-sm text-gray-500 mb-6">
-          Pelajari Cara Mengatasi Penyakit dan Tantangan Budidaya Lele dengan
-          Solusi Tepat! Dapatkan Tips Praktis untuk Meningkatkan Kualitas dan
-          Produktivitas Tambak Anda
+          Cek status tagihan dan pembayaran Anda di sini.
         </p>
 
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold">Daftar Transaksi</h3>
+          <h3 className="text-lg font-semibold">Daftar Tagihan</h3>
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
-              <label className="text-sm text-gray-600">Tagihan:</label>
+              <label className="text-sm text-gray-600">Filter Status:</label>
               <select
                 className="bg-blue-50 text-blue-500 border border-blue-300 rounded-md px-3 py-1"
                 value={filter}
-                onChange={(e) => setFilter(e.target.value)} // Ubah filter
+                onChange={(e) => setFilter(e.target.value)} // Mengubah filter
               >
                 <option value="belum-bayar">Belum Bayar</option>
                 <option value="sudah-bayar">Sudah Bayar</option>
@@ -100,11 +96,10 @@ function Content() {
             {filter === "belum-bayar" ? "Belum Dibayar" : "Sudah Dibayar"}
           </h4>
 
-          {/* Menampilkan transaksi berdasarkan filter */}
           {filteredTagihan.length > 0 ? (
             filteredTagihan.map((item) => (
               <TransactionItem
-                key={item.id} // Pastikan key unik
+                key={item.id}
                 title={item.name} 
                 date={item.dueDate}
                 status={item.status}
