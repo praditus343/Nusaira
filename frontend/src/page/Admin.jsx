@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, FileText, MessageCircle, Bell, Heart,LogOut  } from 'lucide-react';
+import { LayoutGrid, FileText, MessageCircle, Bell, Heart, LogOut, Package, Truck } from 'lucide-react';
 import DashboardSummaryCards from '../componen/DasboardSummaryCards';
 import PenyakitLeleCards from '../componen/PenyakitLeleCards';
 import BeritaCards from '../componen/BeritaCards';
 import PesanMasukTable from '../componen/PesanMasukTable';
 import RendaTableNotif from '../componen/RenderTableNotif';
+import SuppliersTable from '../componen/SupplierAdminTable';
+import ProductsTable from '../componen/ProductCard';
 import Logo from '../assets/Logo.png'
 import { useNavigate } from 'react-router-dom'; 
 
@@ -13,16 +15,14 @@ const AdminDashboard = () => {
   const [penyakitData, setPenyakitData] = useState([]);
   const [pesanData, setPesanData] = useState([]);
   const [notifikasiData, setNotifikasiData] = useState([]);
+  const [suppliersData, setSuppliersData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const navigate = useNavigate(); 
 
   const handleLogout = () => {
-    // Lakukan proses logout di sini (misalnya menghapus token, dll)
-    // Contoh sederhana:
-    // localStorage.removeItem('authToken'); // Sesuaikan dengan cara Anda menyimpan token
-    navigate('/'); // Navigasi ke halaman login/home
+    navigate('/');
   };
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,30 +31,37 @@ const AdminDashboard = () => {
         const penyakitResponse = await fetch('https://nusaira-be.vercel.app/api/penyakit-lele');
         const pesanResponse = await fetch('https://nusaira-be.vercel.app/api/contact/messages');
         const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
+        const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
 
         const beritaJson = await beritaResponse.json();
         const penyakitJson = await penyakitResponse.json();
         const pesanJson = await pesanResponse.json();
         const notifikasiJson = await notifikasiResponse.json();
-
-        // console.log('Berita Response:', beritaJson);
-        // console.log('Penyakit Response:', penyakitJson);
-        // console.log('Pesan Response:', pesanJson);
-        // console.log('Notifikasi Response:', notifikasiJson);
+        const suppliersJson = await suppliersResponse.json();
 
         setBeritaData(beritaJson || []);
         setPenyakitData(penyakitJson.data || []);
         setPesanData(pesanJson.data || []);
         setNotifikasiData(notifikasiJson.data || notifikasiJson || []);
+        setSuppliersData(suppliersJson.data || suppliersJson || []);
         
-        
-
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
+    const fetchProductData = async (supplierId) => {
+      try {
+        const productsResponse = await fetch(`https://nusaira-be.vercel.app/api/products/${supplierId}`);
+        const productsJson = await productsResponse.json();
+        setProductsData(productsJson.data || productsJson || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
     fetchData();
+    
   }, []);
 
   const handleDataUpdate = (deletedId) => {
@@ -111,13 +118,25 @@ const AdminDashboard = () => {
             >
               <Bell className="mr-2" /> Notifikasi
             </li>
+            <li
+              className={`flex items-center p-2 mb-2 rounded cursor-pointer ${activeTab === 'suppliers' ? 'bg-blue-700' : 'hover:bg-blue-500'
+                }`}
+              onClick={() => setActiveTab('suppliers')}
+            >
+              <Truck className="mr-2" /> Suppliers
+            </li>
+            <li
+              className={`flex items-center p-2 mb-2 rounded cursor-pointer ${activeTab === 'products' ? 'bg-blue-700' : 'hover:bg-blue-500'
+                }`}
+              onClick={() => setActiveTab('products')}
+            >
+              <Package className="mr-2" /> Products
+            </li>
           </ul>
         </nav>
       </div>
-     
 
       <div className="flex-1 bg-white flex flex-col">
-        {/* Header Baru */}
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
           <div className="flex items-center">
             <h2 className="text-2xl font-bold text-gray-800 capitalize">
@@ -132,7 +151,6 @@ const AdminDashboard = () => {
           </button>
         </header>
 
-        {/* Konten utama */}
         <div className="p-6 flex-1">
           {activeTab === 'dashboard' && (
             <DashboardSummaryCards 
@@ -140,12 +158,16 @@ const AdminDashboard = () => {
               penyakitData={penyakitData} 
               pesanData={pesanData} 
               notifikasiData={notifikasiData} 
+              suppliersData={suppliersData}
+              productsData={productsData}
             />        
           )}
           {activeTab === 'berita' && <BeritaCards beritaData={beritaData.berita || beritaData} />}
           {activeTab === 'penyakit' && <PenyakitLeleCards penyakitData={penyakitData} onDataUpdate={handleDataUpdate} />}
           {activeTab === 'pesan' && <PesanMasukTable pesanData={pesanData} />}
           {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
+          {activeTab === 'suppliers' && <SuppliersTable suppliersData={suppliersData} />}
+          {activeTab === 'products' && <ProductsTable productsData={productsData} />}
         </div>
       </div>
     </div>
