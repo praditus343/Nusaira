@@ -35,8 +35,6 @@ const SimulationChart = () => {
     return (
         <div className="bg-white w-full min-h-screen mb-10">
             <Header />
-
-            {/* Title Section */}
             <div className="mt-5 ml-10 mb-6">
                 <h1 className="text-2xl font-semibold text-gray-800">Simulasi Tambak Lele</h1>
                 <div className="flex items-center space-x-2 text-gray-600 mt-1">
@@ -48,10 +46,7 @@ const SimulationChart = () => {
                 </p>
             </div>
 
-
-            {/* Main Content */}
             <div className="flex gap-6 p-4 ml-6">
-                {/* Left Side - Form */}
                 <div className="w-1/2">
                     <div className="bg-blue-100 rounded-lg shadow">
                         <div className="p-4 bg-blue-500 text-white rounded-t-lg flex justify-between items-center">
@@ -115,7 +110,6 @@ const SimulationChart = () => {
                         </div>
                     </div>
                 </div>
-                {/* Right Side - Graph */}
                 <div className="w-1/2">
                     <div className="bg-blue-100 rounded-lg shadow h-full">
                         <div className="p-4 bg-blue-200 text-gray-700 rounded-t-lg shadow">

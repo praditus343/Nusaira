@@ -97,7 +97,6 @@ const PondTable = () => {
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
-            {/* Location Info */}
             <div className="mb-6 ml-10 mr-6 mt-5">
                 {tambakData ? (
                     <>
@@ -136,8 +135,6 @@ const PondTable = () => {
                     <p className="text-gray-500">Loading data...</p>
                 )}
             </div>
-
-            {/* Buttons for each modal */}
             <div className="flex flex-wrap gap-2 ml-8 mr-5 mt-2 mb-5">
                 {buttons.map((text) => (
                     <button
@@ -149,7 +146,6 @@ const PondTable = () => {
                     </button>
                 ))}
             </div>
-
             {/* Render modals based on active modal */}
             {activeModal === 'TambahLeleSegerModal' && <TambahLeleSegerModal isOpen={true} onClose={closeModal} />}
             {activeModal === 'TambahDataKematianModal' && <TambahDataKematianModal isOpen={true} onClose={closeModal} />}
@@ -158,7 +154,6 @@ const PondTable = () => {
             {activeModal === 'TambahDataPanenModal' && <TambahDataPanenModal isOpen={true} onClose={closeModal} />}
             {activeModal === 'TambahJumlahAnco' && <TambahJumlahAnco isOpen={true} onClose={closeModal} />}
 
-            {/* Main Card */}
             <CustomCard className="p-4 ml-10 mr-8 border-2 border-gray-300">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="font-medium">Detail Daftar Kolam</h3>
@@ -194,7 +189,6 @@ const PondTable = () => {
                     </div>
 
                 </div>
-                {/* Table */}
                 <FishTable filterTerm={searchTerm} />
             </CustomCard>
         </div>
