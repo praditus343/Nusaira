@@ -57,7 +57,6 @@ const PriceCard = ({ supplier, location, price, province }) => {
 };
 
 const PriceHistory = ({ searchInput }) => {
-    // Data supplier
     const supplierData = [
         { supplier: "Mr. Prengky", province: "Jawa Tengah", location: "Boyolali", price: "Rp.50.000" },
         { supplier: "Mr. Rito", province: "Jawa Tengah", location: "Boyolali", price: "Rp.70.000" },
