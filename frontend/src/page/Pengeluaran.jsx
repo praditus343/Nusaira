@@ -104,7 +104,9 @@ const ExcelForm = () => {
 
   const handleSubmit = async () => {
     // Validasi data sebelum submit
-    const invalidRows = rows.filter(row => 
+    const newRows = rows.filter(row => !row.id || row.id.toString().startsWith('Date'));
+    
+    const invalidRows = newRows.filter(row => 
       !row.date || 
       !row.jenis_pengeluaran || 
       !row.nama_barang || 
@@ -122,8 +124,8 @@ const ExcelForm = () => {
     setError(null);
   
     try {
-      // Kirim data yang sudah divalidasi satu per satu
-      await Promise.all(rows.map(async (row) => {
+      // Kirim hanya data baru
+      await Promise.all(newRows.map(async (row) => {
         const dataToSend = {
           date: row.date,
           jenis_pengeluaran: row.jenis_pengeluaran,
@@ -136,7 +138,7 @@ const ExcelForm = () => {
         await axios.post('https://nusaira-be.vercel.app/api/pengeluaran', dataToSend);
       }));
   
-      alert("Data berhasil disimpan!");
+      alert("Data baru berhasil disimpan!");
       fetchPengeluaran(); // Refresh data setelah submit
     } catch (error) {
       console.error("Error saving pengeluaran:", error);
