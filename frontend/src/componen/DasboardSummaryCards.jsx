@@ -5,7 +5,8 @@ export const DashboardSummaryCards = ({
   penyakitData, 
   pesanData, 
   notifikasiData ,
-  suppliersData
+  suppliersData,
+  productsData
 }) => {
   const safeLength = (data) => {
     if (data && Array.isArray(data.berita)) {
@@ -35,6 +36,10 @@ export const DashboardSummaryCards = ({
       <div className="bg-blue-600 text-white p-4 rounded-lg shadow">
         <h3 className="font-bold text-xl">Supplier Baru</h3>
         <p className="text-3xl">{suppliersData.length}</p>
+      </div>
+      <div className="bg-blue-600 text-white p-4 rounded-lg shadow">
+        <h3 className="font-bold text-xl">Produk Baru</h3>
+        <p className="text-3xl">{productsData.length}</p>
       </div>
     </div>
   );
