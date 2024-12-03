@@ -32,34 +32,29 @@ const AdminDashboard = () => {
         const pesanResponse = await fetch('https://nusaira-be.vercel.app/api/contact/messages');
         const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
         const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
+        const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
+
 
         const beritaJson = await beritaResponse.json();
         const penyakitJson = await penyakitResponse.json();
         const pesanJson = await pesanResponse.json();
         const notifikasiJson = await notifikasiResponse.json();
         const suppliersJson = await suppliersResponse.json();
+        const productsJson = await productsResponse.json();
 
         setBeritaData(beritaJson || []);
         setPenyakitData(penyakitJson.data || []);
         setPesanData(pesanJson.data || []);
         setNotifikasiData(notifikasiJson.data || notifikasiJson || []);
         setSuppliersData(suppliersJson.data || suppliersJson || []);
+        setProductsData(productsJson.data || productsJson || []);
         
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    const fetchProductData = async (supplierId) => {
-      try {
-        const productsResponse = await fetch(`https://nusaira-be.vercel.app/api/products/${supplierId}`);
-        const productsJson = await productsResponse.json();
-        setProductsData(productsJson.data || productsJson || []);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
+    
     fetchData();
     
   }, []);
