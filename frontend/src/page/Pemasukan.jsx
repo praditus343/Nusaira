@@ -1,95 +1,298 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { MapPin } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
-
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Sidebar from "../componen/SideBar";
 import Header from "../componen/Header";
 import Footer from "../componen/Footer";
 
-const ExcelForm = () => {
-  const [rows, setRows] = useState([]);
-  const [tambaks, setTambaks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+const LoadingSpinner = () => (
+  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="bg-white p-5 rounded-lg flex flex-col items-center">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+      <p className="mt-3 text-gray-700">Menyimpan data...</p>
+    </div>
+  </div>
+);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const tambakResponse = await axios.get('https://nusaira-be.vercel.app/api/tambak');
-        setTambaks(tambakResponse.data);
+const ErrorMessage = ({ message }) => (
+  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    <span className="block sm:inline">{message}</span>
+  </div>
+);
 
-        const pemasukanResponse = await axios.get('https://nusaira-be.vercel.app/api/pemasukan');
-        setRows(pemasukanResponse.data.map(item => ({
-          ...item,
-          id: item.id || Date.now() + Math.random(),
-        })));
-      } catch (err) {
-        console.error('Error fetching data:', err.response ? err.response.data : err.message);
-        setError('Gagal mengambil data. Silakan coba lagi.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+const PemasukanTable = ({ rows, onDelete, formatRupiah }) => (
+  <div className="overflow-x-auto">
+    <table className="min-w-full table-auto">
+      <thead>
+        <tr className="bg-blue-500 text-white">
+          <th className="p-2 border border-blue-600">No</th>
+          <th className="p-2 border border-blue-600">Tanggal</th>
+          <th className="p-2 border border-blue-600">Kategori Pemasukan</th>
+          <th className="p-2 border border-blue-600">Jumlah</th>
+          <th className="p-2 border border-blue-600">Harga Per (Kg)</th>
+          <th className="p-2 border border-blue-600">Keterangan</th>
+          <th className="p-2 border border-blue-600">Total Pemasukan</th>
+          <th className="p-2 border border-blue-600">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, index) => (
+          <tr key={row.id} className="bg-blue-50 hover:bg-blue-100 transition-colors">
+            <td className="p-2 border text-center">{index + 1}</td>
+            <td className="p-2 border">{row.date}</td>
+            <td className="p-2 border">{row.kategori}</td>
+            <td className="p-2 border">{row.jumlah.toLocaleString("id-ID")}</td>
+            <td className="p-2 border">{formatRupiah(row.harga)}</td>
+            <td className="p-2 border">{row.keterangan}</td>
+            <td className="p-2 border">{formatRupiah(row.jumlah * row.harga)}</td>
+            <td className="p-2 border text-center">
+              <button
+                onClick={() => onDelete(row.id)}
+                className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                Hapus
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
 
-    fetchData();
-  }, []);
+const PemasukanForm = ({ onSave, formatRupiah, isLoading, error, tambaks, selectedTambak, setSelectedTambak }) => {
+  const [newRow, setNewRow] = useState({
+    date: new Date().toISOString().split('T')[0],
+    kategori: "",
+    jumlah: 0,
+    harga: 0,
+    keterangan: "",
+  });
 
-  const handleAddRow = () => {
-    setRows(prevRows => [
-      ...prevRows,
-      {
-        id: Date.now() + Math.random(),
-        date: "",
+  const handleInputChange = (field, value) => {
+    if (field === "jumlah" || field === "harga") {
+      const cleanValue = value.replace(/[^0-9]/g, '');
+      value = cleanValue ? Number(cleanValue) : 0;
+    }
+    setNewRow(prevRow => ({ ...prevRow, [field]: value }));
+  };
+
+  const handleSave = async () => {
+    const { kategori, jumlah, harga } = newRow;
+
+    if (!kategori.trim() || jumlah <= 0 || harga <= 0 || !selectedTambak) {
+      alert("Semua field harus diisi dengan benar.");
+      return;
+    }
+
+    try {
+      await onSave({ ...newRow, tambak_id: selectedTambak });
+      setNewRow({
+        date: new Date().toISOString().split('T')[0],
         kategori: "",
         jumlah: 0,
         harga: 0,
         keterangan: "",
-        total: 0,
-        tambak_id: tambaks.length > 0 ? tambaks[0].id : "",
-      },
-    ]);
+      });
+      setSelectedTambak(""); // Reset selected tambak
+    } catch (err) {
+      console.error("Error in handleSave:", err);
+    }
   };
 
-  const handleDeleteRow = (id) => {
-    setRows(prevRows => prevRows.filter(row => row.id !== id));
-  };
+  return (
+    <div className="mb-4">
+      <h2 className="text-lg font-medium text-gray-800">Tambah Catatan Pemasukan</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <label htmlFor="tambak" className="block text-gray-700 font-medium mb-2">Tambak</label>
+          <select
+            id="tambak"
+            value={selectedTambak}
+            onChange={(e) => setSelectedTambak(e.target.value)}
+            className="w-full px-4 py-2 rounded-lg border border-gray-300"
+          >
+            <option value="" disabled>Pilih Tambak</option>
+            {tambaks.map(tambak => (
+              <option key={tambak.id} value={tambak.id}>
+                {tambak.nama}
+              </option>
+            ))}
+          </select>
+        </div>
+        {["date", "kategori", "jumlah", "harga", "keterangan"].map((field, index) => (
+          <div key={index}>
+            <label htmlFor={field} className="block text-gray-700 font-medium mb-2">
+              {field === "date" ? "Tanggal" : field === "kategori" ? "Kategori Pemasukan" : field === "jumlah" ? "Jumlah" : field === "harga" ? "Harga Per (Kg)" : "Keterangan"}
+            </label>
+            {field === "date" ? (
+              <input
+                type="date"
+                id="date"
+                value={newRow.date}
+                onChange={(e) => handleInputChange("date", e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300"
+              />
+            ) : (
+              <input
+                type="text"
+                id={field}
+                value={field === "harga" ? formatRupiah(newRow.harga) : newRow[field]}
+                onChange={(e) => handleInputChange(field, e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                placeholder={field === "kategori" ? "Contoh: Penjualan Lele" : "Masukkan " + field}
+                required
+              />
+            )}
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={handleSave}
+        disabled={isLoading}
+        className={`mt-4 px-6 py-2 ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-blue-600'} text-white rounded-md transition-colors`}
+      >
+        {isLoading ? 'Menyimpan...' : 'Simpan'}
+      </button>
+      {error && <ErrorMessage message={error} />}
+    </div>
+  );
+};
 
-  const handleDeleteAllRows = () => {
-    setRows([]);
-  };
+const TambakHeader = ({ tambakData, selectedTambakId, handleTambakChange, tambakList }) => {
+  return (
+    <div className="mt-4 ml-6">
+      <div className="p-4">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-xl font-medium">{tambakData?.nama || 'Loading...'}</h1>
+            <div className="flex items-center space-x-2 text-gray-600">
+              <MapPin className="w-4 h-4" />
+              <span>{tambakData?.provinsi || 'Loading...'}</span>
+              <span>{tambakData?.kabupaten || 'Loading...'}</span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4 mr-2">
+            <div className="flex items-center space-x-2 px-4">
+              <span className="text-gray-600">Daftar Tambak :</span>
+              <div className="relative items-center">
+                <select
+                  className="block w-[300px] pr-8 pl-4 border rounded-lg py-2 appearance-none"
+                  value={selectedTambakId || ''}
+                  onChange={handleTambakChange}
+                >
+                  <option value="" disabled>Pilih Tambak</option>
+                  {tambakList.map(tambak => (
+                    <option key={tambak.id} value={tambak.id}>
+                      {tambak.nama}
+                    </option>
+                  ))}
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split("T")[0];
-  };
+const ExcelForm = () => {
+  const [rows, setRows] = useState([]);
+  const [tambaks, setTambaks] = useState([]);
+  const [tambakData, setTambakData] = useState(null);
+  const [selectedTambakId, setSelectedTambakId] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (id, field, value) => {
-    const updatedRows = rows.map(row => {
-      if (row.id === id) {
-        const updatedRow = {
-          ...row,
-          [field]: field === "jumlah" || field === "harga"
-              ? parseFloat(value.replace(/\./g, "")) || 0
-              : field === "date"
-                  ? value ? formatDate(value) : ""
-                  : value
-        };
-        updatedRow.total = calculateTotalPemasukan(updatedRow);
-        return updatedRow;
+  useEffect(() => {
+    fetchPemasukan();
+    fetchTambaks();
+  }, []);
+
+  const fetchTambaks = async () => {
+    try {
+      const response = await axios.get('https://nusaira-be.vercel.app/api/tambak');
+      setTambaks(response.data);
+      if (response.data.length > 0) {
+        setSelectedTambakId(response.data[0].id);
+        setTambakData(response.data[0]);
       }
-      return row;
-    });
-    setRows(updatedRows);
+    } catch (error) {
+      console.error("Error fetching tambaks:", error);
+      setError("Gagal mengambil data tambak. Silakan coba lagi.");
+    }
   };
 
-  const formatNumber = (number) => {
-    return number.toLocaleString("id-ID");
+  const fetchPemasukan = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get('https://nusaira-be.vercel.app/api/pemasukan');
+      setRows(response.data.map(item => ({
+        ...item,
+        date: item.date.split("T")[0],
+      })));
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching pemasukan data:", error);
+      setError("Gagal mengambil data. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleTambakChange = (e) => {
+    const id = e.target.value;
+    setSelectedTambakId(id);
+    const selectedTambak = tambaks.find(tambak => tambak.id === id);
+    setTambakData(selectedTambak);
+  };
+
+  const handleDeleteRow = async (id) => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
+
+    try {
+      setIsLoading(true);
+      await axios.delete(`https://nusaira-be.vercel.app/api/pemasukan/${id}`);
+      setRows(rows.filter(row => row.id !== id));
+      setError(null);
+    } catch (error) {
+      console.error("Error deleting pemasukan:", error);
+      setError("Gagal menghapus data. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSaveNewRow = async (newRow) => {
+    try {
+      setIsLoading(true);
+      const requestData = {
+        date: newRow.date,
+        kategori: String(newRow.kategori).trim(),
+        jumlah: Number(newRow.jumlah),
+        harga: Number(newRow.harga),
+        keterangan: String(newRow.keterangan || "").trim(),
+        total: newRow.jumlah * newRow.harga,
+        tambak_id: selectedTambakId,
+      };
+
+      const response = await axios.post('https://nusaira-be.vercel.app/api/pemasukan', requestData);
+      setRows(prevRows => [...prevRows, { ...requestData, id: response.data.id }]);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Terjadi kesalahan saat memproses data.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const formatRupiah = (number) => {
@@ -97,213 +300,59 @@ const ExcelForm = () => {
       style: "currency",
       currency: "IDR",
       minimumFractionDigits: 0,
-    }).format(number);
+    }).format(number || 0);
   };
 
-  const filteredRows = rows.filter(row =>
-    row.kategori.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.keterangan.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRows = rows.filter(
+    (row) =>
+      row.kategori.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      row.keterangan.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const calculateTotalPemasukan = (row) => {
-    return row.jumlah > 0 && row.harga > 0 ? row.jumlah * row.harga : 0;
-  };
-
-  const totalPemasukan = rows.reduce((total, row) => total + calculateTotalPemasukan(row), 0);
-
-  const handleSubmit = async () => {
-    const isValid = rows.every(row => {
-      return row.date &&
-             row.kategori &&
-             row.jumlah > 0 &&
-             row.harga > 0 &&
-             row.keterangan &&
-             row.total > 0 &&
-             row.tambak_id;
-    });
-  
-    if (!isValid) {
-      setError('Semua kolom harus diisi dengan benar sebelum menyimpan.');
-      return;
-    }
-  
-    setIsLoading(true);
-    setError(null);
-  
-    try {
-      // Kirim setiap baris sebagai objek terpisah
-      await Promise.all(rows.map(async (row) => {
-        const dataToSend = {
-          date: row.date,
-          kategori: row.kategori,
-          jumlah: row.jumlah,
-          harga: row.harga,
-          keterangan: row.keterangan,
-          total: calculateTotalPemasukan(row),
-          tambak_id: row.tambak_id,
-        };
-  
-        await axios.post('https://nusaira-be.vercel.app/api/pemasukan', dataToSend);
-      }));
-  
-      alert('Data berhasil disimpan!');
-      setRows([]); // Kosongkan form setelah berhasil
-    } catch (err) {
-      console.error('Error saving data:', err.response ? err.response.data : err.message);
-      setError(err.response?.data?.message || 'Gagal menyimpan data. Silakan coba lagi.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const totalPemasukan = rows.reduce((total, row) => total + (row.jumlah * row.harga), 0);
 
   return (
     <div className="bg-white w-full min-h-screen">
       <Header />
-      <div className="mt-4 px-4">
-        <div className="p-4">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <div>
-              <h1 className="text-xl font-medium">Pemasukan Tambak Lele Segar</h1>
-              <div className="flex items-center space-x-2 text-gray-600">
-                <MapPin className="w-4 h-4" />
-                <span>Boyolali, Jawa Tengah</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-              <div className="relative flex items-center">
-                <select className="block w-[300px] pr-10 pl-4 border rounded-lg py-2 appearance-none">
-                  {tambaks.map(tambak => (
-                    <option key={tambak.id} value={tambak.id}>{tambak.nama}</option>
-                  ))}
-                </select>
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <TambakHeader 
+        tambakData={tambakData} 
+        selectedTambakId={selectedTambakId} 
+        handleTambakChange={handleTambakChange} 
+        tambakList={tambaks} 
+      />
       <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
         <div className="p-6">
           <div className="mb-4 flex justify-between items-center">
             <h2 className="text-lg font-medium text-gray-800">Detail Catatan Pemasukan</h2>
             <div className="flex space-x-4">
-              <div className="flex items-center justify-center px-4">
-                <input
-                  type="text"
-                  className="w-full pl-6 pr-12 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg shadow-md transition-all duration-300"
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <button
-                onClick={handleAddRow}
-                className="flex items-center space-x-1 px-8 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-              >
-                <span className="text-lg font-bold">+</span>
-                <span className="text-lg">Catatan</span>
-              </button>
-              <button
-                onClick={handleDeleteAllRows}
-                className="px-6 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-              >
-                Hapus Semua
-              </button>
+              <input
+                type="text"
+                className="w-full max-w-md pl-6 pr-12 py-2 rounded-2xl border border-gray-300"
+                placeholder="Cari Kategori Pemasukan atau Keterangan"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full table-auto">
-              <thead>
-                <tr className="bg-blue-500 text-white">
-                  <th className="p-2 border border-blue-600">No</th>
-                  <th className="p-2 border border-blue-600">Tanggal</th>
-                  <th className="p-2 border border-blue-600">Kategori Pemasukan</th>
-                  <th className="p-2 border border-blue-600">Jumlah</th>
-                  <th className="p-2 border border-blue-600">Harga Per (Kg)</th>
-                  <th className="p-2 border border-blue-600">Keterangan</th>
-                  <th className="p-2 border border-blue-600">Tambak</th>
-                  <th className="p-2 border border-blue-600">Total Pemasukan</th>
-                  <th className="p-2 border border-blue-600">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRows.map((row, index) => (
-                  <tr key={row.id} className="bg-blue-50 hover:bg-blue-100 transition-colors">
-                    <td className="p-2 border text-center">{index + 1}</td>
-                    <td className="p-2 border">
-                      <input
-                        type="date"
-                        value={formatDate(row.date)}
-                        onChange={(e) => handleInputChange(row.id, "date", e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
-                      />
-                    </td>
-                    <td className="p-2 border">
-                      <input
-                        type="text"
-                        value={row.kategori}
-                        onChange={(e) => handleInputChange(row.id, "kategori", e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
-                      />
-                    </td>
-                    <td className="p-2 border">
-                      <input
-                        type="text"
-                        value={formatNumber(row.jumlah)}
-                        onChange={(e) => handleInputChange(row.id, "jumlah", e.target.value.replace(/\./g, ""))}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
-                      />
-                    </td>
-                    <td className="p-2 border">
-                      <input
-                        type="text"
-                        value={formatRupiah(row.harga)}
-                        onChange={(e) => handleInputChange(row.id, "harga", e.target.value.replace(/[^0-9]/g, ""))}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
-                      />
-                    </td>
-                    <td className="p-2 border">
-                      <input
-                        type="text"
-                        value={row.keterangan}
-                        onChange={(e) => handleInputChange(row.id, "keterangan", e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
-                      />
-                    </td>
-                    <td className="p-2 border">
-                      <select
-                        value={row.tambak_id}
-                        onChange={(e) => handleInputChange(row.id, "tambak_id", e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300"
-                      >
-                        {tambaks.map(tambak => (
-                          <option key={tambak.id} value={tambak.id}>
-                            {tambak.nama}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="p-2 border text-center">
-                      {formatRupiah(calculateTotalPemasukan(row))}
-                    </td>
-                    <td className="p-2 border text-center">
-                      <button
-                        onClick={() => handleDeleteRow(row.id)}
-                        className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                      >
-                        Hapus
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <PemasukanForm 
+            onSave={handleSaveNewRow} 
+            formatRupiah={formatRupiah} 
+            isLoading={isLoading}
+            error={error}
+            tambaks={tambaks}
+            selectedTambak={selectedTambakId}
+            setSelectedTambak={setSelectedTambakId}
+          />
+
+          {isLoading && <LoadingSpinner />}
+          {error && <ErrorMessage message={error} />}
+
+          <PemasukanTable 
+            rows={filteredRows} 
+            onDelete={handleDeleteRow} 
+            formatRupiah={formatRupiah} 
+          />
 
           <div className="mt-4 flex justify-end">
             <div className="flex flex-col items-end">
@@ -313,18 +362,6 @@ const ExcelForm = () => {
               </span>
             </div>
           </div>
-
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={handleSubmit}
-              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-            >
-              Simpan
-            </button>
-          </div>
-
-          {isLoading && <div>Loading...</div>}
-          {error && <div className="text-red-500">{error}</div>}
         </div>
       </div>
     </div>
