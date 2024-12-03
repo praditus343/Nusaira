@@ -58,7 +58,7 @@ const ProductModal = ({
                             <input
                                 type="text"
                                 name="product_title"
-                                placeholder="Masukan Nama Produk"
+                                placeholder="Masukkan Nama Produk"
                                 value={currentProduct.product_title}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border rounded-md border border-blue-500 placeholder-black"
@@ -93,7 +93,7 @@ const ProductModal = ({
                             <label className="block text-sm font-medium text-gray-700 mb-2">Deskripsi Produk</label>
                             <textarea
                                 name="product_description"
-                                placeholder='Masukan Deskripsi Produk'
+                                placeholder='Masukkan Deskripsi Produk'
                                 value={currentProduct.product_description}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border rounded-md border border-blue-500 placeholder-black"
@@ -104,7 +104,7 @@ const ProductModal = ({
                             <label className="block text-sm font-medium text-gray-700 mb-2">Harga</label>
                             <input
                                 type="number"
-                                placeholder='Masukan Harga Produk'
+                                placeholder='Masukkan Harga Produk'
                                 name="product_price"
                                 value={currentProduct.product_price}
                                 onChange={handleInputChange}

@@ -1,26 +1,43 @@
-import { Check, Copy, X } from 'lucide-react';
-import React, { useState } from 'react';
-
-// Data kontak untuk setiap supplier
-const supplierContacts = {
-  "Mr. Prengky": {
-    phone: "085700120940",
-    email: "prengky@gmail.com"
-  },
-  "Mr. Rito": {
-    phone: "089501877105",
-    email: "rito@gmail.com"
-  },
-  "Mr. Iqbalhan": {
-    phone: "089630488945",
-    email: "iqbalhan@gmail.com"
-  }
-};
+import { Check, Copy, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import "./ComponenCss/ContactModal.css";
 
 const ContactPopup = ({ onClose, supplier }) => {
   const [copiedField, setCopiedField] = useState(null);
-  
-  const contactInfo = supplierContacts[supplier];
+  const [supplierData, setSupplierData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [animationComplete, setAnimationComplete] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSupplierData = async () => {
+      try {
+        const response = await fetch("https://nusaira-be.vercel.app/api/suppliers");
+        const data = await response.json();
+        const foundSupplier = data.data.find(
+          (s) => s.supplier.toLowerCase() === supplier.toLowerCase()
+        );
+
+        setSupplierData(foundSupplier);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchSupplierData();
+  }, [supplier]);
+
+  useEffect(() => {
+    if (!loading) {
+      const animationTimer = setTimeout(() => {
+        setAnimationComplete(true);
+      }, 2000);
+
+      return () => clearTimeout(animationTimer);
+    }
+  }, [loading]);
 
   const copyToClipboard = async (text, field) => {
     try {
@@ -30,40 +47,60 @@ const ContactPopup = ({ onClose, supplier }) => {
         setCopiedField(null);
       }, 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
+
+  if (loading || !animationComplete) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6">
+          <p className="text-animation">Sedang memuat...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !supplierData) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6">Gagal memuat data kontak</div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-xl font-semibold text-blue-500">Hubungi {supplier}</h2>
-          <button 
+          <h2 className="text-xl font-semibold text-blue-500">
+            Hubungi {supplier}
+          </h2>
+          <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
             <X size={28} />
           </button>
         </div>
-        
+
         <div className="p-4 space-y-4">
           <div className="flex justify-between items-center group">
             <div>
-              <p className="text-gray-600">No Telefon:</p>
-              <p className="font-medium">{contactInfo.phone}</p>
+              <p className="text-gray-600">No WhatsApp:</p>
+              <p className="font-medium">{supplierData.whatsapp}</p>
             </div>
-            <button 
-              onClick={() => copyToClipboard(contactInfo.phone, 'phone')}
+            <button
+              onClick={() => copyToClipboard(supplierData.whatsapp, "whatsapp")}
               className="p-2 hover:bg-gray-100 rounded-full relative"
             >
-              {copiedField === 'phone' ? (
+              {copiedField === "whatsapp" ? (
                 <Check size={18} className="text-green-500" />
               ) : (
                 <Copy size={18} className="text-blue-500" />
               )}
               <span className="absolute -top-8 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                {copiedField === 'phone' ? 'Tersalin!' : 'Salin nomor'}
+                {copiedField === "whatsapp" ? "Tersalin!" : "Salin nomor"}
               </span>
             </button>
           </div>
@@ -71,19 +108,30 @@ const ContactPopup = ({ onClose, supplier }) => {
           <div className="flex justify-between items-center group">
             <div>
               <p className="text-gray-600">Email:</p>
-              <p className="font-medium">{contactInfo.email}</p>
+              <p className="font-medium">
+                {`${supplierData.supplier
+                  .toLowerCase()
+                  .replace(/\s+/g, "")}@gmail.com`}
+              </p>
             </div>
-            <button 
-              onClick={() => copyToClipboard(contactInfo.email, 'email')}
+            <button
+              onClick={() =>
+                copyToClipboard(
+                  `${supplierData.supplier
+                    .toLowerCase()
+                    .replace(/\s+/g, "")}@gmail.com`,
+                  "email"
+                )
+              }
               className="p-2 hover:bg-gray-100 rounded-full relative"
             >
-              {copiedField === 'email' ? (
+              {copiedField === "email" ? (
                 <Check size={18} className="text-green-500" />
               ) : (
                 <Copy size={18} className="text-blue-500" />
               )}
               <span className="absolute -top-8 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                {copiedField === 'email' ? 'Tersalin!' : 'Salin email'}
+                {copiedField === "email" ? "Tersalin!" : "Salin email"}
               </span>
             </button>
           </div>
@@ -93,7 +141,8 @@ const ContactPopup = ({ onClose, supplier }) => {
               Peringatan
             </h3>
             <p className="text-red-600">
-              Dilarang keras menyebarkan kontak ini. Pelanggaran akan ditindak tegas
+              Dilarang keras menyebarkan kontak ini. Pelanggaran akan ditindak
+              tegas
             </p>
           </div>
         </div>
