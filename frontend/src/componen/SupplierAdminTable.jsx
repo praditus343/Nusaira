@@ -17,7 +17,8 @@ const SuppliersTable = () => {
     province: '',
     location: '',
     description: '',
-    image: ''
+    image: '',
+    email: ''
   });
 
 
@@ -30,7 +31,6 @@ const SuppliersTable = () => {
       setIsLoading(true);
       const response = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
 
-      // Ambil data dari properti yang benar
       const suppliersData = Array.isArray(response.data.data) ? response.data.data : [];
       setSuppliers(suppliersData);
 
@@ -112,66 +112,73 @@ const SuppliersTable = () => {
 
   const handleSaveSupplier = async (e) => {
     e.preventDefault();
-
-    // Log the current supplier data before sending it
     console.log('Current Supplier Data:', currentSupplier);
 
     try {
-        // Determine if we're updating or adding a supplier and log the action
-        if (currentSupplier.id) {
-            console.log(`Updating supplier with ID: ${currentSupplier.id}`);
-            await axios.put(`https://nusaira-be.vercel.app/api/suppliers/${currentSupplier.id}`, currentSupplier);
-        } else {
-            console.log('Adding new supplier:', currentSupplier);
-            await axios.post('https://nusaira-be.vercel.app/api/suppliers', currentSupplier);
-        }
+      if (currentSupplier.id) {
+        console.log(`Updating supplier with ID: ${currentSupplier.id}`);
+        await axios.put(`https://nusaira-be.vercel.app/api/suppliers/${currentSupplier.id}`, currentSupplier);
+      } else {
+        console.log('Adding new supplier:', currentSupplier);
+        await axios.post('https://nusaira-be.vercel.app/api/suppliers', currentSupplier);
+      }
 
-        // Log the success message
-        console.log('Supplier saved successfully');
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: currentSupplier.id ? 'Supplier berhasil diperbarui!' : 'Supplier baru berhasil ditambahkan!',
-        });
-
-        // Refetch the supplier data and close the modal
-        fetchSuppliers();
-        setIsModalOpen(false);
-    } catch (err) {
-        // Log the error details
-        console.error('Error saving supplier:', err);
-
-        // Show the error alert
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: 'Terjadi kesalahan saat menyimpan supplier.',
-        });
-        setError('Failed to save supplier');
-    }
-};
-
-
-  const handleDeleteSupplier = async (supplierId) => {
-    try {
-      await axios.delete(`https://nusaira-be.vercel.app/api/suppliers/${supplierId}`);
-
+      console.log('Supplier saved successfully');
       Swal.fire({
         icon: 'success',
         title: 'Berhasil!',
-        text: 'Supplier berhasil dihapus!',
+        text: currentSupplier.id ? 'Supplier berhasil diperbarui!' : 'Supplier baru berhasil ditambahkan!',
       });
 
-      setSuppliers(prev => prev.filter(supplier => supplier.id !== supplierId));
+      fetchSuppliers();
+      setIsModalOpen(false);
     } catch (err) {
+      console.error('Error saving supplier:', err);
+
       Swal.fire({
         icon: 'error',
         title: 'Gagal!',
-        text: 'Terjadi kesalahan saat menghapus supplier.',
+        text: 'Terjadi kesalahan saat menyimpan supplier.',
       });
-      setError('Failed to delete supplier');
+      setError('Failed to save supplier');
     }
   };
+
+
+  const handleDeleteSupplier = async (supplierId) => {
+    const confirmation = await Swal.fire({
+      title: 'Konfirmasi',
+      text: 'Apakah Anda yakin ingin menghapus supplier ini?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal',
+    });
+
+    if (confirmation.isConfirmed) {
+      try {
+        await axios.delete(`https://nusaira-be.vercel.app/api/suppliers/${supplierId}`);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil!',
+          text: 'Supplier berhasil dihapus!',
+        });
+
+        setSuppliers((prev) => prev.filter((supplier) => supplier.id !== supplierId));
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal!',
+          text: 'Terjadi kesalahan saat menghapus supplier.',
+        });
+        setError('Failed to delete supplier');
+      }
+    }
+  };
+
 
 
   return (
@@ -194,6 +201,7 @@ const SuppliersTable = () => {
               <th className="py-3 px-4 text-left border border-gray-300">Gambar</th>
               <th className="py-3 px-4 text-left border border-gray-300">Nama Supplier</th>
               <th className="py-3 px-4 text-left border border-gray-300">whatsapp</th>
+              <th className="py-3 px-4 text-left border border-gray-300">Email</th>
               <th className="py-3 px-4 text-left border border-gray-300">Provinsi</th>
               <th className="py-3 px-4 text-left border border-gray-300">Lokasi</th>
               <th className="py-3 px-4 text-left border border-gray-300">Deskripsi</th>
@@ -219,6 +227,7 @@ const SuppliersTable = () => {
                 </td>
                 <td className="py-3 px-4 border border-gray-300 text-black">{supplier.supplier || 'N/A'}</td>
                 <td className="py-3 px-4 border border-gray-300 text-black">{supplier.whatsapp || 'N/A'}</td>
+                <td className="py-3 px-4 border border-gray-300 text-black">{supplier.email || 'N/A'}</td>
                 <td className="py-3 px-4 border border-gray-300 text-black">{supplier.province || 'N/A'}</td>
                 <td className="py-3 px-4 border border-gray-300 text-black">{supplier.location || 'N/A'}</td>
                 <td className="py-3 px-4 border border-gray-300 text-black">{supplier.description || 'N/A'}</td>
@@ -294,15 +303,27 @@ const SuppliersTable = () => {
                 </div>
               </div>
 
-              {/* Existing form fields */}
               <div className="mb-4">
                 <label className="block mb-2">Nama Supplier</label>
                 <input
                   type="text"
+                  placeholder='Masukkan Nama Supplier'
                   name="supplier"
                   value={currentSupplier.supplier}
                   onChange={handleInputChange}
-                  className="w-full border border-blue-500 rounded px-3 py-2"
+                  className="w-full border border-blue-500 rounded px-3 py-2 placeholder-black"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2">Email</label>
+                <input
+                placeholder='Masukkan Email Supplier'
+                  type="email"
+                  name="email"
+                  value={currentSupplier.email}
+                  onChange={handleInputChange}
+                  className="w-full border rounded px-3 py-2 border-blue-500 placeholder-black"
                   required
                 />
               </div>
@@ -310,10 +331,11 @@ const SuppliersTable = () => {
                 <label className="block mb-2">whatsapp</label>
                 <input
                   type="text"
+                  placeholder='Contoh: (628123456789)'
                   name="whatsapp"
                   value={currentSupplier.whatsapp}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 border-blue-500"
+                  className="w-full border rounded px-3 py-2 border-blue-500 placeholder-black"
                   required
                 />
               </div>
@@ -322,9 +344,10 @@ const SuppliersTable = () => {
                 <input
                   type="text"
                   name="province"
+                  placeholder='Masukkan provinsi'
                   value={currentSupplier.province}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 border-blue-500"
+                  className="w-full border rounded px-3 py-2 border-blue-500 placeholder-black"
                   required
                 />
               </div>
@@ -333,9 +356,10 @@ const SuppliersTable = () => {
                 <input
                   type="text"
                   name="location"
+                  placeholder='Masukkan Lokasi (Kabupaten/Kota)'
                   value={currentSupplier.location}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 border-blue-500"
+                  className="w-full border rounded px-3 py-2 border-blue-500 placeholder-black"
                   required
                 />
               </div>
@@ -343,9 +367,10 @@ const SuppliersTable = () => {
                 <label className="block mb-2">Deskripsi</label>
                 <textarea
                   name="description"
+                  placeholder='Masukkan Deskripsi Supplier'
                   value={currentSupplier.description}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2 border-blue-500"
+                  className="w-full border rounded px-3 py-2 border-blue-500 placeholder-black"
                   required
                 />
               </div>
