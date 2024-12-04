@@ -8,26 +8,33 @@ import Header from '../componen/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import RatingReviewForm from './RatingAndReviewForm';
+import { ChevronDown } from "lucide-react";
 
 const SupplierDashboard = () => {
     const { supplier } = useParams();
-    console.log(supplier);
-
+    // console.log(supplier);
     const [supplierData, setSupplierData] = useState(null);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [showMore, setShowMore] = useState(false);
+    const displayedReviews = showMore ? reviews : reviews.slice(0, 3);
 
     useEffect(() => {
         const fetchSupplierData = async () => {
             try {
-                const supplierResponse = await axios.get(`https://nusaira-be.vercel.app/api/suppliers`);
+                const supplierResponse = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
                 const suppliers = supplierResponse.data.data;
 
-                console.log("Suppliers fetched:", suppliers);
+                // console.log("Suppliers fetched:", suppliers);
+
                 const selectedSupplier = suppliers.find((sup) => {
-                    console.log("Checking supplier:", sup.supplier);
-                    return sup.supplier && sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase();
+                    // console.log("Checking supplier:", sup.supplier);
+                    return (
+                        sup.supplier &&
+                        sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
+                    );
                 });
 
                 if (!selectedSupplier) {
@@ -41,31 +48,54 @@ const SupplierDashboard = () => {
                     `https://nusaira-be.vercel.app/api/products?supplierId=${selectedSupplier.id}`
                 );
 
-
                 console.log("Products response:", productsResponse.data);
 
                 if (Array.isArray(productsResponse.data.data)) {
                     const filteredProducts = productsResponse.data.data.filter(
-                        product => product.product_supplier_id === selectedSupplier.id
+                        (product) => product.product_supplier_id === selectedSupplier.id
                     );
 
-                    console.log("Filtered Products:", filteredProducts);
-                    setProducts(filteredProducts);
+                    // console.log("Filtered Products:", filteredProducts);
+                    // setProducts(filteredProducts);
                 } else {
                     console.error("Products data is not an array:", productsResponse.data);
                     setError('Produk tidak ditemukan atau format data tidak sesuai');
                 }
 
+                try {
+                    const reviewsResponse = await axios.get(
+                        `https://nusaira-be.vercel.app/api/reviews?supplierId=${selectedSupplier.id}`
+                    );
+
+                    // console.log("Reviews response:", reviewsResponse.data);
+
+                    if (Array.isArray(reviewsResponse.data.data)) {
+                        const filteredReviews = reviewsResponse.data.data.filter(
+                            (review) => review.supplier_id === selectedSupplier.id
+                        );
+
+                        // console.log("Filtered Reviews:", filteredReviews);
+                        setReviews(filteredReviews);
+                    } else {
+                        console.error("Reviews data is not an array:", reviewsResponse.data);
+                        setReviewError('Format data ulasan tidak valid');
+                    }
+                } catch (reviewErr) {
+                    console.error('Error fetching reviews:', reviewErr.message);
+                    setReviewError('Gagal memuat ulasan');
+                }
+
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching data:', err.message);
-                setError('Gagal memuat data supplier atau produk');
+                setError('Gagal memuat data supplier, produk, atau reviews');
                 setLoading(false);
             }
         };
 
         fetchSupplierData();
     }, [supplier]);
+
 
 
     const handleContactSupplier = () => {
@@ -116,13 +146,67 @@ const SupplierDashboard = () => {
                     </div>
 
                     <div className="bg-white p-4 rounded-lg border border-gray-300 shadow-md mb-8 ml-10 mr-10 mt-5">
-                        <h3 className="font-semibold text-xl">Supplier Details:</h3>
+                        <h3 className="font-semibold text-xl">Detail Supplier</h3>
                         <p>{supplierData.description}</p>
-                        <p><strong>Availability:</strong> {supplierData.availability}</p>
+                        <p><strong>ketersediaan:</strong> {supplierData.availability}</p>
+                    </div>
+                    <div className="reviews-container bg-white rounded-xl shadow-md mx-10 p-6 border border-gray-300 mb-10">
+                        <h2 className="text-2xl font-semibold mb-4">Ulasan Pelanggan</h2>
+
+                        {displayedReviews.length > 0 ? (
+                            displayedReviews.map((review) => (
+                                <div key={review.id} className="review-card mb-6 p-4 border rounded-lg shadow-sm bg-gray-50">
+                                    <div className="flex items-center mb-3">
+                                        <div className="flex text-yellow-500">
+                                            {[...Array(5)].map((star, index) => (
+                                                <svg
+                                                    key={index}
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className={`w-5 h-5 ${index < review.rating ? 'text-yellow-500' : 'text-gray-300'}`}
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 15l-5.878 3.09 1.12-6.528-4.768-4.651 6.517-.948L10 1l2.99 5.963 6.517.948-4.768 4.651 1.12 6.528L10 15z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            ))}
+                                        </div>
+                                        <span className="ml-3 text-gray-700 font-medium">{review.reviewer_name}</span>
+                                    </div>
+
+                                    <p className="review-text text-gray-700 mb-3">{review.review_text}</p>
+
+                                    <p className="text-sm text-gray-500">
+                                        {new Date(review.created_at).toLocaleDateString('id-ID', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                        })}
+                                    </p>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500">Belum ada ulasan untuk supplier ini.</p>
+                        )}
+
+                        {reviews.length > 3 && (
+                            <button
+                                onClick={() => setShowMore(!showMore)}
+                                className="mt-4 flex items-center text-blue-600 hover:underline"
+                            >
+                                <span className="mr-2">{showMore ? "Tampilkan lebih sedikit" : "Tampilkan lebih banyak"}</span>
+                                <ChevronDown size={20} className={`${showMore ? "rotate-180" : ""}`} />
+                            </button>
+                        )}
                     </div>
 
+
                     <div className="mb-8">
-                        <h3 className="font-semibold text-xl mb-2 ml-10">Product Catalog:</h3>
+                        <h3 className="font-semibold text-xl mb-2 ml-10">Katalog Produk</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {products.length > 0 ? (
                                 products.map((product, index) => (
@@ -171,7 +255,6 @@ const SupplierDashboard = () => {
                             Hubungi Supplier
                         </button>
                     </div>
-
                     <div className="ml-10 mr-10 mb-8">
                         <RatingReviewForm supplierId={supplierData.id} />
                     </div>
@@ -188,7 +271,7 @@ const SupplierDetail = () => {
             <div className="flex-1 overflow-auto">
                 <SupplierDashboard />
                 <AIFloatingButton />
-                <div className="mt-20">
+                <div className="mt-10">
                     <Footer />
                 </div>
             </div>

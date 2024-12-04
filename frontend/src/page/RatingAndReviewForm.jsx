@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Star } from 'lucide-react';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const RatingReviewForm = () => {
-  const { supplier } = useParams(); // Mengambil nama supplier dari URL
+  const { supplier } = useParams();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
-  const [reviewerName, setReviewerName] = useState(''); // Input untuk nama reviewer
+  const [reviewerName, setReviewerName] = useState('');
   const [hover, setHover] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
   const [supplierId, setSupplierId] = useState(null);
 
   useEffect(() => {
@@ -22,14 +22,22 @@ const RatingReviewForm = () => {
         const selectedSupplier = suppliers.find(
           (sup) => sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
         );
-        
+
         if (selectedSupplier) {
-          setSupplierId(selectedSupplier.id); // Set supplier_id
+          setSupplierId(selectedSupplier.id);
         } else {
-          setSubmitMessage('Supplier tidak ditemukan.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Supplier tidak ditemukan.',
+          });
         }
       } catch (error) {
-        console.error('Error fetching supplier data:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Terjadi kesalahan saat mengambil data supplier.',
+        });
       }
     };
 
@@ -41,29 +49,41 @@ const RatingReviewForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitMessage('');
 
     if (!supplierId || !reviewerName || !review) {
-      setSubmitMessage('Semua kolom harus diisi.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Semua kolom harus diisi.',
+      });
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const response = await axios.post('https://nusaira-be.vercel.app/api/reviews', {
-        supplier_id: supplierId,      
-        reviewer_name: reviewerName,   
-        review_text: review,           
-        rating: rating                 
+      await axios.post('https://nusaira-be.vercel.app/api/reviews', {
+        supplier_id: supplierId,
+        reviewer_name: reviewerName,
+        review_text: review,
+        rating: rating,
       });
 
-      setSubmitMessage('Terima kasih atas ulasan Anda!');
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'Terima kasih atas ulasan Anda!',
+      });
+
       setRating(0);
       setReview('');
       setReviewerName('');
+      setHover(0);
     } catch (error) {
-      setSubmitMessage('Gagal mengirim ulasan. Silakan coba lagi.');
-      console.error('Error submitting review:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal mengirim ulasan. Silakan coba lagi.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -79,7 +99,7 @@ const RatingReviewForm = () => {
             type="text"
             value={reviewerName}
             onChange={(e) => setReviewerName(e.target.value)}
-            className="w-full p-2 border rounded-lg"
+            className="w-full p-2 border rounded-lg border-gray-300"
             placeholder="Masukkan nama Anda"
             required
           />
@@ -94,26 +114,27 @@ const RatingReviewForm = () => {
                 <button
                   type="button"
                   key={index}
-                  className={`${
-                    index <= (hover || rating) ? 'text-yellow-500' : 'text-gray-300'
-                  } bg-transparent border-none text-3xl`}
+                  className="bg-transparent border-none text-6xl mx-1"
                   onClick={() => setRating(index)}
                   onMouseEnter={() => setHover(index)}
                   onMouseLeave={() => setHover(rating)}
                 >
-                  <Star />
+                  <Star
+                    fill={index <= (hover || rating) ? '#F59E0B' : 'none'}
+                    stroke={index <= (hover || rating) ? '#F59E0B' : '#D1D5DB'}
+                    strokeWidth={2}
+                  />
                 </button>
               );
             })}
           </div>
         </div>
-
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Ulasan</label>
           <textarea
             value={review}
             onChange={(e) => setReview(e.target.value)}
-            className="w-full p-2 border rounded-lg"
+            className="w-full p-2 border rounded-lg border-gray-300"
             rows="4"
             placeholder="Tulis ulasan Anda di sini..."
             required
@@ -123,25 +144,14 @@ const RatingReviewForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`w-full py-2 rounded-lg ${
-            isSubmitting
+          className={`w-full py-2 rounded-lg ${isSubmitting
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-blue-500 hover:bg-blue-600 text-white'
-          }`}
+            }`}
         >
           {isSubmitting ? 'Mengirim...' : 'Kirim Ulasan'}
         </button>
       </form>
-
-      {submitMessage && (
-        <div
-          className={`mt-4 text-center ${
-            submitMessage.includes('Terima kasih') ? 'text-green-600' : 'text-red-600'
-          }`}
-        >
-          {submitMessage}
-        </div>
-      )}
     </div>
   );
 };

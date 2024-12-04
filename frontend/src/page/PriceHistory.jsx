@@ -82,25 +82,24 @@ const PriceHistory = ({ searchInput }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [suppliersResponse, productsResponse] = await Promise.all([
-                    fetch('https://nusaira-be.vercel.app/api/suppliers'),
-                    fetch('https://nusaira-be.vercel.app/api/products')
-                ]);
-
+                const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
                 const suppliersData = await suppliersResponse.json();
-                const productsData = await productsResponse.json();
-
                 setSuppliers(suppliersData.data);
+    
+                const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
+                const productsData = await productsResponse.json();
                 setProducts(productsData.data);
+    
                 setLoading(false);
             } catch (err) {
                 setError(err);
                 setLoading(false);
             }
         };
-
+    
         fetchData();
     }, []);
+    
 
     const combinedData = Array.isArray(suppliers) 
     ? suppliers.map((supplier) => {
@@ -131,12 +130,14 @@ const PriceHistory = ({ searchInput }) => {
             : true
     );
 
-    if (loading) return
-    <div>
-        <div className="flex justify-center items-center h-screen">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-    </div>;
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+    
     if (error) return <div>Terjadi kesalahan: {error.message}</div>;
 
     return (
