@@ -11,8 +11,8 @@ const PriceCard = ({ supplier, location, province, price, whatsapp, image, descr
     const closeModal = () => setIsModalOpen(false);
 
     const viewDetails = () => {
-        navigate(`/supplier/${supplier}`);
-    };
+    navigate(`/supplier/${supplier}`);
+};
 
     return (
         <div className="p-6 bg-blue-200 rounded-lg shadow-sm flex items-center justify-between">
@@ -30,9 +30,11 @@ const PriceCard = ({ supplier, location, province, price, whatsapp, image, descr
                         </div>
                     </div>
                     <div className="text-sm text-gray-500 flex items-start gap-1 text-right">
-                        <MapPin className="w-4 h-4 text-blue-600 mt-1" />
                         <div>
-                            <p className="text-blue-600 mb-1">{location}</p>
+                            <div className="flex justify-between items-center">
+                                <MapPin className="w-4 h-4 text-blue-600 mr-1" />
+                                <p className="text-blue-600 mb-1 mt-1.5">{location}</p>
+                            </div>
                             <p className="text-xs text-blue-600">{province}</p>
                         </div>
                     </div>
@@ -80,39 +82,47 @@ const PriceHistory = ({ searchInput }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [suppliersResponse, productsResponse] = await Promise.all([
-                    fetch('https://nusaira-be.vercel.app/api/suppliers'),
-                    fetch('https://nusaira-be.vercel.app/api/products')
-                ]);
-
+                const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
                 const suppliersData = await suppliersResponse.json();
-                const productsData = await productsResponse.json();
-
                 setSuppliers(suppliersData.data);
+    
+                const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
+                const productsData = await productsResponse.json();
                 setProducts(productsData.data);
+    
                 setLoading(false);
             } catch (err) {
                 setError(err);
                 setLoading(false);
             }
         };
-
+    
         fetchData();
     }, []);
+    
 
-    const combinedData = suppliers.map(supplier => {
-        const supplierProducts = products.filter(p => p.product_supplier_id === supplier.id);
-        const cheapestProduct = supplierProducts.length > 0
-            ? supplierProducts.reduce((min, product) =>
-                parseFloat(product.product_price) < parseFloat(min.product_price) ? product : min
-            )
-            : null;
-
+    const combinedData = Array.isArray(suppliers) 
+    ? suppliers.map((supplier) => {
+        const supplierProducts = Array.isArray(products)
+            ? products.filter((p) => p.product_supplier_id === supplier.id)
+            : [];
+        
+        const cheapestProduct =
+            supplierProducts.length > 0
+                ? supplierProducts.reduce((min, product) =>
+                      parseFloat(product.product_price) < parseFloat(min.product_price)
+                          ? product
+                          : min
+                  )
+                : null;
+        
         return {
             ...supplier,
-            price: cheapestProduct ? cheapestProduct.product_price : 'Harga tidak tersedia'
+            price: cheapestProduct ? cheapestProduct.product_price : 'Harga tidak tersedia',
         };
-    });
+    }) 
+    : []; 
+    
 
     const filteredSuppliers = combinedData.filter((item) =>
         searchInput
@@ -120,12 +130,14 @@ const PriceHistory = ({ searchInput }) => {
             : true
     );
 
-    if (loading) return
-    <div>
-        <div className="flex justify-center items-center h-screen">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-    </div>;
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+    
     if (error) return <div>Terjadi kesalahan: {error.message}</div>;
 
     return (

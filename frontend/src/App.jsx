@@ -76,7 +76,7 @@ function App() {
           <Route path="/ChatAi" element={<ChatAi />} />
           <Route path="/PriceHistory" element={<PriceHistory />} />
           <Route path="/PriceTrend" element={<PriceTrending />} />
-          <Route path="/supplier/:supplierId" element={<SupplierDetail />} />
+          <Route path="/supplier/:supplier" element={<SupplierDetail />} />
           <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
           <Route path="/Perpustakaan" element={<Perpustakaan />} />
           <Route path="/Invoice" element={<Invoice />} />
