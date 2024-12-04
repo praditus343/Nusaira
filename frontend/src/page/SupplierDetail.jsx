@@ -1,192 +1,264 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ProductImage1 from '../assets/img/kabar_lele/kbl1.png';
-import ProductImage2 from '../assets/img/kabar_lele/kbl3.png';
-import ProductImage3 from '../assets/img/kabar_lele/kbl6.png';
-import SupplierImage1 from '../assets/img/assets_foto/f1.png';
-import SupplierImage2 from '../assets/img/assets_foto/f2.png';
-import SupplierImage3 from '../assets/img/assets_foto/f3.png';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Footer from '../componen/Footer';
+import Header from '../componen/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import Header from '../componen/Header';
+import RatingReviewForm from './RatingAndReviewForm';
+import { ChevronDown } from "lucide-react";
 
 const SupplierDashboard = () => {
-    const { supplierId } = useParams();
+    const { supplier } = useParams();
+    // console.log(supplier);
+    const [supplierData, setSupplierData] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [showMore, setShowMore] = useState(false);
+    const displayedReviews = showMore ? reviews : reviews.slice(0, 3);
+
+    useEffect(() => {
+        const fetchSupplierData = async () => {
+            try {
+                const supplierResponse = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
+                const suppliers = supplierResponse.data.data;
+
+                // console.log("Suppliers fetched:", suppliers);
+
+                const selectedSupplier = suppliers.find((sup) => {
+                    // console.log("Checking supplier:", sup.supplier);
+                    return (
+                        sup.supplier &&
+                        sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
+                    );
+                });
+
+                if (!selectedSupplier) {
+                    console.error(`Supplier "${decodeURIComponent(supplier)}" tidak ditemukan.`);
+                    throw new Error('Supplier not found');
+                }
+
+                setSupplierData(selectedSupplier);
+
+                const productsResponse = await axios.get(
+                    `https://nusaira-be.vercel.app/api/products?supplierId=${selectedSupplier.id}`
+                );
+
+                console.log("Products response:", productsResponse.data);
+
+                if (Array.isArray(productsResponse.data.data)) {
+                    const filteredProducts = productsResponse.data.data.filter(
+                        (product) => product.product_supplier_id === selectedSupplier.id
+                    );
+
+                    // console.log("Filtered Products:", filteredProducts);
+                    // setProducts(filteredProducts);
+                } else {
+                    console.error("Products data is not an array:", productsResponse.data);
+                    setError('Produk tidak ditemukan atau format data tidak sesuai');
+                }
+
+                try {
+                    const reviewsResponse = await axios.get(
+                        `https://nusaira-be.vercel.app/api/reviews?supplierId=${selectedSupplier.id}`
+                    );
+
+                    // console.log("Reviews response:", reviewsResponse.data);
+
+                    if (Array.isArray(reviewsResponse.data.data)) {
+                        const filteredReviews = reviewsResponse.data.data.filter(
+                            (review) => review.supplier_id === selectedSupplier.id
+                        );
+
+                        // console.log("Filtered Reviews:", filteredReviews);
+                        setReviews(filteredReviews);
+                    } else {
+                        console.error("Reviews data is not an array:", reviewsResponse.data);
+                        setReviewError('Format data ulasan tidak valid');
+                    }
+                } catch (reviewErr) {
+                    console.error('Error fetching reviews:', reviewErr.message);
+                    setReviewError('Gagal memuat ulasan');
+                }
+
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching data:', err.message);
+                setError('Gagal memuat data supplier, produk, atau reviews');
+                setLoading(false);
+            }
+        };
+
+        fetchSupplierData();
+    }, [supplier]);
+
+
+
     const handleContactSupplier = () => {
-        const whatsappNumber = supplier.whatsapp;
-        const message = "Halo, saya tertarik dengan produk Anda.";
-        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+        if (!supplierData || !supplierData.whatsapp) return;
+        const message = "Hello, Saya Tertarik Dengan produk Kamu.";
+        const url = `https://wa.me/${supplierData.whatsapp}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
     };
 
     const handleOrderClick = (productName, productPrice) => {
-        const whatsappNumber = supplier.whatsapp;
-        const message = `Halo, saya ingin memesan ${productName} dengan harga ${productPrice}.`;
-        const whatsappLink = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(message)}`;
-
+        if (!supplierData || !supplierData.whatsapp) return;
+        const message = `Hello, Saya Mau Melakukan Pemesanan ${productName} Dengan Harga ${productPrice}.`;
+        const whatsappLink = `https://api.whatsapp.com/send?phone=${supplierData.whatsapp}&text=${encodeURIComponent(message)}`;
         window.open(whatsappLink, '_blank');
     };
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
-    const supplierData = {
-        "Mr. Prengky": {
-            province: "Jawa Tengah",
-            location: "Boyolali",
-            description: "Mr. Prengky adalah supplier terpercaya dengan reputasi tinggi sejak 2010.",
-            Image: SupplierImage1,
-            rating: 4.5,
-            reviews: [
-                "Ikan segar dan kualitasnya sangat baik!",
-                "Pengiriman cepat dan layanan ramah."
-            ],
-            availability: "Stok Tersedia",
-            whatsapp: "6285700120940",
-            products: [
-                {
-                    name: "Ikan Lele Segar",
-                    price: "Rp.50.000",
-                    Image: ProductImage1,
-                    details: "Ikan lele segar pilihan dengan kualitas terbaik."
-                },
-                {
-                    name: "Ikan Lele Premium",
-                    price: "Rp.60.000",
-                    Image: ProductImage2,
-                    details: "Ikan lele premium dengan ukuran besar dan daging tebal."
-                },
-                {
-                    name: "Ikan Lele Organik",
-                    price: "Rp.70.000",
-                    Image: ProductImage3,
-                    details: "Ikan lele organik yang sehat dan lezat."
-                }
-            ]
-        },
-        "Mr. Rito": {
-            province: "Jawa Tengah",
-            location: "Boyolali",
-            description: "Mr. Rito telah berpengalaman dalam penyediaan ikan lele selama lebih dari 5 tahun.",
-            Image: SupplierImage2,
-            rating: 4.8,
-            reviews: [
-                "Kualitas terbaik! Sangat puas dengan pelayanan.",
-                "Selalu memesan dari sini."
-            ],
-            availability: "Stok Tersedia",
-            whatsapp: "6289501877105",
-            products: [
-                {
-                    name: "Ikan Lele Segar",
-                    price: "Rp.70.000",
-                    Image: ProductImage3,
-                    details: "Ikan lele segar langsung dari peternakan."
-                },
-                {
-                    name: "Ikan Lele Jumbo",
-                    price: "Rp.80.000",
-                    Image: ProductImage1,
-                    details: "Ikan lele jumbo berkualitas tinggi."
-                },
-                {
-                    name: "Ikan Lele Frosen",
-                    price: "Rp.65.000",
-                    Image: ProductImage2,
-                    details: "Ikan lele beku untuk kualitas lebih tahan lama."
-                }
-            ]
-        },
-        "Mr. Iqbalhan": {
-            province: "Jawa Tengah",
-            location: "Boyolali",
-            description: "Mr. Iqbalhan dikenal dengan produk berkualitas tinggi dan pengiriman yang tepat waktu.",
-            Image: SupplierImage3,
-            rating: 4.6,
-            reviews: [
-                "Pelayanan yang sangat memuaskan!",
-                "Ikan lele sangat fresh dan enak."
-            ],
-            availability: "Stok Habis",
-            whatsapp: "6289630488945",
-            products: [
-                {
-                    name: "Ikan Lele Khusus",
-                    price: "Rp.85.000",
-                    Image: ProductImage1,
-                    details: "Ikan lele khusus dengan kualitas premium."
-                },
-                {
-                    name: "Ikan Lele Olahan",
-                    price: "Rp.90.000",
-                    Image: ProductImage2,
-                    details: "Ikan lele olahan siap saji."
-                }
-            ]
-        }
-    };
+    if (error) {
+        return <div className="text-red-500 text-center mt-10">{error}</div>;
+    }
 
-    const supplier = supplierData[supplierId];
-
-    if (!supplier) {
-        return <div className="text-red-500">Supplier tidak ditemukan.</div>;
+    if (!supplierData) {
+        return <div className="text-red-500">Supplier not found.</div>;
     }
 
     return (
-        <div className="bg-white w-full min-h-screen">
-            <Header />
-            <div className="flex items-center mb-8 ml-10 mr-10 mt-10">
-                <img src={supplier.Image} alt={supplierId} className="w-24 h-24 object-cover rounded-full border-4 border-blue-400 shadow-lg" />
-                <div className="ml-4">
-                    <h2 className="text-3xl font-semibold">{supplierId}</h2>
-                    <p className="text-gray-500">{supplier.location}, {supplier.province}</p>
-                </div>
-            </div>
-
-            <div className="bg-white p-4 rounded-lg border border-gray-300 shadow-md mb-8 ml-10 mr-10 mt-5">
-                <h3 className="font-semibold text-xl">Detail Supplier:</h3>
-                <p>{supplier.description}</p>
-                <p><strong>Ketersediaan:</strong> {supplier.availability}</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-lg shadow-md mb-8 border border-gray-300 ml-10 mr-10 mt-5">
-                <h3 className="font-semibold text-xl">Rating dan Ulasan:</h3>
-                <p><strong>Rating:</strong> {supplier.rating} / 5</p>
-                <ul className="list-disc pl-5">
-                    {supplier.reviews.map((review, index) => (
-                        <li key={index} className="text-gray-600">- {review}</li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className="mb-8">
-                <h3 className="font-semibold text-xl mb-2 ml-10">Katalog Produk:</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {supplier.products.map((product, index) => (
-                        <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 border border-gray-300 ml-10 mr-10 mt-5">
-                            <img src={product.Image} alt={product.name} className="w-full h-32 object-cover" />
-                            <div className="p-4">
-                                <h4 className="font-semibold text-lg">{product.name}</h4>
-                                <p className="text-gray-500">{product.details}</p>
-                                <p className="font-bold text-blue-600">{product.price}</p>
-                                <button
-                                    className="bg-blue-400 text-white px-4 py-2 mt-2 rounded-lg"
-                                    onClick={() => handleOrderClick(product.name, product.price)}
-                                >
-                                    Pesan Sekarang
-                                </button>
-                            </div>
+        <div className="flex h-screen">
+            <div className="flex-1 overflow-auto">
+                <div className="bg-white w-full min-h-screen">
+                    <Header />
+                    <div className="flex items-center mb-8 ml-10 mr-10 mt-10">
+                        <img
+                            src={supplierData.image || '/default-supplier.png'}
+                            alt={supplierData.name}
+                            className="w-24 h-24 object-cover rounded-full border-4 border-blue-400 shadow-lg"
+                        />
+                        <div className="ml-4">
+                            <h2 className="text-3xl font-semibold">{supplierData.supplier}</h2>
+                            <p className="text-gray-500">{supplierData.location}, {supplierData.province}</p>
                         </div>
-                    ))}
-                </div>
-            </div>
+                    </div>
 
-            <div>
-                <button className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center ml-10 mt-10" onClick={handleContactSupplier}>
-                    <FontAwesomeIcon icon={faWhatsapp} className="mr-2" />
-                    Hubungi Supplier
-                </button>
+                    <div className="bg-white p-4 rounded-lg border border-gray-300 shadow-md mb-8 ml-10 mr-10 mt-5">
+                        <h3 className="font-semibold text-xl">Detail Supplier</h3>
+                        <p>{supplierData.description}</p>
+                        <p><strong>ketersediaan:</strong> {supplierData.availability}</p>
+                    </div>
+                    <div className="reviews-container bg-white rounded-xl shadow-md mx-10 p-6 border border-gray-300 mb-10">
+                        <h2 className="text-2xl font-semibold mb-4">Ulasan Pelanggan</h2>
+
+                        {displayedReviews.length > 0 ? (
+                            displayedReviews.map((review) => (
+                                <div key={review.id} className="review-card mb-6 p-4 border rounded-lg shadow-sm bg-gray-50">
+                                    <div className="flex items-center mb-3">
+                                        <div className="flex text-yellow-500">
+                                            {[...Array(5)].map((star, index) => (
+                                                <svg
+                                                    key={index}
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className={`w-5 h-5 ${index < review.rating ? 'text-yellow-500' : 'text-gray-300'}`}
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 15l-5.878 3.09 1.12-6.528-4.768-4.651 6.517-.948L10 1l2.99 5.963 6.517.948-4.768 4.651 1.12 6.528L10 15z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            ))}
+                                        </div>
+                                        <span className="ml-3 text-gray-700 font-medium">{review.reviewer_name}</span>
+                                    </div>
+
+                                    <p className="review-text text-gray-700 mb-3">{review.review_text}</p>
+
+                                    <p className="text-sm text-gray-500">
+                                        {new Date(review.created_at).toLocaleDateString('id-ID', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                        })}
+                                    </p>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500">Belum ada ulasan untuk supplier ini.</p>
+                        )}
+
+                        {reviews.length > 3 && (
+                            <button
+                                onClick={() => setShowMore(!showMore)}
+                                className="mt-4 flex items-center text-blue-600 hover:underline"
+                            >
+                                <span className="mr-2">{showMore ? "Tampilkan lebih sedikit" : "Tampilkan lebih banyak"}</span>
+                                <ChevronDown size={20} className={`${showMore ? "rotate-180" : ""}`} />
+                            </button>
+                        )}
+                    </div>
+
+
+                    <div className="mb-8">
+                        <h3 className="font-semibold text-xl mb-2 ml-10">Katalog Produk</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {products.length > 0 ? (
+                                products.map((product, index) => (
+                                    <div
+                                        key={product.id || index}
+                                        className="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 border border-gray-300 ml-10 mr-10 mt-5"
+                                    >
+                                        <div></div>
+                                        <img
+                                            src={product.product_image || '/default-product.png'}
+                                            alt={product.product_title}
+                                            className="w-full h-32 object-cover"
+                                        />
+                                        <div className="p-4 flex flex-col">
+                                            <div>
+                                                <h4 className="font-semibold text-lg mb-2">{product.product_title}</h4>
+                                                <p className="text-gray-500 mb-1">{product.product_description}</p>
+                                            </div>
+                                            <div className="mt-auto flex items-center justify-between">
+                                                <p className="text-xl font-semibold text-blue-600 mb-4">
+                                                    {product.product_price
+                                                        ? `Rp ${Math.round(product.product_price).toLocaleString('id-ID')}`
+                                                        : 'Harga belum ditentukan'}
+                                                </p>
+                                            </div>
+                                            <button
+                                                className="bg-blue-400 text-white px-4 py-2 rounded-lg mt-4"
+                                                onClick={() => handleOrderClick(product.product_title, product.product_price)}
+                                            >
+                                                Pesan Sekarang
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="ml-10 text-gray-500">No products available for this supplier.</p>
+                            )}
+                        </div>
+                    </div>
+                    <div className='mb-20'>
+                        <button
+                            className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center ml-10 mt-10"
+                            onClick={handleContactSupplier}
+                        >
+                            <FontAwesomeIcon icon={faWhatsapp} className="mr-2" />
+                            Hubungi Supplier
+                        </button>
+                    </div>
+                    <div className="ml-10 mr-10 mb-8">
+                        <RatingReviewForm supplierId={supplierData.id} />
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -199,7 +271,7 @@ const SupplierDetail = () => {
             <div className="flex-1 overflow-auto">
                 <SupplierDashboard />
                 <AIFloatingButton />
-                <div className='mt-20'>
+                <div className="mt-10">
                     <Footer />
                 </div>
             </div>

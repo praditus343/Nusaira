@@ -9,6 +9,8 @@ const LeleDataTable = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000)); 
+
         const response = await fetch('https://nusaira-be.vercel.app/api/budidaya-lele');
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
