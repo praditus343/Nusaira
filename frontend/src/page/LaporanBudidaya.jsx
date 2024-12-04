@@ -24,10 +24,12 @@ function LaporanDashboard() {
   const [pakanData, setPakanData] = useState([]);
   const [panenData, setPanenData] = useState([]);
   const [airData, setAirData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
+        setIsLoading(true);
         const tambak = await fetchTambak();
         const siklus = await fetchSiklus();
         const panen = await fetchPanen();
@@ -473,6 +475,15 @@ function LaporanDashboard() {
     };
 
     const kolamPerformances = evaluateKolamPerformance();
+
+    if (isLoading) {
+      console.log("Loading...");
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      );
+    }
 
     return (
       <div className="overflow-x-auto mt-10">
