@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { ChevronDown, Edit3, RefreshCw } from 'lucide-react';
+import { ChevronDown, Cpu, RefreshCw } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -41,7 +41,15 @@ const AquacultureDashboard = () => {
     const fetchData = async () => {
       try {
         const tambak = await fetchTambak();
-        setTambakData(tambak);
+        if (tambak && Array.isArray(tambak)) {
+          const validTambak = tambak.map(t => ({
+            ...t,
+            kolamDetails: t.kolamDetails.filter(
+              kolam => kolam.id && kolam.namaKolam
+            ),
+          }));
+          setTambakData(validTambak);
+        }
 
         const siklus = await fetchSiklus();
         setSiklusData(siklus);
@@ -163,26 +171,29 @@ const AquacultureDashboard = () => {
                 <select className="h-8 px-8 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-600 text-blue-600 appearance-none"
                   onChange={handleKolamChange}
                   value={selectedKolam || ''}>
-                  {tambakData.flatMap((tambak) =>
-                    tambak.kolamDetails.map((kolam) => (
-                      <option key={kolam.id} value={kolam.id}>
-                        {kolam.namaKolam}
-                      </option>
-                    ))
-                  )}
+                {tambakData.flatMap((tambak) =>
+  tambak.kolamDetails
+    .filter((kolam) => kolam.id && kolam.namaKolam) 
+    .map((kolam) => (
+      <option key={kolam.id} value={kolam.id}>
+        {kolam.namaKolam}
+      </option>
+    ))
+)}
+
                 </select>
                 <ChevronDown className="absolute right-2 top-2 pointer-events-none h-4 w-4 text-blue-600" />
               </div>
             </div>
 
             <div className="flex items-center space-x-2">
-              <span className="text-gray-600">RFID:</span>
-              <span className="text-blue-500 cursor-pointer">
-                <Edit3 className="h-4 w-4" />
-              </span>
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-600">RFID:</span>
+                <Cpu className="h-4 w-4 text-blue-500" />
+              </div>
 
             </div>
-            <Link to="/PengaturanTambak" className="text-blue-500">Detail kolam</Link>
+            <Link to="/PengaturanTambak" className="text-blue-500">Detail Tambak</Link>
           </div>
           <div className="flex space-x-2">
             <h4 className='text-gray-500'>Data budidaya</h4>
