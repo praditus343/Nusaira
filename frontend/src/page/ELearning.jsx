@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import Sidebar from "../componen/SideBar";
 import Header from "../componen/Header";
 import AIFloatingButton from "../componen/AiFloatingButton";
@@ -18,7 +18,7 @@ import img8 from "../assets/img/e-learning/el8.png";
 
 const ELearningBooks = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const [books] = useState([
     { id: 1, title: "Teknik Budidaya", image: img1, description: "Ini adalah buku budidaya lele...", rating: 5.0},
@@ -81,7 +81,7 @@ const ELearningBooks = () => {
                   <p className="text-gray-600 text-sm mb-4">{book.description}</p>
                   <div className="flex justify-between items-center">
                     <button
-                      onClick={() => navigate(`/HomeLearning`)} // Use navigate to redirect
+                      onClick={() => navigate(`/HomeLearning`)} 
                       className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg text-sm"
                     >
                       Lihat Selengkapnya
