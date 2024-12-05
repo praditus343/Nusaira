@@ -618,7 +618,6 @@ function LaporanDashboard() {
 
         {/* Main Content Card */}
         <div id="dashboard-content" className="bg-white p-6 rounded-lg border  border-blue-500 mr-4">
-          {/* Card Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Tambak {tambakData[0]?.nama}</h2>
             <div>
@@ -627,14 +626,10 @@ function LaporanDashboard() {
               </button>
             </div>
           </div>
-
-          {/* Report Title */}
           <div className="text-center mb-8">
             <h2 className="text-xl font-bold">LAPORAN BUDIDAYA</h2>
             <h3 className="text-blue-500"> {tambakData[0]?.nama}</h3>
           </div>
-
-          {/* Info Section */}
           <div className="mb-8 mt-10">
             <div className="flex mb-1">
               <span className="font-medium w-32">Lokasi Tambak</span>

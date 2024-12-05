@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { MapPin } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faSearch } from "@fortawesome/free-solid-svg-icons";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Sidebar from "../componen/SideBar";
 import Header from "../componen/Header";
 import Footer from "../componen/Footer";
+import Swal from "sweetalert2";
 
 const LoadingSpinner = () => (
   <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -41,14 +42,14 @@ const PemasukanTable = ({ rows, onDelete, formatRupiah }) => (
       <tbody>
         {rows.map((row, index) => (
           <tr key={row.id} className="bg-blue-50 hover:bg-blue-100 transition-colors">
-            <td className="p-2 border text-center">{index + 1}</td>
-            <td className="p-2 border">{row.date}</td>
-            <td className="p-2 border">{row.kategori}</td>
-            <td className="p-2 border">{row.jumlah.toLocaleString("id-ID")}</td>
-            <td className="p-2 border">{formatRupiah(row.harga)}</td>
-            <td className="p-2 border">{row.keterangan}</td>
-            <td className="p-2 border">{formatRupiah(row.jumlah * row.harga)}</td>
-            <td className="p-2 border text-center">
+            <td className="p-2 border text-center border-gray-300">{index + 1}</td>
+            <td className="p-2 border border-gray-300">{row.date}</td>
+            <td className="p-2 border border-gray-300">{row.kategori}</td>
+            <td className="p-2 border border-gray-300">{row.jumlah.toLocaleString("id-ID")}</td>
+            <td className="p-2 border border-gray-300">{formatRupiah(row.harga)}</td>
+            <td className="p-2 border border-gray-300">{row.keterangan}</td>
+            <td className="p-2 border border-gray-300">{formatRupiah(row.jumlah * row.harga)}</td>
+            <td className="p-2 border border-gray-300 text-center">
               <button
                 onClick={() => onDelete(row.id)}
                 className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
@@ -97,7 +98,7 @@ const PemasukanForm = ({ onSave, formatRupiah, isLoading, error, tambaks, select
         harga: 0,
         keterangan: "",
       });
-      setSelectedTambak(""); // Reset selected tambak
+      setSelectedTambak("");
     } catch (err) {
       console.error("Error in handleSave:", err);
     }
@@ -105,24 +106,38 @@ const PemasukanForm = ({ onSave, formatRupiah, isLoading, error, tambaks, select
 
   return (
     <div className="mb-4">
-      <h2 className="text-lg font-medium text-gray-800">Tambah Catatan Pemasukan</h2>
+      <h2 className="text-lg font-medium text-gray-800 mb-2">Tambah Catatan Pemasukan</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div>
-          <label htmlFor="tambak" className="block text-gray-700 font-medium mb-2">Tambak</label>
-          <select
-            id="tambak"
-            value={selectedTambak}
-            onChange={(e) => setSelectedTambak(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300"
+        <div className="relative">
+          <label
+            htmlFor="tambak"
+            className="block text-gray-700 font-medium mb-2"
           >
-            <option value="" disabled>Pilih Tambak</option>
-            {tambaks.map(tambak => (
-              <option key={tambak.id} value={tambak.id}>
-                {tambak.nama}
+            Tambak
+          </label>
+          <div className="relative">
+            <select
+              id="tambak"
+              value={selectedTambak}
+              onChange={(e) => setSelectedTambak(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-blue-500 appearance-none focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            >
+              <option value="" disabled>
+                Pilih Tambak
               </option>
-            ))}
-          </select>
+              {tambaks.map((tambak) => (
+                <option key={tambak.id} value={tambak.id}>
+                  {tambak.nama}
+                </option>
+              ))}
+            </select>
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+            />
+          </div>
         </div>
+
         {["date", "kategori", "jumlah", "harga", "keterangan"].map((field, index) => (
           <div key={index}>
             <label htmlFor={field} className="block text-gray-700 font-medium mb-2">
@@ -134,7 +149,7 @@ const PemasukanForm = ({ onSave, formatRupiah, isLoading, error, tambaks, select
                 id="date"
                 value={newRow.date}
                 onChange={(e) => handleInputChange("date", e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                className="w-full px-4 py-2 rounded-lg border border-blue-500"
               />
             ) : (
               <input
@@ -142,7 +157,7 @@ const PemasukanForm = ({ onSave, formatRupiah, isLoading, error, tambaks, select
                 id={field}
                 value={field === "harga" ? formatRupiah(newRow.harga) : newRow[field]}
                 onChange={(e) => handleInputChange(field, e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300"
+                className="w-full px-4 py-2 rounded-lg border border-blue-500"
                 placeholder={field === "kategori" ? "Contoh: Penjualan Lele" : "Masukkan " + field}
                 required
               />
@@ -257,19 +272,44 @@ const ExcelForm = () => {
   };
 
   const handleDeleteRow = async (id) => {
-    if (!window.confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
-
-    try {
-      setIsLoading(true);
-      await axios.delete(`https://nusaira-be.vercel.app/api/pemasukan/${id}`);
-      setRows(rows.filter(row => row.id !== id));
-      setError(null);
-    } catch (error) {
-      console.error("Error deleting pemasukan:", error);
-      setError("Gagal menghapus data. Silakan coba lagi.");
-    } finally {
-      setIsLoading(false);
-    }
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Data ini akan dihapus secara permanen!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, hapus!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          setIsLoading(true);
+          await axios.delete(`https://nusaira-be.vercel.app/api/pemasukan/${id}`);
+          setRows(rows.filter((row) => row.id !== id));
+          Swal.fire({
+            title: "Terhapus!",
+            text: "Data pemasukan berhasil dihapus.",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+          });
+  
+          setError(null);
+        } catch (error) {
+          console.error("Error deleting pemasukan:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Data pemasukan gagal dihapus. Silakan coba lagi.",
+            icon: "error",
+            confirmButtonColor: "#d33",
+          });
+  
+          setError("Gagal menghapus data. Silakan coba lagi.");
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    });
   };
 
   const handleSaveNewRow = async (newRow) => {
@@ -314,30 +354,37 @@ const ExcelForm = () => {
   return (
     <div className="bg-white w-full min-h-screen">
       <Header />
-      <TambakHeader 
-        tambakData={tambakData} 
-        selectedTambakId={selectedTambakId} 
-        handleTambakChange={handleTambakChange} 
-        tambakList={tambaks} 
+      <TambakHeader
+        tambakData={tambakData}
+        selectedTambakId={selectedTambakId}
+        handleTambakChange={handleTambakChange}
+        tambakList={tambaks}
       />
       <div className="mt-6 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-blue-500 mx-4 sm:mx-8">
         <div className="p-6">
           <div className="mb-4 flex justify-between items-center">
             <h2 className="text-lg font-medium text-gray-800">Detail Catatan Pemasukan</h2>
             <div className="flex space-x-4">
-              <input
-                type="text"
-                className="w-full max-w-md pl-6 pr-12 py-2 rounded-2xl border border-gray-300"
-                placeholder="Cari Kategori Pemasukan atau Keterangan"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+              <div className="relative w-full max-w-md">
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500"
+                />
+                <input
+                  type="text"
+                  className="w-full pl-10 pr-12 py-2 rounded-2xl border border-blue-500 focus:outline-none"
+                  placeholder="Cari Kategori Pemasukan atau Keterangan"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
+
           </div>
 
-          <PemasukanForm 
-            onSave={handleSaveNewRow} 
-            formatRupiah={formatRupiah} 
+          <PemasukanForm
+            onSave={handleSaveNewRow}
+            formatRupiah={formatRupiah}
             isLoading={isLoading}
             error={error}
             tambaks={tambaks}
@@ -348,10 +395,10 @@ const ExcelForm = () => {
           {isLoading && <LoadingSpinner />}
           {error && <ErrorMessage message={error} />}
 
-          <PemasukanTable 
-            rows={filteredRows} 
-            onDelete={handleDeleteRow} 
-            formatRupiah={formatRupiah} 
+          <PemasukanTable
+            rows={filteredRows}
+            onDelete={handleDeleteRow}
+            formatRupiah={formatRupiah}
           />
 
           <div className="mt-4 flex justify-end">
@@ -375,7 +422,9 @@ const Pemasukan = () => {
       <div className="flex-1 overflow-auto">
         <ExcelForm />
         <AIFloatingButton />
+        <div className="mt-20">
         <Footer />
+        </div>
       </div>
     </div>
   );
