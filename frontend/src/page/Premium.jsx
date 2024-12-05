@@ -1,17 +1,15 @@
 import Footer from "../componen/Footer";
-
 import React from "react";
-
 import Header from "../componen/Header";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Sidebar from "../componen/SideBar";
 
 function SubscriptionCard({ title, price, discount, duration, originalPrice }) {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const handleSubscriptionClick = () => {
-    navigate("/Pembayaran"); // Redirect to the subscription page
+    navigate("/Pembayaran"); 
   };
 
   return (
@@ -32,7 +30,7 @@ function SubscriptionCard({ title, price, discount, duration, originalPrice }) {
         <p className="text-sm text-gray-500 mb-6">{duration}</p>
       </div>
       <button
-        onClick={handleSubscriptionClick} // Add onClick handler
+        onClick={handleSubscriptionClick} 
         className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md w-full hover:bg-blue-600 mt-4"
       >
         Berlangganan Sekarang
@@ -42,10 +40,10 @@ function SubscriptionCard({ title, price, discount, duration, originalPrice }) {
 }
 
 function FreeTrialCard() {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const handleFreeTrialClick = () => {
-    navigate("/Pembayaran"); // Redirect to the free trial page
+    navigate("/Pembayaran"); 
   };
 
   return (
@@ -57,7 +55,7 @@ function FreeTrialCard() {
         Rasakan Keunggulan Fitur Premium Tanpa Biaya untuk 14 Hari Pertama
       </p>
       <button
-        onClick={handleFreeTrialClick} // Add onClick handler
+        onClick={handleFreeTrialClick} 
         className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600"
       >
         Coba Sekarang

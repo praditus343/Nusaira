@@ -5,7 +5,7 @@ import Header from "../componen/Header";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons"; // Menggunakan Chevron Right untuk tombol "Selanjutnya"
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons"; 
 
 function Home2() {
   return (
