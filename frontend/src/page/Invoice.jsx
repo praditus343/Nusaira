@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Import axios
+import axios from "axios";
 import Footer from "../componen/Footer";
 import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function TransactionItem({ title, date, status }) {
   const formattedDate = new Date(date).toLocaleDateString("id-ID", {
@@ -33,29 +35,27 @@ function TransactionItem({ title, date, status }) {
 }
 
 function Content() {
-  const [tagihan, setTagihan] = useState([]); // Inisialisasi state dengan array kosong
-  const [filter, setFilter] = useState("belum-bayar"); // Filter untuk status tagihan
+  const [tagihan, setTagihan] = useState([]);
+  const [filter, setFilter] = useState("belum-bayar");
 
   useEffect(() => {
     const fetchTagihan = async () => {
       try {
-        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan"); // Ganti dengan URL API yang sesuai
+        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan");
         console.log("Response Data:", response.data);
 
-        // Pastikan data yang diterima benar
         const formattedData = response.data.map((item) => ({
           ...item,
-          status: item.status === 0 ? "Belum Bayar" : "Sudah Bayar", // Menyesuaikan status
+          status: item.status === 0 ? "Belum Bayar" : "Sudah Bayar",
         }));
-        setTagihan(formattedData); // Menyimpan data tagihan ke state
+        setTagihan(formattedData);
       } catch (error) {
         console.error("Error fetching tagihan:", error);
       }
     };
     fetchTagihan();
-  }, []); // Hanya dijalankan sekali saat komponen pertama kali dimuat
+  }, []);
 
-  // Filter tagihan berdasarkan status
   const filteredTagihan = tagihan.filter((item) =>
     filter === "belum-bayar"
       ? item.status === "Belum Bayar"
@@ -71,25 +71,32 @@ function Content() {
           Cek status tagihan dan pembayaran Anda di sini.
         </p>
 
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold">Daftar Tagihan</h3>
-          <div className="flex items-center space-x-3">
+        <div className="flex flex-wrap items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-gray-800">Daftar Tagihan</h3>
+          <div className="flex flex-wrap items-center space-x-3">
             <div className="flex items-center space-x-2">
-              <label className="text-sm text-gray-600">Filter Status:</label>
-              <select
-                className="bg-blue-50 text-blue-500 border border-blue-300 rounded-md px-3 py-1"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)} // Mengubah filter
-              >
-                <option value="belum-bayar">Belum Bayar</option>
-                <option value="sudah-bayar">Sudah Bayar</option>
-              </select>
+              <label htmlFor="filter-status" className="text-sm text-gray-600">
+                Filter Status:
+              </label>
+              <div className="relative">
+                <select
+                  id="filter-status"
+                  className="bg-blue-50 text-blue-600 border border-blue-300 rounded-md px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 appearance-none"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  <option value="belum-bayar">Belum Bayar</option>
+                  <option value="sudah-bayar">Sudah Bayar</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
+                />
+              </div>
             </div>
-            <button className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-600">
-              <i className="fas fa-th-large"></i>
-            </button>
           </div>
         </div>
+
 
         <div className="bg-white border border-blue-200 rounded-lg p-6">
           <h4 className="text-blue-500 font-semibold mb-4">
@@ -100,7 +107,7 @@ function Content() {
             filteredTagihan.map((item) => (
               <TransactionItem
                 key={item.id}
-                title={item.name} 
+                title={item.name}
                 date={item.dueDate}
                 status={item.status}
               />
