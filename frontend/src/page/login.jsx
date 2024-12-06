@@ -23,7 +23,7 @@ const LoginPage = () => {
     setLoading(true);
   
     try {
-      const response = await fetch("http://nusaira-be.vercel.app/api/login", {
+      const response = await fetch("https://nusaira-be.vercel.app/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
