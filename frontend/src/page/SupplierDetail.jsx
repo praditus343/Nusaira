@@ -175,8 +175,8 @@ const SupplierDashboard = () => {
                                                 </svg>
                                             ))}
                                         </div>
-                                        <span className="ml-3 text-gray-700 font-medium">{review.reviewer_name}</span>
                                     </div>
+                                    <span className=" text-gray-700 font-medium">{review.reviewer_name}</span>
 
                                     <p className="review-text text-gray-700 mb-3">{review.review_text}</p>
 
