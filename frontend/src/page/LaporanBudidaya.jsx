@@ -45,6 +45,8 @@ function LaporanDashboard() {
         setPakanData(pakan);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false); 
       }
     }
 
@@ -212,7 +214,7 @@ function LaporanDashboard() {
 
   const kualitasAir = airDataFlat && airDataFlat.length > 0 && tambakData && tambakData[0]
     ? airDataFlat.find((air) => {
-      console.log("Membandingkan tambak_id:", air.tambak_id, "dengan tambakData[0].id:", tambakData[0].id);
+      // console.log("Membandingkan tambak_id:", air.tambak_id, "dengan tambakData[0].id:", tambakData[0].id);
       return air.tambak_id === tambakData[0].id;
     })
     : null;
@@ -615,7 +617,6 @@ function LaporanDashboard() {
             </div>
           </div>
         </div>
-
         {/* Main Content Card */}
         <div id="dashboard-content" className="bg-white p-6 rounded-lg border  border-blue-500 mr-4">
           <div className="flex justify-between items-center mb-6">
