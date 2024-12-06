@@ -53,6 +53,7 @@ const PondTable = () => {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [tambakData, setTambakData] = useState(null);
+    const [showBanner, setShowBanner] = useState(true);
 
     const handleSearch = (e) => setSearchTerm(e.target.value);
 
@@ -92,11 +93,21 @@ const PondTable = () => {
     }, []);
 
 
+    useEffect(() => {
+        const timer = setTimeout(() => setShowBanner(false), 15000);
+        return () => clearTimeout(timer); 
+    }, []);
+
     const closeModal = () => setActiveModal(null);
 
     return (
         <div className="bg-white w-full min-h-screen">
             <Header />
+            {showBanner && (
+                <div className="bg-yellow-100 border-l-4 text-yellow-700 p-4 mb-4">
+                    <p className="font-semibold">Harap mengisi data siklus Kematian, Penyakit, Panen, Pakan, dan Anco dengan mengklik tombol yang ada di sini.</p>
+                </div>
+            )}
             <div className="mb-6 ml-10 mr-6 mt-5">
                 {tambakData ? (
                     <>
