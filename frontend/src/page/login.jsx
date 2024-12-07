@@ -17,55 +17,48 @@ const LoginPage = () => {
     }
   }, [navigate]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
-    if (!email || !password) {
-      Swal.fire({
-        icon: "warning",
-        title: "Oops...",
-        text: "Email dan Kata Sandi harus diisi.",
-      });
-      return;
-    }
-
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-
-      if (email === "user@gmail.com" && password === "user123") {
-        localStorage.setItem("isLoggedIn", "true");
-        Swal.fire({
-          icon: "success",
-          title: "Login Berhasil!",
-          text: "Selamat datang di dashboard",
-        }).then(() => {
-          navigate("/Home"); 
-        });
-      } 
-      
-      if (email === "admin@gmail.com" && password === "admin123") {
-        localStorage.setItem("isLoggedIn", "true");
-        Swal.fire({
-          icon: "success",
-          title: "Login Berhasil!",
-          text: "Selamat datang di dashboard",
-        }).then(() => {
-          navigate("/Admin"); 
-        });
-      } 
-      
-      else {
-        Swal.fire({
-          icon: "error",
-          title: "Login Gagal",
-          text: "Email atau kata sandi salah.",
-        });
+  
+    try {
+      const response = await fetch("https://nusaira-be.vercel.app/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
       }
-    }, 2000);
+  
+      // Simpan token di localStorage
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+  
+      Swal.fire({
+        icon: "success",
+        title: "Login Berhasil!",
+        text: "Selamat datang di dashboard",
+      }).then(() => {
+        navigate("/Home"); // Redirect sesuai role
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Gagal",
+        text: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">
