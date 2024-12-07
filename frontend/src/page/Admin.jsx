@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, FileText, MessageCircle, Bell, Heart, LogOut, Package, Truck } from 'lucide-react';
+import { LayoutGrid, FileText, MessageCircle, Bell, ActivityIcon, LogOut, Package, Truck } from 'lucide-react';
 import DashboardSummaryCards from '../componen/DasboardSummaryCards';
 import PenyakitLeleCards from '../componen/PenyakitLeleCards';
 import BeritaCards from '../componen/BeritaCards';
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
                 }`}
               onClick={() => setActiveTab('penyakit')}
             >
-              <Heart className="mr-2" /> Penyakit Lele
+              <ActivityIcon className="mr-2" /> Penyakit Lele
             </li>
             <li
               className={`flex items-center p-2 mb-2 rounded cursor-pointer ${activeTab === 'pesan' ? 'bg-blue-700' : 'hover:bg-blue-500'
