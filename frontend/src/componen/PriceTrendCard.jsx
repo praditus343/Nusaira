@@ -28,7 +28,7 @@ const PriceTrendCard = ({ data }) => {
   const sortedPredictions = predictions
     .map((item) => ({
       ...item,
-      monthNumber: monthToNumber(item.month), 
+      monthNumber: monthToNumber(item.month),
     }))
     .sort((a, b) => a.monthNumber - b.monthNumber);
   const chartData = sortedPredictions.map((item) => ({
@@ -36,12 +36,19 @@ const PriceTrendCard = ({ data }) => {
     prediction: item.prediction,
   }));
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'decimal',
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-md border border-gray-300">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">{city}</h3>
         <span className="text-sm font-medium text-gray-600">
-          Rata-rata Tahunan: Rp.{yearlyAverage.toFixed(2)}
+          Rata-rata Tahunan: Rp. {formatCurrency(yearlyAverage)}
         </span>
       </div>
       <ResponsiveContainer width="100%" height={300}>
@@ -51,15 +58,16 @@ const PriceTrendCard = ({ data }) => {
             dataKey="month" 
             tickFormatter={(month) => {
               const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-              return months[month];  
+              return months[month];
             }} 
           />
-          <YAxis />
+          <YAxis tickFormatter={(value) => formatCurrency(value)} />
           <Tooltip 
             labelFormatter={(value) => {
               const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
               return months[value] || "Unknown"; 
             }} 
+            formatter={(value) => formatCurrency(value)}
           />
           <Line type="monotone" dataKey="prediction" stroke="#8884d8" />
         </LineChart>
