@@ -56,7 +56,7 @@ const SupplierDashboard = () => {
                     );
 
                     // console.log("Filtered Products:", filteredProducts);
-                    // setProducts(filteredProducts);
+                    setProducts(filteredProducts);
                 } else {
                     console.error("Products data is not an array:", productsResponse.data);
                     setError('Produk tidak ditemukan atau format data tidak sesuai');

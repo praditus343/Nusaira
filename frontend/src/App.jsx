@@ -2,17 +2,24 @@ import React, { Fragment } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AquacultureDashboard from './componen/AquacultureDashboard';
 import ElearningSidebar from './componen/ElearningSidebar';
+import AdminDashboard from './page/Admin';
 import ArticlePage from './page/ArtikelPenyakit';
-import Perpustakaan from './page/Perpustakaan';
-import ChatAi from './page/ChatAi';
+import BukuFavorit from './page/BukuFavorit';
+import ContactPage from './page/ContactUs';
 import PondManagement from './page/DaftarKolam';
+import ELearning from './page/ELearning';
 import FinalStepUI from './page/FInalStep';
 import HargaLele from './page/HargaLele';
 import Homeuser from './page/Home';
+import Home2Learning from './page/Home2Learning';
+import HomeLearning from './page/HomeLearning';
 import InputTambak from './page/InputTambakBaru';
 import Invoice from './page/Invoice';
+import KabarLeleArticle from './page/IsiKabarLele';
 import KabarLele from './page/KabarLele';
 import LandingPage from './page/landingPage';
+import LaporanBudidaya from './page/LaporanBudidaya';
+import LaporanKeuangan from './page/LaporanKeuangan';
 import Login from './page/login';
 import LupaPass1 from './page/LupaPass1';
 import LupaPass2 from './page/LupaPass2';
@@ -24,6 +31,7 @@ import Pembayaran from './page/Pembayaran';
 import PengatutanTambak from './page/PengaturanTambak';
 import Pengeluaran from './page/Pengeluaran';
 import PenyakitLele from './page/PenyakitLele';
+import Perpustakaan from './page/Perpustakaan';
 import Premium from './page/Premium';
 import PriceHistory from './page/PriceHistory';
 import PriceTrending from './page/PriceTrending';
@@ -34,15 +42,6 @@ import SignUp2 from './page/singup2';
 import SignUp3 from './page/singup3';
 import SupplierDetail from './page/SupplierDetail';
 import UserProfile from './page/UserProfile';
-import BukuFavorit from './page/BukuFavorit';
-import ELearning from './page/ELearning';
-import LaporanBudidaya from './page/LaporanBudidaya';
-import KabarLeleArticle from './page/IsiKabarLele';
-import HomeLearning from './page/HomeLearning';
-import Home2Learning from './page/Home2Learning';
-import LaporanKeuangan from './page/LaporanKeuangan';
-import ContactPage from './page/ContactUs';
-import AdminDashboard from './page/Admin';
 
 
 
@@ -73,7 +72,6 @@ function App() {
           <Route path="/LaporanBudidaya" element={<LaporanBudidaya />} />  
           <Route path="/KabarLele" element={<KabarLele />} /> 
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard />} /> 
-          <Route path="/ChatAi" element={<ChatAi />} />
           <Route path="/PriceHistory" element={<PriceHistory />} />
           <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplier" element={<SupplierDetail />} />

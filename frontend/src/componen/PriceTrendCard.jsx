@@ -41,7 +41,7 @@ const PriceTrendCard = ({ data }) => {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">{city}</h3>
         <span className="text-sm font-medium text-gray-600">
-          Rata-rata Tahunan: {yearlyAverage.toFixed(2)}
+          Rata-rata Tahunan: Rp.{yearlyAverage.toFixed(2)}
         </span>
       </div>
       <ResponsiveContainer width="100%" height={300}>

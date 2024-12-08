@@ -7,6 +7,7 @@ import { fetchKematian, fetchPanen, fetchSiklus, fetchTambak } from '../../servi
 import { Card } from './CardManagement';
 import MetricCard from './MetricsCard';
 import RentangRasioTooltip from './RentangTooltip';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -34,6 +35,7 @@ const AquacultureDashboard = () => {
   const [filteredMetrics, setFilteredMetrics] = useState([]);
   const [selectedMetric, setSelectedMetric] = useState('mbw');
   const [docRange, setDocRange] = useState({ start: 0, end: 100 });
+  const navigate = useNavigate();
 
   const value = progress;
 
@@ -156,6 +158,11 @@ const AquacultureDashboard = () => {
 
 
 
+  const handleClick = () => {
+    navigate('/LaporanBudidaya');
+  };
+
+
 
   return (
     <div className="w-full max-w-6xl p-4 mb-6">
@@ -171,15 +178,15 @@ const AquacultureDashboard = () => {
                 <select className="h-8 px-8 border border-blue-600 rounded-md bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-600 text-blue-600 appearance-none"
                   onChange={handleKolamChange}
                   value={selectedKolam || ''}>
-                {tambakData.flatMap((tambak) =>
-  tambak.kolamDetails
-    .filter((kolam) => kolam.id && kolam.namaKolam) 
-    .map((kolam) => (
-      <option key={kolam.id} value={kolam.id}>
-        {kolam.namaKolam}
-      </option>
-    ))
-)}
+                  {tambakData.flatMap((tambak) =>
+                    tambak.kolamDetails
+                      .filter((kolam) => kolam.id && kolam.namaKolam)
+                      .map((kolam) => (
+                        <option key={kolam.id} value={kolam.id}>
+                          {kolam.namaKolam}
+                        </option>
+                      ))
+                  )}
 
                 </select>
                 <ChevronDown className="absolute right-2 top-2 pointer-events-none h-4 w-4 text-blue-600" />
@@ -251,7 +258,9 @@ const AquacultureDashboard = () => {
               )}
             </div>
 
-            <Button className="w-full bg-blue-500"> Konsultasi dengan AI</Button>
+            <Button className="w-full bg-blue-500" onClick={handleClick}>
+              Lihat Detail Laporan
+            </Button>
             <div className="flex justify-center">
               <button
                 className="text-blue-500 hover:text-blue-700 focus:outline-none"
