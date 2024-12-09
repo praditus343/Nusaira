@@ -15,11 +15,11 @@ export const PesanMasukTable = ({ pesanData }) => {
     const otherMessages = data.filter(item =>
       !item.subjek.toLowerCase().includes('supplier')
     );
-    return [...supplierMessages, ...otherMessages]; 
+    return [...supplierMessages, ...otherMessages];
   };
 
   useEffect(() => {
-    setUpdatedData(sortMessages(pesanData)); 
+    setUpdatedData(sortMessages(pesanData));
   }, [pesanData]);
 
   const handleMarkAsRead = async (id) => {
@@ -140,13 +140,13 @@ export const PesanMasukTable = ({ pesanData }) => {
       </button>
 
       <div className="overflow-x-auto mt-10">
-      <div className="bg-yellow-500 text-white text-center p-2 mb-4 font-bold rounded-lg mb-8">
-        Perhatian: Pesan dengan subjek yang mengandung 'Supplier' harus diperhatikan dan didahulukan.
-      </div>
+        <div className="bg-yellow-500 text-white text-center p-2 mb-4 font-bold rounded-lg mb-8">
+          Perhatian: Pesan dengan subjek yang mengandung 'Supplier' harus diperhatikan dan didahulukan.
+        </div>
         <table className="w-full bg-white rounded shadow-lg border border-gray-300">
           <thead>
             <tr className="bg-blue-600 text-white">
-              <th className="py-2 px-4 text-left">
+              <th className="py-2 px-4 text-left border border-gray-300">
                 {isDeleteMode && (
                   <input
                     type="checkbox"
@@ -158,22 +158,22 @@ export const PesanMasukTable = ({ pesanData }) => {
                 )}
                 {!isDeleteMode && 'No'}
               </th>
-              <th className="py-2 px-4 text-left">Nama</th>
-              <th className="py-2 px-4 text-left">Email</th>
-              <th className="py-2 px-4 text-left">Subjek</th>
-              <th className="py-2 px-4 text-left">Pesan</th>
-              <th className="py-2 px-4 text-left">Tanggal</th>
-              <th className="py-2 px-4 text-left">Status</th>
-              <th className="py-2 px-4 text-left">Aksi</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Nama</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Email</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Subjek</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Pesan</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Tanggal</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Status</th>
+              <th className="py-2 px-4 text-left border border-gray-300">Aksi</th>
             </tr>
           </thead>
           <tbody>
             {updatedData.map((item, index) => (
               <tr
                 key={item.id}
-                className={`border-b hover:bg-gray-100 ${selectedIds.includes(item.id) ? 'bg-gray-200' : ''}`}
+                className={`hover:bg-gray-100 ${selectedIds.includes(item.id) ? 'bg-gray-200' : ''}`}
               >
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 border border-gray-300">
                   {isDeleteMode ? (
                     <input
                       type="checkbox"
@@ -184,13 +184,15 @@ export const PesanMasukTable = ({ pesanData }) => {
                     index + 1
                   )}
                 </td>
-                <td className="py-2 px-4">{item.nama}</td>
-                <td className="py-2 px-4">{item.email}</td>
-                <td className="py-2 px-4">{item.subjek}</td>
-                <td className="py-2 px-4">{item.pesan}</td>
-                <td className="py-2 px-4">{new Date(item.tanggal).toLocaleDateString()}</td>
-                <td className="py-2 px-4">{item.status || 'Belum Dibaca'}</td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-4 border border-gray-300">{item.nama}</td>
+                <td className="py-2 px-4 border border-gray-300">{item.email}</td>
+                <td className="py-2 px-4 border border-gray-300">{item.subjek}</td>
+                <td className="py-2 px-4 border border-gray-300">{item.pesan}</td>
+                <td className="py-2 px-4 border border-gray-300">
+                  {new Date(item.tanggal).toLocaleDateString()}
+                </td>
+                <td className="py-2 px-4 border border-gray-300">{item.status || 'Belum Dibaca'}</td>
+                <td className="py-2 px-4 border border-gray-300">
                   {item.status === 'pending' && (
                     <button
                       onClick={() => handleMarkAsRead(item.id)}
@@ -205,6 +207,7 @@ export const PesanMasukTable = ({ pesanData }) => {
             ))}
           </tbody>
         </table>
+
       </div>
 
       {isDeleteMode && (
