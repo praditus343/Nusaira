@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Sidebar from "../componen/SideBar";
 
-function SubscriptionCard({ title, price, discount, duration, originalPrice }) {
+function SubscriptionCard({ title, price, discount, duration, originalPrice, paymentLink }) {
   const navigate = useNavigate(); 
 
   const handleSubscriptionClick = () => {
-    navigate("/Pembayaran"); 
+    window.location.href = paymentLink; // Redirect to the payment link
   };
 
   return (
@@ -85,6 +85,7 @@ function Content() {
             title="Per Bulan"
             price="Rp.50.000"
             duration="Kolam/Bootcamp"
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733756972604"
           />
           <SubscriptionCard
             title="Per 6 Bulan"
@@ -92,11 +93,13 @@ function Content() {
             originalPrice="Rp.300.000"
             discount={20}
             duration="Kolam/Bootcamp"
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757061121" // Update with actual link
           />
           <SubscriptionCard
             title="Per Tahun"
             price="Rp.500.000"
             duration="Kolam/Bootcamp"
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757107107" // Update with actual link
           />
         </div>
         <FreeTrialCard />
