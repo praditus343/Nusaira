@@ -5,7 +5,7 @@ import TambahNotifikasiModal from './TambahNotifikasiModal';
 const RendaTableNotif = () => {
   const [notifikasiData, setNotifikasiData] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     fetchNotifikasi();
   }, []);
@@ -20,7 +20,7 @@ const RendaTableNotif = () => {
     } catch (error) {
       console.error('Error fetching notifications:', error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -64,7 +64,7 @@ const RendaTableNotif = () => {
         console.error('Error deleting notification:', error);
         Swal.fire('Error!', 'Terjadi kesalahan saat menghapus notifikasi.', 'error');
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     }
   };
@@ -88,28 +88,28 @@ const RendaTableNotif = () => {
           {notifikasiData.length === 0 ? (
             <p className="text-center text-gray-500">Tidak ada notifikasi</p>
           ) : (
-            <table className="w-full bg-white rounded shadow-lg">
+            <table className="w-full bg-white rounded shadow-lg border border-gray-300">
               <thead>
                 <tr className="bg-blue-600 text-white">
-                  <th className="py-2 px-4 text-left">No</th>
-                  <th className="py-2 px-4 text-left">Judul</th>
-                  <th className="py-2 px-4 text-left">Deskripsi</th>
-                  <th className="py-2 px-4 text-left">Jenis</th>
-                  <th className="py-2 px-4 text-left">Tanggal</th>
-                  <th className="py-2 px-4 text-left">Aksi</th>
+                  <th className="py-2 px-4 text-left border border-gray-300">No</th>
+                  <th className="py-2 px-4 text-left border border-gray-300">Judul</th>
+                  <th className="py-2 px-4 text-left border border-gray-300">Deskripsi</th>
+                  <th className="py-2 px-4 text-left border border-gray-300">Jenis</th>
+                  <th className="py-2 px-4 text-left border border-gray-300">Tanggal</th>
+                  <th className="py-2 px-4 text-left border border-gray-300">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {notifikasiData.map((item, index) => (
-                  <tr key={item.id} className="border-b hover:bg-gray-100">
-                    <td className="py-2 px-4">{index + 1}</td>
-                    <td className="py-2 px-4">{item.title}</td>
-                    <td className="py-2 px-4">{item.description}</td>
-                    <td className="py-2 px-4">{item.type}</td>
-                    <td className="py-2 px-4">
+                  <tr key={item.id} className="hover:bg-gray-100">
+                    <td className="py-2 px-4 border border-gray-300">{index + 1}</td>
+                    <td className="py-2 px-4 border border-gray-300">{item.title}</td>
+                    <td className="py-2 px-4 border border-gray-300">{item.description}</td>
+                    <td className="py-2 px-4 border border-gray-300">{item.type}</td>
+                    <td className="py-2 px-4 border border-gray-300">
                       {new Date(item.date).toLocaleDateString('id-ID')}
                     </td>
-                    <td className="py-2 px-4">
+                    <td className="py-2 px-4 border border-gray-300">
                       <button
                         className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
                         onClick={() => handleDelete(item.id)}

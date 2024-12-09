@@ -11,7 +11,8 @@ import {
   MessageSquareIcon, 
   BellIcon, 
   TruckIcon, 
-  PackageIcon 
+  PackageIcon,
+  CreditCard
 } from "lucide-react";
 
 export const DashboardSummaryCards = ({ 
@@ -20,7 +21,9 @@ export const DashboardSummaryCards = ({
   pesanData, 
   notifikasiData,
   suppliersData,
-  productsData
+  productsData,
+  tagihanData
+  
 }) => {
   const cardData = [
     {
@@ -65,6 +68,13 @@ export const DashboardSummaryCards = ({
       icon: PackageIcon,
       value: productsData?.length || 0,
       textColor: "text-teal-600",
+      bottomText: "Produk Tersedia"
+    },
+    {
+      title: "Produk Baru",
+      icon: CreditCard,
+      value: tagihanData?.length || 0,
+      textColor: "text-indigo-600",
       bottomText: "Produk Tersedia"
     }
   ];
