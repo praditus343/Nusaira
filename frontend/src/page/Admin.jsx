@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, FileText, MessageCircle, Bell, ActivityIcon, LogOut, Package, Truck } from 'lucide-react';
+import { LayoutGrid, FileText, MessageCircle, Bell, ActivityIcon, LogOut, Package, Truck,CreditCard  } from 'lucide-react';
 import DashboardSummaryCards from '../componen/DasboardSummaryCards';
 import PenyakitLeleCards from '../componen/PenyakitLeleCards';
 import BeritaCards from '../componen/BeritaCards';
@@ -9,6 +9,7 @@ import SuppliersTable from '../componen/SupplierAdminTable';
 import ProductsTable from '../componen/ProductCard';
 import Logo from '../assets/Logo.png'
 import { useNavigate } from 'react-router-dom'; 
+import TagihanTable from '../componen/TagihanTable';
 
 const AdminDashboard = () => {
   const [beritaData, setBeritaData] = useState([]);
@@ -17,6 +18,7 @@ const AdminDashboard = () => {
   const [notifikasiData, setNotifikasiData] = useState([]);
   const [suppliersData, setSuppliersData] = useState([]);
   const [productsData, setProductsData] = useState([]);
+  const [tagihanData, setTagihanData] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const navigate = useNavigate(); 
 
@@ -33,15 +35,19 @@ const AdminDashboard = () => {
         const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
         const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
         const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
-
-
+        const tagihanResponse = await fetch('https://nusaira-be.vercel.app/api/tagihan');
+        
+        
         const beritaJson = await beritaResponse.json();
         const penyakitJson = await penyakitResponse.json();
         const pesanJson = await pesanResponse.json();
         const notifikasiJson = await notifikasiResponse.json();
         const suppliersJson = await suppliersResponse.json();
         const productsJson = await productsResponse.json();
+        const tagihanJson = await tagihanResponse.json();
 
+
+        setTagihanData(tagihanJson.data || tagihanJson || []);
         setBeritaData(beritaJson || []);
         setPenyakitData(penyakitJson.data || []);
         setPesanData(pesanJson.data || []);
@@ -127,6 +133,13 @@ const AdminDashboard = () => {
             >
               <Package className="mr-2" /> Products
             </li>
+            <li
+              className={`flex items-center p-2 mb-2 rounded cursor-pointer ${activeTab === 'Tagihan' ? 'bg-blue-700' : 'hover:bg-blue-500'
+                }`}
+              onClick={() => setActiveTab('Tagihan')}
+            >
+              <CreditCard  className="mr-2" /> Tagihan
+            </li>
           </ul>
         </nav>
       </div>
@@ -155,6 +168,7 @@ const AdminDashboard = () => {
               notifikasiData={notifikasiData} 
               suppliersData={suppliersData}
               productsData={productsData}
+              tagihanData={tagihanData}
             />        
           )}
           {activeTab === 'berita' && <BeritaCards beritaData={beritaData.berita || beritaData} />}
@@ -163,6 +177,7 @@ const AdminDashboard = () => {
           {activeTab === 'notifikasi' && <RendaTableNotif notifikasiData={notifikasiData} />}
           {activeTab === 'suppliers' && <SuppliersTable suppliersData={suppliersData} />}
           {activeTab === 'products' && <ProductsTable productsData={productsData} />}
+          {activeTab === 'Tagihan' && <TagihanTable tagihanData={tagihanData} />}
         </div>
       </div>
     </div>
