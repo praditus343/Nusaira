@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AquacultureDashboard from './componen/AquacultureDashboard';
-import ElearningSidebar from './componen/ElearningSidebar';
 import AdminDashboard from './page/Admin';
 import ArticlePage from './page/ArtikelPenyakit';
 import BukuFavorit from './page/BukuFavorit';
@@ -11,8 +10,6 @@ import ELearning from './page/ELearning';
 import FinalStepUI from './page/FInalStep';
 import HargaLele from './page/HargaLele';
 import Homeuser from './page/Home';
-import Home2Learning from './page/Home2Learning';
-import HomeLearning from './page/HomeLearning';
 import InputTambak from './page/InputTambakBaru';
 import Invoice from './page/Invoice';
 import KabarLeleArticle from './page/IsiKabarLele';
@@ -35,7 +32,6 @@ import Perpustakaan from './page/Perpustakaan';
 import Premium from './page/Premium';
 import PriceHistory from './page/PriceHistory';
 import PriceTrending from './page/PriceTrending';
-import RingkasanLearning from './page/RingkasanLearning';
 import TambakSimulation from './page/Simulasi';
 import SignUp from './page/singup';
 import SignUp2 from './page/singup2';
@@ -75,10 +71,8 @@ function App() {
           <Route path="/PriceHistory" element={<PriceHistory />} />
           <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplier" element={<SupplierDetail />} />
-          <Route path="/ElearningSidebar" element={<ElearningSidebar />} />
           <Route path="/Perpustakaan" element={<Perpustakaan />} />
           <Route path="/Invoice" element={<Invoice />} />
-          <Route path="/RingkasanLearning" element={<RingkasanLearning />} />
           <Route path="/artikel/:id" element={<ArticlePage />} />
           <Route path="/PengaturanTambak" element={<PengatutanTambak />} />
           <Route path="/LupaPass1" element={<LupaPass1 />} />
@@ -88,8 +82,6 @@ function App() {
           <Route path="/BukuFavorit" element={<BukuFavorit />} />
           <Route path="/ELearning" element={<ELearning />} />
           <Route path="/kabar-lele/:id" element={<KabarLeleArticle />} />
-          <Route path="/HomeLearning" element={<HomeLearning />} />
-          <Route path="/Home2Learning" element={<Home2Learning />} />
           <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
           <Route path="/Contact" element={<ContactPage />} />
           <Route path="/Admin" element={<AdminDashboard />} />

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ElearningSidebar from "../componen/ElearningSidebar";
 import Header from "../componen/Header";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
@@ -14,6 +13,7 @@ import img5 from "../assets/img/e-learning/el5.png";
 import img6 from "../assets/img/e-learning/el6.png";
 import img7 from "../assets/img/e-learning/el7.png";
 import img8 from "../assets/img/e-learning/el8.png";
+import Sidebar from "../componen/SideBar";
 
 const ELearningBooks = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -142,7 +142,7 @@ const ELearningBooks = () => {
               Buku Favorit Kamu
             </h1>
             <p className="text-gray-600">
-            Buku-buku favorit Anda siap untuk dibaca! Ayo nikmati setiap halaman 
+              Buku-buku favorit Anda siap untuk dibaca! Ayo nikmati setiap halaman
               <br /> yang penuh dengan inspirasi dan ide-ide brilian
             </p>
           </div>
@@ -168,7 +168,7 @@ const ELearningBooks = () => {
         <div className="flex items-center mb-10">
           <div className="relative flex items-center">
             <select
-              className="block w-[300px] pr-10 pl-4 border rounded-lg py-2 appearance-none"
+              className="block w-[300px] pr-8 pl-4 border rounded-lg py-2 appearance-none"
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
             >
@@ -177,10 +177,11 @@ const ELearningBooks = () => {
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 text-lg pointer-events-none z-10"
             />
           </div>
         </div>
+
         <div className="mt-4 border border-blue-600 rounded-lg max-h-[800px] overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-8">
             {books.map((book) => (
@@ -195,11 +196,10 @@ const ELearningBooks = () => {
                   >
                     <div
                       className={`w-6 h-6 rounded border-2 cursor-pointer flex items-center justify-center
-                            ${
-                              selectedBooks.includes(book.id)
-                                ? "bg-red-500 border-red-500"
-                                : "border-blue-300 bg-white border"
-                            }`}
+                            ${selectedBooks.includes(book.id)
+                          ? "bg-red-500 border-red-500"
+                          : "border-blue-300 bg-white border"
+                        }`}
                     >
                       {selectedBooks.includes(book.id) && (
                         <X className="w-4 h-4 text-white" />
@@ -239,7 +239,7 @@ const ELearningBooks = () => {
 function BukuFavorit() {
   return (
     <div className="flex h-screen">
-      <ElearningSidebar />
+      <Sidebar />
       <div className="flex-1 overflow-auto">
         <ELearningBooks />
         <AIFloatingButton />
