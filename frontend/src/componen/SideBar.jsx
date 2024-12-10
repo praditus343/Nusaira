@@ -1,5 +1,6 @@
 import {
   faBell,
+  faBook,
   faCartPlus,
   faChartLine,
   faChevronDown,
@@ -7,9 +8,10 @@ import {
   faChevronRight,
   faChevronUp,
   faClipboardList,
+  faCrown,
   faDollarSign,
   faFileInvoice,
-  faGraduationCap,
+  faFish,
   faHeart,
   faHome,
   faMoneyBill,
@@ -18,13 +20,13 @@ import {
   faTable,
   faTools,
   faUser,
-  faFish,
-  faCrown
+  faVirus
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import imgLogo from "../assets/Logo.png";
+
 
 const MenuItem = ({ icon, label, children, isSidebarOpen, path, premiumChildren }) => {
   const location = useLocation();
@@ -43,7 +45,6 @@ const MenuItem = ({ icon, label, children, isSidebarOpen, path, premiumChildren 
     }
   }, [isAnyChildActive]);
 
-  // Jika sidebar tertutup, jangan render
   if (!isSidebarOpen) return null;
 
   return (
@@ -156,7 +157,7 @@ const Sidebar = () => {
               children={[
                 { icon: faDollarSign, label: "Harga Lele", path: "/HargaLele" },
                 { icon: faNewspaper, label: "Berita", path: "/Blog" },
-                { icon: faHeart, label: "Penyakit Lele", path: "/PenyakitLele" },
+                { icon: faVirus, label: "Penyakit Lele", path: "/PenyakitLele" },
                 { icon: faBell, label: "Notifikasi", path: "/Notifikasi" },
               ]}
             />
@@ -164,7 +165,10 @@ const Sidebar = () => {
               label="Perpustakaan"
               isSidebarOpen={isSidebarOpen}
               premiumChildren={true}
-              children={[{ icon: faGraduationCap, label: "Perpustakaan", path: "/Perpustakaan" }]}
+              children={[
+              { icon: faBook, label: "Buku", path: "/Perpustakaan" },
+              { icon: faHeart, label: "Buku Favorit", path: "/BukuFavorit" }
+              ]}
             />
             <MenuItem
               label="Berlangganan"

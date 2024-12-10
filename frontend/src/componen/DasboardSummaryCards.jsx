@@ -12,7 +12,8 @@ import {
   BellIcon, 
   TruckIcon, 
   PackageIcon,
-  CreditCard
+  CreditCard,
+  BookUser
 } from "lucide-react";
 
 export const DashboardSummaryCards = ({ 
@@ -22,8 +23,8 @@ export const DashboardSummaryCards = ({
   notifikasiData,
   suppliersData,
   productsData,
-  tagihanData
-  
+  tagihanData,
+  bukuData
 }) => {
   const cardData = [
     {
@@ -71,16 +72,23 @@ export const DashboardSummaryCards = ({
       bottomText: "Produk Tersedia"
     },
     {
-      title: "Produk Baru",
+      title: "Tagihan Pengguna",
       icon: CreditCard,
       value: tagihanData?.length || 0,
       textColor: "text-indigo-600",
-      bottomText: "Produk Tersedia"
+      bottomText: "Tagihan Tersedia"
+    },
+    {
+      title: "Buku Baru",
+      icon: BookUser,
+      value: bukuData?.length || 0,
+      textColor: "text-cyan-600",
+      bottomText: "Buku Tersedia"
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       {cardData.map((card, index) => (
         <Card 
           key={index} 

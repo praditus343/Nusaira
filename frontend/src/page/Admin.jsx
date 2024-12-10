@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, FileText, MessageCircle, Bell, ActivityIcon, LogOut, Package, Truck,CreditCard  } from 'lucide-react';
+import { LayoutGrid, FileText, MessageCircle, Bell, ActivityIcon, LogOut, Package, Truck,CreditCard,BookUser  } from 'lucide-react';
 import DashboardSummaryCards from '../componen/DasboardSummaryCards';
 import PenyakitLeleCards from '../componen/PenyakitLeleCards';
 import BeritaCards from '../componen/BeritaCards';
@@ -10,6 +10,7 @@ import ProductsTable from '../componen/ProductCard';
 import Logo from '../assets/Logo.png'
 import { useNavigate } from 'react-router-dom'; 
 import TagihanTable from '../componen/TagihanTable';
+import BukuCards from '../componen/BukuCard';
 
 const AdminDashboard = () => {
   const [beritaData, setBeritaData] = useState([]);
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
   const [suppliersData, setSuppliersData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [tagihanData, setTagihanData] = useState([]);
+  const [bukuData, setBukuData] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const navigate = useNavigate(); 
 
@@ -36,6 +38,8 @@ const AdminDashboard = () => {
         const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
         const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
         const tagihanResponse = await fetch('https://nusaira-be.vercel.app/api/tagihan');
+        const bukuResponse = await fetch('https://nusaira-be.vercel.app/api/buku');
+        
         
         
         const beritaJson = await beritaResponse.json();
@@ -45,6 +49,7 @@ const AdminDashboard = () => {
         const suppliersJson = await suppliersResponse.json();
         const productsJson = await productsResponse.json();
         const tagihanJson = await tagihanResponse.json();
+        const bukuJson = await bukuResponse.json();
 
 
         setTagihanData(tagihanJson.data || tagihanJson || []);
@@ -54,6 +59,7 @@ const AdminDashboard = () => {
         setNotifikasiData(notifikasiJson.data || notifikasiJson || []);
         setSuppliersData(suppliersJson.data || suppliersJson || []);
         setProductsData(productsJson.data || productsJson || []);
+        setBukuData(bukuJson.data || bukuJson || []);
         
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -140,6 +146,13 @@ const AdminDashboard = () => {
             >
               <CreditCard  className="mr-2" /> Tagihan
             </li>
+            <li
+              className={`flex items-center p-2 mb-2 rounded cursor-pointer ${activeTab === 'Buku' ? 'bg-blue-700' : 'hover:bg-blue-500'
+                }`}
+              onClick={() => setActiveTab('Buku')}
+            >
+              <BookUser  className="mr-2" /> Buku
+            </li>
           </ul>
         </nav>
       </div>
@@ -169,6 +182,7 @@ const AdminDashboard = () => {
               suppliersData={suppliersData}
               productsData={productsData}
               tagihanData={tagihanData}
+              bukuData={bukuData}
             />        
           )}
           {activeTab === 'berita' && <BeritaCards beritaData={beritaData.berita || beritaData} />}
@@ -178,6 +192,7 @@ const AdminDashboard = () => {
           {activeTab === 'suppliers' && <SuppliersTable suppliersData={suppliersData} />}
           {activeTab === 'products' && <ProductsTable productsData={productsData} />}
           {activeTab === 'Tagihan' && <TagihanTable tagihanData={tagihanData} />}
+          {activeTab === 'Buku' && <BukuCards bukuData={bukuData} />}
         </div>
       </div>
     </div>
