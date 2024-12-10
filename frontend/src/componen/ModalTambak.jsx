@@ -879,7 +879,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
 
 
-//penyakit masih dalam tahap penelitian
+//penyakit
 export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const [selectedKolam, setSelectedKolam] = useState("");
   const [formData, setFormData] = useState({
@@ -971,7 +971,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form submission initiated');
-  
+
     try {
       if (!selectedKolam || !formData.tanggal_tebar || !formData.jenis_penyakit) {
         throw new Error('Mohon lengkapi data yang diperlukan');
@@ -979,44 +979,44 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
       let [day, month, year] = formData.tanggal_tebar.split("-");
       let formattedDate = new Date(`${year}-${month}-${day}`).toISOString().split('T')[0];
-  
+
       const validImages = images.filter((img) => img && img.file);
       const imageUrls = [];
-      
+
       if (validImages.length > 0) {
         for (const image of validImages) {
           if (image && image.file) {
             const formDataForImage = new FormData();
             formDataForImage.append('file', image.file);
             formDataForImage.append('upload_preset', 'Nusaira');
-            
+
             const cloudinaryResponse = await axios.post(
               'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
               formDataForImage,
               {
-                headers: { 
+                headers: {
                   'Content-Type': 'multipart/form-data'
                 }
               }
             );
-            
+
             imageUrls.push(cloudinaryResponse.data.secure_url);
           }
         }
       }
 
-      
+
       const payload = {
         kolam_id: parseInt(selectedKolam),
         tanggal_tebar: formattedDate,
         jenis_penyakit: formData.jenis_penyakit,
-        catatan: formData.catatan || '', 
-        gambar: imageUrls 
+        catatan: formData.catatan || '',
+        gambar: imageUrls
       };
 
       console.log('Sending payload to backend:', payload);
 
-      
+
       const backendResponse = await axios.post(
         'https://nusaira-be.vercel.app/api/penyakit',
         payload,
@@ -1027,16 +1027,16 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
           }
         }
       );
-  
+
       console.log('Backend API Response:', backendResponse);
-  
+
       if (backendResponse.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Data berhasil disimpan!',
           text: 'Penyakit entry telah berhasil dibuat.',
         });
-  
+
         setFormData({
           kolam_id: '',
           tanggal_tebar: '',
@@ -1055,29 +1055,25 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         status: error.response?.status,
         data: error.response?.config?.data
       });
-      
-      const errorMessage = 
-        error.response?.data?.errors || 
-        error.response?.data?.message || 
-        error.message || 
+
+      const errorMessage =
+        error.response?.data?.errors ||
+        error.response?.data?.message ||
+        error.message ||
         'Terjadi kesalahan saat mengunggah data.';
-      
+
       Swal.fire({
         icon: 'error',
         title: 'Error!',
         text: errorMessage,
       });
-  
+
       setErrors(prev => [...prev, errorMessage]);
     }
   };
 
-  
-
-
-  
   const validateImage = (file) => {
-    const maxSize = 5 * 1024 * 1024; 
+    const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       throw new Error(`File ${file.name} terlalu besar. Maksimal 5MB`);
     }
@@ -1142,10 +1138,8 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
     tanggal_tebar: formData.tanggal_tebar,
     jenis_penyakit: formData.jenis_penyakit,
     catatan: formData.catatan,
-    images: images 
+    images: images
   });
-
-
 
   if (!isOpen) return null;
 
@@ -1263,7 +1257,9 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
               ))}
             </div>
           </div>
-
+          <p className="text-xs text-gray-500 mt-4">
+            Ukuran maks: 5MB. Format: JPEG, PNG, GIF, WebP
+          </p>
           <Button type="submit">Simpan</Button>
         </form>
       </div>
