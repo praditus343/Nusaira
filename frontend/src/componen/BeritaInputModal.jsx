@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, X } from 'lucide-react';
-import axios from 'axios'; 
-import Swal from 'sweetalert2'; 
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export const BeritaInputModal = ({ isOpen, onClose }) => {
     const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
     const handleImageUpload = async (e) => {
         const files = Array.from(e.target.files);
         setIsLoading(true);
-    
+
         try {
             const uploadPromises = files.map(async (file) => {
                 const imageFormData = new FormData();
@@ -41,7 +41,7 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                 );
                 return response.data.secure_url;
             });
-    
+
             const uploadedUrls = await Promise.all(uploadPromises);
             setImages(uploadedUrls);
             setFormData((prev) => ({
@@ -59,22 +59,22 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
             });
         }
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-    
+
         try {
             const missingFields = [];
             if (!formData.title) missingFields.push('Title');
             if (!formData.date) missingFields.push('Date');
             if (!formData.image) missingFields.push('Image');
             if (!formData.excerpt) missingFields.push('Excerpt');
-    
+
             if (missingFields.length > 0) {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
-    
+
             const response = await axios.post(
                 'https://nusaira-be.vercel.app/api/berita',
                 formData,
@@ -84,13 +84,13 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                     }
                 }
             );
-    
+
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
                 text: 'Berita berhasil disimpan'
             });
-    
+
             setFormData({
                 title: '',
                 date: '',
@@ -101,18 +101,18 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
             setImages([]);
             setIsLoading(false);
             onClose();
-    
+
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
                 text: error.message
             });
-    
+
             setIsLoading(false);
         }
     };
-    
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
@@ -168,7 +168,9 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                             <span className="text-black font-medium">Upload Gambar</span>
                         </div>
                     </label>
-
+                    <p className="text-xs text-gray-500 mt-4">
+                        Ukuran maks: 5MB. Format: JPEG, PNG, GIF, WebP
+                    </p>
                     {isLoading && <p className="text-blue-500">Sedang memproses...</p>}
                     {images.length > 0 && (
                         <div className="flex gap-2">
@@ -186,8 +188,8 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                         type="submit"
                         disabled={isLoading}
                         className={`w-full p-3 rounded ${isLoading
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-500 text-white hover:bg-blue-600'
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-500 text-white hover:bg-blue-600'
                             }`}
                     >
                         {isLoading ? 'Sedang Diproses...' : 'Simpan Berita'}

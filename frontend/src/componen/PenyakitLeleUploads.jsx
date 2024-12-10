@@ -27,14 +27,14 @@ export const PenyakitLeleUpload = ({ onClose }) => {
         const files = Array.from(e.target.files);
         console.log('Files selected for upload:', files);
         setIsLoading(true);
-    
+
         try {
             const uploadPromises = files.map(async (file) => {
                 const imageFormData = new FormData();
                 imageFormData.append('file', file);
                 imageFormData.append('upload_preset', 'Nusaira');
                 // console.log('Uploading file:', file.name);
-    
+
                 const response = await axios.post(
                     'https://api.cloudinary.com/v1_1/dgl701jmj/image/upload',
                     imageFormData,
@@ -45,7 +45,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                 // console.log('Upload successful:', response.data.secure_url);
                 return response.data.secure_url;
             });
-    
+
             const uploadedUrls = await Promise.all(uploadPromises);
             console.log('All images uploaded:', uploadedUrls);
             setImages(uploadedUrls);
@@ -64,25 +64,25 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             });
         }
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('Form submission started with full data:', JSON.stringify(formData, null, 2));
         setIsLoading(true);
-    
+
         try {
             const missingFields = [];
             if (!formData.title) missingFields.push('Title');
             if (!formData.date) missingFields.push('Date');
             if (!formData.image) missingFields.push('Image');
-    
+
             if (missingFields.length > 0) {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
-    
+
             const payload = { ...formData };
             // console.log('Detailed payload for submission:', JSON.stringify(payload, null, 2));
-    
+
             const response = await axios.post(
                 'https://nusaira-be.vercel.app/api/penyakit-lele',
                 payload,
@@ -93,13 +93,13 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                 }
             );
             // console.log('Form submission response:', response.data);
-    
+
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
                 text: 'Data penyakit berhasil disimpan'
             });
-    
+
             setFormData({
                 title: '',
                 date: '',
@@ -114,13 +114,13 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             setImages([]);
             setIsLoading(false);
             onClose();
-    
+
         } catch (error) {
             console.error('Complete error object:', error);
             console.error('Error response:', error.response ? JSON.stringify(error.response, null, 2) : 'No response');
             console.error('Error saat mengirim data:', error.response ? error.response.data : error.message);
-          
-    
+
+
             if (error.response) {
                 console.error('Server error:', error.response);
                 Swal.fire({
@@ -143,12 +143,12 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                     text: `Kesalahan: ${error.message || 'Terjadi kesalahan tak terduga'}`,
                 });
             }
-    
+
             setIsLoading(false);
         }
     };
-    
-    
+
+
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -201,14 +201,14 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                 name="gejalaTambahan"
                 value={formData.gejalaTambahan}
                 onChange={handleChange}
-                placeholder="Gejala Tambahan (Opsional)"
+                placeholder="Gejala Tambahan"
                 className="w-full p-2 border rounded border-blue-500 placeholder-black"
             />
             <textarea
                 name="referensi"
                 value={formData.referensi}
                 onChange={handleChange}
-                placeholder="Referensi (Opsional)"
+                placeholder="Referensi"
                 className="w-full p-2 border rounded border-blue-500 placeholder-black mb-4"
             />
             <label className="w-full">
@@ -221,10 +221,12 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                 />
                 <div className="flex justify-center items-center w-full p-4 border-2 border-dashed border-blue-500 rounded-lg cursor-pointer transition-all hover:border-blue-700 hover:bg-blue-50 mt-4 mb-4">
                     <Upload className="w-6 h-6 text-black mr-2" />
-                    <span className="text-black font-medium">Upload Image</span>
+                    <span className="text-black font-medium">Upload Gambar</span>
                 </div>
             </label>
-
+            <p className="text-xs text-gray-500 mt-4">
+                Ukuran maks: 5MB. Format: JPEG, PNG, GIF, WebP
+            </p>
             {isLoading && <p className="text-blue-500">Sedang memproses...</p>}
             {images.length > 0 && (
                 <div className="flex gap-2">
@@ -242,8 +244,8 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                 type="submit"
                 disabled={isLoading}
                 className={`w-full p-2 rounded ${isLoading
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
             >
                 {isLoading ? 'Sedang Diproses...' : 'Simpan Data Penyakit'}
