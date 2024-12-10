@@ -1,39 +1,64 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import ElearningSidebar from "../componen/ElearningSidebar";
-import Header from "../componen/Header";
-import Footer from "../componen/Footer";
-import { Star } from "lucide-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import img1 from "../assets/img/e-learning/el1.png";
-import img2 from "../assets/img/e-learning/el2.png";
-import img3 from "../assets/img/e-learning/el3.png";
-import img4 from "../assets/img/e-learning/el4.png";
-import img5 from "../assets/img/e-learning/el5.png";
-import img6 from "../assets/img/e-learning/el6.png";
-import img7 from "../assets/img/e-learning/el7.png";
-import img8 from "../assets/img/e-learning/el8.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import AIFloatingButton from "../componen/AiFloatingButton";
+import Footer from "../componen/Footer";
+import Header from "../componen/Header";
+import Sidebar from "../componen/SideBar";
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+};
 
 const PerpustakaanBooks = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate(); 
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [books] = useState([
-    { id: 1, title: "Teknik Budidaya", image: img1, description: "Ini adalah buku budidaya lele...", rating: 5.0},
-    { id: 2, title: "Teknik Memimin...", image: img2, description: "Ini adalah buku budidaya lele...", rating: 5.0},
-    { id: 3, title: "Kampanye menye...", image: img3, description: "Ini adalah buku budidaya lele...", rating: 5.0 },
-    { id: 4, title: "Cara Agar Bud...", image: img4, description: "Ini adalah buku budidaya lele...", rating: 5.0},
-    { id: 5, title: "Strategi Pemasaran Ikan", image: img5, description: "Strategi pemasaran untuk ikan lele...", rating: 4.8},
-    { id: 6, title: "Pengelolaan Kolam Ikan", image: img6, description: "Panduan mengelola kolam ikan...", rating: 4.5},
-    { id: 7, title: "Kesehatan Ikan Lele", image: img7, description: "Penyakit umum pada ikan lele...", rating: 4.9},
-    { id: 8, title: "Inovasi dalam Budidaya Ikan", image: img8, description: "Inovasi terbaru dalam budidaya ikan...", rating: 4.7},
-  ]);
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await fetch('https://nusaira-be.vercel.app/api/buku');
+        if (!response.ok) {
+          throw new Error('Failed to fetch books');
+        }
+        const data = await response.json();
+        setBooks(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
 
   const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+    book.judul.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500">
+        Error: {error}
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white w-full min-h-screen">
@@ -43,7 +68,7 @@ const PerpustakaanBooks = () => {
           <div>
             <h1 className="text-xl font-bold mb-2">Buku-buku Anda Menunggu untuk Dibaca!</h1>
             <p className="text-gray-600">
-             Ayo mulai perjalanan membaca Anda dan temukan inspirasi
+              Ayo mulai perjalanan membaca Anda dan temukan inspirasi
               <br /> dalam setiap halaman yang menunggu
             </p>
           </div>
@@ -68,27 +93,29 @@ const PerpustakaanBooks = () => {
             {filteredBooks.map((book) => (
               <div
                 key={book.id}
-                className="bg-white rounded-lg overflow-hidden shadow relative border border-gray-300"
+                className="bg-white rounded-lg overflow-hidden shadow relative border border-gray-300 flex flex-col"
               >
                 <img
                   src={book.image}
-                  alt={book.title}
+                  alt={book.judul}
                   className="w-full h-48 object-cover"
                 />
-                <div className="p-4">
-                  <h3 className="font-semibold mb-2">{book.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{book.description}</p>
-                  <div className="flex justify-between items-center">
-                    <button
-                      onClick={() => navigate(`/HomeLearning`)} 
-                      className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg text-sm"
+                <div className="p-4 flex-grow flex flex-col">
+                  <h3 className="font-semibold mb-2">{book.judul}</h3>
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-3 flex-grow">{book.deskripsi}</p>
+                  <div className="flex items-center text-gray-500 text-sm mb-4 mt-2">
+                    <span className="mr-2">Tanggal Terbit:</span>
+                    <span>{formatDate(book.tanggal_terbit)}</span>
+                  </div>
+                  <div className="flex justify-center">
+                    <a
+                      href={book.link_pdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full text-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300"
                     >
-                      Baca
-                    </button>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="text-sm">{book.rating}</span>
-                    </div>
+                      Baca Buku
+                    </a>
                   </div>
                 </div>
               </div>
@@ -103,7 +130,7 @@ const PerpustakaanBooks = () => {
 function Perpustakaan() {
   return (
     <div className="flex h-screen">
-      <ElearningSidebar />
+      <Sidebar />
       <div className="flex-1 overflow-auto">
         <PerpustakaanBooks />
         <AIFloatingButton />
