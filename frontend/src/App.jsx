@@ -6,7 +6,6 @@ import ArticlePage from './page/ArtikelPenyakit';
 import BukuFavorit from './page/BukuFavorit';
 import ContactPage from './page/ContactUs';
 import PondManagement from './page/DaftarKolam';
-import ELearning from './page/ELearning';
 import FinalStepUI from './page/FInalStep';
 import HargaLele from './page/HargaLele';
 import Homeuser from './page/Home';
@@ -80,7 +79,6 @@ function App() {
           <Route path="/LupaPass3" element={<LupaPass3 />} />
           <Route path="/Pembayaran" element={<Pembayaran />} />
           <Route path="/BukuFavorit" element={<BukuFavorit />} />
-          <Route path="/ELearning" element={<ELearning />} />
           <Route path="/kabar-lele/:id" element={<KabarLeleArticle />} />
           <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
           <Route path="/Contact" element={<ContactPage />} />
