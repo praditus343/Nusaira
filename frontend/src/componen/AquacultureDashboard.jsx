@@ -9,10 +9,6 @@ import MetricCard from './MetricsCard';
 import RentangRasioTooltip from './RentangTooltip';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
 const Button = ({ children, onClick, type = 'button', className }) => {
   return (
     <button
@@ -166,7 +162,6 @@ const AquacultureDashboard = () => {
 
   return (
     <div className="w-full max-w-6xl p-4 mb-6">
-      {/* Metric card */}
       <MetricCard />
       {/* Main Content Card */}
       <Card className='border-2 w-[1120px] mt-10 mr-20 ml-2'>
@@ -270,7 +265,6 @@ const AquacultureDashboard = () => {
             </div>
 
           </div>
-          {/* Garis Tengah */}
           <div className="w-px bg-gray-300 self-stretch m-0"></div>
           {/* Kolom Kanan - Grafik */}
           <div className="flex-1 space-y-6 m-6 w-[800px]">

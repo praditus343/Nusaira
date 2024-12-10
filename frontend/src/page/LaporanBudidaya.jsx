@@ -546,8 +546,6 @@ function LaporanDashboard() {
             </tr>
           </tbody>
         </table>
-
-        {/* Bagian Keterangan */}
         <div className="mt-14 mb-10">
           <p className="font-medium mb-2">Keterangan:</p>
           <ul className="list-decimal list-inside space-y-1 keterangan">
@@ -703,7 +701,6 @@ function LaporanDashboard() {
             <Indicator color="red-500" text="Peforma Kolam Terburuk" />
           </div>
 
-          {/* Table Section */}
           <TableSection />
         </div>
       </div>

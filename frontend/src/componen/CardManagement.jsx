@@ -31,7 +31,6 @@ const Card = ({ children, className = '' }) => {
     );
   };
   
-  // Tabs Components
   const Tabs = ({ children, defaultValue, className = '' }) => {
     const [activeTab, setActiveTab] = React.useState(defaultValue);
   

@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'; // Import the close icon from lucide-react
+import { X } from 'lucide-react'; 
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -52,7 +52,6 @@ const ManagementModal = ({ isOpen, onClose }) => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
 
-        // Validasi input
         const ph = parseFloat(formData.get('ph'));
         const suhu = parseFloat(formData.get('suhu'));
         const oksigen = parseFloat(formData.get('oksigen'));
@@ -90,10 +89,9 @@ const ManagementModal = ({ isOpen, onClose }) => {
             errorObj.salinitas = 'Salinitas harus diisi dengan nilai yang lebih besar dari 0.';
         }
 
-        // Update state error
+       
         setError(errorObj);
 
-        // Jika ada error, tampilkan dan hentikan proses submit
         if (Object.values(errorObj).some((msg) => msg !== '')) {
             return;
         }

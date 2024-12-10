@@ -78,7 +78,6 @@ const SignUpPage = () => {
           {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
           <form onSubmit={handleSignUp} className="space-y-5">
-            {/* Input untuk Username */}
             <div>
               <label
                 htmlFor="username"
@@ -97,8 +96,6 @@ const SignUpPage = () => {
                 required
               />
             </div>
-
-            {/* Input untuk No Handphone */}
             <div>
               <label htmlFor="phone" className="block text-black-600 text-lg">
                 No Handphone
@@ -114,8 +111,6 @@ const SignUpPage = () => {
                 required
               />
             </div>
-
-            {/* Input untuk Email */}
             <div>
               <label htmlFor="email" className="block text-black-600 text-lg">
                 Email
@@ -131,8 +126,6 @@ const SignUpPage = () => {
                 required
               />
             </div>
-
-            {/* Input untuk Kata Sandi */}
             <div>
               <label
                 htmlFor="password"
@@ -151,8 +144,6 @@ const SignUpPage = () => {
                 required
               />
             </div>
-
-            {/* Input untuk Ulangi Kata Sandi */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -171,8 +162,6 @@ const SignUpPage = () => {
                 required
               />
             </div>
-
-            {/* Dropdown untuk Pekerjaan */}
             <div>
               <label
                 htmlFor="occupation"
@@ -194,8 +183,6 @@ const SignUpPage = () => {
                 <option value="lainnya">Lainnya</option>
               </select>
             </div>
-
-            {/* Tombol Daftar */}
             <button
               type="submit"
               disabled={loading}

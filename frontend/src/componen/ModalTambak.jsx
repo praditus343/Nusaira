@@ -1091,13 +1091,11 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
     if (!file) return;
 
     try {
-      // Validate image
       validateImage(file);
 
-      // Compress image
       const compressedFile = await imageCompression(file, {
-        maxSizeMB: 1, // Ukuran maksimum 1MB
-        maxWidthOrHeight: 1024, // Maksimum resolusi 1024px
+        maxSizeMB: 1, 
+        maxWidthOrHeight: 1024, 
         useWebWorker: true,
       });
 
@@ -1107,13 +1105,10 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         size: compressedFile.size,
       });
 
-      // Create blob from compressed file
       const compressedBlob = new Blob([compressedFile], { type: compressedFile.type });
 
-      // Create object URL
       const imageUrl = URL.createObjectURL(compressedBlob);
 
-      // Update images state
       setImages(prevImages => {
         const newImages = [...prevImages];
         newImages[index] = {

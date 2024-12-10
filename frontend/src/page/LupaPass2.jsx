@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import img from "../assets/img/login_singup/ls3.png"; // Import image
-import imglogo from "../assets/Logo.png"; // Import logo
+import img from "../assets/img/login_singup/ls3.png";
+import imglogo from "../assets/Logo.png"; 
 
 const PasswordReset = () => {
   const navigate = useNavigate();
@@ -11,27 +11,23 @@ const PasswordReset = () => {
   const [resendTimeout, setResendTimeout] = useState(30);
   const inputRefs = useRef([]);
 
-  // Simulated correct verification code
   const correctVerificationCode = "1111";
 
   const handleVerificationInput = useCallback(
     (e, idx) => {
-      const value = e.target.value.replace(/[^0-9]/g, ""); // Only allow numbers
+      const value = e.target.value.replace(/[^0-9]/g, ""); 
 
       if (value.length <= 1) {
-        // Update the verification code in state
         const updatedCode = [...verificationCode];
         updatedCode[idx] = value;
         setVerificationCode(updatedCode);
 
-        // Focus management
         if (value && idx < inputRefs.current.length - 1) {
           inputRefs.current[idx + 1].focus();
         } else if (!value && idx > 0) {
           inputRefs.current[idx - 1].focus();
         }
 
-        // Check if all fields are filled
         if (
           updatedCode.every((code) => code !== "") &&
           updatedCode.join("").length === 4
@@ -48,7 +44,6 @@ const PasswordReset = () => {
       setError("");
       if (code === correctVerificationCode) {
         setLoading(true);
-        // Simulate verification process
         setTimeout(() => {
           setLoading(false);
           navigate("/lupapass3");
@@ -88,14 +83,12 @@ const PasswordReset = () => {
       }
       setVerificationCode(newVerificationCode);
 
-      // Focus the next empty input or the last input if all are filled
       const nextEmptyIndex = newVerificationCode.findIndex(
         (code) => code === ""
       );
       const focusIndex = nextEmptyIndex === -1 ? 3 : nextEmptyIndex;
       inputRefs.current[focusIndex].focus();
 
-      // Trigger verification if all fields are filled
       if (pastedData.length === 4) {
         handleVerification(pastedData);
       }
@@ -103,10 +96,8 @@ const PasswordReset = () => {
   };
 
   useEffect(() => {
-    // Focus the first input on mount
     inputRefs.current[0].focus();
 
-    // Handle countdown timer for resend code
     if (resendTimeout > 0) {
       const countdown = setInterval(() => {
         setResendTimeout((prev) => prev - 1);
