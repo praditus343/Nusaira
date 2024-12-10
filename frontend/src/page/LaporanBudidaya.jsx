@@ -321,6 +321,8 @@ function LaporanDashboard() {
       return totalTebar !== 0 ? ((jumlahHidup / totalTebar) * 100).toFixed(2) : "0";
     };
 
+   
+
     const calculateTotals = () => {
       let totalLuasKolam = 0;
       let totalDOC = 0;
@@ -352,6 +354,7 @@ function LaporanDashboard() {
 
           const panenKolam = getPanenDataForKolam(kolam.id);
           totalSizePanen += parseFloat(panenKolam.size || 0);
+          
 
           totalFCR += parseFloat(calculateFCR(kolam.id));
           totalSR += parseFloat(calculateSR(kolam.id));
@@ -402,15 +405,19 @@ function LaporanDashboard() {
           const sizePanen = parseFloat(panenKolam.size || 0);
           const adg = doc > 0 ? (sizePanen / doc) : 0;
 
+          // console.log("tes",sizePanen)
+
           const produksiPerMeter = luasKolam > 0 ? (biomassaPanen / luasKolam) : 0;
 
-          const evaluateFCR = () => {
+          const evaluateFCR = (fcr) => {
+            if (fcr <= 0) return "Data Tidak Valid"; 
             if (fcr < 1.3) return "Sangat Baik";
             if (fcr < 1.5) return "Baik";
             if (fcr < 1.8) return "Cukup";
             if (fcr < 2.0) return "Kurang";
             return "Buruk";
           };
+          
 
           const evaluateSR = () => {
             if (sr > 90) return "Sangat Baik";
@@ -513,7 +520,9 @@ function LaporanDashboard() {
                 const biomassaPanen = calculateBiomassa(kolam.id);
                 const fcr = calculateFCR(kolam.id);
                 const sr = calculateSR(kolam.id);
-
+                const panenData = getPanenDataForKolam(kolam.id); 
+                const size = panenData?.size || "0";
+            
                 return (
                   <tr key={kolam.id} className={determineRowColor(kolam.id)}>
                     <td className="py-2 px-4 border">{kolam.namaKolam || `Kolam ${index + 1}`}</td>
@@ -525,7 +534,7 @@ function LaporanDashboard() {
                     </td>
                     <td className="py-2 px-4 border">{totalPakan.toFixed(2)} kg</td>
                     <td className="py-2 px-4 border">{biomassaPanen.toFixed(2)} kg</td>
-                    <td className="py-2 px-4 border">{siklusKolam.size || "0"}</td>
+                    <td className="py-2 px-4 border">{size} kg</td>
                     <td className="py-2 px-4 border">{fcr}</td>
                     <td className="py-2 px-4 border">{sr}%</td>
                   </tr>
@@ -540,7 +549,7 @@ function LaporanDashboard() {
               <td className="py-2 px-4 border">{totals.padatTebar} (mg/m²)</td>
               <td className="py-2 px-4 border">{totals.pakan} kg</td>
               <td className="py-2 px-4 border">{totals.biomassa} kg</td>
-              <td className="py-2 px-4 border">{totals.sizePanen}</td>
+              <td className="py-2 px-4 border">{totals.sizePanen} kg</td>
               <td className="py-2 px-4 border">{totals.fcr}</td>
               <td className="py-2 px-4 border">{totals.sr}%</td>
             </tr>

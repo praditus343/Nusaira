@@ -10,6 +10,7 @@ import Header from '../componen/Header';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Footer from '../componen/Footer';
+import Error404Page from '../componen/ErrorPage';
 
 
 
@@ -61,7 +62,9 @@ const ArticleDashboard = () => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return (<div >
+            <Error404Page />
+        </div>);
     }
 
     if (!article) {

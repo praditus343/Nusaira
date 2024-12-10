@@ -5,6 +5,7 @@ import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
+import Error404Page from "../componen/ErrorPage";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -54,8 +55,8 @@ const PerpustakaanBooks = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
-        Error: {error}
+      <div >
+        <Error404Page/>
       </div>
     );
   }
