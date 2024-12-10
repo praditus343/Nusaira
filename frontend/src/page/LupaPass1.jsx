@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import Link and useNavigate for navigation
-import imglogo from "../assets/Logo.png"; // Import logo image
-import img from "../assets/img/login_singup/ls3.png"; // Import illustration image
+import { Link, useNavigate } from "react-router-dom"; 
+import imglogo from "../assets/Logo.png"; 
+import img from "../assets/img/login_singup/ls3.png"; 
 
 function PasswordReset() {
   const [email, setEmail] = useState("");
@@ -9,11 +9,10 @@ function PasswordReset() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Handle form submission
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simple email validation
     if (!email) {
       setError("Email is required");
       return;
@@ -22,11 +21,9 @@ function PasswordReset() {
     setIsSubmitting(true);
     setError("");
 
-    // Simulate an API request delay
     setTimeout(() => {
-      // Redirect to LupaPass2 page after submission
       navigate("/LupaPass2");
-    }, 1000); // Delay of 1 second
+    }, 1000); 
   };
 
   return (

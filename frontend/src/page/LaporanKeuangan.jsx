@@ -262,7 +262,6 @@ function LaporanDashboard() {
             </div>
           </div>
         </div>
-
         <div id="dashboard-content" className="bg-white p-6 rounded-lg border border-blue-500 mr-4">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Tambak {tambakList[0]?.nama}</h2>

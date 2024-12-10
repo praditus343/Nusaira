@@ -46,7 +46,7 @@ const LoginPage = () => {
         title: "Login Berhasil!",
         text: "Selamat datang di dashboard",
       }).then(() => {
-        navigate("/Home"); // Redirect sesuai role
+        navigate("/Home"); 
       });
     } catch (error) {
       Swal.fire({

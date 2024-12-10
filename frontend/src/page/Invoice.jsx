@@ -70,7 +70,6 @@ function Content() {
         <p className="text-sm text-gray-500 mb-6">
           Cek status tagihan dan pembayaran Anda di sini.
         </p>
-
         <div className="flex flex-wrap items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-800">Daftar Tagihan</h3>
           <div className="flex flex-wrap items-center space-x-3">
@@ -96,13 +95,10 @@ function Content() {
             </div>
           </div>
         </div>
-
-
         <div className="bg-white border border-blue-200 rounded-lg p-6">
           <h4 className="text-blue-500 font-semibold mb-4">
             {filter === "belum-bayar" ? "Belum Dibayar" : "Sudah Dibayar"}
           </h4>
-
           {filteredTagihan.length > 0 ? (
             filteredTagihan.map((item) => (
               <TransactionItem
