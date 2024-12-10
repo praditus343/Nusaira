@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCityPrediction } from '../../service/AxiosConfig';
 import PriceTrendCard from '../componen/PriceTrendCard';
+import Error404Page from './ErrorPage';
 
 const PriceTrendsDashboard = () => {
   const [predictions, setPredictions] = useState([]);
@@ -82,15 +83,8 @@ const PriceTrendsDashboard = () => {
 
   if (error) {
     return (
-      <div className="p-6">
-        <h2 className="text-lg font-semibold mb-4 text-red-600">Gagal memuat data</h2>
-        <p className="text-gray-600">{error}</p>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-          onClick={handleRetry}
-        >
-          Coba Lagi
-        </button>
+      <div >
+        <Error404Page/>
       </div>
     );
   }

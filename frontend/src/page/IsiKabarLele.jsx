@@ -5,6 +5,7 @@ import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
+import Error404Page from '../componen/ErrorPage';
 
 const KabarLeleArticleLayout = () => {
   const { id } = useParams();
@@ -49,18 +50,16 @@ const KabarLeleArticleLayout = () => {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Ups! Terjadi Kesalahan</h2>
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">{error}</span>
-          <button
-            onClick={handleGoBack}
-            className="text-blue-500 flex items-center mt-4"
-          >
-            <ChevronLeft size={20} className="mr-2" />
-            Kembali ke Berita
-          </button>
+        <div >
+          <Error404Page />
         </div>
+        <button
+          onClick={handleGoBack}
+          className="text-blue-500 flex items-center mt-4"
+        >
+          <ChevronLeft size={20} className="mr-2" />
+          Kembali ke Berita
+        </button>
       </div>
     );
   }

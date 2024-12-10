@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Error404Page from './ErrorPage';
 
 const LeleDataTable = () => {
   const [data, setData] = useState([]);
@@ -45,7 +46,9 @@ const LeleDataTable = () => {
   }
 
   if (error) {
-    return <p className="text-center text-red-500">Gagal memuat Harga pasar {error}</p>
+    return (<div >
+      <Error404Page/>
+    </div>);
   }
 
   return (

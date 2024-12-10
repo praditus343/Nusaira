@@ -116,7 +116,7 @@ const DashboardContent = () => {
                                 </>
 
                             ) : (
-                                <p className="text-gray-500 blinking-text">Loading data...</p>
+                                <p className="text-gray-500 blinking-text">Loading ...</p>
                             )}
                         </div>
                         <AquacultureDashboard />
@@ -161,7 +161,7 @@ const DashboardContent = () => {
                                 </>
 
                             ) : (
-                                <p className="text-gray-500">Loading data...</p>
+                                <p className="text-gray-500">Loading ...</p>
                             )}
                     </div>
                 )}

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import RatingReviewForm from './RatingAndReviewForm';
 import { ChevronDown } from "lucide-react";
+import Error404Page from '../componen/ErrorPage';
 
 const SupplierDashboard = () => {
     const { supplier } = useParams();
@@ -121,11 +122,18 @@ const SupplierDashboard = () => {
     }
 
     if (error) {
-        return <div className="text-red-500 text-center mt-10">{error}</div>;
+        return (
+            <div >
+                <Error404Page />
+            </div>);
     }
 
     if (!supplierData) {
-        return <div className="text-red-500">Supplier not found.</div>;
+        return (
+            <div >
+                <Error404Page />
+            </div>
+        );
     }
 
     return (

@@ -5,6 +5,7 @@ import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
+import Error404Page from "../componen/ErrorPage";
 
 const LeftCard = ({ post, isVisible }) => {
   const navigate = useNavigate();
@@ -42,9 +43,8 @@ const RightCard = ({ post, highlight }) => {
 
   return (
     <div
-      className={`flex bg-white rounded-lg shadow-md overflow-hidden mb-4 border border-gray-300 ${
-        highlight ? "border-blue-600 bg-blue-50" : "opacity-50"
-      }`}
+      className={`flex bg-white rounded-lg shadow-md overflow-hidden mb-4 border border-gray-300 ${highlight ? "border-blue-600 bg-blue-50" : "opacity-50"
+        }`}
     >
       <div className="flex-1 p-4">
         <div className="text-sm text-gray-500 mb-2">{new Date(post.date).toLocaleDateString()}</div>
@@ -73,21 +73,21 @@ const KabarLeleLayout = () => {
         setIsLoading(true);
         setError(null);
         // console.log('Fetching posts...');
-        
+
         const response = await fetch('https://nusaira-be.vercel.app/api/berita');
         // console.log('Fetch response:', response);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
-    
+
         const data = await response.json();
         // console.log('Fetched posts data:', data);
-    
+
         if (!Array.isArray(data.berita)) {
           throw new Error('Data is not iterable');
         }
-    
+
         const shuffled = [...data.berita].sort(() => 0.5 - Math.random());
         setRandomLeftPosts(shuffled.slice(0, 3));
         setFilteredPosts(data.berita);
@@ -98,8 +98,8 @@ const KabarLeleLayout = () => {
         setIsLoading(false);
       }
     };
-    
-    
+
+
 
     fetchPosts();
   }, []);
@@ -125,11 +125,8 @@ const KabarLeleLayout = () => {
   if (error) {
     // console.log("Error state:", error);
     return (
-      <div className="flex justify-center items-center h-screen bg-red-100 p-6 rounded-lg shadow-lg">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Ups! Terjadi Kesalahan</h2>
-          <p className="text-lg text-red-500">{error}</p>
-        </div>
+      <div >
+        <Error404Page />
       </div>
     );
   }
