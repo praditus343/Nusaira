@@ -30,7 +30,6 @@ import PenyakitLele from './page/PenyakitLele';
 import Perpustakaan from './page/Perpustakaan';
 import Premium from './page/Premium';
 import PriceHistory from './page/PriceHistory';
-import PriceTrending from './page/PriceTrending';
 import TambakSimulation from './page/Simulasi';
 import SignUp from './page/singup';
 import SignUp2 from './page/singup2';
@@ -68,7 +67,6 @@ function App() {
           <Route path="/KabarLele" element={<KabarLele />} /> 
           <Route path="/AquacultureDashboard" element={<AquacultureDashboard />} /> 
           <Route path="/PriceHistory" element={<PriceHistory />} />
-          <Route path="/PriceTrend" element={<PriceTrending />} />
           <Route path="/supplier/:supplier" element={<SupplierDetail />} />
           <Route path="/Perpustakaan" element={<Perpustakaan />} />
           <Route path="/Invoice" element={<Invoice />} />

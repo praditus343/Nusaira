@@ -45,7 +45,7 @@ const LeleDataTable = () => {
   }
 
   if (error) {
-    return <p className="text-center text-red-500">Error: {error}</p>;
+    return <p className="text-center text-red-500">Gagal memuat Harga pasar {error}</p>
   }
 
   return (
