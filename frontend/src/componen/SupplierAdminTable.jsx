@@ -301,8 +301,10 @@ const SuppliersTable = () => {
                     </div>
                   </label>
                 </div>
+                <p className="text-xs text-gray-500 mt-4">
+                  Ukuran maks: 5MB. Format: JPEG, PNG, GIF, WebP
+                </p>
               </div>
-
               <div className="mb-4">
                 <label className="block mb-2">Nama Supplier</label>
                 <input
@@ -318,7 +320,7 @@ const SuppliersTable = () => {
               <div className="mb-4">
                 <label className="block mb-2">Email</label>
                 <input
-                placeholder='Masukkan Email Supplier'
+                  placeholder='Masukkan Email Supplier'
                   type="email"
                   name="email"
                   value={currentSupplier.email}

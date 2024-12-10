@@ -167,10 +167,12 @@ const BukuInputModal = ({ isOpen, onClose, initialData = null, onSubmit }) => {
                         />
                         <div className="flex justify-center items-center w-full p-4 border-2 border-dashed border-blue-500 rounded-lg cursor-pointer transition-all hover:border-blue-700 hover:bg-blue-50 mt-4 mb-2">
                             <Upload className="w-6 h-6 text-black mr-2" />
-                            <span className="text-black font-medium">Upload Gambar</span>
+                            <span className="text-black font-medium">Upload Sampul Buku</span>
                         </div>
                     </label>
-
+                    <p className="text-xs text-gray-500 mt-4">
+                        Ukuran maks: 5MB. Format: JPEG, PNG, GIF, WebP
+                    </p>
                     {isLoading && <p className="text-blue-500">Sedang memproses...</p>}
                     {images.length > 0 && (
                         <div className="flex gap-2">
