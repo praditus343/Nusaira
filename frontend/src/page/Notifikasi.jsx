@@ -5,6 +5,7 @@ import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 import Swal from 'sweetalert2';
+import Error404Page from '../componen/ErrorPage';
 
 
 
@@ -15,7 +16,7 @@ const formatDate = (dateString) => {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString();
     return `${day}-${month}-${year}`;
-    
+
 };
 
 const NotificationDashboard = () => {
@@ -37,7 +38,7 @@ const NotificationDashboard = () => {
             });
         }
     }, []);
-    
+
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -104,9 +105,9 @@ const NotificationDashboard = () => {
     //         console.log('Notification API tidak didukung di browser ini.');
     //     }
     // };
-    
-    
-    
+
+
+
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -117,8 +118,8 @@ const NotificationDashboard = () => {
 
     if (error) {
         return (
-            <div className="text-red-500 text-center p-4">
-                Error: {error}
+            <div >
+                <Error404Page />
             </div>
         );
     }

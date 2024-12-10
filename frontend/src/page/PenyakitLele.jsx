@@ -5,6 +5,7 @@ import Footer from '../componen/Footer';
 import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
+import Error404Page from '../componen/ErrorPage';
 
 const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
@@ -59,7 +60,9 @@ const FishDiseaseDashboard = () => {
     }
 
     if (error) {
-        return <div className="text-center text-red-500">{error}</div>;
+        return (<div >
+            <Error404Page />
+        </div>);
     }
 
     return (
@@ -129,7 +132,6 @@ const FishDiseaseDashboard = () => {
                                             e.target.src = '/images/default-image.png';
                                         }}
                                     />
-
                                 </div>
                                 <div className={`p-4 ${isGridLayout ? '' : 'flex-1'}`}>
                                     <p className="text-sm text-gray-500 mb-2">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ContactPopup from '../componen/ContactModal';
+import Error404Page from '../componen/ErrorPage';
 
 const PriceCard = ({ supplier, location, province, price, whatsapp, image, description }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,8 +12,8 @@ const PriceCard = ({ supplier, location, province, price, whatsapp, image, descr
     const closeModal = () => setIsModalOpen(false);
 
     const viewDetails = () => {
-    navigate(`/supplier/${supplier}`);
-};
+        navigate(`/supplier/${supplier}`);
+    };
 
     return (
         <div className="p-6 bg-blue-200 rounded-lg shadow-sm flex items-center justify-between">
@@ -85,44 +86,44 @@ const PriceHistory = ({ searchInput }) => {
                 const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
                 const suppliersData = await suppliersResponse.json();
                 setSuppliers(suppliersData.data);
-    
+
                 const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
                 const productsData = await productsResponse.json();
                 setProducts(productsData.data);
-    
+
                 setLoading(false);
             } catch (err) {
                 setError(err);
                 setLoading(false);
             }
         };
-    
+
         fetchData();
     }, []);
-    
 
-    const combinedData = Array.isArray(suppliers) 
-    ? suppliers.map((supplier) => {
-        const supplierProducts = Array.isArray(products)
-            ? products.filter((p) => p.product_supplier_id === supplier.id)
-            : [];
-        
-        const cheapestProduct =
-            supplierProducts.length > 0
-                ? supplierProducts.reduce((min, product) =>
-                      parseFloat(product.product_price) < parseFloat(min.product_price)
-                          ? product
-                          : min
-                  )
-                : null;
-        
-        return {
-            ...supplier,
-            price: cheapestProduct ? cheapestProduct.product_price : 'Harga tidak tersedia',
-        };
-    }) 
-    : []; 
-    
+
+    const combinedData = Array.isArray(suppliers)
+        ? suppliers.map((supplier) => {
+            const supplierProducts = Array.isArray(products)
+                ? products.filter((p) => p.product_supplier_id === supplier.id)
+                : [];
+
+            const cheapestProduct =
+                supplierProducts.length > 0
+                    ? supplierProducts.reduce((min, product) =>
+                        parseFloat(product.product_price) < parseFloat(min.product_price)
+                            ? product
+                            : min
+                    )
+                    : null;
+
+            return {
+                ...supplier,
+                price: cheapestProduct ? cheapestProduct.product_price : 'Harga tidak tersedia',
+            };
+        })
+        : [];
+
 
     const filteredSuppliers = combinedData.filter((item) =>
         searchInput
@@ -137,8 +138,14 @@ const PriceHistory = ({ searchInput }) => {
             </div>
         );
     }
-    
-    if (error) return <div>Terjadi kesalahan: {error.message}</div>;
+
+    if (error) {
+        return (
+            <div >
+                <Error404Page />
+            </div>
+        );
+    }
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
