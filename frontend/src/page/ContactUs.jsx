@@ -97,7 +97,6 @@ const ContactPage = () => {
         <div className="flex-1 p-6">
           <div className="flex items-start gap-2">
             <div className="min-w-[24px] text-blue-500">
-              {/* Icon */}
             </div>
             <div>
               <p className="text-sm text-gray-500">Alamat kami :</p>
@@ -110,7 +109,6 @@ const ContactPage = () => {
         <div className="flex-1 p-6">
           <div className="flex items-start gap-2">
             <div className="min-w-[24px] text-blue-500">
-              {/* Icon */}
             </div>
             <div>
               <p className="text-sm text-gray-500">Email Kami</p>
@@ -123,7 +121,6 @@ const ContactPage = () => {
         <div className="flex-1 p-6">
           <div className="flex items-start gap-2">
             <div className="min-w-[24px] text-blue-500">
-              {/* Icon */}
             </div>
             <div>
               <p className="text-sm text-gray-500">Nomor kami</p>

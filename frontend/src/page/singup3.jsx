@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import img from "../assets/img/login_singup/ls4.png"; // Impor gambar
-import imglogo from "../assets/Logo.png"; // Impor gambar
+import img from "../assets/img/login_singup/ls4.png"; 
+import imglogo from "../assets/Logo.png";
 
 const SignUpCompletePage = () => {
   const navigate = useNavigate();
 
   const handleStartNow = () => {
-    navigate("/Home"); // Adjust the path to the main page of your app
+    navigate("/Home"); 
   };
 
   return (
@@ -16,7 +16,7 @@ const SignUpCompletePage = () => {
         {/* Left Side: Celebration Illustration */}
         <div className="hidden md:flex w-1/2 bg-blue-50 items-center justify-center p-8">
           <img
-            src={img} // Use the imported image
+            src={img} 
             alt="Celebration Illustration"
             className="max-w-sm"
           />
@@ -25,7 +25,7 @@ const SignUpCompletePage = () => {
         {/* Right Side: Text and Button */}
         <div className="w-full md:w-1/2 p-10 flex flex-col items-start justify-center">
           <img
-            src={imglogo} // Use the imported image
+            src={imglogo} 
             alt="App Logo"
             className="h-12 mb-4"
           />

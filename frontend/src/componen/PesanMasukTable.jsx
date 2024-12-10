@@ -207,9 +207,7 @@ export const PesanMasukTable = ({ pesanData }) => {
             ))}
           </tbody>
         </table>
-
       </div>
-
       {isDeleteMode && (
         <button
           onClick={handleDeleteMessages}

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import img from "../assets/img/login_singup/ls5.png"; // Impor gambar
-import imglogo from "../assets/Logo.png"; // Impor gambar
+import img from "../assets/img/login_singup/ls5.png";
+import imglogo from "../assets/Logo.png"; 
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -11,7 +11,6 @@ const SignUpPage = () => {
   const [resendTimeout, setResendTimeout] = useState(30);
   const inputRefs = useRef([]);
 
-  // Simulated correct verification code
   const correctVerificationCode = "1111";
 
   const handleVerificationInput = (e, idx) => {

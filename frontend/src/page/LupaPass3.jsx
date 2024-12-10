@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import imglogo from "../assets/Logo.png"; // Import logo image
-import img from "../assets/img/login_singup/ls3.png"; // Import illustration image
+import imglogo from "../assets/Logo.png";
+import img from "../assets/img/login_singup/ls3.png"; 
 
 function PasswordReset() {
   const [newPassword, setNewPassword] = useState("");
@@ -10,11 +10,9 @@ function PasswordReset() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simple password validation
     if (!newPassword || !confirmPassword) {
       setError("Both fields are required");
       return;
@@ -26,13 +24,11 @@ function PasswordReset() {
     }
 
     setIsSubmitting(true);
-    setError(""); // Reset any previous error
+    setError(""); 
 
-    // Simulate an API request delay
     setTimeout(() => {
-      // Redirect to LupaPass2 page after submission
       navigate("/signup3");
-    }, 1000); // Delay of 1 second
+    }, 1000); 
   };
 
   return (

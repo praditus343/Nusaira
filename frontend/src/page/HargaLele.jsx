@@ -53,14 +53,10 @@ const PriceMonitoringDashboard = () => {
                     <CurrentDate />
                 </div>
             </div>
-            {/* Map Section */}
             <div className="border border-blue-600 rounded-lg bg-white shadow rounded-lg p-6 mr-10 ml-10">
                 <InteractiveMap />
-
             </div>
-
             <PricePredictionsDashboard />
-
             <div className='mr-20'>
                 <LeleDataTable />
             </div>

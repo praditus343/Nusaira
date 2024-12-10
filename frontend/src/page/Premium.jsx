@@ -9,7 +9,7 @@ function SubscriptionCard({ title, price, discount, duration, originalPrice, pay
   const navigate = useNavigate(); 
 
   const handleSubscriptionClick = () => {
-    window.location.href = paymentLink; // Redirect to the payment link
+    window.location.href = paymentLink; 
   };
 
   return (
@@ -93,13 +93,13 @@ function Content() {
             originalPrice="Rp.300.000"
             discount={20}
             duration="Kolam/Bootcamp"
-            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757061121" // Update with actual link
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757061121" 
           />
           <SubscriptionCard
             title="Per Tahun"
             price="Rp.500.000"
             duration="Kolam/Bootcamp"
-            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757107107" // Update with actual link
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757107107" 
           />
         </div>
         <FreeTrialCard />
