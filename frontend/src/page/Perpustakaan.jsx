@@ -102,11 +102,11 @@ const PerpustakaanBooks = () => {
                 />
                 <div className="p-4 flex-grow flex flex-col">
                   <h3 className="font-semibold mb-2">{book.judul}</h3>
-                  <p className="text-gray-600 text-sm mb-2 line-clamp-3 flex-grow">{book.deskripsi}</p>
                   <div className="flex items-center text-gray-500 text-sm mb-4 mt-2">
                     <span className="mr-2">Tanggal Terbit:</span>
                     <span>{formatDate(book.tanggal_terbit)}</span>
                   </div>
+                  <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow">{book.deskripsi}</p>
                   <div className="flex justify-center">
                     <a
                       href={book.link_pdf}
