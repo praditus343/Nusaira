@@ -10,16 +10,16 @@ import Footer from '../componen/Footer.jsx';
 import Header from '../componen/Header.jsx';
 import Sidebar from '../componen/SideBar.jsx';
 import WrapBanner from '../componen/WrapBanner.jsx';
-import { 
-    fetchTambak, 
-    fetchSiklus, 
-    fetchKematian, 
-    fetchPakan, 
-    fetchPanen, 
-    fetchAnco 
-  } from '../../service/AxiosConfig.js';
-  import "./pageCss/Home.css"
-  
+import {
+    fetchTambak,
+    fetchSiklus,
+    fetchKematian,
+    fetchPakan,
+    fetchPanen,
+    fetchAnco
+} from '../../service/AxiosConfig.js';
+import "./pageCss/Home.css"
+
 
 const DashboardContent = () => {
     const [isDashboardView, setIsDashboardView] = useState(false);
@@ -29,143 +29,153 @@ const DashboardContent = () => {
     const [pakanData, setPakanData] = useState(null);
     const [panenData, setPanenData] = useState(null);
     const [ancoData, setAncoData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
     const handleOpenYoutube = () => {
         window.open("https://www.youtube.com/@Nusai_ra", "_blank");
-      };   
+    };
 
-      const handleOpenTelegram = () => {
+    const handleOpenTelegram = () => {
         window.open("https://t.me/+h3tvLhSnoWI3M2Q9", "_blank");
-      };
-    
-
-   
+    };
 
     useEffect(() => {
         const fetchAllDataSequentially = async () => {
+            setIsLoading(true);
+            setIsError(false);
+
             try {
                 const tambakResponse = await fetchTambak();
                 setTambakData(tambakResponse[0]);
-    
+
                 const siklusResponse = await fetchSiklus();
                 setSiklusData(siklusResponse);
-    
+
                 const kematianResponse = await fetchKematian();
                 setKematianData(kematianResponse);
-    
+
                 const pakanResponse = await fetchPakan();
                 setPakanData(pakanResponse);
-    
+
                 const panenResponse = await fetchPanen();
                 setPanenData(panenResponse);
-    
+
                 const ancoResponse = await fetchAnco();
                 setAncoData(ancoResponse);
-    
+
                 setIsDashboardView(true);
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setIsError(true);
+            } finally {
+                setIsLoading(false);
             }
         };
-    
+
         fetchAllDataSequentially();
     }, []);
-    
+
     return (
         <div className="bg-white w-full min-h-screen mb-10">
             <Header />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                {isDashboardView ? (
-                    <div>
-                        <div className="flex justify-between items-center">
-                            {tambakData ? (
-                                <>
-                                    <div className="flex flex-col ml-6">
-                                        <h2 className="text-xl font-semibold mb-2 text-black">
-                                            Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
-                                        </h2>
-                                        <div className="flex items-center text-gray-600">
-                                            <svg
-                                                className="w-4 h-4 mr-2"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                                />
-                                            </svg>
-                                            <span className="text-gray-500">
-                                                {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
-                                                {` `}
-                                                {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
-                                            </span>
-
-                                        </div>
+                <div>
+                    {isLoading ? (
+                        <p className="text-gray-500 blinking-text ml-8 mb-4">Loading ...</p>
+                    ) : isError ? (
+                        <p className="text-red-500 ml-8 mb-4">Gagal memuat data. Coba lagi nanti.</p>
+                    ) : (
+                        <div>
+                            {isDashboardView ? (
+                                <div>
+                                    <div className="flex justify-between items-center">
+                                        {tambakData ? (
+                                            <>
+                                                <div className="flex flex-col ml-6">
+                                                    <h2 className="text-xl font-semibold mb-2 text-black">
+                                                        Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
+                                                    </h2>
+                                                    <div className="flex items-center text-gray-600">
+                                                        <svg
+                                                            className="w-4 h-4 mr-2"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                                            />
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                                            />
+                                                        </svg>
+                                                        <span className="text-gray-500">
+                                                            {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
+                                                            {` `}
+                                                            {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <p className="text-gray-500">Data tidak ditemukan</p>
+                                        )}
                                     </div>
-                                </>
-
+                                    <AquacultureDashboard />
+                                </div>
                             ) : (
-                                <p className="text-gray-500 blinking-text">Loading ...</p>
+                                <div className="flex justify-between items-center mb-6 ml-6">
+                                    {tambakData ? (
+                                        <>
+                                            <div className="flex flex-col">
+                                                <h2 className="text-xl font-semibold mb-2 text-black">
+                                                    Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
+                                                </h2>
+                                                <div className="flex items-center text-gray-600">
+                                                    <svg
+                                                        className="w-4 h-4 mr-2"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                        aria-hidden="true"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                                        />
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                                        />
+                                                    </svg>
+                                                    <span className="text-gray-500">
+                                                        {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
+                                                        {` `}
+                                                        {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <p className="text-gray-500">Data tidak ditemukan</p>
+                                    )}
+                                </div>
                             )}
                         </div>
-                        <AquacultureDashboard />
-                    </div>
-                ) : (
-                    <div className="flex justify-between items-center mb-6 ml-6">
-                         {tambakData ? (
-                                <>
-                                    <div className="flex flex-col">
-                                        <h2 className="text-xl font-semibold mb-2 text-black">
-                                            Tambak {tambakData?.nama || "Nama Tambak Tidak Tersedia"}
-                                        </h2>
-                                        <div className="flex items-center text-gray-600">
-                                            <svg
-                                                className="w-4 h-4 mr-2"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                                />
-                                            </svg>
-                                            <span className="text-gray-500">
-                                                {tambakData?.provinsi || "Provinsi Tidak Tersedia"},
-                                                {` `}
-                                                {tambakData?.kabupaten || "Kabupaten Tidak Tersedia"}
-                                            </span>
-
-                                        </div>
-                                    </div>
-                                </>
-
-                            ) : (
-                                <p className="text-gray-500">Loading ...</p>
-                            )}
-                    </div>
-                )}
-
+                    )}
+                </div>
                 <div className="bg-white border-2 border-blue-600 rounded-lg shadow-md mb-10 ml-6 mr-16">
                     <div className="p-6">
                         <h2 className="text-xl font-semibold mb-2 text-gray-500">Solusi Untuk Tambak Lele</h2>
@@ -210,16 +220,14 @@ const DashboardContent = () => {
                                             </button>
                                         </Link>
                                     </div>
-                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3"  onClick={handleOpenYoutube}>
+                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3" onClick={handleOpenYoutube}>
                                         <FontAwesomeIcon icon={faYoutube} className="w-6 h-6 mr-2" />
                                         <span className="ml-2 text-sm">YouTube NusAIra</span>
                                     </button>
-
-                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3 mt-4"  onClick={handleOpenTelegram}>
+                                    <button className="bg-blue-500 rounded-md py-1 w-full text-white flex items-center p-3 py-3 mt-4" onClick={handleOpenTelegram}>
                                         <FontAwesomeIcon icon={faTelegram} className="w-6 h-6 mr-2" />
                                         <span className="ml-2 text-sm">Telegram NusAIra</span>
                                     </button>
-
                                 </div>
                             </div>
                         </div>

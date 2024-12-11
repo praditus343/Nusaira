@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
 import FishTable from '../componen/FishTable';
 import { useNavigate } from 'react-router-dom';
+import Error404Page from '../componen/ErrorPage';
 
 const CustomCard = ({ children, className }) => {
     return (
@@ -54,6 +55,8 @@ const PondTable = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [tambakData, setTambakData] = useState(null);
     const [showBanner, setShowBanner] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     const handleSearch = (e) => setSearchTerm(e.target.value);
 
@@ -84,12 +87,25 @@ const PondTable = () => {
     };
 
     useEffect(() => {
-        fetch('https://nusaira-be.vercel.app/api/tambak')
-            .then((response) => response.json())
-            .then((data) => {
+        const fetchTambakData = async () => {
+            setIsLoading(true); 
+            setIsError(false);  
+            try {
+                const response = await fetch('https://nusaira-be.vercel.app/api/tambak');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
                 setTambakData(data[0]);
-            })
-            .catch((error) => console.error("Error fetching data:", error));
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setIsError(true); 
+            } finally {
+                setIsLoading(false); 
+            }
+        };
+
+        fetchTambakData();
     }, []);
 
 
@@ -99,6 +115,20 @@ const PondTable = () => {
     }, []);
 
     const closeModal = () => setActiveModal(null);
+
+    if (isLoading) {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        );
+      }
+
+      if (isError) {
+        return <Error404Page />;
+      }
+
+
 
     return (
         <div className="bg-white w-full min-h-screen">

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import Error404Page from "../componen/ErrorPage";
 
 
 function formatRupiah(amount) {
@@ -98,8 +99,21 @@ function RincianPemasukan({ onTotalChange }) {
     fetchData();
   }, [onTotalChange]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading){
+    return(
+      <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+    );
+  } 
+
+  if (error){
+    return(
+      <div>
+        <Error404Page/>
+      </div>
+    );
+  }
 
   return (
     <section className="my-8">
@@ -132,15 +146,23 @@ function LaporanDashboard() {
   const [totalPendapatan, setTotalPendapatan] = useState(0);
   const [totalSisaTagihan, setTotalSisaTagihan] = useState(0);
   const [tambakList, setTambakList] = useState([]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     async function fetchTambak() {
       try {
+        setIsLoading(true);
+        setIsError(false); 
         const response = await fetch("https://nusaira-be.vercel.app/api/tambak");
         const data = await response.json();
         setTambakList(data); 
       } catch (error) {
+        setIsError(true);
         console.error("Error fetching tambak data:", error);
+      }finally {
+        setIsLoading(false); 
       }
     }
     fetchTambak();
@@ -233,6 +255,17 @@ function LaporanDashboard() {
     return parsedDate.toLocaleDateString(); 
 };
 
+if (isLoading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+}
+
+if (isError) {
+  return <Error404Page />;
+}
 
 
   return (

@@ -8,6 +8,7 @@ import { Card } from './CardManagement';
 import MetricCard from './MetricsCard';
 import RentangRasioTooltip from './RentangTooltip';
 import { useNavigate } from 'react-router-dom';
+import Error404Page from './ErrorPage';
 
 const Button = ({ children, onClick, type = 'button', className }) => {
   return (
@@ -31,12 +32,17 @@ const AquacultureDashboard = () => {
   const [filteredMetrics, setFilteredMetrics] = useState([]);
   const [selectedMetric, setSelectedMetric] = useState('mbw');
   const [docRange, setDocRange] = useState({ start: 0, end: 100 });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
   const value = progress;
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true); 
+      setIsError(false);
+
       try {
         const tambak = await fetchTambak();
         if (tambak && Array.isArray(tambak)) {
@@ -54,6 +60,7 @@ const AquacultureDashboard = () => {
 
         const kematian = await fetchKematian();
         const panen = await fetchPanen();
+
         if (selectedKolam === null && tambak[0]) {
           setSelectedKolam(tambak[0].kolamDetails[0].id);
         }
@@ -66,11 +73,13 @@ const AquacultureDashboard = () => {
         setGrowthData(growthDatas);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsError(true); 
+      } finally {
+        setIsLoading(false); 
       }
     };
 
     fetchData();
-
   }, []);
 
   const calculateMetrics = (siklus, tambak, kematian, panen) => {
@@ -158,6 +167,17 @@ const AquacultureDashboard = () => {
     navigate('/LaporanBudidaya');
   };
 
+  if (isError) {
+    return <Error404Page />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
 
   return (
