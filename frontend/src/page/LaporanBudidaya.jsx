@@ -16,6 +16,7 @@ import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
+import Error404Page from "../componen/ErrorPage";
 
 function LaporanDashboard() {
   const [tambakData, setTambakData] = useState([]);
@@ -25,11 +26,14 @@ function LaporanDashboard() {
   const [panenData, setPanenData] = useState([]);
   const [airData, setAirData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  
 
   useEffect(() => {
     async function fetchData() {
       try {
         setIsLoading(true);
+        setIsError(false);
         const tambak = await fetchTambak();
         const siklus = await fetchSiklus();
         const panen = await fetchPanen();
@@ -45,6 +49,7 @@ function LaporanDashboard() {
         setPakanData(pakan);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsError(true);
       } finally {
         setIsLoading(false); 
       }
@@ -367,12 +372,12 @@ function LaporanDashboard() {
         luasKolam: totalLuasKolam.toFixed(2),
         doc: totalDOC.toFixed(2),
         benih: totalBenih.toFixed(0),
-        padatTebar: (totalPadatTebar / kolamCount).toFixed(2),
+        padatTebar: totalPadatTebar.toFixed(2),
         pakan: totalPakan.toFixed(2),
         biomassa: totalBiomassa.toFixed(2),
-        sizePanen: (totalSizePanen / kolamCount).toFixed(2),
-        fcr: (totalFCR / kolamCount).toFixed(2),
-        sr: (totalSR / kolamCount).toFixed(2)
+        sizePanen: totalSizePanen.toFixed(2),
+        fcr: totalFCR.toFixed(2),
+        sr: totalSR.toFixed(2)
       };
     };
 
@@ -577,7 +582,17 @@ function LaporanDashboard() {
   }
 
 
+  if (isError) {
+    return <Error404Page />;
+  }
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 space-x-6 bg-white w-full min-h-screen ">
