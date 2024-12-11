@@ -8,6 +8,7 @@ import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
+import Error404Page from "../componen/ErrorPage";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
@@ -399,6 +400,14 @@ const ExcelForm = () => {
   );
 
   const totalPengeluaran = rows.reduce((total, row) => total + (parseFloat(row.sisa_tagihan) || 0), 0);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error){
+    return <Error404Page/>
+  }
 
   return (
     <div className="bg-white w-full min-h-screen">

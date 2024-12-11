@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { fetchTambak, fetchSiklus, fetchPakan, fetchPanen } from '../../service/AxiosConfig'; 
+import Error404Page from './ErrorPage';
 
 const MetricCard = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -7,56 +8,58 @@ const MetricCard = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
   const [metrics, setMetrics] = useState([]); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const sliderRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);  
+      setIsError(false);   
+
       try {
         const tambak = await fetchTambak();
         const siklus = await fetchSiklus();
         const pakan = await fetchPakan();
         const panen = await fetchPanen();
-  
+
         const estimasiBiomassa = tambak[0]?.kolamDetails.reduce(
           (total, kolam) =>
             total +
             (parseFloat(kolam.panjang) *
               parseFloat(kolam.lebar) *
-              parseFloat(kolam.kedalaman)) /
-              1000, 
+              parseFloat(kolam.kedalaman)) / 1000,
           0
         );
-  
+
         const totalPakan = pakan.reduce(
           (total, item) => total + parseFloat(item.jumlah || 0),
           0
         );
-  
+
         const totalPanen = panen.reduce(
           (total, item) => total + parseFloat(item.berat || 0),
           0
         );
-  
+
         const estimasiNilaiJual = panen.reduce(
           (total, item) =>
             total + parseFloat(item.berat || 0) * parseFloat(item.harga_jual),
           0
         );
-  
+
         const estimasiSR = siklus[0]?.target_sr || 0;
-  
+
         const formatRupiah = (number) =>
           new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
-            minimumFractionDigits: 0, 
-            maximumFractionDigits: 0, 
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
           }).format(number);
-        
-  
+
         const formatWithoutDecimal = (number) => Math.round(number);
-  
-    
+
         setMetrics([
           {
             id: 1,
@@ -85,7 +88,7 @@ const MetricCard = () => {
           {
             id: 4,
             label: "Estimasi SR",
-            value: `${formatWithoutDecimal(estimasiSR)}%`, 
+            value: `${formatWithoutDecimal(estimasiSR)}%`,
             unit: "dari target SR",
             icon: "fas fa-chart-line",
             color: "text-red-500",
@@ -93,7 +96,7 @@ const MetricCard = () => {
           {
             id: 5,
             label: "Estimasi Nilai Jual",
-            value: formatRupiah(estimasiNilaiJual), 
+            value: formatRupiah(estimasiNilaiJual),
             unit: "Total dari semua panen",
             icon: "fas fa-database",
             color: "text-cyan-500",
@@ -101,12 +104,26 @@ const MetricCard = () => {
         ]);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsError(true);  
+      } finally {
+        setIsLoading(false);  
       }
     };
-  
+
     fetchData();
   }, []);
   
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <Error404Page />;
+  }
 
   
   const handleMouseDown = (e) => {

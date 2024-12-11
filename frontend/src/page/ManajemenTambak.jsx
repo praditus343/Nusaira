@@ -21,6 +21,7 @@ import Header from '../componen/Header';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import { fetchTambak, fetchAir } from '../../service/AxiosConfig';
+import Error404Page from '../componen/ErrorPage';
 
 const DashboardManagement = () => {
     const [tambakData, setTambakData] = useState(null);
@@ -28,9 +29,17 @@ const DashboardManagement = () => {
     const [selectedTambakId, setSelectedTambakId] = useState(null);
     const [waterData, setWaterData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
+    const [isLoadingTambak, setIsLoadingTambak] = useState(false);
+    const [isErrorTambak, setIsErrorTambak] = useState(false);
+    const [isLoadingWater, setIsLoadingWater] = useState(false);
+    const [isErrorWater, setIsErrorWater] = useState(false);
+
 
     useEffect(() => {
         const fetchTambakData = async () => {
+            setIsLoadingTambak(true); 
+            setIsErrorTambak(false); 
+            
             try {
                 const data = await fetchTambak();
                 if (data && data.length > 0) {
@@ -40,10 +49,14 @@ const DashboardManagement = () => {
                 }
             } catch (error) {
                 console.error('Error fetching tambak data:', error);
+                setIsErrorTambak(true); 
+            } finally {
+                setIsLoadingTambak(false); 
             }
         };
         fetchTambakData();
     }, []);
+    
 
     useEffect(() => {
         const fetchWaterData = async () => {
@@ -51,28 +64,33 @@ const DashboardManagement = () => {
                 console.log('Tidak ada Tambak');
                 return;
             }
-
+    
+            setIsLoadingWater(true); 
+            setIsErrorWater(false);  
+    
             try {
                 const data = await fetchAir();
                 const flattenedData = data.flat().filter(item => item && !Array.isArray(item));
-
-
+    
                 const filteredData = flattenedData
                     .filter(item => item.tambak_id === selectedTambakId)
                     .map(item => ({
                         ...item,
                         kabupaten: tambakData?.kabupaten || 'Unknown'
                     }));
-               
-
+    
                 setWaterData(filteredData);
             } catch (error) {
                 console.error('Error fetching water quality data:', error);
+                setIsErrorWater(true);  
                 setWaterData([]);
+            } finally {
+                setIsLoadingWater(false); 
             }
         };
         fetchWaterData();
     }, [selectedTambakId]);
+    
 
     const handleTambakChange = (event) => {
         const newTambakId = parseInt(event.target.value);
@@ -172,6 +190,32 @@ const DashboardManagement = () => {
 
         doc.save(`Laporan_Kualitas_Air_${tambakData?.nama || 'Tambak'}.pdf`);
     };
+
+    if (isLoadingTambak) {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        );
+      }
+
+      
+      if (isLoadingWater) {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        );
+      }
+
+      if (isErrorTambak) {
+        return <Error404Page />;
+      }
+
+      if (isErrorWater) {
+        return <Error404Page />;
+      }
+    
 
     return (
         <div className="bg-white w-full min-h-screen">

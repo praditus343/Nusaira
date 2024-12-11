@@ -174,7 +174,6 @@ const NotificationDashboard = () => {
                             className="flex items-start gap-4 p-4 bg-blue-100 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 mb-6"
                         >
                             <div className="flex-shrink-0 w-6 h-6 mt-4 rounded-full bg-blue-500" />
-
                             <div className="flex flex-col w-1/4">
                                 <h3 className="text-blue-600">{notification.type}</h3>
                                 <p className="flex items-center text-gray-500 mt-2">
@@ -182,7 +181,6 @@ const NotificationDashboard = () => {
                                     {formatDate(notification.date)}
                                 </p>
                             </div>
-
                             <div className="flex flex-col w-1/2 text-left">
                                 <h3 className="mb-1 text-gray-800">{notification.title}</h3>
                                 <p className="text-gray-600">{notification.description}</p>

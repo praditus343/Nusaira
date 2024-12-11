@@ -8,11 +8,13 @@ import Sidebar from "../componen/SideBar";
 import Header from "../componen/Header";
 import Footer from "../componen/Footer";
 import Swal from "sweetalert2";
+import Error404Page from "../componen/ErrorPage";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
   <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
 </div>
+
 );
 
 const ErrorMessage = ({ message }) => (
@@ -260,6 +262,16 @@ const ExcelForm = () => {
       setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error){
+    return <Error404Page/>
+  }
+
+
 
   const handleTambakChange = (e) => {
     const id = e.target.value;
