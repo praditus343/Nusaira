@@ -63,11 +63,8 @@ const UserProfile = () => {
   return (
     <div className="bg-white w-full min-h-screen flex">
       <Sidebar className="w-1/5 min-h-screen bg-gray-100" />
-
-      {/* Konten Utama */}
       <div className="flex-1">
         <Header />
-
         {/* Pengaturan Akun */}
         <div className="flex items-center justify-center p-4 bg-white rounded-md space-x-4">
           <span className="text-lg font-medium text-gray-700">

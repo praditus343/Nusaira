@@ -184,7 +184,7 @@ const KabarLeleLayout = () => {
               </div>
               <div className="w-2/3">
                 <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-                <div className="space-y-4 overflow-y-auto max-h-[165vh] mt-4">
+                <div className="space-y-4 overflow-y-auto max-h-[148vh] mt-4">
                   {filteredPosts.map((post) => (
                     <RightCard
                       key={post.id}
