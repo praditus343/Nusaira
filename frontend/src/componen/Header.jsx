@@ -1,18 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import imgProfile from "../assets/img/landing_page_sebelum_daftar/landingsb2.png"
+import imgProfile from "../assets/img/landing_page_sebelum_daftar/landingsb2.png";
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import BenderaIndonesia from "../assets/img/Indonesia.png"
-
+import BenderaIndonesia from "../assets/img/Indonesia.png";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLanguageBannerVisible, setIsLanguageBannerVisible] = useState(false);
+  const [name, setName] = useState('');  
   const menuRef = useRef(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const storedName = localStorage.getItem('name'); 
+    if (storedName) {
+      setName(storedName);
+    }
+    console.log(storedName);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,8 +66,6 @@ const Header = () => {
     '/HomeLearning': 'Beranda / Perpustakaan',
     '/Home2Learning': 'Beranda / Perpustakaan'
   };
- 
-
 
   const artikelTitle = ""; 
   const title = location.pathname.startsWith('/kabar-lele')
@@ -69,13 +75,9 @@ const Header = () => {
       : location.pathname.includes('/supplier/')
         ? 'Detail Harga' : titleMap[location.pathname] || 'Unknown Page';
 
- 
-
   const handleProfileClick = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
-
-
 
   return (
     <header className="bg-white shadow-sm">
@@ -95,12 +97,11 @@ const Header = () => {
                   alt="Placeholder Image"
                   className="w-full h-full object-cover rounded-full"
                 />
-
               </div>
               {isLanguageBannerVisible && (
                 <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded whitespace-nowrap">
-                Bahasa yang digunakan
-              </div>              
+                  Bahasa yang digunakan
+                </div>              
               )}
             </div>
 
@@ -119,7 +120,7 @@ const Header = () => {
               {isProfileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-64 border border-blue-600 rounded-lg shadow-xl py-2 z-50 bg-white">
                   <div className="px-4 py-2 text-center bg-white">
-                    <h5 className="text-blue-500 font-medium">Herri Saputra</h5>
+                    <h5 className="text-blue-500 font-medium">{name}</h5> 
                   </div>
                   <div
                     onClick={() => navigate('/UserProfile')}
