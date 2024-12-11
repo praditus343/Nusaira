@@ -8,6 +8,7 @@ import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
 import { useNavigate } from "react-router-dom";
 import { Droplet } from 'lucide-react';
+import Error404Page from "../componen/ErrorPage";
 
 
 const InfoCard = ({ title, value, subValue, buttonText, onClick }) => (
@@ -266,6 +267,7 @@ const TambakProfile = ({ tambakData, onUpdateTambak, onDeleteTambak }) => {
 const PengaturanDashboard = () => {
   const [tambakData, setTambakData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [activeTab, setActiveTab] = useState("tambak");
   const navigate = useNavigate();
 
@@ -281,6 +283,7 @@ const PengaturanDashboard = () => {
         setLoading(false);
       } catch (error) {
         console.error('Error:', error);
+        setIsError(true); 
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -382,6 +385,9 @@ const PengaturanDashboard = () => {
       return (<div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
       </div>);
+    }
+    if (isError) {
+      return <div><Error404Page/></div>; 
     }
 
     switch (activeTab) {
