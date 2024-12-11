@@ -21,7 +21,7 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:3020/api/profile", {
+        const response = await axios.get("https://nusaira-be.vercel.app/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,7 +43,7 @@ const UserProfile = () => {
     if (!token) return;
 
     try {
-      await axios.delete("http://localhost:3020/api/profile", {
+      await axios.delete("https://nusaira-be.vercel.app/api/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       localStorage.removeItem("token");
