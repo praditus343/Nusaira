@@ -19,7 +19,7 @@ const LeftCard = ({ post, isVisible }) => {
     <div
       className={`bg-white rounded-lg shadow-md overflow-hidden mb-4 border border-gray-300 ${isVisible ? "opacity-100" : "opacity-20"}`}
     >
-      <img src={`/${post.image}`} alt={post.title} className="w-full h-48 object-cover" />
+      <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />
       <div className="p-4">
         <div className="text-sm text-gray-500 mb-2">{new Date(post.date).toLocaleDateString()}</div>
         <h3 className="font-semibold mb-2">{post.title}</h3>
@@ -132,7 +132,7 @@ const KabarLeleLayout = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen mb-20">
       <div className="flex-1 overflow-auto">
         <div className="bg-white w-full min-h-screen">
           <Header />
@@ -184,7 +184,7 @@ const KabarLeleLayout = () => {
               </div>
               <div className="w-2/3">
                 <h2 className="text-xl font-bold mb-4">Semua Berita</h2>
-                <div className="space-y-4 overflow-y-auto max-h-[130vh] mt-4">
+                <div className="space-y-4 overflow-y-auto max-h-[165vh] mt-4">
                   {filteredPosts.map((post) => (
                     <RightCard
                       key={post.id}
@@ -209,7 +209,7 @@ function KabarLele() {
       <div className="flex-1 overflow-auto">
         <KabarLeleLayout />
         <AIFloatingButton />
-        <div className="mt-20">
+        <div>
           <Footer />
         </div>
       </div>

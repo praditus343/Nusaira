@@ -70,7 +70,7 @@ function FreeTrialCard() {
 
 function Content() {
   return (
-    <>
+    <div className="mb-20">
       <Header />
       <div className="max-w-4xl mx-auto p-8">
         <h2 className="text-2xl font-bold text-center mb-4">
@@ -104,7 +104,7 @@ function Content() {
         </div>
         <FreeTrialCard />
       </div>
-    </>
+    </div>
   );
 }
 

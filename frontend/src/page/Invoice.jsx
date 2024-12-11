@@ -6,6 +6,7 @@ import AIFloatingButton from "../componen/AiFloatingButton";
 import Header from "../componen/Header";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Error404Page from "../componen/ErrorPage";
 
 function TransactionItem({ title, date, status }) {
   const formattedDate = new Date(date).toLocaleDateString("id-ID", {
@@ -37,9 +38,14 @@ function TransactionItem({ title, date, status }) {
 function Content() {
   const [tagihan, setTagihan] = useState([]);
   const [filter, setFilter] = useState("belum-bayar");
+  const [isLoading, setIsLoading] = useState(true); 
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchTagihan = async () => {
+      setIsLoading(true);  
+      setIsError(false);  
+
       try {
         const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan");
         console.log("Response Data:", response.data);
@@ -51,8 +57,12 @@ function Content() {
         setTagihan(formattedData);
       } catch (error) {
         console.error("Error fetching tagihan:", error);
+        setIsError(true);   
+      } finally {
+        setIsLoading(false); 
       }
     };
+
     fetchTagihan();
   }, []);
 
@@ -61,6 +71,20 @@ function Content() {
       ? item.status === "Belum Bayar"
       : item.status === "Sudah Bayar"
   );
+
+  if (isLoading) {
+    console.log("Loading...");
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <Error404Page />;
+  }
+
 
   return (
     <div className="w-full min-h-screen">
@@ -95,7 +119,7 @@ function Content() {
             </div>
           </div>
         </div>
-        <div className="bg-white border border-blue-200 rounded-lg p-6">
+        <div className="bg-white border border-blue-500 rounded-lg p-6">
           <h4 className="text-blue-500 font-semibold mb-4">
             {filter === "belum-bayar" ? "Belum Dibayar" : "Sudah Dibayar"}
           </h4>
