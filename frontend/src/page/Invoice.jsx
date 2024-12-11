@@ -46,10 +46,10 @@ function Content() {
       setIsLoading(true);
       setIsError(false);
 
-      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      const token = localStorage.getItem("token"); 
 
       try {
-        const response = await axios.get("https://nusaira.vercel.app/api/tagihan", {
+        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan", {
           headers: {
             Authorization: `Bearer ${token}`, 
           },
