@@ -32,14 +32,14 @@ const LoginPage = () => {
       });
   
       const data = await response.json();
-      console.log(data);
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+      // console.log(data);
+      if (data.token && data.profile) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('profile', JSON.stringify(data.profile)); 
+        console.log('Login berhasil:', data);
+      } else {
+        console.error('Login gagal:', data.message);
       }
-  
-      // Simpan token di localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
   
       Swal.fire({
         icon: "success",
