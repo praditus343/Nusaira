@@ -15,12 +15,13 @@ const Header = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const storedName = localStorage.getItem('name'); 
-    if (storedName) {
-      setName(storedName);
+    const storedProfile = localStorage.getItem('profile');
+    if (storedProfile) {
+      const profile = JSON.parse(storedProfile);
+      setName(profile.name); 
     }
-    console.log(storedName);
   }, []);
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
