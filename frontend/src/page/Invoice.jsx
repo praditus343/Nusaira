@@ -38,16 +38,23 @@ function TransactionItem({ title, date, status }) {
 function Content() {
   const [tagihan, setTagihan] = useState([]);
   const [filter, setFilter] = useState("belum-bayar");
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchTagihan = async () => {
-      setIsLoading(true);  
-      setIsError(false);  
+      setIsLoading(true);
+      setIsError(false);
+
+      const token = localStorage.getItem("token"); 
 
       try {
-        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan");
+        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan", {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+
         console.log("Response Data:", response.data);
 
         const formattedData = response.data.map((item) => ({
@@ -57,9 +64,9 @@ function Content() {
         setTagihan(formattedData);
       } catch (error) {
         console.error("Error fetching tagihan:", error);
-        setIsError(true);   
+        setIsError(true);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
 
@@ -73,7 +80,6 @@ function Content() {
   );
 
   if (isLoading) {
-    console.log("Loading...");
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
@@ -85,7 +91,6 @@ function Content() {
     return <Error404Page />;
   }
 
-
   return (
     <div className="w-full min-h-screen">
       <Header />
@@ -95,7 +100,9 @@ function Content() {
           Cek status tagihan dan pembayaran Anda di sini.
         </p>
         <div className="flex flex-wrap items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-800">Daftar Tagihan</h3>
+          <h3 className="text-lg font-semibold text-gray-800">
+            Daftar Tagihan
+          </h3>
           <div className="flex flex-wrap items-center space-x-3">
             <div className="flex items-center space-x-2">
               <label htmlFor="filter-status" className="text-sm text-gray-600">
