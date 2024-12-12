@@ -9,6 +9,7 @@ import Footer from '../componen/Footer';
 import Header from '../componen/Header';
 import Sidebar from '../componen/SideBar';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const TambakForm = () => {
     const navigate = useNavigate();
@@ -107,14 +108,21 @@ const TambakForm = () => {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
         } else {
             try {
+                const token = localStorage.getItem('token');
                 const response = await axios.post('https://nusaira-be.vercel.app/api/tambak', formData, {
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                 });
                 console.log('Data berhasil dikirim:', response.data);
             } catch (error) {
                 console.error('Terjadi kesalahan saat mengirim data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Mengirim Data',
+                    text: error.response?.data?.message || 'Terjadi kesalahan',
+                  });
             }
             console.log("Form submitted:", formData);
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
