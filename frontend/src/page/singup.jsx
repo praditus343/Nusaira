@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios"; 
-import img from "../assets/img/login_singup/ls5.png"; 
+import axios from "axios";
+import img from "../assets/img/login_singup/ls5.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown} from '@fortawesome/free-solid-svg-icons';
 
 const SignUpPage = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
-    name: "", 
-    no_hp: "",  
+    name: "",
+    no_hp: "",
     email: "",
     password: "",
     confirmPassword: "",
-    pekerjaan: "", 
+    pekerjaan: "",
+    jenis_kelamin: "",
   });
   const [error, setError] = useState("");
 
@@ -29,21 +32,21 @@ const SignUpPage = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     setError("");
-  
+
     if (!Object.values(formData).every((field) => field)) {
       setError("Semua field harus diisi.");
       return;
     }
-  
+
     if (formData.password !== formData.confirmPassword) {
       setError("Kata Sandi tidak cocok.");
       return;
     }
-  
+
     setLoading(true);
 
     axios
-      .post("http://localhost:3020/api/register", formData)  
+      .post("https://nusaira-be.vercel.app/api/register", formData)
       .then((response) => {
         setLoading(false);
         Swal.fire({
@@ -52,7 +55,7 @@ const SignUpPage = () => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          navigate("/login");  
+          navigate("/login");
         });
       })
       .catch((error) => {
@@ -100,11 +103,10 @@ const SignUpPage = () => {
                 placeholder="Cth. Heri Saputra"
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
                 required
               />
             </div>
-            {/* Tambahkan input untuk kolom 'name' */}
             <div>
               <label htmlFor="name" className="block text-black-600 text-lg">
                 Nama Lengkap
@@ -114,9 +116,9 @@ const SignUpPage = () => {
                 name="name"
                 type="text"
                 placeholder="Cth. Heri Saputra"
-                value={formData.name}  
+                value={formData.name}
                 onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
                 required
               />
             </div>
@@ -126,12 +128,12 @@ const SignUpPage = () => {
               </label>
               <input
                 id="no_hp"
-                name="no_hp"  
+                name="no_hp"
                 type="tel"
                 placeholder="Cth. 089630764456"
-                value={formData.no_hp}  
+                value={formData.no_hp}
                 onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
                 required
               />
             </div>
@@ -146,7 +148,7 @@ const SignUpPage = () => {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
                 required
               />
             </div>
@@ -164,7 +166,7 @@ const SignUpPage = () => {
                 placeholder="Cth. Py8jTjsd1"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
                 required
               />
             </div>
@@ -182,34 +184,73 @@ const SignUpPage = () => {
                 placeholder="Cth. Py8jTjsd1"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
                 required
               />
             </div>
-            <div>
+            <div className="relative mb-4">
               <label
                 htmlFor="pekerjaan"
                 className="block text-black-600 text-lg"
               >
                 Pekerjaan
               </label>
-              <input
-                id="pekerjaan"
-                name="pekerjaan"
-                type="text"
-                placeholder="Cth. Peternak"
-                value={formData.pekerjaan}
-                onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
+              <div className="relative mb-5">
+                <select
+                  id="pekerjaan"
+                  name="pekerjaan"
+                  value={formData.pekerjaan}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border rounded-md border-blue-600 appearance-none"
+                  required
+                >
+                  <option value="">Pilih Pekerjaan</option>
+                  <option value="peternak">Peternak</option>
+                  <option value="pedagang">Pedagang</option>
+                  <option value="lainnya">Lainnya</option>
+                </select>
+
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                />
+              </div>
+            </div>
+
+            {/* Jenis Kelamin Dropdown */}
+            <div className="relative mb-4">
+              <label
+                htmlFor="jenis_kelamin"
+                className="block text-black-600 text-lg"
+              >
+                Jenis Kelamin
+              </label>
+
+              <div className="relative mb-5">
+                <select
+                  id="jenis_kelamin"
+                  name="jenis_kelamin"
+                  value={formData.jenis_kelamin}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border rounded-md border-blue-600 appearance-none"
+                  required
+                >
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="L">Laki-Laki</option>
+                  <option value="P">Perempuan</option>
+                </select>
+
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                />
+              </div>
             </div>
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-md text-white font-semibold transition ${
-                loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
-              }`}
+              className={`w-full py-3 rounded-md text-white font-semibold transition ${loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
+                }`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
