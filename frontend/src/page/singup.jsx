@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
 import Swal from "sweetalert2";
+import axios from "axios"; 
 import img from "../assets/img/login_singup/ls5.png"; 
 
 const SignUpPage = () => {
@@ -8,11 +9,12 @@ const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
-    phone: "",
+    name: "", 
+    no_hp: "",  
     email: "",
     password: "",
     confirmPassword: "",
-    occupation: "",
+    pekerjaan: "", 
   });
   const [error, setError] = useState("");
 
@@ -39,20 +41,26 @@ const SignUpPage = () => {
     }
   
     setLoading(true);
-  
-    setTimeout(() => {
-      setLoading(false);
-      Swal.fire({
-        title: "Pendaftaran Berhasil!",
-        text: "Lanjutkan pendaftaran! 🚀",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        navigate("/signup2");
+
+    axios
+      .post("http://localhost:3020/api/register", formData)  
+      .then((response) => {
+        setLoading(false);
+        Swal.fire({
+          title: "Pendaftaran Berhasil!",
+          text: "Lanjutkan ke halaman login! 🚀",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/login");  
+        });
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError("Terjadi kesalahan. Silakan coba lagi.");
+        console.error("Error signing up:", error);
       });
-    }, 2000);
   };
-  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">
@@ -96,16 +104,32 @@ const SignUpPage = () => {
                 required
               />
             </div>
+            {/* Tambahkan input untuk kolom 'name' */}
             <div>
-              <label htmlFor="phone" className="block text-black-600 text-lg">
+              <label htmlFor="name" className="block text-black-600 text-lg">
+                Nama Lengkap
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Cth. Heri Saputra"
+                value={formData.name}  
+                onChange={handleChange}
+                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="no_hp" className="block text-black-600 text-lg">
                 No Handphone
               </label>
               <input
-                id="phone"
-                name="phone"
+                id="no_hp"
+                name="no_hp"  
                 type="tel"
                 placeholder="Cth. 089630764456"
-                value={formData.phone}
+                value={formData.no_hp}  
                 onChange={handleChange}
                 className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 required
@@ -164,24 +188,21 @@ const SignUpPage = () => {
             </div>
             <div>
               <label
-                htmlFor="occupation"
+                htmlFor="pekerjaan"
                 className="block text-black-600 text-lg"
               >
                 Pekerjaan
               </label>
-              <select
-                id="occupation"
-                name="occupation"
-                value={formData.occupation}
+              <input
+                id="pekerjaan"
+                name="pekerjaan"
+                type="text"
+                placeholder="Cth. Peternak"
+                value={formData.pekerjaan}
                 onChange={handleChange}
                 className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 required
-              >
-                <option value="">Pilih Pekerjaan</option>
-                <option value="peternak">Peternak</option>
-                <option value="pedagang">Pedagang</option>
-                <option value="lainnya">Lainnya</option>
-              </select>
+              />
             </div>
             <button
               type="submit"
