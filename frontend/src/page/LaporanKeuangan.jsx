@@ -43,9 +43,6 @@ function RincianPengeluaran({ onTotalChange }) {
     fetchData();
   }, [onTotalChange]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <section className="my-8">
       <h3 className="text-lg font-semibold mb-4">Rincian Pengeluaran</h3>
