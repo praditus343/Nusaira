@@ -234,7 +234,12 @@ const ExcelForm = () => {
 
   const fetchTambaks = async () => {
     try {
-      const response = await axios.get('https://nusaira-be.vercel.app/api/tambak');
+      const token = localStorage.getItem("token");
+      const response = await axios.get('https://nusaira-be.vercel.app/api/tambak', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTambaks(response.data);
       if (response.data.length > 0) {
         setSelectedTambakId(response.data[0].id);

@@ -1,4 +1,4 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import AIFloatingButton from "../componen/AiFloatingButton";
@@ -6,6 +6,9 @@ import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
 import Error404Page from "../componen/ErrorPage";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -19,31 +22,119 @@ const formatDate = (dateString) => {
 const PerpustakaanBooks = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const response = await fetch('https://nusaira-be.vercel.app/api/buku');
-        if (!response.ok) {
-          throw new Error('Failed to fetch books');
-        }
-        const data = await response.json();
-        setBooks(data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
+
+  const token = localStorage.getItem('token');
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch('https://nusaira-be.vercel.app/api/buku');
+      if (!response.ok) {
+        throw new Error('Failed to fetch books');
       }
+      const data = await response.json();
+      setBooks(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await axios.get('https://nusaira-be.vercel.app/api/favorites', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (Array.isArray(response.data.favorites)) {
+        setFavorites(response.data.favorites.map(fav => fav.buku_id));
+      } else {
+        setFavorites([]);
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal mengambil daftar favorit'
+      });
+    }
+  };
+
+  const toggleFavorite = async (bookId) => {
+    if (!token) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Masuk Diperlukan',
+        text: 'Silakan login terlebih dahulu untuk menambahkan buku favorit'
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        'https://nusaira-be.vercel.app/api/favorites',
+        {
+          buku_id: bookId
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+
+      if (favorites.includes(bookId)) {
+        setFavorites(prevFavorites => prevFavorites.filter(id => id !== bookId));
+        Swal.fire({
+          icon: 'info',
+          title: 'Favorit',
+          text: 'Buku dihapus dari favorit',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } else {
+        setFavorites(prevFavorites => [...prevFavorites, bookId]);
+        Swal.fire({
+          icon: 'success',
+          title: 'Favorit',
+          text: 'Buku berhasil ditambahkan ke favorit',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: err.response?.data?.message || 'Gagal menambahkan favorit'
+      });
+    }
+  };
+
+  useEffect(() => {
+    const initFetch = async () => {
+      await fetchBooks();
+      if (token) {
+        await fetchFavorites();
+      }
+      setLoading(false);
     };
 
-    fetchBooks();
-  }, []);
+    initFetch();
+  }, [token]);
 
   const filteredBooks = books.filter((book) =>
     book.judul.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+
+  ;
 
   if (loading) {
     return (
@@ -55,8 +146,8 @@ const PerpustakaanBooks = () => {
 
   if (error) {
     return (
-      <div >
-        <Error404Page/>
+      <div>
+        <Error404Page />
       </div>
     );
   }
@@ -96,6 +187,18 @@ const PerpustakaanBooks = () => {
                 key={book.id}
                 className="bg-white rounded-lg overflow-hidden shadow relative border border-gray-300 flex flex-col"
               >
+                {token && (
+                  <button
+                    onClick={() => toggleFavorite(book.id)}
+                    className="absolute top-2 right-2 z-10 text-white hover:text-red-500 focus:outline-none"
+                  >
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      className="w-6 h-6 text-red-500"
+                    />
+
+                  </button>
+                )}
                 <img
                   src={book.image}
                   alt={book.judul}

@@ -5,110 +5,136 @@ import Footer from "../componen/Footer";
 import { Star, Trash2, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import img1 from "../assets/img/e-learning/el1.png";
-import img2 from "../assets/img/e-learning/el2.png";
-import img3 from "../assets/img/e-learning/el3.png";
-import img4 from "../assets/img/e-learning/el4.png";
-import img5 from "../assets/img/e-learning/el5.png";
-import img6 from "../assets/img/e-learning/el6.png";
-import img7 from "../assets/img/e-learning/el7.png";
-import img8 from "../assets/img/e-learning/el8.png";
 import Sidebar from "../componen/SideBar";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import Error404Page from "../componen/ErrorPage";
 
 const ELearningBooks = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [sortOrder, setSortOrder] = useState("newest");
-  const [books, setBooks] = useState([
-    {
-      id: 1,
-      title: "Teknik Budidaya",
-      image: img1,
-      description:
-        "Ini adalah buku budidaya lele, dimana jika kita merawat telur ikan 90% akan berhasil jika berhasil dan...",
-      rating: 5.0,
-      addedDate: new Date("2023-10-30"),
-    },
-    {
-      id: 2,
-      title: "Teknik Memimin...",
-      image: img2,
-      description:
-        "Ini adalah buku budidaya lele, dimana jika kita merawat telur ikan 90% akan berhasil jika berhasil dan...",
-      rating: 5.0,
-      addedDate: new Date("2023-10-25"),
-    },
-    {
-      id: 3,
-      title: "Kampanye menye...",
-      image: img3,
-      description:
-        "Ini adalah buku budidaya lele, dimana jika kita merawat telur ikan 90% akan berhasil jika berhasil dan...",
-      rating: 5.0,
-      addedDate: new Date("2023-10-28"),
-    },
-    {
-      id: 4,
-      title: "Cara Agar Bud...",
-      image: img4,
-      description:
-        "Ini adalah buku budidaya lele, dimana jika kita merawat telur ikan 90% akan berhasil jika berhasil dan...",
-      rating: 5.0,
-      addedDate: new Date("2023-10-20"),
-    },
-    {
-      id: 5,
-      title: "Strategi Pemasaran Ikan",
-      image: img5,
-      description:
-        "Buku ini menjelaskan berbagai strategi pemasaran untuk ikan lele dan teknik pemasaran yang efektif.",
-      rating: 4.8,
-      addedDate: new Date("2023-10-18"),
-    },
-    {
-      id: 6,
-      title: "Pengelolaan Kolam Ikan",
-      image: img6,
-      description:
-        "Panduan lengkap tentang cara mengelola kolam ikan secara efektif dan efisien.",
-      rating: 4.5,
-      addedDate: new Date("2023-10-22"),
-    },
-    {
-      id: 7,
-      title: "Kesehatan Ikan Lele",
-      image: img7,
-      description:
-        "Menjelaskan berbagai penyakit yang umum terjadi pada ikan lele dan cara mengatasinya.",
-      rating: 4.9,
-      addedDate: new Date("2023-10-15"),
-    },
-    {
-      id: 8,
-      title: "Inovasi dalam Budidaya Ikan",
-      image: img8,
-      description:
-        "Buku ini membahas inovasi terbaru dalam budidaya ikan, termasuk teknologi dan metode baru.",
-      rating: 4.7,
-      addedDate: new Date("2023-10-10"),
-    },
-  ]);
+  const [books, setBooks] = useState([]);
+  const [favoriteBookIds, setFavoriteBookIds] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const sortBooks = () => {
-    const sortedBooks = [...books].sort((a, b) => {
-      if (sortOrder === "newest") {
-        return b.addedDate - a.addedDate;
-      } else if (sortOrder === "oldest") {
-        return a.addedDate - b.addedDate;
+  const token = localStorage.getItem('token');
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get('https://nusaira-be.vercel.app/api/buku');
+      setBooks(response.data);
+    } catch (err) {
+      setError(err.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: err.response?.data?.message || 'Gagal mengambil daftar buku'
+      });
+    }
+  };
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await axios.get('https://nusaira-be.vercel.app/api/favorites', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (Array.isArray(response.data.favorites)) {
+        const favoriteIds = response.data.favorites.map(fav => fav.buku_id);
+        setFavoriteBookIds(favoriteIds);
       }
-      return 0;
+    } catch (err) {
+      setError(err.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: err.response?.data?.message || 'Gagal mengambil daftar favorit'
+      });
+    }
+  };
+
+  const removeFavorite = async (bukuId) => {
+    try {
+      await axios.delete(`https://nusaira-be.vercel.app/api/favorites/${bukuId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setFavoriteBookIds((prev) => prev.filter(id => id !== bukuId));
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'Buku favorit berhasil dihapus'
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal menghapus buku favorit'
+      });
+    }
+  };
+
+  const handleDeleteBooks = async () => {
+    try {
+      const deletedBooksPromises = selectedBooks.map(async (bukuId) => {
+        await axios.delete(`https://nusaira-be.vercel.app/api/favorites/${bukuId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        return bukuId; 
+      });
+  
+      const deletedBooks = await Promise.all(deletedBooksPromises);
+  
+      
+      setFavoriteBookIds((prev) => prev.filter(id => !deletedBooks.includes(id)));
+      setSelectedBooks([]);
+      setIsSelectionMode(false);
+  
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'Buku favorit yang dipilih berhasil dihapus'
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: 'Gagal menghapus buku favorit'
+      });
+    }
+  };
+  
+  const sortBooks = () => {
+    if (!books.length) return [];
+
+    const favoriteBooks = books.filter(book => favoriteBookIds.includes(book.id));
+
+    return [...favoriteBooks].sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      return sortOrder === "newest" 
+        ? dateB - dateA 
+        : dateA - dateB;
     });
-    setBooks(sortedBooks);
   };
 
   useEffect(() => {
-    sortBooks();
-  }, [sortOrder]);
+    if (token) {
+      fetchBooks();
+      fetchFavorites();
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
 
   const toggleSelectionMode = () => {
     setIsSelectionMode(!isSelectionMode);
@@ -123,14 +149,21 @@ const ELearningBooks = () => {
     );
   };
 
-  const handleDeleteBooks = () => {
-    const updatedBooks = books.filter(
-      (book) => !selectedBooks.includes(book.id)
+  const displayBooks = React.useMemo(() => {
+    return sortBooks();
+  }, [books, favoriteBookIds, sortOrder]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-blue-500"></div>
+      </div>
     );
-    setBooks(updatedBooks);
-    setIsSelectionMode(false);
-    setSelectedBooks([]);
-  };
+  }
+
+  if (error) {
+    return <Error404Page />;
+  }
 
   return (
     <div className="bg-white w-full min-h-screen">
@@ -138,9 +171,7 @@ const ELearningBooks = () => {
       <div className="p-6 bg-white mr-5 ml-5">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-xl font-bold mb-2">
-              Buku Favorit Kamu
-            </h1>
+            <h1 className="text-xl font-bold mb-2">Buku Favorit Kamu</h1>
             <p className="text-gray-600">
               Buku-buku favorit Anda siap untuk dibaca! Ayo nikmati setiap halaman
               <br /> yang penuh dengan inspirasi dan ide-ide brilian
@@ -165,6 +196,7 @@ const ELearningBooks = () => {
             )}
           </div>
         </div>
+
         <div className="flex items-center mb-10">
           <div className="relative flex items-center">
             <select
@@ -182,12 +214,12 @@ const ELearningBooks = () => {
           </div>
         </div>
 
-        <div className="mt-4 border border-blue-600 rounded-lg max-h-[800px] overflow-y-auto">
+        <div className="mt-4 border border-blue-600 rounded-lg max-h-[800px] overflow-y-auto mb-20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-8">
-            {books.map((book) => (
+            {displayBooks.map((book) => (
               <div
                 key={book.id}
-                className="bg-white rounded-lg overflow-hidden shadow relative border border-gray-300 border"
+                className="bg-white rounded-lg overflow-hidden shadow relative border border-gray-300"
               >
                 {isSelectionMode && (
                   <div
@@ -212,20 +244,25 @@ const ELearningBooks = () => {
                   alt={book.title}
                   className="w-full h-48 object-cover"
                 />
-                <div className="p-4">
-                  <h3 className="font-semibold mb-2">{book.title}</h3>
+                <div className="p-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                  <h3 className="font-semibold mb-2">{book.judul}</h3>
                   <p className="text-gray-600 text-sm mb-4">
-                    {book.description}
+                    {book.deskripsi}
                   </p>
-                  <div className="flex justify-between items-center">
-                    <button className="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg text-sm">
-                      Lanjut Baca
-                    </button>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="text-sm">{book.rating}</span>
-                    </div>
+                  <div className="flex justify-center p-2">
+                    <a
+                      href={book.link_pdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full text-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-300 mt-5"
+                    >
+                      Baca Buku
+                    </a>
                   </div>
+                  </div>
+                </div>
                 </div>
               </div>
             ))}
@@ -243,9 +280,7 @@ function BukuFavorit() {
       <div className="flex-1 overflow-auto">
         <ELearningBooks />
         <AIFloatingButton />
-        <div className="mt-10">
-          <Footer />
-        </div>
+        <Footer />
       </div>
     </div>
   );

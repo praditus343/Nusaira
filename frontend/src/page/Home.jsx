@@ -19,6 +19,7 @@ import {
     fetchAnco
 } from '../../service/AxiosConfig.js';
 import "./pageCss/Home.css"
+import { Plus, ArrowRight } from 'lucide-react';
 
 
 const DashboardContent = () => {
@@ -31,6 +32,8 @@ const DashboardContent = () => {
     const [ancoData, setAncoData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
 
     const handleOpenYoutube = () => {
         window.open("https://www.youtube.com/@Nusai_ra", "_blank");
@@ -76,10 +79,40 @@ const DashboardContent = () => {
         fetchAllDataSequentially();
     }, []);
 
+    useEffect(() => {
+        if (!tambakData && !isLoading) {
+            setShowModal(true);
+        }
+    }, [tambakData, isLoading]);
+
+
     return (
         <div className="bg-white w-full min-h-screen mb-10">
             <Header />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                {showModal && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative">
+                            <h3 className="text-2xl font-bold text-center text-gray-800 mb-4">
+                                Tambahkan Tambak Anda
+                            </h3>
+                            <p className="text-gray-600 text-center mb-6 leading-relaxed">
+                                Anda belum memiliki tambak. Silakan tambahkan tambak terlebih dahulu untuk melanjutkan.
+                            </p>
+
+                            <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full mb-6"></div>
+
+                            <div className="flex justify-center">
+                                <Link to="/InputTambak">
+                                    <button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-full hover:shadow-lg hover:opacity-90 transition duration-300 ease-in-out flex items-center gap-2">
+                                        <Plus className="h-5 w-5" />
+                                        Tambah Tambak
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <div>
                     {isLoading ? (
                         <p className="text-gray-500 blinking-text ml-8 mb-4">Loading ...</p>

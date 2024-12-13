@@ -149,25 +149,36 @@ function LaporanDashboard() {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-
   useEffect(() => {
     async function fetchTambak() {
       try {
         setIsLoading(true);
         setIsError(false); 
-        const response = await fetch("https://nusaira-be.vercel.app/api/tambak");
+        const token = localStorage.getItem("token");
+        const response = await fetch("https://nusaira-be.vercel.app/api/tambak", {
+          method: "GET", 
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch tambak data");
+        }
+  
         const data = await response.json();
         setTambakList(data); 
       } catch (error) {
         setIsError(true);
         console.error("Error fetching tambak data:", error);
-      }finally {
+      } finally {
         setIsLoading(false); 
       }
     }
     fetchTambak();
-  }, []); 
-
+  }, []);
+  
   async function handleExport() {
     const input = document.getElementById("dashboard-content");
   

@@ -289,7 +289,7 @@ const UserProfile = () => {
               onClick={() => setIsEditing(!isEditing)}
             />
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 translate-y-1 bg-blue-500 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-auto min-w-[70px]">
-              Edit Profil
+              Edit Profile
             </div>
           </div>
         </div>
