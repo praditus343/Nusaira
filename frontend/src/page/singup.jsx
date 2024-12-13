@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import img from "../assets/img/login_singup/ls5.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown} from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const SignUpPage = () => {
     confirmPassword: "",
     pekerjaan: "",
     jenis_kelamin: "",
+    lokasi: "",
   });
   const [error, setError] = useState("");
 
@@ -122,6 +123,71 @@ const SignUpPage = () => {
                 required
               />
             </div>
+            <div className="relative mb-4">
+              <label
+                htmlFor="lokasi"
+                className="block text-black-600 text-lg"
+              >
+                Lokasi
+              </label>
+
+              <div className="relative mb-5">
+                <select
+                  id="lokasi"
+                  name="lokasi"
+                  value={formData.lokasi}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border rounded-md border-blue-600 appearance-none"
+                  required
+                >
+                  <option value="">Pilih Lokasi</option>
+                  <option value="Boyolali" className="text-blue-600">Kabupaten Boyolali</option>
+                  <option value="Cilacap" className="text-blue-600"> Cilacap</option>
+                  <option value="Kebumen" className="text-blue-600"> Kebumen</option>
+                  <option value="Subang" className="text-blue-600"> Subang</option>
+                  <option value="Tulungagung" className="text-blue-600"> Tulungagung</option>
+                  <option value="Jember" className="text-blue-600"> Jember</option>
+                  <option value="Malang" className="text-blue-600"> Malang</option>
+                  <option value="Blitar" className="text-blue-600"> Blitar</option>
+                  <option value="Bandung" className="text-blue-600"> Bandung</option>
+                  <option value="Bekasi" className="text-blue-600"> Bekasi</option>
+                  <option value="Bogor" className="text-blue-600"> Bogor</option>
+                  <option value="Cirebon" className="text-blue-600"> Cirebon</option>
+                </select>
+
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                />
+              </div>
+            </div>
+            <div className="relative mb-4">
+              <label
+                htmlFor="jenis_kelamin"
+                className="block text-black-600 text-lg"
+              >
+                Jenis Kelamin
+              </label>
+              <div className="relative mb-5">
+                <select
+                  id="jenis_kelamin"
+                  name="jenis_kelamin"
+                  value={formData.jenis_kelamin}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border rounded-md border-blue-600 appearance-none"
+                  required
+                >
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="L">Laki-Laki</option>
+                  <option value="P">Perempuan</option>
+                </select>
+
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
+                />
+              </div>
+            </div>
             <div>
               <label htmlFor="no_hp" className="block text-black-600 text-lg">
                 No Handphone
@@ -208,36 +274,6 @@ const SignUpPage = () => {
                   <option value="peternak">Peternak</option>
                   <option value="pedagang">Pedagang</option>
                   <option value="lainnya">Lainnya</option>
-                </select>
-
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 text-md pointer-events-none"
-                />
-              </div>
-            </div>
-
-            {/* Jenis Kelamin Dropdown */}
-            <div className="relative mb-4">
-              <label
-                htmlFor="jenis_kelamin"
-                className="block text-black-600 text-lg"
-              >
-                Jenis Kelamin
-              </label>
-
-              <div className="relative mb-5">
-                <select
-                  id="jenis_kelamin"
-                  name="jenis_kelamin"
-                  value={formData.jenis_kelamin}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border rounded-md border-blue-600 appearance-none"
-                  required
-                >
-                  <option value="">Pilih Jenis Kelamin</option>
-                  <option value="L">Laki-Laki</option>
-                  <option value="P">Perempuan</option>
                 </select>
 
                 <FontAwesomeIcon

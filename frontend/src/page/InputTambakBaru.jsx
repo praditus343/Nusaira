@@ -83,7 +83,7 @@ const TambakForm = () => {
         });
     };
 
-   
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         let hasError = false;
@@ -122,7 +122,7 @@ const TambakForm = () => {
                     icon: 'error',
                     title: 'Gagal Mengirim Data',
                     text: error.response?.data?.message || 'Terjadi kesalahan',
-                  });
+                });
             }
             console.log("Form submitted:", formData);
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
@@ -217,16 +217,18 @@ const TambakForm = () => {
                                 onChange={handleChange}
                                 required
                             >
-                                <option value="" className="text-black">Kabupaten</option>
                                 <option value="Boyolali" className="text-blue-600">Kabupaten Boyolali</option>
+                                <option value="Cilacap" className="text-blue-600">Kabupaten Cilacap</option>
                                 <option value="Kebumen" className="text-blue-600">Kabupaten Kebumen</option>
-                                <option value="Bayumas" className="text-blue-600">Kabupaten Bayumas</option>
-                                <option value="Jember" className="text-blue-600">Kabupaten Jember</option>
-                                <option value="Tulungagung" className="text-blue-600">Kabupaten Tulungagung</option>
-                                <option value="pacitan" className="text-blue-600">Kabupaten Pacitan</option>
-                                <option value="Ciamis" className="text-blue-600">Kabupaten ciamis</option>
-                                <option value="Indramayu" className="text-blue-600">Kabupaten Indramayu</option>
                                 <option value="Subang" className="text-blue-600">Kabupaten Subang</option>
+                                <option value="Tulungagung" className="text-blue-600">Kabupaten Tulungagung</option>
+                                <option value="Jember" className="text-blue-600">Kabupaten Jember</option>
+                                <option value="Malang" className="text-blue-600">Kabupaten Malang</option>
+                                <option value="Blitar" className="text-blue-600">Kabupaten Blitar</option>
+                                <option value="Bandung" className="text-blue-600">Kota Bandung</option>
+                                <option value="Bekasi" className="text-blue-600">Kota Bekasi</option>
+                                <option value="Bogor" className="text-blue-600">Kota Bogor</option>
+                                <option value="Cirebon" className="text-blue-600">Kota Cirebon</option>
                             </SelectWithArrow>
 
                             <div>
@@ -315,33 +317,33 @@ const TambakForm = () => {
                                         </div>
 
                                         <div className="flex space-x-4">
-                                        <input
-                                        type="number"
-                                        name="panjang"
-                                        value={kolam.panjang}
-                                        onChange={(e) => handleKolamChange(index, e)}
-                                        placeholder="Panjang"
-                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
-                                        required
-                                    />
-                                    <input
-                                        type="number"
-                                        name="lebar"
-                                        value={kolam.lebar}
-                                        onChange={(e) => handleKolamChange(index, e)}
-                                        placeholder="Lebar"
-                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
-                                        required
-                                    />
-                                    <input
-                                        type="number"
-                                        name="kedalaman"
-                                        value={kolam.kedalaman}
-                                        onChange={(e) => handleKolamChange(index, e)}
-                                        placeholder="Kedalaman"
-                                        className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
-                                        required
-                                    />
+                                            <input
+                                                type="number"
+                                                name="panjang"
+                                                value={kolam.panjang}
+                                                onChange={(e) => handleKolamChange(index, e)}
+                                                placeholder="Panjang"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
+                                                required
+                                            />
+                                            <input
+                                                type="number"
+                                                name="lebar"
+                                                value={kolam.lebar}
+                                                onChange={(e) => handleKolamChange(index, e)}
+                                                placeholder="Lebar"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
+                                                required
+                                            />
+                                            <input
+                                                type="number"
+                                                name="kedalaman"
+                                                value={kolam.kedalaman}
+                                                onChange={(e) => handleKolamChange(index, e)}
+                                                placeholder="Kedalaman"
+                                                className="focus:ring-blue-600 focus:border-blue-600 block w-full sm:text-lg border border-blue-600 rounded-lg p-2 text-black placeholder-black"
+                                                required
+                                            />
                                         </div>
 
                                         <div>
