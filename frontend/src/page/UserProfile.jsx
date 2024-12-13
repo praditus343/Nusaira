@@ -29,7 +29,7 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:3020/api/profile", {
+        const response = await axios.get("https://nusaira-be.vercel.app/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -130,7 +130,7 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.delete('http://localhost:3020/api/profile', {
+        const response = await axios.delete('https://nusaira-be.vercel.app/api/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -164,7 +164,7 @@ const UserProfile = () => {
     else if (editedData.jenis_kelamin === "Perempuan") editedData.jenis_kelamin = "P";
   
     try {
-      const response = await axios.put("http://localhost:3020/api/profile", editedData, {
+      const response = await axios.put("https://nusaira-be.vercel.app/api/profile", editedData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
     
