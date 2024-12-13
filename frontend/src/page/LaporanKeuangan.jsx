@@ -43,6 +43,22 @@ function RincianPengeluaran({ onTotalChange }) {
     fetchData();
   }, [onTotalChange]);
 
+  if (loading){
+    return(
+      <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+    );
+  } 
+
+  if (error){
+    return(
+      <div>
+        <Error404Page/>
+      </div>
+    );
+  }
+
   return (
     <section className="my-8">
       <h3 className="text-lg font-semibold mb-4">Rincian Pengeluaran</h3>
@@ -175,6 +191,8 @@ function LaporanDashboard() {
     }
     fetchTambak();
   }, []);
+
+  
   
   async function handleExport() {
     const input = document.getElementById("dashboard-content");
