@@ -57,28 +57,6 @@ const ELearningBooks = () => {
     }
   };
 
-  const removeFavorite = async (bukuId) => {
-    try {
-      await axios.delete(`https://nusaira-be.vercel.app/api/favorites/${bukuId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      setFavoriteBookIds((prev) => prev.filter(id => id !== bukuId));
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: 'Buku favorit berhasil dihapus'
-      });
-    } catch (err) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: 'Gagal menghapus buku favorit'
-      });
-    }
-  };
-
   const handleDeleteBooks = async () => {
     try {
       const deletedBooksPromises = selectedBooks.map(async (bukuId) => {
