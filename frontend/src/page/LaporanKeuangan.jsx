@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import Error404Page from "../componen/ErrorPage";
+
 
 function formatRupiah(amount) {
   return new Intl.NumberFormat('id-ID', {
@@ -30,7 +32,7 @@ function RincianPengeluaran({ onTotalChange }) {
         const data = await res.json();
         setPengeluaran(data);
         const totalSisaTagihan = data.reduce((total, item) => total + parseFloat(item.sisa_tagihan), 0);
-        onTotalChange(totalSisaTagihan); // Notify parent about total
+        onTotalChange(totalSisaTagihan); 
       } catch (error) {
         setError(error.message);
       } finally {
@@ -40,9 +42,6 @@ function RincianPengeluaran({ onTotalChange }) {
 
     fetchData();
   }, [onTotalChange]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   return (
     <section className="my-8">
@@ -86,7 +85,7 @@ function RincianPemasukan({ onTotalChange }) {
         const data = await res.json();
         setPemasukan(data);
         const totalPendapatan = data.reduce((total, item) => total + parseFloat(item.total), 0);
-        onTotalChange(totalPendapatan); // Notify parent about total
+        onTotalChange(totalPendapatan);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -97,8 +96,21 @@ function RincianPemasukan({ onTotalChange }) {
     fetchData();
   }, [onTotalChange]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading){
+    return(
+      <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+    );
+  } 
+
+  if (error){
+    return(
+      <div>
+        <Error404Page/>
+      </div>
+    );
+  }
 
   return (
     <section className="my-8">
@@ -130,10 +142,43 @@ function RincianPemasukan({ onTotalChange }) {
 function LaporanDashboard() {
   const [totalPendapatan, setTotalPendapatan] = useState(0);
   const [totalSisaTagihan, setTotalSisaTagihan] = useState(0);
+  const [tambakList, setTambakList] = useState([]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    async function fetchTambak() {
+      try {
+        setIsLoading(true);
+        setIsError(false); 
+        const token = localStorage.getItem("token");
+        const response = await fetch("https://nusaira-be.vercel.app/api/tambak", {
+          method: "GET", 
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch tambak data");
+        }
+  
+        const data = await response.json();
+        setTambakList(data); 
+      } catch (error) {
+        setIsError(true);
+        console.error("Error fetching tambak data:", error);
+      } finally {
+        setIsLoading(false); 
+      }
+    }
+    fetchTambak();
+  }, []);
+  
   async function handleExport() {
     const input = document.getElementById("dashboard-content");
-
+  
     if (!input) {
       console.error("Element with ID 'dashboard-content' not found.");
       return;
@@ -141,7 +186,7 @@ function LaporanDashboard() {
 
     const originalStyles = {};
     const elementsWithBorders = input.querySelectorAll("select, button");
-
+    
     elementsWithBorders.forEach((el, index) => {
       originalStyles[index] = {
         border: el.style.border,
@@ -152,7 +197,7 @@ function LaporanDashboard() {
       el.style.boxShadow = "none";
       el.style.background = "transparent";
     });
-
+  
     const style = document.createElement("style");
     style.innerHTML = `
       #dashboard-content {
@@ -180,7 +225,7 @@ function LaporanDashboard() {
         backgroundColor: null,
         useCORS: true
       });
-
+  
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const imgWidth = 190;
@@ -188,17 +233,17 @@ function LaporanDashboard() {
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
       let position = 0;
-
+  
       pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-
+  
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
         pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
-
+  
       pdf.save("laporan_keuangan_tambak_lele.pdf");
     } finally {
       document.head.removeChild(style);
@@ -213,6 +258,24 @@ function LaporanDashboard() {
   const labaRugiBersih = totalPendapatan - totalSisaTagihan;
   const statusKeuangan = labaRugiBersih >= 0 ? "Keuntungan" : "Kerugian";
 
+  const getFormattedDate = (date) => {
+    const parsedDate = new Date(date);
+    return parsedDate.toLocaleDateString(); 
+};
+
+if (isLoading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+}
+
+if (isError) {
+  return <Error404Page />;
+}
+
+
   return (
     <div className="space-y-6 space-x-6 bg-white w-full min-h-screen">
       <Header />
@@ -225,19 +288,11 @@ function LaporanDashboard() {
                 <label className="block text-sm mb-2">Tambak:</label>
                 <div className="relative">
                   <select className="w-[400px] p-2 pr-10 border rounded-md appearance-none">
-                    <option>Lele segar</option>
-                  </select>
-                  <FontAwesomeIcon
-                    icon={faChevronDown}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
-                  />
-                </div>
-              </div>
-              <div className="flex-1 relative">
-                <label className="block text-sm mb-2">Periode:</label>
-                <div className="relative">
-                  <select className="w-[200px] p-2 pr-10 border rounded-md appearance-none">
-                    <option>Oktober 2024</option>
+                  {tambakList.map((tambak) => (
+                      <option key={tambak.id} value={tambak.id}>
+                        {tambak.nama}
+                      </option>
+                    ))}
                   </select>
                   <FontAwesomeIcon
                     icon={faChevronDown}
@@ -248,21 +303,11 @@ function LaporanDashboard() {
             </div>
           </div>
         </div>
-
         <div id="dashboard-content" className="bg-white p-6 rounded-lg border border-blue-500 mr-4">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold">Tambak Lele Segar</h2>
+            <h2 className="text-lg font-semibold">Tambak {tambakList[0]?.nama}</h2>
             <div className="flex gap-2">
-              <div className="relative">
-                <select className="w-[200px] border p-2 pr-10 rounded-md appearance-none">
-                  <option>Pilih Kolam</option>
-                </select>
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 pointer-events-none"
-                />
-              </div>
-              <button className="w-[100px] bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleExport}>
+              <button className="w-[200px] bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleExport}>
                 Ekspor
               </button>
             </div>
@@ -270,24 +315,24 @@ function LaporanDashboard() {
 
           <div className="text-center mb-8">
             <h2 className="text-xl font-bold">LAPORAN KEUANGAN</h2>
-            <h3 className="text-blue-500">Lele Segar</h3>
+            <h3 className="text-blue-500"> {tambakList[0]?.nama}</h3>
           </div>
 
           <div className="mb-8 mt-10">
             <div className="flex mb-1">
               <span className="font-medium w-32">Lokasi Tambak</span>
               <span className="mr-2">:</span>
-              <span>Jawa Tengah, Boyolali, Tegalsari</span>
+              <span> {tambakList[0]?.provinsi}, {tambakList[0]?.kabupaten}</span>
             </div>
             <div className="flex mb-1">
               <span className="font-medium w-32">Jumlah Kolam</span>
               <span className="mr-2">:</span>
-              <span>4</span>
+              <span> {tambakList[0]?.jumlah_kolam}</span>
             </div>
             <div className="flex mb-1">
-              <span className="font-medium w-32">Periode Siklus</span>
+              <span className="font-medium w-32">Periode</span>
               <span className="mr-2">:</span>
-              <span>1 Oktober 2024 - Sekarang</span>
+              <span>  {`${getFormattedDate(tambakList[0]?.created_at)} - Sekarang`}</span>
             </div>
           </div>
 
@@ -343,4 +388,5 @@ function LaporanBudidaya() {
     </div>
   );
 }
+
 export default LaporanBudidaya;

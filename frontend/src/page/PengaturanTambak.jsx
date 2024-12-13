@@ -9,6 +9,7 @@ import Sidebar from "../componen/SideBar";
 import { useNavigate } from "react-router-dom";
 import { Droplet } from 'lucide-react';
 import Error404Page from "../componen/ErrorPage";
+import axios from 'axios';
 
 
 const InfoCard = ({ title, value, subValue, buttonText, onClick }) => (
@@ -241,7 +242,7 @@ const TambakProfile = ({ tambakData, onUpdateTambak, onDeleteTambak }) => {
     <Card>
       <CardContent className="p-6 border border-gray-300 rounded-lg">
         <div className="flex justify-between items-start mb-6">
-          <h2 className="text-lg font-semibold">Profil Tambak</h2>
+          <h2 className="text-lg font-semibold">Profile Tambak</h2>
           {!isEditing && (
             <div className="relative group">
               <button
@@ -251,7 +252,7 @@ const TambakProfile = ({ tambakData, onUpdateTambak, onDeleteTambak }) => {
                 <PenSquare className="w-5 h-5 text-blue-500" />
               </button>
               <div className="absolute left-1/2 transform -translate-x-1/2 top-8 w-max px-2 py-1 text-xs text-white bg-blue-500 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                Edit Profil
+                Edit Profile
               </div>
             </div>
           )}
@@ -274,27 +275,33 @@ const PengaturanDashboard = () => {
   useEffect(() => {
     const fetchTambakData = async () => {
       try {
-        const response = await fetch('https://nusaira-be.vercel.app/api/tambak');
-        if (!response.ok) {
+        const token = localStorage.getItem("token");
+        const response = await axios.get('https://nusaira-be.vercel.app/api/tambak', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status < 200 || response.status >= 300) {
           throw new Error('Gagal mengambil data tambak');
         }
-        const data = await response.json();
-        setTambakData(data[0]);
+  
+        setTambakData(response.data[0]);
         setLoading(false);
       } catch (error) {
         console.error('Error:', error);
-        setIsError(true); 
+        setIsError(true);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Gagal memuat data tambak!'
+          text: 'Gagal memuat data tambak!',
         });
         setLoading(false);
       }
     };
-
+  
     fetchTambakData();
   }, []);
+  
 
   const handleDeleteTambak = async () => {
     try {
@@ -309,8 +316,13 @@ const PengaturanDashboard = () => {
       });
 
       if (confirm.isConfirmed) {
+        const token = localStorage.getItem("token");
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak/${tambakData.id}`, {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+           'Content-Type': 'application/json',
+         },
         });
 
         if (!response.ok) {
@@ -341,10 +353,12 @@ const PengaturanDashboard = () => {
         acc[key] = updatedData[key] === undefined ? null : updatedData[key];
         return acc;
       }, {});
+      const token = localStorage.getItem("token");
 
       const response = await fetch(`https://nusaira-be.vercel.app/api/tambak/${tambakData.id}`, {
         method: 'PUT',
         headers: {
+           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(sanitizedData),
