@@ -47,7 +47,7 @@ const SignUpPage = () => {
     setLoading(true);
 
     axios
-      .post("https://nusaira-be.vercel.app/api/register", formData)
+      .post("http://localhost:3020/api/register", formData)
       .then((response) => {
         setLoading(false);
         Swal.fire({
