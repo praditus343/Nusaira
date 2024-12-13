@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import imgProfile from "../assets/img/landing_page_sebelum_daftar/landingsb2.png";
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +10,7 @@ const Header = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLanguageBannerVisible, setIsLanguageBannerVisible] = useState(false);
   const [name, setName] = useState('');  
+  const [foto_profile, setFotoProfile] = useState(''); 
   const menuRef = useRef(null);
   const location = useLocation();
 
@@ -22,6 +22,13 @@ const Header = () => {
     }
   }, []);
   
+  useEffect(() => {
+    const storedProfileImg = localStorage.getItem('profile');
+    if (storedProfileImg) {
+      const profileimg = JSON.parse(storedProfileImg);
+      setFotoProfile(profileimg.foto_profile); 
+    }
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -112,7 +119,7 @@ const Header = () => {
                 className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden focus:outline-none"
               >
                 <img
-                  src={imgProfile}
+                  src={foto_profile}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
