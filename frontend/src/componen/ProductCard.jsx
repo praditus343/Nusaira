@@ -27,7 +27,7 @@ const ProductsCard = () => {
       const suppliersResponse = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
 
       const suppliersData = Array.isArray(suppliersResponse.data.data) ? suppliersResponse.data.data : [];
-      console.log('Suppliers Data:', suppliersData);
+      // console.log('Suppliers Data:', suppliersData);
 
       const productsData = Array.isArray(response.data.data) ? response.data.data : [];
       setSuppliers(suppliersData);
@@ -87,23 +87,23 @@ const ProductsCard = () => {
 
   const handleSaveProduct = async (e) => {
     e.preventDefault();
-    console.log("Current Product Data:", currentProduct);
+    // console.log("Current Product Data:", currentProduct);
 
     const productData = {
       ...currentProduct,
     };
-    console.log("Product Data to be sent:", productData);
+    // console.log("Product Data to be sent:", productData);
 
     try {
       if (currentProduct.product_id) {
-        console.log("Updating product with ID:", currentProduct.product_id);
+        // console.log("Updating product with ID:", currentProduct.product_id);
         await axios.put(`https://nusaira-be.vercel.app/api/products/${currentProduct.product_id}`, productData);
       } else {
-        console.log("Adding new product");
+        // console.log("Adding new product");
         await axios.post(`https://nusaira-be.vercel.app/api/products`, productData);
       }
 
-      console.log("Product saved successfully");
+      // console.log("Product saved successfully");
 
       fetchProducts();
       setIsModalOpen(false);
@@ -200,7 +200,7 @@ const ProductsCard = () => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-            console.log(percentCompleted);
+            // console.log(percentCompleted);
           }
         }
       );

@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import img from "../assets/img/login_singup/ls1.png"; 
+import img from "../assets/img/login_singup/ls1.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); 
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn) {
-      navigate("/Home"); 
-    }
-  }, [navigate]);
+  
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,21 +34,35 @@ const LoginPage = () => {
   
       const data = await response.json();
       // console.log(data);
-      if (data.token && data.profile) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('profile', JSON.stringify(data.profile)); 
-        console.log('Login berhasil:', data);
-      } else {
-        console.error('Login gagal:', data.message);
-      }
   
-      Swal.fire({
-        icon: "success",
-        title: "Login Berhasil!",
-        text: "Selamat datang di dashboard",
-      }).then(() => {
-        navigate("/Home"); 
-      });
+      if (data.token && data.profile) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("profile", JSON.stringify(data.profile));
+  
+        Swal.fire({
+          icon: "success",
+          title: "Login Berhasil!",
+          text: "Selamat datang di dashboard",
+        }).then(() => {
+          if (data.profile.role === "admin") {
+            navigate("/Admin");
+          } else if (data.profile.role === "user") {
+            navigate("/Home");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Role Tidak Dikenali",
+              text: "Hubungi administrator untuk bantuan.",
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Gagal",
+          text: data.message || "Terjadi kesalahan saat login.",
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -59,7 +74,6 @@ const LoginPage = () => {
     }
   };
   
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">
       <div className="w-full max-w-5xl flex shadow-2xl rounded-lg overflow-hidden bg-white">
@@ -96,29 +110,36 @@ const LoginPage = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-black-600 text-lg"
-              >
+              <label htmlFor="password" className="block text-black-600 text-lg">
                 Kata Sandi
               </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Kata Sandi"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Kata Sandi"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full mt-1 px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  required
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                >
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    className="text-gray-600"
+                  />
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-md text-white font-semibold transition ${
-                loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
-              }`}
+              className={`w-full py-3 rounded-md text-white font-semibold transition ${loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
+                }`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">

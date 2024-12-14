@@ -36,6 +36,7 @@ import SignUp2 from './page/singup2';
 import SignUp3 from './page/singup3';
 import SupplierDetail from './page/SupplierDetail';
 import UserProfile from './page/UserProfile';
+import PageNotFound from './PageNotFound';
 
 
 
@@ -81,6 +82,7 @@ function App() {
           <Route path="/LaporanKeuangan" element={<LaporanKeuangan />} />
           <Route path="/Contact" element={<ContactPage />} />
           <Route path="/Admin" element={<AdminDashboard />} />
+          <Route path="*" element={<PageNotFound/>} />
         </Routes>
       </Fragment>
     </Router>

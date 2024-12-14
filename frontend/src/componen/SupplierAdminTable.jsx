@@ -34,9 +34,9 @@ const SuppliersTable = () => {
       const suppliersData = Array.isArray(response.data.data) ? response.data.data : [];
       setSuppliers(suppliersData);
 
-      console.log('API Response:', response);
-      console.log('Response Data:', response.data);
-      console.log('Suppliers Data:', suppliersData);
+      // console.log('API Response:', response);
+      // console.log('Response Data:', response.data);
+      // console.log('Suppliers Data:', suppliersData);
 
       setIsLoading(false);
     } catch (err) {
@@ -50,7 +50,7 @@ const SuppliersTable = () => {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    console.log('Files selected for upload:', files);
+    // console.log('Files selected for upload:', files);
     setImageLoading(true);
 
     try {
@@ -70,7 +70,7 @@ const SuppliersTable = () => {
       });
 
       const uploadedUrls = await Promise.all(uploadPromises);
-      console.log('All images uploaded:', uploadedUrls);
+      // console.log('All images uploaded:', uploadedUrls);
 
 
       setCurrentSupplier(prev => ({
@@ -112,18 +112,18 @@ const SuppliersTable = () => {
 
   const handleSaveSupplier = async (e) => {
     e.preventDefault();
-    console.log('Current Supplier Data:', currentSupplier);
+    // console.log('Current Supplier Data:', currentSupplier);
 
     try {
       if (currentSupplier.id) {
-        console.log(`Updating supplier with ID: ${currentSupplier.id}`);
+        // console.log(`Updating supplier with ID: ${currentSupplier.id}`);
         await axios.put(`https://nusaira-be.vercel.app/api/suppliers/${currentSupplier.id}`, currentSupplier);
       } else {
-        console.log('Adding new supplier:', currentSupplier);
+        // console.log('Adding new supplier:', currentSupplier);
         await axios.post('https://nusaira-be.vercel.app/api/suppliers', currentSupplier);
       }
 
-      console.log('Supplier saved successfully');
+      // console.log('Supplier saved successfully');
       Swal.fire({
         icon: 'success',
         title: 'Berhasil!',

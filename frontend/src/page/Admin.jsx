@@ -25,7 +25,9 @@ const AdminDashboard = () => {
   const navigate = useNavigate(); 
 
   const handleLogout = () => {
-    navigate('/');
+    localStorage.removeItem('token');
+    localStorage.removeItem('profile');
+    navigate('/login');
   };
 
   useEffect(() => {
@@ -37,7 +39,7 @@ const AdminDashboard = () => {
         const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
         const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
         const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
-        const tagihanResponse = await fetch('https://nusaira-be.vercel.app/api/tagihan');
+        const tagihanResponse = await fetch('https://nusaira-be.vercel.app/api/semua/tagihan');
         const bukuResponse = await fetch('https://nusaira-be.vercel.app/api/buku');
         
         

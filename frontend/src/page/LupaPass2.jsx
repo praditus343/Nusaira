@@ -9,9 +9,17 @@ const PasswordReset = () => {
   const [error, setError] = useState("");
   const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
   const [resendTimeout, setResendTimeout] = useState(30);
+  const [email, setEmail] = useState("");
   const inputRefs = useRef([]);
 
   const correctVerificationCode = "1111";
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("resetEmail");
+    if (storedEmail) {
+      setEmail(storedEmail);  
+    }
+  }, []);
 
   const handleVerificationInput = useCallback(
     (e, idx) => {
@@ -112,7 +120,7 @@ const PasswordReset = () => {
         {/* Left Side: Illustration */}
         <div className="hidden md:flex w-1/2 bg-blue-100 items-center justify-center p-8">
           <img
-            src={img} // Use the imported image
+            src={img} 
             alt="Signup Illustration"
             className="max-w-sm"
           />
@@ -122,7 +130,7 @@ const PasswordReset = () => {
         <div className="w-full md:w-1/2 p-10">
           <div className="w-full flex py-6">
             <img
-              src={imglogo} // Use the logo image
+              src={imglogo} 
               alt="Logo"
               className="h-12"
             />
@@ -135,7 +143,7 @@ const PasswordReset = () => {
           </h2>
           <p className="text-sm text-gray-500 mb-6">
             Kami mengirimkan kode verifikasi ke{" "}
-            <span className="text-blue-500">Muhammadiqbal@gmail.com</span>
+            <span className="text-blue-500">{email}</span>
           </p>
 
           {error && (
