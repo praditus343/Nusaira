@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import Header from "../componen/Header";
-import AIFloatingButton from "../componen/AiFloatingButton";
-import Footer from "../componen/Footer";
-import { Star, Trash2, X } from "lucide-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import Sidebar from "../componen/SideBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios';
+import { Trash2, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
+import AIFloatingButton from "../componen/AiFloatingButton";
 import Error404Page from "../componen/ErrorPage";
+import Footer from "../componen/Footer";
+import Header from "../componen/Header";
+import Sidebar from "../componen/SideBar";
 
 const ELearningBooks = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -42,13 +42,21 @@ const ELearningBooks = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-
+  
       if (Array.isArray(response.data.favorites)) {
-        const favoriteIds = response.data.favorites.map(fav => fav.buku_id);
-        setFavoriteBookIds(favoriteIds);
+        // console.log("Favorites Data:", response.data.favorites); 
+  
+        const favoriteBooks = response.data.favorites.map(fav => ({
+          buku_id: fav.buku_id,
+          created_at: fav.created_at,
+        }));
+        // console.log("Mapped Favorite Books:", favoriteBooks);
+  
+        setFavoriteBookIds(favoriteBooks);
       }
     } catch (err) {
       setError(err.message);
+      // console.error("Error fetching favorites:", err); 
       Swal.fire({
         icon: 'error',
         title: 'Gagal',
@@ -56,6 +64,8 @@ const ELearningBooks = () => {
       });
     }
   };
+  
+  
 
   const handleDeleteBooks = async () => {
     try {
@@ -91,18 +101,24 @@ const ELearningBooks = () => {
   };
   
   const sortBooks = () => {
-    if (!books.length) return [];
+    if (!favoriteBookIds.length || !books.length) return [];
+  
+    const favoriteBooks = favoriteBookIds.map(fav => {
+      const book = books.find(book => book.id === fav.buku_id);
+      return book ? { ...book, created_at: fav.created_at } : null;
+    }).filter(book => book !== null);
 
-    const favoriteBooks = books.filter(book => favoriteBookIds.includes(book.id));
-
-    return [...favoriteBooks].sort((a, b) => {
+    const sortedBooks = [...favoriteBooks].sort((a, b) => {
       const dateA = new Date(a.created_at);
       const dateB = new Date(b.created_at);
       return sortOrder === "newest" 
         ? dateB - dateA 
         : dateA - dateB;
     });
+  
+    return sortedBooks;
   };
+  
 
   useEffect(() => {
     if (token) {
