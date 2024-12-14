@@ -32,7 +32,7 @@ const LoginPage = () => {
       });
   
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (data.token && data.profile) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('profile', JSON.stringify(data.profile)); 
