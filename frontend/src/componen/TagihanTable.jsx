@@ -43,10 +43,10 @@ const TagihanTable = ({ tagihanData = [] }) => {
               key={tagihan.id} 
               className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100 transition-colors`}
             >
-              <td className="px-4 py-3 border border-gray-300">{tagihan.invoiceNumber}</td>
+              <td className="px-4 py-3 border border-gray-300">{tagihan.invoice_number}</td>
               <td className="px-4 py-3 border border-gray-300">{tagihan.name}</td>
               <td className="px-4 py-3 border border-gray-300">{formatCurrency(tagihan.amount)}</td>
-              <td className="px-4 py-3 border border-gray-300">{formatDate(tagihan.dueDate)}</td>
+              <td className="px-4 py-3 border border-gray-300">{formatDate(tagihan.due_date)}</td>
               <td className="px-4 py-3">
                 <span 
                   className={`px-3 py-1 rounded-full text-xs font-bold ${

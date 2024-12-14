@@ -128,7 +128,7 @@ const PondTable = () => {
 
 
     useEffect(() => {
-        const timer = setTimeout(() => setShowBanner(false), 15000);
+        const timer = setTimeout(() => setShowBanner(false), 8000);
         return () => clearTimeout(timer); 
     }, []);
 
@@ -153,7 +153,7 @@ const PondTable = () => {
             <Header />
             {showBanner && (
                 <div className="bg-yellow-100 border-l-4 text-yellow-700 p-4 mb-4">
-                    <p className="font-semibold">Jika tabel tidak memiliki data, harap mengisi data untuk Siklus, Kematian, Penyakit, Panen, Pakan, dan Anco dengan mengklik tombol yang ada di sini.</p>
+                    <p className="font-semibold">Mohon tunggu sebentar. Jika tabel kosong, pastikan untuk mengisi data Siklus, Kematian, Penyakit, Panen, Pakan, dan Anco melalui tombol yang ada.</p>
                 </div>
             )}
             <div className="mb-6 ml-10 mr-6 mt-5">

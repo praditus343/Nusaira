@@ -146,7 +146,7 @@ function Content() {
               <TransactionItem
                 key={item.id}
                 title={item.name}
-                date={item.dueDate}
+                date={item.due_date}
                 status={item.status}
               />
             ))
