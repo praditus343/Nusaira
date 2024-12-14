@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
-import imglogo from "../assets/Logo.png"; 
-import img from "../assets/img/login_singup/ls3.png"; 
+import { Link, useNavigate } from "react-router-dom";
+import imglogo from "../assets/Logo.png";
+import img from "../assets/img/login_singup/ls3.png";
 
 function PasswordReset() {
   const [email, setEmail] = useState("");
@@ -9,7 +9,6 @@ function PasswordReset() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -21,9 +20,11 @@ function PasswordReset() {
     setIsSubmitting(true);
     setError("");
 
+    localStorage.setItem("resetEmail", email);
+
     setTimeout(() => {
       navigate("/LupaPass2");
-    }, 1000); 
+    }, 1000);
   };
 
   return (

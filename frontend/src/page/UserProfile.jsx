@@ -10,6 +10,7 @@ import Error404Page from "../componen/ErrorPage";
 import Footer from "../componen/Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
@@ -18,6 +19,11 @@ const UserProfile = () => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/LupaPass1');
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -121,7 +127,7 @@ const UserProfile = () => {
       confirmButtonText: 'Hapus Akun',
       cancelButtonText: 'Batal',
     });
-  
+
     if (confirmDelete.isConfirmed) {
       const confirmDeleteFinal = await Swal.fire({
         title: 'Konfirmasi Terakhir!',
@@ -131,21 +137,21 @@ const UserProfile = () => {
         confirmButtonText: 'Ya, Hapus Akun',
         cancelButtonText: 'Batal',
       });
-  
+
       if (confirmDeleteFinal.isConfirmed) {
         const token = localStorage.getItem('token');
         if (!token) {
           Swal.fire('Gagal!', 'Token tidak ditemukan. Harap login kembali.', 'error');
           return;
         }
-  
+
         try {
           const response = await axios.delete('https://nusaira-be.vercel.app/api/profile', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-  
+
           if (response.status === 200) {
             Swal.fire('Akun Dihapus!', 'Akun Anda telah dihapus dengan sukses.', 'success');
             localStorage.removeItem('token');
@@ -160,7 +166,7 @@ const UserProfile = () => {
       }
     }
   };
-  
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -380,7 +386,6 @@ const UserProfile = () => {
                 {idx < 6 && <div className="h-px bg-gray-300"></div>}
               </div>
             ))}
-
             {isEditing && (
               <div className="flex justify-end space-x-4 mt-4">
                 <button
@@ -397,12 +402,24 @@ const UserProfile = () => {
                 </button>
               </div>
             )}
-
             <div className="h-px bg-gray-300"></div>
             <div className="flex justify-between items-center mt-10">
-              <span className="text-sm text-red-600">Setelah klik tombol Tutup Akun, sistem akan menghapus seluruh data yang terdaftar di akun ini.</span>
+              <span className="text-sm text-red-600 mb-4">Setelah klik tombol Tutup Akun, sistem akan menghapus seluruh data yang terdaftar di akun ini.</span>
             </div>
-            <button onClick={handleDeleteAccount} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Hapus Akun</button>
+            <div className="flex justify-between space-x-4 mt-10">
+              <button
+                onClick={handleDeleteAccount}
+                className="bg-red-500 text-white py-2 px-10 rounded hover:bg-red-600"
+              >
+                Hapus Akun
+              </button>
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                onClick={handleClick}
+              >
+                Ubah Kata Sandi
+              </button>
+            </div>
           </div>
         </div>
 

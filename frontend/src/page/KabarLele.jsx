@@ -11,7 +11,7 @@ const LeftCard = ({ post, isVisible }) => {
   const navigate = useNavigate();
 
   const handleReadMore = () => {
-    console.log("Navigating to:", `/kabar-lele/${post.id}`);
+    // console.log("Navigating to:", `/kabar-lele/${post.id}`);
     navigate(`/kabar-lele/${post.id}`, { state: { post } });
   };
 
@@ -37,7 +37,7 @@ const RightCard = ({ post, highlight }) => {
   const navigate = useNavigate();
 
   const handleReadMore = () => {
-    console.log("Navigating to:", `/kabar-lele/${post.id}`);
+    // console.log("Navigating to:", `/kabar-lele/${post.id}`);
     navigate(`/kabar-lele/${post.id}`, { state: { post } });
   };
 
@@ -114,7 +114,7 @@ const KabarLeleLayout = () => {
   }, [searchTerm]);
 
   if (isLoading) {
-    console.log("Loading...");
+    // console.log("Loading...");
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>

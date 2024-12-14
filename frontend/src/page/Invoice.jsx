@@ -46,16 +46,27 @@ function Content() {
       setIsLoading(true);
       setIsError(false);
 
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
+      const profile = localStorage.getItem("profile");
+
+      if (!profile || !token) {
+        console.error("Profile atau token tidak ditemukan. Pastikan pengguna sudah login.");
+        setIsError(true);
+        setIsLoading(false);
+        return;
+      }
+      const parsedProfile = JSON.parse(profile);
+      const userId = parsedProfile.id;
 
       try {
-        const response = await axios.get("https://nusaira-be.vercel.app/api/tagihan", {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-
-        // console.log("Response Data:", response.data);
+        const response = await axios.get(
+          `https://nusaira-be.vercel.app/api/tagihan/user/${userId}`, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const formattedData = response.data.map((item) => ({
           ...item,

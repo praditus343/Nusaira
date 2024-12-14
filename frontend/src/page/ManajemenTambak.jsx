@@ -61,7 +61,7 @@ const DashboardManagement = () => {
     useEffect(() => {
         const fetchWaterData = async () => {
             if (!selectedTambakId) {
-                console.log('Tidak ada Tambak');
+                // console.log('Tidak ada Tambak');
                 return;
             }
     

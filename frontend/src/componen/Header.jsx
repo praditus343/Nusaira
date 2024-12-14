@@ -14,6 +14,12 @@ const Header = () => {
   const menuRef = useRef(null);
   const location = useLocation();
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('profile');
+    navigate('/login');
+  };
+
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile');
     if (storedProfile) {
@@ -145,7 +151,7 @@ const Header = () => {
                     <span className="text-blue-500 font-medium">Pengaturan Tambak</span>
                   </div>
                   <div
-                    onClick={() => navigate('/')}
+                    onClick={handleLogout} 
                     className="px-4 py-2 bg-white hover:bg-blue-200 text-white flex items-center space-x-2 cursor-pointer"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="text-blue-500" />

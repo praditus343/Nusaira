@@ -49,7 +49,7 @@ const SupplierDashboard = () => {
                     `https://nusaira-be.vercel.app/api/products?supplierId=${selectedSupplier.id}`
                 );
 
-                console.log("Products response:", productsResponse.data);
+                // console.log("Products response:", productsResponse.data);
 
                 if (Array.isArray(productsResponse.data.data)) {
                     const filteredProducts = productsResponse.data.data.filter(

@@ -37,7 +37,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
     catatan: '',
     tanggal: '',
   });
-  console.log(initialData);
+  // console.log(initialData);
 
   const [kolams, setKolams] = useState([]);
 
@@ -47,10 +47,10 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
         const data = await response.json();
 
-        console.log("API Response:", data);
+        // console.log("API Response:", data);
         const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
 
-        console.log("Kolams Data:", kolams);
+        // console.log("Kolams Data:", kolams);
 
         setKolams(kolams);
       } catch (error) {
@@ -63,7 +63,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
 
   useEffect(() => {
-    console.log("Kolams setelah set: ", kolams);
+    // console.log("Kolams setelah set: ", kolams);
   }, [kolams]);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
 
     let hasError = false;
     let errorMessages = [];
-    console.log(formData);
+    // console.log(formData);
 
     let dateValue = formData.tanggal;
     if (!dateValue) {
@@ -155,7 +155,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
       });
 
       if (response.status === 200) {
-        console.log('Data berhasil disimpan', response.data);
+        // console.log('Data berhasil disimpan', response.data);
 
         Swal.fire({
           icon: 'success',
@@ -457,10 +457,10 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
         const data = await response.json();
 
-        console.log("API Response:", data);
+        // console.log("API Response:", data);
         const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
 
-        console.log("Kolams Data:", kolams);
+        // console.log("Kolams Data:", kolams);
 
         setKolams(kolams);
       } catch (error) {
@@ -473,7 +473,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
 
   useEffect(() => {
-    console.log("Kolams setelah set: ", kolams);
+    // console.log("Kolams setelah set: ", kolams);
   }, [kolams]);
 
   useEffect(() => {
@@ -894,25 +894,25 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   const [kolams, setKolams] = useState([]);
 
   useEffect(() => {
-    console.log('State Update - Selected Kolam:', selectedKolam);
-    console.log('State Update - Form Data:', formData);
-    console.log('State Update - Images:', images);
-    console.log('State Update - Errors:', errors);
+    // console.log('State Update - Selected Kolam:', selectedKolam);
+    // console.log('State Update - Form Data:', formData);
+    // console.log('State Update - Images:', images);
+    // console.log('State Update - Errors:', errors);
   }, [selectedKolam, formData, images, errors]);
 
   useEffect(() => {
     const fetchKolams = async () => {
-      console.log('Initiating kolam fetch...');
+      // console.log('Initiating kolam fetch...');
       try {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        console.log('Raw API Response:', response);
+        // console.log('Raw API Response:', response);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Parsed API Response:', data);
+        // console.log('Parsed API Response:', data);
 
         if (!data || !Array.isArray(data) || data.length === 0) {
           console.warn('API returned empty or invalid data structure:', data);
@@ -921,7 +921,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         }
 
         const kolams = data[0]?.kolamDetails || [];
-        console.log('Processed Kolams Data:', kolams);
+        // console.log('Processed Kolams Data:', kolams);
 
         if (kolams.length === 0) {
           console.warn('No kolams found in the response');
@@ -939,38 +939,38 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
   }, []);
 
   useEffect(() => {
-    console.log('Updating form data with selected kolam:', selectedKolam);
+    // console.log('Updating form data with selected kolam:', selectedKolam);
     setFormData((prevData) => {
       const newData = {
         ...prevData,
         kolam_id: selectedKolam,
       };
-      console.log('Updated form data:', newData);
+      // console.log('Updated form data:', newData);
       return newData;
     });
   }, [selectedKolam]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Form field change - ${name}:`, value);
+    // console.log(`Form field change - ${name}:`, value);
     setFormData((prevData) => {
       const newData = {
         ...prevData,
         [name]: value,
       };
-      console.log('Updated form data:', newData);
+      // console.log('Updated form data:', newData);
       return newData;
     });
   };
 
   const handleImageClick = (index) => {
-    console.log(`Image click handler triggered for index ${index}`);
+    // console.log(`Image click handler triggered for index ${index}`);
     fileInputRefs[index].current.click();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submission initiated');
+    // console.log('Form submission initiated');
 
     try {
       if (!selectedKolam || !formData.tanggal_tebar || !formData.jenis_penyakit) {
@@ -1014,7 +1014,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         gambar: imageUrls
       };
 
-      console.log('Sending payload to backend:', payload);
+      // console.log('Sending payload to backend:', payload);
 
 
       const backendResponse = await axios.post(
@@ -1028,7 +1028,7 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         }
       );
 
-      console.log('Backend API Response:', backendResponse);
+      // console.log('Backend API Response:', backendResponse);
 
       if (backendResponse.status === 200) {
         Swal.fire({
@@ -1099,11 +1099,11 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
         useWebWorker: true,
       });
 
-      console.log('Compressed image:', {
-        name: compressedFile.name,
-        type: compressedFile.type,
-        size: compressedFile.size,
-      });
+      // console.log('Compressed image:', {
+      //   name: compressedFile.name,
+      //   type: compressedFile.type,
+      //   size: compressedFile.size,
+      // });
 
       const compressedBlob = new Blob([compressedFile], { type: compressedFile.type });
 
@@ -1128,13 +1128,13 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
       });
     }
   };
-  console.log("Payload:", {
-    kolam_id: formData.kolam_id,
-    tanggal_tebar: formData.tanggal_tebar,
-    jenis_penyakit: formData.jenis_penyakit,
-    catatan: formData.catatan,
-    images: images
-  });
+  // console.log("Payload:", {
+  //   kolam_id: formData.kolam_id,
+  //   tanggal_tebar: formData.tanggal_tebar,
+  //   jenis_penyakit: formData.jenis_penyakit,
+  //   catatan: formData.catatan,
+  //   images: images
+  // });
 
   if (!isOpen) return null;
 
@@ -1282,10 +1282,10 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
         const data = await response.json();
 
-        console.log("API Response:", data);
+        // console.log("API Response:", data);
         const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
 
-        console.log("Kolams Data:", kolams);
+        // console.log("Kolams Data:", kolams);
 
         setKolams(kolams);
       } catch (error) {
@@ -1298,7 +1298,7 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
 
 
   useEffect(() => {
-    console.log("Kolams setelah set: ", kolams);
+    // console.log("Kolams setelah set: ", kolams);
   }, [kolams]);
 
   useEffect(() => {
@@ -1378,7 +1378,7 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post('https://nusaira-be.vercel.app/api/data-pakan', dataToSend);
-      console.log("Form Data Posted Successfully:", response.data);
+      // console.log("Form Data Posted Successfully:", response.data);
 
       Swal.fire({
         icon: 'success',
@@ -1522,10 +1522,10 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
         const data = await response.json();
 
-        console.log("API Response:", data);
+        // console.log("API Response:", data);
         const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
 
-        console.log("Kolams Data:", kolams);
+        // console.log("Kolams Data:", kolams);
 
         setKolams(kolams);
       } catch (error) {
@@ -1538,7 +1538,7 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
 
 
   useEffect(() => {
-    console.log("Kolams setelah set: ", kolams);
+    // console.log("Kolams setelah set: ", kolams);
   }, [kolams]);
 
   useEffect(() => {
@@ -1605,7 +1605,7 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
       });
 
       if (response.status === 200) {
-        console.log("Data panen berhasil disimpan");
+        // console.log("Data panen berhasil disimpan");
         Swal.fire({
           title: 'Success!',
           text: 'Data panen berhasil disimpan.',
@@ -1776,10 +1776,10 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
         const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
         const data = await response.json();
 
-        console.log("API Response:", data);
+        // console.log("API Response:", data);
         const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
 
-        console.log("Kolams Data:", kolams);
+        // console.log("Kolams Data:", kolams);
 
         setKolams(kolams);
       } catch (error) {
@@ -1792,7 +1792,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
 
 
   useEffect(() => {
-    console.log("Kolams setelah set: ", kolams);
+    // console.log("Kolams setelah set: ", kolams);
   }, [kolams]);
 
   useEffect(() => {
@@ -1870,7 +1870,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
       });
 
       if (response.status === 200) {
-        console.log("Data berhasil disimpan");
+        // console.log("Data berhasil disimpan");
         Swal.fire({
           title: 'Success!',
           text: 'Data berhasil disimpan.',
@@ -1889,7 +1889,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
         });
       }
 
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
 

@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import img from "../assets/img/login_singup/ls5.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -21,6 +21,16 @@ const SignUpPage = () => {
     lokasi: "",
   });
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  
+  const togglePasswordVisibilityConfirm = () => {
+    setConfirmShowPassword(!showConfirmPassword);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -218,23 +228,34 @@ const SignUpPage = () => {
                 required
               />
             </div>
-            <div>
+            <div className="">
               <label
                 htmlFor="password"
                 className="block text-black-600 text-lg"
               >
                 Kata Sandi
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Cth. Py8jTjsd1"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
-                required
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Cth. Py8jTjsd1"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
+                  required
+                />
+                <div
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                >
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    className="text-gray-600"
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <label
@@ -243,16 +264,27 @@ const SignUpPage = () => {
               >
                 Ulangi Kata Sandi
               </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                placeholder="Cth. Py8jTjsd1"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
-                required
-              />
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  placeholder="Cth. Py8jTjsd1"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full mt-1 px-4 py-3 border rounded-md border-blue-600"
+                  required
+                />
+                <div
+                  onClick={togglePasswordVisibilityConfirm}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                >
+                  <FontAwesomeIcon
+                    icon={showConfirmPassword ? faEyeSlash : faEye}
+                    className="text-gray-600"
+                  />
+                </div>
+              </div>
             </div>
             <div className="relative mb-4">
               <label
