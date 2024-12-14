@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@vercel/speed-insights": "^1.1.0"
+    "@vercel/speed-insights": "^1.1.0",
+    "dompurify": "^3.2.3"
   }
 }
