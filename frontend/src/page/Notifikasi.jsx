@@ -92,19 +92,7 @@ const NotificationDashboard = () => {
     };
 
 
-    // const handleRequestPermission = () => {
-    //     if (Notification && Notification.requestPermission) {
-    //         Notification.requestPermission().then(permission => {
-    //             if (permission === 'granted') {
-    //                 console.log('Izin notifikasi diberikan');
-    //             } else {
-    //                 console.log('Izin notifikasi ditolak');
-    //             }
-    //         });
-    //     } else {
-    //         console.log('Notification API tidak didukung di browser ini.');
-    //     }
-    // };
+ 
 
 
 
