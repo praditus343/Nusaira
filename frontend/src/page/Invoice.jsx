@@ -55,7 +55,7 @@ function Content() {
           },
         });
 
-        console.log("Response Data:", response.data);
+        // console.log("Response Data:", response.data);
 
         const formattedData = response.data.map((item) => ({
           ...item,

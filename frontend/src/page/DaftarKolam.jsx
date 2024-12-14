@@ -90,11 +90,28 @@ const PondTable = () => {
         const fetchTambakData = async () => {
             setIsLoading(true); 
             setIsError(false);  
+
+            const token = localStorage.getItem('token'); 
+            if (!token) {
+                console.error("Token tidak ditemukan, harap login.");
+                setIsError(true);
+                setIsLoading(false);
+                return;
+            }
+    
             try {
-                const response = await fetch('https://nusaira-be.vercel.app/api/tambak');
+                const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
+    
                 const data = await response.json();
                 setTambakData(data[0]);
             } catch (error) {
@@ -104,9 +121,10 @@ const PondTable = () => {
                 setIsLoading(false); 
             }
         };
-
+    
         fetchTambakData();
     }, []);
+    
 
 
     useEffect(() => {
@@ -135,7 +153,7 @@ const PondTable = () => {
             <Header />
             {showBanner && (
                 <div className="bg-yellow-100 border-l-4 text-yellow-700 p-4 mb-4">
-                    <p className="font-semibold">Harap mengisi data siklus Kematian, Penyakit, Panen, Pakan, dan Anco dengan mengklik tombol yang ada di sini.</p>
+                    <p className="font-semibold">Jika tabel tidak memiliki data, harap mengisi data untuk Siklus, Kematian, Penyakit, Panen, Pakan, dan Anco dengan mengklik tombol yang ada di sini.</p>
                 </div>
             )}
             <div className="mb-6 ml-10 mr-6 mt-5">
