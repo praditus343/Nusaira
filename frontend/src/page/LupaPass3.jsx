@@ -1,16 +1,29 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import imglogo from "../assets/Logo.png";
-import img from "../assets/img/login_singup/ls3.png"; 
+import img from "../assets/img/login_singup/ls3.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios"; 
 
 function PasswordReset() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const togglePasswordVisibilityConfirm = () => {
+    setConfirmShowPassword(!showConfirmPassword);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!newPassword || !confirmPassword) {
@@ -24,11 +37,28 @@ function PasswordReset() {
     }
 
     setIsSubmitting(true);
-    setError(""); 
+    setError("");
 
-    setTimeout(() => {
-      navigate("/signup3");
-    }, 1000); 
+    try {
+      const response = await axios.post('https://nusaira-be.vercel.app/api/change-password', {
+        newPassword: newPassword,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, 
+        },
+      });
+
+      if (response.data.success) {
+        navigate("/signup3");
+      } else {
+        setError("Failed to change password");
+      }
+    } catch (error) {
+      console.error("Error during password change:", error);
+      setError("An error occurred while changing the password.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,7 +87,6 @@ function PasswordReset() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* New Password Input */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -65,20 +94,30 @@ function PasswordReset() {
                 >
                   Kata Sandi Baru
                 </label>
-                <input
-                  type="password"
-                  id="newPassword"
-                  placeholder="Kata Sandi Baru"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  aria-label="Masukkan kata sandi baru"
-                  aria-describedby="password-help"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="newPassword"
+                    placeholder="Kata Sandi Baru"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    aria-label="Masukkan kata sandi baru"
+                    aria-describedby="password-help"
+                    required
+                  />
+                  <div
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  >
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEyeSlash : faEye}
+                      className="text-gray-600"
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Confirm Password Input */}
               <div>
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -86,23 +125,32 @@ function PasswordReset() {
                 >
                   Ulangi Kata Sandi Baru
                 </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  placeholder="Ulangi Kata Sandi Baru"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  aria-label="Ulangi kata sandi baru"
-                  aria-describedby="confirm-password-help"
-                  required
-                />
+                <div className="relative">
+                  <input
+                     type={showConfirmPassword ? 'text' : 'password'}
+                    id="confirmPassword"
+                    placeholder="Ulangi Kata Sandi Baru"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    aria-label="Ulangi kata sandi baru"
+                    aria-describedby="confirm-password-help"
+                    required
+                  />
+                  <div
+                    onClick={togglePasswordVisibilityConfirm}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  >
+                    <FontAwesomeIcon
+                      icon={showConfirmPassword ? faEyeSlash : faEye}
+                      className="text-gray-600"
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Error Message */}
               {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 transition duration-150 flex items-center justify-center"
@@ -116,7 +164,6 @@ function PasswordReset() {
               </button>
             </form>
 
-            {/* Back to Login Link */}
             <div className="mt-6 text-center">
               <Link
                 to="/login"
@@ -128,9 +175,9 @@ function PasswordReset() {
 
             {/* Pagination Indicator */}
             <div className="flex items-center justify-center mt-8 space-x-2 self-start">
-            <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-            <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-            <span className="h-2 w-6 bg-blue-500 rounded-full"></span>
+              <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+              <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+              <span className="h-2 w-6 bg-blue-500 rounded-full"></span>
             </div>
           </div>
         </div>

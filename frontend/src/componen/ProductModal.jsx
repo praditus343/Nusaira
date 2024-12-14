@@ -22,7 +22,7 @@ const ProductModal = ({
                 try {
                     const response = await fetch('https://nusaira-be.vercel.app/api/suppliers');
                     const data = await response.json();
-                    console.log(data);
+                    // console.log(data);
                     if (data.status === "success") {
                         setSuppliers(data.data); 
                     } else {

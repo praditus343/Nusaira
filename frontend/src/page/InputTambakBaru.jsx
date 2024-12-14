@@ -115,7 +115,7 @@ const TambakForm = () => {
                         'Authorization': `Bearer ${token}`
                     },
                 });
-                console.log('Data berhasil dikirim:', response.data);
+                // console.log('Data berhasil dikirim:', response.data);
             } catch (error) {
                 console.error('Terjadi kesalahan saat mengirim data:', error);
                 Swal.fire({
@@ -124,7 +124,7 @@ const TambakForm = () => {
                     text: error.response?.data?.message || 'Terjadi kesalahan',
                 });
             }
-            console.log("Form submitted:", formData);
+            // console.log("Form submitted:", formData);
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
         }
     };
