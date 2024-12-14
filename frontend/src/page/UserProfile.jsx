@@ -29,7 +29,7 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:3020/api/profile", {
+        const response = await axios.get("https://nusaira-be.vercel.app/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -121,29 +121,46 @@ const UserProfile = () => {
       confirmButtonText: 'Hapus Akun',
       cancelButtonText: 'Batal',
     });
-
+  
     if (confirmDelete.isConfirmed) {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        Swal.fire('Gagal!', 'Token tidak ditemukan. Harap login kembali.', 'error');
-        return;
-      }
-
-      try {
-        const response = await axios.delete('http://localhost:3020/api/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        Swal.fire('Akun Dihapus!', 'Akun Anda telah dihapus dengan sukses.', 'success');
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      } catch (error) {
-        Swal.fire('Gagal Menghapus Akun!', 'Terjadi kesalahan. Coba lagi nanti.', 'error');
+      const confirmDeleteFinal = await Swal.fire({
+        title: 'Konfirmasi Terakhir!',
+        text: 'Anda yakin ingin menghapus akun? Tindakan ini tidak dapat dibatalkan!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus Akun',
+        cancelButtonText: 'Batal',
+      });
+  
+      if (confirmDeleteFinal.isConfirmed) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          Swal.fire('Gagal!', 'Token tidak ditemukan. Harap login kembali.', 'error');
+          return;
+        }
+  
+        try {
+          const response = await axios.delete('https://nusaira-be.vercel.app/api/profile', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (response.status === 200) {
+            Swal.fire('Akun Dihapus!', 'Akun Anda telah dihapus dengan sukses.', 'success');
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+          } else {
+            Swal.fire('Gagal Menghapus Akun!', 'Terjadi kesalahan. Coba lagi nanti.', 'error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          Swal.fire('Gagal Menghapus Akun!', 'Terjadi kesalahan. Coba lagi nanti.', 'error');
+        }
       }
     }
   };
-
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -159,28 +176,39 @@ const UserProfile = () => {
       Swal.fire("Gagal!", "Token tidak ditemukan. Harap login kembali.", "error");
       return;
     }
-  
+
     if (editedData.jenis_kelamin === "Laki-Laki") editedData.jenis_kelamin = "L";
     else if (editedData.jenis_kelamin === "Perempuan") editedData.jenis_kelamin = "P";
-  
+
+    setLoading(true);
+    setError(false);
+
     try {
-      const response = await axios.put("http://localhost:3020/api/profile", editedData, {
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      const response = await axios.put("https://nusaira-be.vercel.app/api/profile", editedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
-    
-      console.log("Response Data:", response.data); 
-    
+
       setUserData(response.data);
       setIsEditing(false);
+
       Swal.fire("Berhasil!", "Profil berhasil diperbarui.", "success");
+
+      const newData = await axios.get("https://nusaira-be.vercel.app/api/profile", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUserData(newData.data);
+
     } catch (error) {
+      console.error("Error updating profile:", error);
+      setError(true);
       Swal.fire("Gagal!", "Gagal memperbarui profil.", "error");
+    } finally {
+      setLoading(false);
     }
-    
   };
-  
-
-
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -218,7 +246,6 @@ const UserProfile = () => {
     created_at,
     email,
     no_hp,
-    role,
   } = userData || {};
 
   const profileFields = [
@@ -235,7 +262,7 @@ const UserProfile = () => {
     {
       label: "Jenis Kelamin",
       name: "jenis_kelamin",
-      value: jenis_kelamin === "L" ? "Laki-Laki" : "Perempuan",
+      value: jenis_kelamin === "P" ? "Perempuan" : "Laki-Laki",
       type: "select",
       options: ["Laki-Laki", "Perempuan"],
     },
