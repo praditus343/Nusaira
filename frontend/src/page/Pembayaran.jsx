@@ -14,7 +14,6 @@ const PaymentPage = () => {
         <Header />
         <div className="max-w-4xl mx-auto p-8">
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            {/* Message Section */}
             <div className="bg-yellow-100 text-yellow-800 p-6 text-center">
               <h1 className="text-2xl font-bold">Mode Trial Sedang Tidak Tersedia</h1>
               <p className="mt-2">Silakan coba lagi dalam beberapa hari kedepan.</p>
