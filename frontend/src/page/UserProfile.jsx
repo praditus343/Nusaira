@@ -19,9 +19,6 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
 
-
-
-
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem("token");
@@ -32,21 +29,20 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.get("https://nusaira-be.vercel.app/api/profile", {
+        const response = await axios.get("http://localhost:3020/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         const userData = response.data;
-        if (userData.gender === "L") {
-          userData.gender = "Laki-Laki";
-        } else if (userData.gender === "P") {
-          userData.gender = "Perempuan";
+        if (userData.jenis_kelamin === "L") {
+          userData.jenis_kelamin = "Laki-Laki";
+        } else if (userData.jenis_kelamin === "P") {
+          userData.jenis_kelamin = "Perempuan";
         }
 
         setUserData(userData);
-        // console.log(response);
         setEditedData(userData);
       } catch (err) {
         setError("Gagal mengambil data pengguna.");
@@ -76,8 +72,6 @@ const UserProfile = () => {
     fetchTambakData();
   }, []);
 
-
-
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     setLoading(true);
@@ -100,11 +94,11 @@ const UserProfile = () => {
       const uploadedUrls = await Promise.all(uploadPromises);
       setUserData((prev) => ({
         ...prev,
-        profilePicture: uploadedUrls[0]
+        foto_profile: uploadedUrls[0]
       }));
       setEditedData((prev) => ({
         ...prev,
-        profilePicture: uploadedUrls[0]
+        foto_profile: uploadedUrls[0]
       }));
       setLoading(false);
     } catch (error) {
@@ -136,7 +130,7 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.delete('https://nusaira-be.vercel.app/api/profile', {
+        const response = await axios.delete('http://localhost:3020/api/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -160,38 +154,32 @@ const UserProfile = () => {
   };
 
   const handleSaveEdit = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      Swal.fire('Gagal!', 'Token tidak ditemukan. Harap login kembali.', 'error');
+      Swal.fire("Gagal!", "Token tidak ditemukan. Harap login kembali.", "error");
       return;
     }
-
-    if (editedData.gender === "Laki-Laki") {
-      editedData.gender = "L";
-    } else if (editedData.gender === "Perempuan") {
-      editedData.gender = "P";
-    }
-
+  
+    if (editedData.jenis_kelamin === "Laki-Laki") editedData.jenis_kelamin = "L";
+    else if (editedData.jenis_kelamin === "Perempuan") editedData.jenis_kelamin = "P";
+  
     try {
-      const response = await axios.put(
-        'https://nusaira-be.vercel.app/api/profile',
-        editedData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
+      const response = await axios.put("http://localhost:3020/api/profile", editedData, {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      });
+    
+      console.log("Response Data:", response.data); 
+    
       setUserData(response.data);
       setIsEditing(false);
-      Swal.fire('Berhasil!', 'Profil berhasil diperbarui.', 'success');
+      Swal.fire("Berhasil!", "Profil berhasil diperbarui.", "success");
     } catch (error) {
-      console.error('Update profile failed:', error);
-      Swal.fire('Gagal!', 'Gagal memperbarui profil.', 'error');
+      Swal.fire("Gagal!", "Gagal memperbarui profil.", "error");
     }
+    
   };
+  
+
 
 
   const formatDate = (dateString) => {
@@ -222,7 +210,7 @@ const UserProfile = () => {
   }
 
   const {
-    profilePicture,
+    foto_profile,
     name,
     pekerjaan,
     jenis_kelamin,
@@ -249,7 +237,7 @@ const UserProfile = () => {
       name: "jenis_kelamin",
       value: jenis_kelamin === "L" ? "Laki-Laki" : "Perempuan",
       type: "select",
-      options: ["Perempuan", "Laki-Laki"],
+      options: ["Laki-Laki", "Perempuan"],
     },
     {
       label: "Lokasi",
@@ -289,7 +277,7 @@ const UserProfile = () => {
               onClick={() => setIsEditing(!isEditing)}
             />
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 translate-y-1 bg-blue-500 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-auto min-w-[70px]">
-              Edit Profile
+              Edit Profil
             </div>
           </div>
         </div>
@@ -304,7 +292,7 @@ const UserProfile = () => {
               ${isEditing ? 'cursor-pointer hover:opacity-70' : ''}`}
             >
               <img
-                src={profilePicture || "/default-profile.png"}
+                src={foto_profile || "/default-profile.png"}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -413,7 +401,7 @@ const UserProfile = () => {
                 <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr] gap-4 text-center flex-grow mb-3">
                   <div className="border border-gray-300 rounded-full w-14 h-14 overflow-hidden mx-auto">
                     <img
-                      src={profilePicture}
+                      src={foto_profile}
                       alt="Profil"
                       className="w-full h-full object-cover"
                     />
