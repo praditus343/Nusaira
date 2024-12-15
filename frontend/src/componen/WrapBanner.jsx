@@ -56,7 +56,6 @@ const WrapBanner = () => {
             onMouseUp={handleMouseUp}
         >
             <div className="flex space-x-4 w-max">
-                {/* Card 1 */}
                 <div className="bg-blue-600 rounded-lg p-4 flex justify-between items-center min-w-[400px] shadow-lg border-2 border-grey-300 transition-all duration-300">
                     <div className="flex-1">
                         <h2 className="font-semibold text-white mb-2 no-select">Bingung Ingin Cek Kualitas Tambak Lele?</h2>
@@ -68,7 +67,7 @@ const WrapBanner = () => {
                         </p>
                         <Link to="/AksesPremium">
                             <button className="px-20 py-2 bg-blue-400 text-white rounded-md mt-5 font-semibold no-select">
-                                Klik untuk info lebih lanjut
+                                Berlangganan Sekarang
                             </button>
                         </Link>
                     </div>
@@ -77,17 +76,16 @@ const WrapBanner = () => {
                     </div>
                 </div>
 
-                {/* Card 2 */}
                 <div className="bg-blue-600 rounded-lg p-4 flex justify-between items-center min-w-[400px] shadow-lg border-2 border-grey-300 transition-all duration-300">
                     <div className="flex-1">
                         <h2 className="font-semibold text-white mb-2 no-select">Ingin Tambak Lele Lebih Berkualitas? Temukan<br /> Caranya di Sini</h2>
                         <p className="text-gray-300 mb-4 no-select">
-                            Dapatkan Tips dan Panduan Terbaik untuk Meningkatkan <br />
-                            Kualitas Tambak Lele Anda!
+                            Tingkatkan kualitas tambak lele Anda dengan e-learning berupa <br/>perpustakaan digital
+                            yang berisi buku panduan budidaya!
                         </p>
-                        <Link to="/ChatAi">
-                            <button className="px-20 py-2 bg-blue-400 text-white rounded-md mt-5 font-semibold no-select">
-                                Klik untuk info lebih lanjut
+                        <Link to="/AksesPremium">
+                            <button className="px-20 py-2 bg-blue-400 text-white rounded-md mt-8 font-semibold no-select">
+                                Berlanganan Sekarang
                             </button>
                         </Link>
                     </div>
@@ -96,7 +94,6 @@ const WrapBanner = () => {
                     </div>
                 </div>
 
-                {/* Card 3 */}
                 <div className="bg-blue-600 rounded-lg p-4 flex justify-between items-center min-w-[400px] shadow-lg border-2 border-grey-300 transition-all duration-300">
                     <div className="flex-1">
                         <h2 className="font-semibold text-white mb-2 no-select">Butuh Bantuan? AI Chatbot Siap Pandu Anda<br /> Memastikan Kualitas Tambak Lele</h2>
@@ -104,7 +101,7 @@ const WrapBanner = () => {
                             Dapatkan Solusi Cepat dan Tepat untuk Kualitas Tambak <br /> Lele Anda
                         </p><Link to="/AksesPremium">
                             <button className="px-20 py-2 bg-blue-400 text-white rounded-md mt-5 font-semibold no-select">
-                                Klik untuk info lebih lanjut
+                                Berlangganan Sekarang
                             </button>
                         </Link>
                     </div>

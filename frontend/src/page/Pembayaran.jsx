@@ -10,9 +10,9 @@ const PaymentPage = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <div className="flex-1 overflow-auto bg-gray-50">
+      <div className="flex-1 flex flex-col bg-gray-50">
         <Header />
-        <div className="max-w-4xl mx-auto p-8">
+        <div className="flex-1 max-w-4xl mx-auto p-8">
           <div className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="bg-yellow-100 text-yellow-800 p-6 text-center">
               <h1 className="text-2xl font-bold">Mode Trial Sedang Tidak Tersedia</h1>
