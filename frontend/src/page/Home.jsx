@@ -223,8 +223,8 @@ const DashboardContent = () => {
                                 <img src={imgConfusePeople} alt="Question mark" className="w-50 h-60 object-cover ml-4 mr-4" draggable="false" />
                                 <div>
                                     <h3 className="font-semibold mb-2 text-white">Rencanakan Proses Pertama Anda</h3>
-                                    <p className="text-white mb-4">
-                                        Anda Perlu Memulai Siklus agar Dapat<br /> Mencatat dan Mengelola Budidaya Secara<br /> Efisien.
+                                    <p className="text-white mb-7">
+                                        Anda Perlu Memulai Siklus agar Dapat<br /> Mencatat dan Mengelola Budidaya Secara Efisien.
                                     </p>
                                     <Link to="/AksesPremium">
                                         <button className="px-20 py-2 bg-blue-600 text-white rounded-md mt-5  no-select mb-10">
@@ -242,7 +242,7 @@ const DashboardContent = () => {
                             <div className="p-4">
                                 <div className="space-y-4">
                                     <div>
-                                        <Link to="/Elearning">
+                                        <Link to="/Perpustakaan">
                                             <button>
                                                 <img
                                                     src={imgElearningNusaira}

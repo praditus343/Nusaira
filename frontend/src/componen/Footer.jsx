@@ -131,7 +131,7 @@ const Footer = () => {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
         <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
-          <div className="p-6 border-b flex justify-between items-center">
+          <div className="p-6 border-b-2 flex justify-between items-center">
             <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
             <button 
               onClick={onClose} 
