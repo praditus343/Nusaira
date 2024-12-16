@@ -35,17 +35,30 @@ export const BeritaCards = ({ onAddBerita }) => {
       });
   
       if (result.isConfirmed) {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/berita/${id}`, {
-          method: "DELETE",
-        });
-  
-        if (response.ok) {
-          await fetchBerita(); 
-          Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
-        } else {
-          throw new Error("Penghapusan gagal");
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error('Token tidak ditemukan!');
+    
+            const response = await fetch(`https://nusaira-be.vercel.app/api/berita/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`, 
+                    "Content-Type": "application/json"  
+                }
+            });
+    
+            if (response.ok) {
+                await fetchBerita(); 
+                Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
+            } else {
+                throw new Error("Penghapusan gagal");
+            }
+        } catch (error) {
+            console.error("Error:", error.message);
+            Swal.fire("Gagal!", error.message, "error");
         }
-      }
+    }
+    
     } catch (error) {
       console.error("Error deleting berita:", error);
       Swal.fire("Error", "Terjadi kesalahan saat menghapus berita.", "error");

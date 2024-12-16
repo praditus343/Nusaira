@@ -23,23 +23,27 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
+            const token = localStorage.getItem('token'); 
+            const headers = {
+                "Content-Type": "application/json",
+                ...(token && { "Authorization": `Bearer ${token}` }), 
+            };
+    
             const response = await fetch("https://nusaira-be.vercel.app/api/notifikasi", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: headers,
                 body: JSON.stringify({
                     ...formData,
                     created_at: new Date().toISOString(),
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error("Gagal menambahkan notifikasi");
             }
-
+    
             setFormData({
                 type: "",
                 date: "",
@@ -47,12 +51,11 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
                 description: "",
             });
             setIsOpen(false);
-
+    
             if (onNotifikasiAdded) {
                 onNotifikasiAdded();
             }
-
-            
+    
             Swal.fire({
                 icon: "success",
                 title: "Berhasil!",
@@ -62,7 +65,7 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
             });
         } catch (error) {
             console.error("Error:", error);
-
+    
             Swal.fire({
                 icon: "error",
                 title: "Gagal!",
@@ -72,6 +75,7 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
             });
         }
     };
+    
 
     return (
         <>

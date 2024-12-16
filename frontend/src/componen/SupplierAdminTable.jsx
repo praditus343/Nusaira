@@ -115,34 +115,51 @@ const SuppliersTable = () => {
     // console.log('Current Supplier Data:', currentSupplier);
 
     try {
-      if (currentSupplier.id) {
-        // console.log(`Updating supplier with ID: ${currentSupplier.id}`);
-        await axios.put(`https://nusaira-be.vercel.app/api/suppliers/${currentSupplier.id}`, currentSupplier);
-      } else {
-        // console.log('Adding new supplier:', currentSupplier);
-        await axios.post('https://nusaira-be.vercel.app/api/suppliers', currentSupplier);
-      }
+        const token = localStorage.getItem('token'); 
+        const headers = token ? {
+            'Authorization': `Bearer ${token}`,  
+            'Content-Type': 'application/json',  
+        } : {
+            'Content-Type': 'application/json',
+        };
 
-      // console.log('Supplier saved successfully');
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: currentSupplier.id ? 'Supplier berhasil diperbarui!' : 'Supplier baru berhasil ditambahkan!',
-      });
+        if (currentSupplier.id) {
+            // console.log(`Updating supplier with ID: ${currentSupplier.id}`);
+            await axios.put(
+                `https://nusaira-be.vercel.app/api/suppliers/${currentSupplier.id}`, 
+                currentSupplier, 
+                { headers }
+            );
+        } else {
+            // console.log('Adding new supplier:', currentSupplier);
+            await axios.post(
+                'https://nusaira-be.vercel.app/api/suppliers', 
+                currentSupplier, 
+                { headers }
+            );
+        }
 
-      fetchSuppliers();
-      setIsModalOpen(false);
+        // console.log('Supplier saved successfully');
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: currentSupplier.id ? 'Supplier berhasil diperbarui!' : 'Supplier baru berhasil ditambahkan!',
+        });
+
+        fetchSuppliers();
+        setIsModalOpen(false);
     } catch (err) {
-      console.error('Error saving supplier:', err);
+        console.error('Error saving supplier:', err);
 
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal!',
-        text: 'Terjadi kesalahan saat menyimpan supplier.',
-      });
-      setError('Failed to save supplier');
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Terjadi kesalahan saat menyimpan supplier.',
+        });
+        setError('Failed to save supplier');
     }
-  };
+};
+
 
 
   const handleDeleteSupplier = async (supplierId) => {
@@ -159,24 +176,32 @@ const SuppliersTable = () => {
 
     if (confirmation.isConfirmed) {
       try {
-        await axios.delete(`https://nusaira-be.vercel.app/api/suppliers/${supplierId}`);
+          const token = localStorage.getItem('token');  
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`, 
+          } : {};
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil!',
-          text: 'Supplier berhasil dihapus!',
-        });
-
-        setSuppliers((prev) => prev.filter((supplier) => supplier.id !== supplierId));
+          await axios.delete(
+              `https://nusaira-be.vercel.app/api/suppliers/${supplierId}`,
+              { headers }
+          );
+  
+          Swal.fire({
+              icon: 'success',
+              title: 'Berhasil!',
+              text: 'Supplier berhasil dihapus!',
+          });
+  
+          setSuppliers((prev) => prev.filter((supplier) => supplier.id !== supplierId));
       } catch (err) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal!',
-          text: 'Terjadi kesalahan saat menghapus supplier.',
-        });
-        setError('Failed to delete supplier');
+          Swal.fire({
+              icon: 'error',
+              title: 'Gagal!',
+              text: 'Terjadi kesalahan saat menghapus supplier.',
+          });
+          setError('Failed to delete supplier');
       }
-    }
+  }  
   };
 
 
