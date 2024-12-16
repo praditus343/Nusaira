@@ -61,7 +61,6 @@ const DashboardManagement = () => {
     useEffect(() => {
         const fetchWaterData = async () => {
             if (!selectedTambakId) {
-                // console.log('Tidak ada Tambak');
                 return;
             }
     
@@ -74,12 +73,14 @@ const DashboardManagement = () => {
     
                 const filteredData = flattenedData
                     .filter(item => item.tambak_id === selectedTambakId)
-                    .map(item => ({
-                        ...item,
-                        kabupaten: tambakData?.kabupaten || 'Unknown'
-                    }));
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); 
+
+                const latestData = filteredData[0] ? {
+                    ...filteredData[0],
+                    kabupaten: tambakData?.kabupaten || 'Unknown'
+                } : null;
     
-                setWaterData(filteredData);
+                setWaterData(latestData ? [latestData] : []); 
             } catch (error) {
                 console.error('Error fetching water quality data:', error);
                 setIsErrorWater(true);  
@@ -88,8 +89,10 @@ const DashboardManagement = () => {
                 setIsLoadingWater(false); 
             }
         };
+    
         fetchWaterData();
     }, [selectedTambakId]);
+    
     
 
     const handleTambakChange = (event) => {

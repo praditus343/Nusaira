@@ -31,32 +31,39 @@ function LaporanDashboard() {
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        setIsLoading(true);
-        setIsError(false);
-        const tambak = await fetchTambak();
-        const siklus = await fetchSiklus();
-        const panen = await fetchPanen();
-        const air = await fetchAir();
-        const kematian = await fetchKematian();
-        const pakan = await fetchPakan();
+        try {
+            setIsLoading(true);
+            setIsError(false);
 
-        setTambakData(tambak);
-        setSiklusData(siklus);
-        setPanenData(panen);
-        setAirData(air);
-        setKematianData(kematian);
-        setPakanData(pakan);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false); 
-      }
+            const tambak = await fetchTambak();
+            const siklus = await fetchSiklus();
+            const panen = await fetchPanen();
+            const air = await fetchAir();
+            const kematian = await fetchKematian();
+            const pakan = await fetchPakan();
+
+            const sortedAirData = air.flat().filter(item => item && !Array.isArray(item))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); 
+            const latestAirData = sortedAirData[0] ? [sortedAirData[0]] : []; 
+
+            setTambakData(tambak);
+            setSiklusData(siklus);
+            setPanenData(panen);
+            setAirData(latestAirData); 
+            setKematianData(kematian);
+            setPakanData(pakan);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setIsError(true);
+        } finally {
+            setIsLoading(false); 
+        }
     }
 
     fetchData();
-  }, []);
+}, []);
+
 
   function formatDateToDDMMYY(date) {
     if (!date) return "Data tidak tersedia";
