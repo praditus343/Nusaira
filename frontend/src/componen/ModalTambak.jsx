@@ -44,19 +44,30 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
   useEffect(() => {
     const fetchKolams = async () => {
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        const data = await response.json();
-
-        // console.log("API Response:", data);
-        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
-
-        // console.log("Kolams Data:", kolams);
-
-        setKolams(kolams);
+          const token = localStorage.getItem('token');  
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`,  
+              'Content-Type': 'application/json'
+          } : {
+              'Content-Type': 'application/json'  
+          };
+          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+              method: 'GET',
+              headers: headers
+          });
+  
+          const data = await response.json();
+  
+          // console.log("API Response:", data);
+          const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+  
+          // console.log("Kolams Data:", kolams);
+  
+          setKolams(kolams);
       } catch (error) {
-        console.error('Error fetching kolams:', error);
+          console.error('Error fetching kolams:', error);
       }
-    };
+  };
 
     fetchKolams();
   }, []);
@@ -454,19 +465,30 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchKolams = async () => {
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        const data = await response.json();
-
-        // console.log("API Response:", data);
-        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
-
-        // console.log("Kolams Data:", kolams);
-
-        setKolams(kolams);
+          const token = localStorage.getItem('token');  
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`,  
+              'Content-Type': 'application/json'
+          } : {
+              'Content-Type': 'application/json'  
+          };
+          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+              method: 'GET',
+              headers: headers
+          });
+  
+          const data = await response.json();
+  
+          // console.log("API Response:", data);
+          const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+  
+          // console.log("Kolams Data:", kolams);
+  
+          setKolams(kolams);
       } catch (error) {
-        console.error('Error fetching kolams:', error);
+          console.error('Error fetching kolams:', error);
       }
-    };
+  };
 
     fetchKolams();
   }, []);
@@ -902,38 +924,31 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const fetchKolams = async () => {
-      // console.log('Initiating kolam fetch...');
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        // console.log('Raw API Response:', response);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        // console.log('Parsed API Response:', data);
-
-        if (!data || !Array.isArray(data) || data.length === 0) {
-          console.warn('API returned empty or invalid data structure:', data);
-          setErrors(prev => [...prev, 'Tidak ada data kolam yang tersedia']);
-          return;
-        }
-
-        const kolams = data[0]?.kolamDetails || [];
-        // console.log('Processed Kolams Data:', kolams);
-
-        if (kolams.length === 0) {
-          console.warn('No kolams found in the response');
-          setErrors(prev => [...prev, 'Tidak ada kolam yang tersedia']);
-        }
-
-        setKolams(kolams);
+          const token = localStorage.getItem('token');  
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`,  
+              'Content-Type': 'application/json'
+          } : {
+              'Content-Type': 'application/json'  
+          };
+          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+              method: 'GET',
+              headers: headers
+          });
+  
+          const data = await response.json();
+  
+          // console.log("API Response:", data);
+          const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+  
+          // console.log("Kolams Data:", kolams);
+  
+          setKolams(kolams);
       } catch (error) {
-        console.error('Error in fetchKolams:', error);
-        setErrors(prev => [...prev, `Error fetching kolams: ${error.message}`]);
+          console.error('Error fetching kolams:', error);
       }
-    };
+  };
 
     fetchKolams();
   }, []);
@@ -1279,20 +1294,31 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchKolams = async () => {
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        const data = await response.json();
-
-        // console.log("API Response:", data);
-        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
-
-        // console.log("Kolams Data:", kolams);
-
-        setKolams(kolams);
+          const token = localStorage.getItem('token');  
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`,  
+              'Content-Type': 'application/json'
+          } : {
+              'Content-Type': 'application/json'  
+          };
+          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+              method: 'GET',
+              headers: headers
+          });
+  
+          const data = await response.json();
+  
+          // console.log("API Response:", data);
+          const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+  
+          // console.log("Kolams Data:", kolams);
+  
+          setKolams(kolams);
       } catch (error) {
-        console.error('Error fetching kolams:', error);
+          console.error('Error fetching kolams:', error);
       }
-    };
-
+  };
+  
     fetchKolams();
   }, []);
 
@@ -1519,19 +1545,31 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchKolams = async () => {
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        const data = await response.json();
-
-        // console.log("API Response:", data);
-        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
-
-        // console.log("Kolams Data:", kolams);
-
-        setKolams(kolams);
+          const token = localStorage.getItem('token'); 
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`,  
+              'Content-Type': 'application/json'
+          } : {
+              'Content-Type': 'application/json'  
+          };
+  
+          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+              method: 'GET',
+              headers: headers
+          });
+  
+          const data = await response.json();
+  
+          // console.log("API Response:", data);
+          const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+  
+          // console.log("Kolams Data:", kolams);
+  
+          setKolams(kolams);
       } catch (error) {
-        console.error('Error fetching kolams:', error);
+          console.error('Error fetching kolams:', error);
       }
-    };
+  };
 
     fetchKolams();
   }, []);
@@ -1773,19 +1811,32 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchKolams = async () => {
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak`);
-        const data = await response.json();
-
-        // console.log("API Response:", data);
-        const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
-
-        // console.log("Kolams Data:", kolams);
-
-        setKolams(kolams);
+          const token = localStorage.getItem('token'); 
+          const headers = token ? {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          } : {
+              'Content-Type': 'application/json'
+          };
+  
+          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
+              method: 'GET',
+              headers: headers
+          });
+  
+          const data = await response.json();
+  
+          // console.log("API Response:", data);
+          const kolams = data && data[0] && data[0].kolamDetails ? data[0].kolamDetails : [];
+  
+          // console.log("Kolams Data:", kolams);
+  
+          setKolams(kolams);
       } catch (error) {
-        console.error('Error fetching kolams:', error);
+          console.error('Error fetching kolams:', error);
       }
-    };
+  };
+  
 
     fetchKolams();
   }, []);

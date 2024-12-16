@@ -45,10 +45,15 @@ const RendaTableNotif = () => {
           allowOutsideClick: false,
           showConfirmButton: false,
         });
+        const token = localStorage.getItem('token');  
+        const headers = token ? {
+            'Authorization': `Bearer ${token}`, 
+        } : {};
+
 
         const response = await fetch(
           `https://nusaira-be.vercel.app/api/notifikasi/${id}`,
-          { method: 'DELETE' }
+          { method: 'DELETE',  headers: headers, }
         );
 
         if (!response.ok) {

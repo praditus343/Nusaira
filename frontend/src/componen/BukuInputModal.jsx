@@ -62,31 +62,38 @@ const BukuInputModal = ({ isOpen, onClose, initialData = null, onSubmit }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
+    
         try {
             const missingFields = [];
             if (!formData.judul) missingFields.push('Judul');
             if (!formData.deskripsi) missingFields.push('Deskripsi');
             if (!formData.tanggal_terbit) missingFields.push('Tanggal Terbit');
             if (!formData.image) missingFields.push('Gambar');
-
+    
             if (missingFields.length > 0) {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
-
+    
             const method = initialData ? 'put' : 'post';
             const url = initialData
                 ? `https://nusaira-be.vercel.app/api/buku/${initialData.id}`
                 : 'https://nusaira-be.vercel.app/api/buku';
-
-            const response = await axios[method](url, formData);
-
+    
+            const token = localStorage.getItem('token'); 
+            const config = token ? {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            } : {};
+    
+            const response = await axios[method](url, formData, config);
+    
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
                 text: initialData ? 'Buku berhasil diperbarui' : 'Buku berhasil disimpan'
             });
-
+    
             setFormData({
                 judul: '',
                 deskripsi: '',
@@ -98,17 +105,18 @@ const BukuInputModal = ({ isOpen, onClose, initialData = null, onSubmit }) => {
             setIsLoading(false);
             onClose();
             onSubmit(response.data);
-
+    
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
                 text: error.message
             });
-
+    
             setIsLoading(false);
         }
     };
+    
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

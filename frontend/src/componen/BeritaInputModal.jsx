@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import { Upload, X } from 'lucide-react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -75,12 +75,17 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
 
+            const token = localStorage.getItem('token'); 
+            if (!token) throw new Error('Token tidak ditemukan!');
+    
+
             const response = await axios.post(
                 'https://nusaira-be.vercel.app/api/berita',
                 formData,
                 {
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     }
                 }
             );

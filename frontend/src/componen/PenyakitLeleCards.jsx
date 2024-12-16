@@ -22,23 +22,33 @@ export const PenyakitLeleCards = ({ penyakitData, onDataUpdate }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetch(
-            `https://nusaira-be.vercel.app/api/penyakit-lele/${id}`,
-            { method: 'DELETE' }
-          );
-
-          if (!response.ok) {
-            throw new Error('Gagal menghapus data.');
-          }
-
-          Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
-
-          onDataUpdate(id);
+            const token = localStorage.getItem('token'); 
+            const headers = token ? {
+                'Authorization': `Bearer ${token}`,  
+                'Content-Type': 'application/json'
+            } : {
+                'Content-Type': 'application/json'  
+            };
+    
+            const response = await fetch(
+                `https://nusaira-be.vercel.app/api/penyakit-lele/${id}`,
+                { 
+                    method: 'DELETE',
+                    headers: headers  
+                }
+            );
+    
+            if (!response.ok) {
+                throw new Error('Gagal menghapus data.');
+            }
+    
+            Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
+            onDataUpdate(id);
         } catch (error) {
-          console.error('Error saat menghapus data:', error.message);
-          Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
+            console.error('Error saat menghapus data:', error.message);
+            Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
         }
-      }
+    }    
     });
   };
 
