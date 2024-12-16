@@ -88,7 +88,7 @@ const ContactPopup = ({ onClose, supplier }) => {
           <div className="flex justify-between items-center group">
             <div>
               <p className="text-gray-600">No WhatsApp:</p>
-              <p className="font-medium">{supplierData.whatsapp}</p>
+              <p className="font-medium">+{supplierData.whatsapp}</p>
             </div>
             <button
               onClick={() => copyToClipboard(supplierData.whatsapp, "whatsapp")}
@@ -99,7 +99,7 @@ const ContactPopup = ({ onClose, supplier }) => {
               ) : (
                 <Copy size={18} className="text-blue-500" />
               )}
-              <span className="absolute -top-8 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="absolute -top-8 right-0 bg-blue-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                 {copiedField === "whatsapp" ? "Tersalin!" : "Salin nomor"}
               </span>
             </button>
@@ -130,7 +130,7 @@ const ContactPopup = ({ onClose, supplier }) => {
               ) : (
                 <Copy size={18} className="text-blue-500" />
               )}
-              <span className="absolute -top-8 right-0 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="absolute -top-8 right-0 bg-blue-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                 {copiedField === "email" ? "Tersalin!" : "Salin email"}
               </span>
             </button>
