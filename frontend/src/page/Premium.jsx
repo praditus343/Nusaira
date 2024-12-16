@@ -85,7 +85,7 @@ function Content() {
             title="Per Bulan"
             price="Rp.120.000"
             duration="Kolam/Bootcamp"
-            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733756972604"
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1734361146856"
           />
           <SubscriptionCard
             title="Per 6 Bulan"
@@ -93,13 +93,13 @@ function Content() {
             originalPrice="Rp.720.000"
             discount={10}
             duration="Kolam/Bootcamp"
-            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757061121" 
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1734361440310" 
           />
           <SubscriptionCard
             title="Per Tahun"
             price="Rp.1.200.000"
             duration="Kolam/Bootcamp"
-            paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757107107" 
+            paymentLink="https://app.sandbox.midtrans.com/payment-links/1734361477511" 
           />
         </div>
         <FreeTrialCard />
