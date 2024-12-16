@@ -21,7 +21,7 @@ NusAIra adalah aplikasi web yang dirancang untuk membantu peternak lele dalam me
 
 1. **Clone repositori ini**:
    ```bash
-   git clone https://github.com/username/nusaira-frontend.git
+   git clone https://github.com/praditus343/Nusaira.git
 2. Masuk ke direktori proyek:
     ```bash
     cd frontend
