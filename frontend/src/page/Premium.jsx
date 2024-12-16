@@ -72,7 +72,7 @@ function Content() {
   return (
     <div className="mb-20">
       <Header />
-      <div className="max-w-4xl mx-auto p-8">
+      <div className="max-w-4xl mx-auto p-4">
         <h2 className="text-2xl font-bold text-center mb-4">
           Akses Keahlian Profesional dalam Menghadapi Tantangan Budidaya Lele
         </h2>
@@ -83,21 +83,21 @@ function Content() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <SubscriptionCard
             title="Per Bulan"
-            price="Rp.50.000"
+            price="Rp.120.000"
             duration="Kolam/Bootcamp"
             paymentLink="https://app.sandbox.midtrans.com/payment-links/1733756972604"
           />
           <SubscriptionCard
             title="Per 6 Bulan"
-            price="Rp.240.000"
-            originalPrice="Rp.300.000"
-            discount={20}
+            price="Rp.648.000"
+            originalPrice="Rp.720.000"
+            discount={10}
             duration="Kolam/Bootcamp"
             paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757061121" 
           />
           <SubscriptionCard
             title="Per Tahun"
-            price="Rp.500.000"
+            price="Rp.1.200.000"
             duration="Kolam/Bootcamp"
             paymentLink="https://app.sandbox.midtrans.com/payment-links/1733757107107" 
           />
