@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import { faShareAlt,faCopy  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Search } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +15,18 @@ import PriceHistory from './PriceHistory';
 
 const PriceMonitoringDashboard = () => {
     const [searchInput, setSearchInput] = useState("");
+    const shareLink = "https://nusaira.vercel.app";
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyLink = () => {
+        navigator.clipboard.writeText(shareLink).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000); 
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    };
+
     const CurrentDate = () => {
         const [currentDate, setCurrentDate] = useState("");
 
@@ -75,9 +87,17 @@ const PriceMonitoringDashboard = () => {
                             />
                             <Search className="absolute left-3 top-2 text-blue-600" />
                         </div>
-                        <button className="flex items-center justify-center bg-blue-100 text-blue-600 p-4 rounded-full shadow-md hover:bg-blue-200">
-                            <FontAwesomeIcon icon={faShareAlt} className="text-blue-600" size="lg" />
-                        </button>
+                        <button 
+                        onClick={handleCopyLink}
+                        className="flex items-center justify-center bg-blue-100 text-blue-600 p-4 rounded-full shadow-md hover:bg-blue-200 relative"
+                    >
+                        <FontAwesomeIcon icon={faShareAlt} className="text-blue-600" size="lg" />
+                        {copied && (
+                            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                                Link disalin!
+                            </span>
+                        )}
+                    </button>
                     </div>
                 </div>
                 <PriceHistory searchInput={searchInput} />
