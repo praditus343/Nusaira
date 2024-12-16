@@ -84,44 +84,60 @@ const ProductsCard = () => {
     }));
   };
 
-
   const handleSaveProduct = async (e) => {
     e.preventDefault();
     // console.log("Current Product Data:", currentProduct);
 
     const productData = {
-      ...currentProduct,
+        ...currentProduct,
     };
     // console.log("Product Data to be sent:", productData);
 
     try {
-      if (currentProduct.product_id) {
-        // console.log("Updating product with ID:", currentProduct.product_id);
-        await axios.put(`https://nusaira-be.vercel.app/api/products/${currentProduct.product_id}`, productData);
-      } else {
-        // console.log("Adding new product");
-        await axios.post(`https://nusaira-be.vercel.app/api/products`, productData);
-      }
+        const token = localStorage.getItem('token');  
+        const headers = token ? {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,  
+        } : {
+            'Content-Type': 'application/json',
+        };
 
-      // console.log("Product saved successfully");
+        if (currentProduct.product_id) {
+            // console.log("Updating product with ID:", currentProduct.product_id);
+            await axios.put(
+                `https://nusaira-be.vercel.app/api/products/${currentProduct.product_id}`,
+                productData,
+                { headers }  
+            );
+        } else {
+            // console.log("Adding new product");
+            await axios.post(
+                `https://nusaira-be.vercel.app/api/products`,
+                productData,
+                { headers }  
+            );
+        }
 
-      fetchProducts();
-      setIsModalOpen(false);
+        // console.log("Product saved successfully");
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: currentProduct.product_id ? 'Produk berhasil diperbarui' : 'Produk berhasil ditambahkan'
-      });
+        fetchProducts();
+        setIsModalOpen(false);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: currentProduct.product_id ? 'Produk berhasil diperbarui' : 'Produk berhasil ditambahkan'
+        });
     } catch (err) {
-      console.error("Error saving product:", err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal Menyimpan Produk',
-        text: err.response?.data?.message || 'Terjadi kesalahan saat menyimpan produk'
-      });
+        console.error("Error saving product:", err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan Produk',
+            text: err.response?.data?.message || 'Terjadi kesalahan saat menyimpan produk'
+        });
     }
-  };
+};
+
 
   const handleDeleteProduct = async (productId) => {
     Swal.fire({
@@ -136,22 +152,31 @@ const ProductsCard = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`https://nusaira-be.vercel.app/api/products/${productId}`);
-          setProducts(products.filter(product => product.product_id !== productId));
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Dihapus!',
-            text: 'Produk berhasil dihapus'
-          });
+            const token = localStorage.getItem('token'); 
+            const headers = token ? {
+                'Authorization': `Bearer ${token}`,  
+            } : {};
+    
+            await axios.delete(
+                `https://nusaira-be.vercel.app/api/products/${productId}`,
+                { headers }  
+            );
+    
+            setProducts(products.filter(product => product.product_id !== productId));
+    
+            Swal.fire({
+                icon: 'success',
+                title: 'Dihapus!',
+                text: 'Produk berhasil dihapus'
+            });
         } catch (err) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Gagal Menghapus',
-            text: err.response?.data?.message || 'Terjadi kesalahan saat menghapus produk'
-          });
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Menghapus',
+                text: err.response?.data?.message || 'Terjadi kesalahan saat menghapus produk'
+            });
         }
-      }
+    }    
     });
   };
 

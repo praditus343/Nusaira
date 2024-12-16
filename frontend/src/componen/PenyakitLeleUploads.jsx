@@ -69,37 +69,41 @@ export const PenyakitLeleUpload = ({ onClose }) => {
         e.preventDefault();
         console.log('Form submission started with full data:', JSON.stringify(formData, null, 2));
         setIsLoading(true);
-
+    
         try {
             const missingFields = [];
             if (!formData.title) missingFields.push('Title');
             if (!formData.date) missingFields.push('Date');
             if (!formData.image) missingFields.push('Image');
-
+    
             if (missingFields.length > 0) {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
-
+    
             const payload = { ...formData };
             // console.log('Detailed payload for submission:', JSON.stringify(payload, null, 2));
-
+    
+            const token = localStorage.getItem('token');  
+            const headers = token ? {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, 
+            } : {
+                'Content-Type': 'application/json',
+            };
+    
             const response = await axios.post(
                 'https://nusaira-be.vercel.app/api/penyakit-lele',
                 payload,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }
+                { headers }
             );
             // console.log('Form submission response:', response.data);
-
+    
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
-                text: 'Data penyakit berhasil disimpan'
+                text: 'Data penyakit berhasil disimpan',
             });
-
+    
             setFormData({
                 title: '',
                 date: '',
@@ -114,13 +118,12 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             setImages([]);
             setIsLoading(false);
             onClose();
-
+    
         } catch (error) {
             console.error('Complete error object:', error);
             console.error('Error response:', error.response ? JSON.stringify(error.response, null, 2) : 'No response');
             console.error('Error saat mengirim data:', error.response ? error.response.data : error.message);
-
-
+    
             if (error.response) {
                 console.error('Server error:', error.response);
                 Swal.fire({
@@ -143,10 +146,11 @@ export const PenyakitLeleUpload = ({ onClose }) => {
                     text: `Kesalahan: ${error.message || 'Terjadi kesalahan tak terduga'}`,
                 });
             }
-
+    
             setIsLoading(false);
         }
     };
+    
 
 
 

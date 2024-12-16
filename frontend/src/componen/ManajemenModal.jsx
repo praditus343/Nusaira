@@ -19,7 +19,7 @@ const ManagementModal = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (!isOpen) return;
-
+    
         const fetchTambakList = async () => {
             setLoading(true);
             setError({
@@ -28,8 +28,16 @@ const ManagementModal = ({ isOpen, onClose }) => {
                 oksigen: '',
                 salinitas: ''
             });
+    
             try {
-                const response = await axios.get('https://nusaira-be.vercel.app/api/tambak');
+                const token = localStorage.getItem('token'); 
+                const config = token ? {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                } : {};
+    
+                const response = await axios.get('https://nusaira-be.vercel.app/api/tambak', config);
                 setTambakList(response.data);
                 setSelectedTambakId('');
             } catch (error) {
@@ -44,26 +52,27 @@ const ManagementModal = ({ isOpen, onClose }) => {
                 setLoading(false);
             }
         };
-
+    
         fetchTambakList();
     }, [isOpen]);
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
-
+    
         const ph = parseFloat(formData.get('ph'));
         const suhu = parseFloat(formData.get('suhu'));
         const oksigen = parseFloat(formData.get('oksigen'));
-        const salinitas = parseFloat(formData.get('salinitas'));
-
+        const salinitas = parseFloat(formData.get('salinitas')) ;
+    
         let errorObj = {
             ph: '',
             suhu: '',
             oksigen: '',
             salinitas: ''
         };
-
+    
         if (!selectedTambakId) {
             Swal.fire({
                 title: 'Peringatan!',
@@ -88,14 +97,13 @@ const ManagementModal = ({ isOpen, onClose }) => {
         if (isNaN(salinitas) || salinitas < 0) {
             errorObj.salinitas = 'Salinitas harus diisi dengan nilai yang lebih besar dari 0.';
         }
-
-       
+    
         setError(errorObj);
-
+    
         if (Object.values(errorObj).some((msg) => msg !== '')) {
             return;
         }
-
+    
         try {
             const payload = {
                 tambak_id: selectedTambakId,
@@ -104,13 +112,21 @@ const ManagementModal = ({ isOpen, onClose }) => {
                 oksigen,
                 salinitas
             };
-
-            const response = await axios.post('https://nusaira-be.vercel.app/api/air', payload, {
+    
+            const token = localStorage.getItem('token'); 
+            const config = token ? {
                 headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            } : {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+    
+            const response = await axios.post('https://nusaira-be.vercel.app/api/air', payload, config);
+    
             if (response.status === 200 || response.status === 201) {
                 await Swal.fire({
                     title: 'Berhasil!',
@@ -137,6 +153,7 @@ const ManagementModal = ({ isOpen, onClose }) => {
             });
         }
     };
+    
 
     if (!isOpen) return null;
 

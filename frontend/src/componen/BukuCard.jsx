@@ -43,10 +43,25 @@ const BukuCards = () => {
             });
 
             if (result.isConfirmed) {
-                await axios.delete(`https://nusaira-be.vercel.app/api/buku/${id}`);
-                await fetchBooks();
-                Swal.fire("Terhapus!", "Buku berhasil dihapus.", "success");
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) throw new Error('Token tidak ditemukan!');
+            
+                    await axios.delete(`https://nusaira-be.vercel.app/api/buku/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`, 
+                            'Content-Type': 'application/json' 
+                        }
+                    });
+            
+                    await fetchBooks(); 
+                    Swal.fire("Terhapus!", "Buku berhasil dihapus.", "success");
+                } catch (error) {
+                    console.error("Error:", error.message);
+                    Swal.fire("Gagal!", error.message, "error");
+                }
             }
+            
         } catch (error) {
             console.error("Error deleting buku:", error);
             Swal.fire("Error", "Terjadi kesalahan saat menghapus buku.", "error");
@@ -62,10 +77,6 @@ const BukuCards = () => {
     const handleEditBook = (book) => {
         setEditingBook(book);
         setIsModalOpen(true);
-    };
-
-    const handleHighlightBook = (book) => {
-        setHighlightedBook(book);
     };
 
     return (
