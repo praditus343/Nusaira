@@ -202,7 +202,7 @@ const AquacultureDashboard = () => {
     <div className="w-full max-w-6xl p-4 mb-6">
       <MetricCard />
       {/* Main Content Card */}
-      <Card className='border-2 w-[1120px] mt-10 mr-20 ml-2'>
+      <Card className='border-2 w-[1120px] mt-6 mr-20 ml-2'>
         <div className="flex justify-between items-center m-6">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
