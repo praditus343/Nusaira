@@ -24,8 +24,8 @@ const FinalStepUI = ({ jumlahKolam }) => {
           </div>
         </div>
         <div className="text-center space-y-4 mb-16">
-          <p className="font-medium">Anda akan membuat tambak :</p>
-          <p className="text-lg font-semibold text-gray-800">"Tambak Lele Segar"</p>
+          <p className="font-medium">Anda Telah membuat Tambak</p>
+          <p className="text-lg font-semibold text-gray-800">Silakan isi data tambak Anda dengan mengakses Fitur Daftar Kolam</p>
           <p className="text-sm text-gray-600">Yang Memiliki {jumlahKolam} Kolam</p>
         </div>
         <div className="flex gap-4 w-full max-w-md px-4">

@@ -346,35 +346,33 @@ function LaporanDashboard() {
       let totalFCR = 0;
       let totalSR = 0;
       let kolamCount = 0;
-
+    
       tambakData.forEach(tambak => {
         tambak.kolamDetails.forEach(kolam => {
           const luasKolam = calculateLuasKolam(kolam.panjang, kolam.lebar, kolam.kedalaman);
           totalLuasKolam += luasKolam;
-
+    
           const siklusKolam = getSiklusDataForKolam(kolam.id);
           totalDOC += parseFloat(siklusKolam.lama_persiapan || 0);
           totalBenih += parseFloat(siklusKolam.total_tebar || 0);
           totalPadatTebar += luasKolam ? (parseFloat(siklusKolam.total_tebar || 0) / luasKolam) : 0;
-
-
+    
           totalPakan += calculateTotalPakanForKolam(kolam.id);
-
-
+    
           totalBiomassa += calculateBiomassa(kolam.id);
-
-
+    
           const panenKolam = getPanenDataForKolam(kolam.id);
           totalSizePanen += parseFloat(panenKolam.size || 0);
-          
-
+    
           totalFCR += parseFloat(calculateFCR(kolam.id));
           totalSR += parseFloat(calculateSR(kolam.id));
-
+    
           kolamCount++;
         });
       });
-
+    
+      const averageSR = kolamCount > 0 ? totalSR / kolamCount : 0;
+    
       return {
         luasKolam: totalLuasKolam.toFixed(2),
         doc: totalDOC.toFixed(2),
@@ -384,10 +382,10 @@ function LaporanDashboard() {
         biomassa: totalBiomassa.toFixed(2),
         sizePanen: totalSizePanen.toFixed(2),
         fcr: totalFCR.toFixed(2),
-        sr: totalSR.toFixed(2)
+        sr: averageSR.toFixed(2) 
       };
     };
-
+    
     const totals = calculateTotals();
 
     const determineRowColor = (kolamId) => {

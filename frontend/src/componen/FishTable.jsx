@@ -45,30 +45,31 @@ const FishTable = ({ filterTerm = "" }) => {
         const matchedTambakData = tambakData.find((tambak) =>
           tambak.kolamDetails?.some((kolam) => kolam.id === kolamId)
         );
-  
+      
         const kolamData = matchedTambakData?.kolamDetails.find((kolam) => kolam.id === kolamId);
         const kolamNama = kolamData?.namaKolam || "-";
-  
+      
         const panenDataForSiklus = panenData.find((panen) => panen.id_siklus === siklus.id_siklus);
-  
-        const kematianDataForSiklus = kematianData.filter((kematian) => kematian.id_siklus === siklus.id_siklus);
+      
+        const kematianDataForSiklus = kematianData.filter((kematian) => kematian.id_siklus === siklus.id_siklus && kematian.kolam_id === kolamId);
         const totalKematianEkor = kematianDataForSiklus.reduce((sum, kematian) => sum + (kematian.jumlah_ekor || 0), 0);
-  
+        const totalKematianSize = kematianDataForSiklus.reduce((sum, kematian) => sum + (kematian.size || 0), 0);
+      
         const jumlahTebar = siklus.total_tebar || 0;
-        const jumlahIkanHidup = Math.max(jumlahTebar - totalKematianEkor, 0);
-  
+        const jumlahIkanHidup = Math.max(jumlahTebar - Math.max(totalKematianEkor, totalKematianSize), 0);
+      
         const mbw = panenDataForSiklus && jumlahIkanHidup > 0 && panenDataForSiklus.berat > 0
-          ? (Number(panenDataForSiklus.berat) / jumlahIkanHidup / 1000).toFixed(5)
+          ? (Number(panenDataForSiklus.berat) / jumlahIkanHidup).toFixed(2)
           : "-";
-  
+      
         const adg = siklus.tanggal && siklus.umur_awal > 0 && panenDataForSiklus?.berat
-          ? (Number(panenDataForSiklus.berat) / 1000 / siklus.umur_awal).toFixed(5)
+          ? (Number(panenDataForSiklus.berat) / 1000 / siklus.umur_awal).toFixed(3)
           : "-";
-  
+      
         const hargaPerIkan = panenDataForSiklus?.harga_jual
           ? `Rp. ${new Intl.NumberFormat("id-ID").format(panenDataForSiklus.harga_jual)}`
           : "-";
-  
+      
         return {
           kolamId,
           kolamNama,
@@ -86,10 +87,10 @@ const FishTable = ({ filterTerm = "" }) => {
           hargaPerIkan,
         };
       });
-  
+      
       setData(formattedData);
       sessionStorage.setItem("siklusData", JSON.stringify(formattedData));
-  
+      
       const hasInvalidData = formattedData.some((row) => {
         return (
           row.tebaran === "-" ||
@@ -173,7 +174,7 @@ const FishTable = ({ filterTerm = "" }) => {
         <table className="w-full border-collapse border border-gray-400">
           <thead>
             <tr className="bg-blue-600 text-white">
-              {["Kolam", "Umur", "Tgl Tebar", "Tgl Selesai", "Tebaran", "FCR", "ADG", "MBW", "Size", "Harga/Ikan"].map((header) => (
+              {["Kolam", "Umur", "Tgl Tebar", "Tgl Selesai", "Tebaran", "Target FCR", "ADG", "MBW", "Size", "Harga/Ikan"].map((header) => (
                 <th key={header} className="p-3 border border-gray-400">
                   {header}
                 </th>
