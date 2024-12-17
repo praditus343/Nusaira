@@ -82,20 +82,38 @@ const AquacultureDashboard = () => {
     fetchData();
   }, []);
 
+  const getTotalForField = (kematian, kolam_id, fieldName) => {
+    return kematian.filter(k => k.kolam_id === kolam_id)
+      .reduce((sum, k) => {
+        if (typeof k[fieldName] !== 'undefined' && k[fieldName] !== 0) {
+          return sum + k[fieldName];
+        } else {
+          return sum;
+        }
+      }, 0);
+  };
+  
   const calculateMetrics = (siklus, tambak, kematian, panen) => {
     return siklus.map((s) => {
+      // console.log(`Menghitung untuk siklus ID: ${s.id_siklus}`);
+  
       const kolam = tambak.find((t) => t.kolamDetails.some((k) => k.id === s.kolam_id))?.kolamDetails.find((k) => k.id === s.kolam_id);
       const matchedPanen = panen.find((p) => p.id_siklus === s.id_siklus);
-      const totalKematian = kematian.filter((k) => k.id_siklus === s.id_siklus).reduce((sum, k) => sum + (k.jumlah_ekor || 0), 0);
-
+  
+      const totalKematianEkor = getTotalForField(kematian, s.kolam_id, 'jumlah_ekor');
+      const totalKematianSize = getTotalForField(kematian, s.kolam_id, 'size');
+  
+      // console.log("Total kematian (jumlah_ekor) untuk kolam ID", s.kolam_id, "adalah:", totalKematianEkor);
+      // console.log("Total kematian (size) untuk kolam ID", s.kolam_id, "adalah:", totalKematianSize);
+  
       const jumlahTebar = s.total_tebar || 0;
-      const jumlahIkanHidup = Math.max(jumlahTebar - totalKematian, 0);
-
+      const jumlahIkanHidup = Math.max(jumlahTebar - Math.max(totalKematianEkor, totalKematianSize), 0);
+  
       return {
         kolamNama: kolam?.namaKolam || "-",
         fcr: s.target_fcr || "-",
         adg: s.umur_awal > 0 ? (matchedPanen?.berat / 1000 / s.umur_awal).toFixed(2) : "-",
-        sr: jumlahTebar > 0 ? ((jumlahIkanHidup / jumlahTebar) * 100).toFixed(2) : "-",
+        sr: s.target_sr ? parseFloat(s.target_sr).toFixed(0) : "0",
         mbw: matchedPanen?.berat && jumlahIkanHidup > 0 ? (matchedPanen.berat / jumlahIkanHidup).toFixed(2) : "-",
         size: matchedPanen?.size || "-",
         kolamId: kolam?.id,
@@ -103,7 +121,7 @@ const AquacultureDashboard = () => {
       };
     });
   };
-
+  
   const calculateProgress = (metricsData) => {
     const requiredFields = ['adg', 'fcr', 'mbw', 'sr', 'size'];
 
@@ -247,7 +265,7 @@ const AquacultureDashboard = () => {
                     </div>
                     <div className="text-lg font-medium mt-6 mb-2">Estimasi pertumbuhan</div>
                     <div className="flex justify-between bg-blue-50 p-2">
-                      <span>FCR:</span>
+                      <span>Target FCR:</span>
                       <span>{metric.fcr || '-'}</span>
                     </div>
                     <div className="flex justify-between bg-blue-200 p-2">
@@ -255,8 +273,8 @@ const AquacultureDashboard = () => {
                       <span>{metric.adg || '-'}</span>
                     </div>
                     <div className="flex justify-between bg-blue-100 p-2">
-                      <span>SR:</span>
-                      <span>{metric.sr || '-'}</span>
+                      <span>Target SR:</span>
+                      <span>{metric.sr || '-'}%</span>
                     </div>
                     <div className="flex justify-between bg-blue-200 p-2">
                       <span>MBW:</span>
@@ -264,7 +282,7 @@ const AquacultureDashboard = () => {
                     </div>
                     <div className="flex justify-between bg-blue-100 p-2">
                       <span>Size:</span>
-                      <span>{metric.size || '-'}</span>
+                      <span>{metric.size || '-'} Kg/Ekor</span>
                     </div>
                   </div>
                 ))
