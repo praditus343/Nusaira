@@ -166,7 +166,7 @@ const MetricCard = () => {
   return (
     <div
       ref={sliderRef}
-      className="overflow-x-auto flex space-x-4 py-4 cursor-grab"
+      className="overflow-x-auto flex space-x-5 py-4 cursor-grab"
       onMouseDown={handleMouseDown}
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
@@ -175,7 +175,7 @@ const MetricCard = () => {
       {metrics.map((metric) => (
         <div
           key={metric.id}
-          className={`bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[268px] mx-2 select-none metric-card`}
+          className={`bg-white shadow-md rounded-lg p-4 flex flex-col justify-between relative border-2 border-gray-300 min-w-[250px] mx-2 select-none metric-card`}
         >
           <div className={`absolute top-2 right-2 ${metric.color} rounded-full p-2`}>
             <i className={`${metric.icon} ${metric.color} text-lg`}></i>
