@@ -185,7 +185,7 @@ const MetricCard = () => {
             <h4 className="text-gray-500 text-sm font-medium mb-2">{metric.label}</h4>
             <p className={`${metric.color} text-2xl font-bold`}>{metric.value}</p>
           </div>
-          <p className="text-gray-500 text-sm">{metric.unit}</p>
+          <p className="text-gray-500 text-sm mt-2">{metric.unit}</p>
         </div>
       ))}
     </div>
