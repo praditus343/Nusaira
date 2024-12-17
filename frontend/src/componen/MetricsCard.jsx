@@ -183,7 +183,7 @@ const MetricCard = () => {
 
           <div>
             <h4 className="text-gray-500 text-sm font-medium mb-2">{metric.label}</h4>
-            <p className={`${metric.color} text-3xl font-bold`}>{metric.value}</p>
+            <p className={`${metric.color} text-2xl font-bold`}>{metric.value}</p>
           </div>
           <p className="text-gray-500 text-sm">{metric.unit}</p>
         </div>
