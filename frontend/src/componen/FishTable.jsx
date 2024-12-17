@@ -189,11 +189,11 @@ const FishTable = ({ filterTerm = "" }) => {
                   <td className="p-3 border border-gray-400">{row.umur} Hari</td>
                   <td className="p-3 border border-gray-400">{row.tglTebar}</td>
                   <td className="p-3 border border-gray-400">{row.tglSelesai}</td>
-                  <td className="p-3 border border-gray-400">{row.tebaran} Kg</td>
+                  <td className="p-3 border border-gray-400">{row.tebaran} kg</td>
                   <td className="p-3 border border-gray-400">{row.fcr}</td>
-                  <td className="p-3 border border-gray-400">{row.adg}</td>
-                  <td className="p-3 border border-gray-400">{row.mbw}</td>
-                  <td className="p-3 border border-gray-400">{row.size} Kg/Ekor</td>
+                  <td className="p-3 border border-gray-400">{row.adg} g/hari</td>
+                  <td className="p-3 border border-gray-400">{row.mbw} g/ekor</td>
+                  <td className="p-3 border border-gray-400">{row.size} kg/ekor</td>
                   <td className="p-3 border border-gray-400">{row.hargaPerIkan}</td>
                 </tr>
               ))

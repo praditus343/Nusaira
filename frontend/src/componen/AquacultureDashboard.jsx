@@ -40,7 +40,7 @@ const AquacultureDashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
       setIsError(false);
 
       try {
@@ -73,9 +73,9 @@ const AquacultureDashboard = () => {
         setGrowthData(growthDatas);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setIsError(true); 
+        setIsError(true);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
 
@@ -92,23 +92,23 @@ const AquacultureDashboard = () => {
         }
       }, 0);
   };
-  
+
   const calculateMetrics = (siklus, tambak, kematian, panen) => {
     return siklus.map((s) => {
       // console.log(`Menghitung untuk siklus ID: ${s.id_siklus}`);
-  
+
       const kolam = tambak.find((t) => t.kolamDetails.some((k) => k.id === s.kolam_id))?.kolamDetails.find((k) => k.id === s.kolam_id);
       const matchedPanen = panen.find((p) => p.id_siklus === s.id_siklus);
-  
+
       const totalKematianEkor = getTotalForField(kematian, s.kolam_id, 'jumlah_ekor');
       const totalKematianSize = getTotalForField(kematian, s.kolam_id, 'size');
-  
+
       // console.log("Total kematian (jumlah_ekor) untuk kolam ID", s.kolam_id, "adalah:", totalKematianEkor);
       // console.log("Total kematian (size) untuk kolam ID", s.kolam_id, "adalah:", totalKematianSize);
-  
+
       const jumlahTebar = s.total_tebar || 0;
       const jumlahIkanHidup = Math.max(jumlahTebar - Math.max(totalKematianEkor, totalKematianSize), 0);
-  
+
       return {
         kolamNama: kolam?.namaKolam || "-",
         fcr: s.target_fcr || "-",
@@ -121,7 +121,7 @@ const AquacultureDashboard = () => {
       };
     });
   };
-  
+
   const calculateProgress = (metricsData) => {
     const requiredFields = ['adg', 'fcr', 'mbw', 'sr', 'size'];
 
@@ -202,7 +202,7 @@ const AquacultureDashboard = () => {
     <div className="w-full max-w-6xl p-4 mb-6">
       <MetricCard />
       {/* Main Content Card */}
-      <Card className='border-2 w-[1120px] mt-10 mr-20 ml-2'>
+      <Card className='border-2 w-[1120px] mt-6 mr-20 ml-2'>
         <div className="flex justify-between items-center m-6">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
@@ -270,7 +270,7 @@ const AquacultureDashboard = () => {
                     </div>
                     <div className="flex justify-between bg-blue-200 p-2">
                       <span>ADG:</span>
-                      <span>{metric.adg || '-'}</span>
+                      <span>{metric.adg || '-'} g/hari</span>
                     </div>
                     <div className="flex justify-between bg-blue-100 p-2">
                       <span>Target SR:</span>
@@ -278,11 +278,11 @@ const AquacultureDashboard = () => {
                     </div>
                     <div className="flex justify-between bg-blue-200 p-2">
                       <span>MBW:</span>
-                      <span>{metric.mbw || '-'}</span>
+                      <span>{metric.mbw || '-'} g/ekor</span>
                     </div>
                     <div className="flex justify-between bg-blue-100 p-2">
                       <span>Size:</span>
-                      <span>{metric.size || '-'} Kg/Ekor</span>
+                      <span>{metric.size || '-'} kg/ekor</span>
                     </div>
                   </div>
                 ))
@@ -375,8 +375,16 @@ const AquacultureDashboard = () => {
                 <YAxis />
                 <Tooltip
                   formatter={(value, name) => {
+                    const units = {
+                      MBW: "g/ekor",
+                      ADG: "g/hari",
+                      SIZE: "kg/ekor",
+                      SR: "%",
+                      FCR: "",
+                    };
                     const displayName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-                    return [`${value}`, displayName];
+                    const unit = units[name.toUpperCase()] || "";
+                    return [`${value} ${unit}`, displayName];
                   }}
                   cursor={{ fill: "rgba(200, 200, 200, 0.3)" }}
                 />
