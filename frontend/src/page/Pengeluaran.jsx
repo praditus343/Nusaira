@@ -231,7 +231,7 @@ const TambakHeader = ({ tambakData, selectedTambakId, handleTambakChange, tambak
       <div className="p-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-medium">{tambakData?.nama || 'Loading...'}</h1>
+            <h1 className="text-xl font-medium">Tambak {tambakData?.nama || 'Loading...'}</h1>
             <div className="flex items-center space-x-2 text-gray-600">
               <MapPin className="w-4 h-4" />
               <span>{tambakData?.provinsi || 'Loading...'}</span>
