@@ -227,9 +227,14 @@ const AquacultureDashboard = () => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 relative">
                 <span className="text-gray-600">RFID:</span>
-                <Cpu className="h-4 w-4 text-blue-500" />
+                <div className="relative group">
+                  <Cpu className="h-4 w-4 text-blue-500" />
+                  <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max p-1 text-xs bg-blue-500 text-white rounded opacity-0 group-hover:opacity-100 group-hover:translate-y-2 transition-all">
+                    <span className="ml-2 mr-2">RFID Terdeteksi</span>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -261,7 +266,7 @@ const AquacultureDashboard = () => {
                   <div key={index}>
                     <div className="flex justify-between">
                       <span>Tebaran:</span>
-                      <span className='mr-2'>{metric.tebaran || '-'}</span>
+                      <span className='mr-2'>{metric.tebaran || '-'} kg</span>
                     </div>
                     <div className="text-lg font-medium mt-6 mb-2">Estimasi pertumbuhan</div>
                     <div className="flex justify-between bg-blue-50 p-2">
