@@ -185,14 +185,14 @@ const FishTable = ({ filterTerm = "" }) => {
               filteredData.map((row, idx) => (
                 <tr key={idx} className="bg-blue-50">
                   <td className="p-3 border border-gray-400">{row.kolam}</td>
-                  <td className="p-3 border border-gray-400">{row.umur}</td>
+                  <td className="p-3 border border-gray-400">{row.umur} Hari</td>
                   <td className="p-3 border border-gray-400">{row.tglTebar}</td>
                   <td className="p-3 border border-gray-400">{row.tglSelesai}</td>
-                  <td className="p-3 border border-gray-400">{row.tebaran}</td>
+                  <td className="p-3 border border-gray-400">{row.tebaran} Kg</td>
                   <td className="p-3 border border-gray-400">{row.fcr}</td>
                   <td className="p-3 border border-gray-400">{row.adg}</td>
                   <td className="p-3 border border-gray-400">{row.mbw}</td>
-                  <td className="p-3 border border-gray-400">{row.size}</td>
+                  <td className="p-3 border border-gray-400">{row.size} Kg/Ekor</td>
                   <td className="p-3 border border-gray-400">{row.hargaPerIkan}</td>
                 </tr>
               ))
