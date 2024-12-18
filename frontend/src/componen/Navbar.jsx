@@ -134,7 +134,7 @@ const Navbar = () => {
                             className="flex items-center space-x-1 hover:text-blue-600 transition-colors duration-200"
                             onClick={() => toggleDropdown('eLearning')}
                         >
-                            <span className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`}>Kursus</span>
+                            <span className={`${activeDropdown === 'eLearning' ? 'text-blue-600' : 'text-gray-700'}`}>Perpustakaan</span>
                             <FontAwesomeIcon
                                 icon={faChevronDown}
                                 className={`w-3 h-3 transition-transform ${activeDropdown === 'eLearning' ? 'rotate-180 text-blue-600' : 'text-gray-700'}`}

@@ -183,7 +183,7 @@ function LandingPage() {
                 <div className="flex-1 pr-8 pl-2">
                     <h2 className=" font-bold mb-2">Memastikan tambak berjalan lancar hingga <br /> panen</h2>
                     <p className=" text-gray-600 mb-4 mt-4 text-left max-w-lg">
-                        Siap untuk Meningkatkan Keberhasilan Budidaya Lele<br /> Anda? Daftar di E-Learning Kami dan nikmati<br /> pengalaman belajar yang mendalam dengan <br />pengetahuan praktis dari para ahli di bidangnya. Anda akan diajarkan cara mengidentifikasi masalah yang mungkin terjadi dan bagaimana cara mengatasinya, memastikan setiap langkah budidaya Anda berjalan lancar
+                        Siap untuk Meningkatkan Keberhasilan Budidaya Lele<br /> Anda? Kunjungi Perpustakaan Kami dan nikmati<br /> pengalaman belajar yang mendalam dengan <br />pengetahuan praktis dari para ahli di bidangnya. Anda akan diajarkan cara mengidentifikasi masalah yang mungkin terjadi dan bagaimana cara mengatasinya, memastikan setiap langkah budidaya Anda berjalan lancar
                     </p>
                     <div>
                         <button
