@@ -2,6 +2,7 @@ import React, { useState,useEffect  } from 'react';
 import { Upload, X } from 'lucide-react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import apiClient from '../service/axiosInstance';
 
 export const BeritaInputModal = ({ isOpen, onClose }) => {
     const [formData, setFormData] = useState({
@@ -75,20 +76,7 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
                 throw new Error(`Mohon lengkapi data berikut: ${missingFields.join(', ')}`);
             }
 
-            const token = localStorage.getItem('token'); 
-            if (!token) throw new Error('Token tidak ditemukan!');
-    
-
-            const response = await axios.post(
-                'https://nusaira-be.vercel.app/api/berita',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
+            await apiClient.post('/api/berita', formData);
 
             Swal.fire({
                 icon: 'success',
@@ -106,18 +94,16 @@ export const BeritaInputModal = ({ isOpen, onClose }) => {
             setImages([]);
             setIsLoading(false);
             onClose();
-
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
                 text: error.message
             });
-
             setIsLoading(false);
         }
     };
-
+    
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">

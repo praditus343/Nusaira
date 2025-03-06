@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Upload } from 'lucide-react';
+import apiClient from '../service/axiosInstance';
 
 export const PenyakitLeleUpload = ({ onClose }) => {
     const [formData, setFormData] = useState({
@@ -83,20 +84,7 @@ export const PenyakitLeleUpload = ({ onClose }) => {
             const payload = { ...formData };
             // console.log('Detailed payload for submission:', JSON.stringify(payload, null, 2));
     
-            const token = localStorage.getItem('token');  
-            const headers = token ? {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, 
-            } : {
-                'Content-Type': 'application/json',
-            };
-    
-            const response = await axios.post(
-                'https://nusaira-be.vercel.app/api/penyakit-lele',
-                payload,
-                { headers }
-            );
-            // console.log('Form submission response:', response.data);
+            const response = await apiClient.post('/penyakit-lele', payload);
     
             Swal.fire({
                 icon: 'success',

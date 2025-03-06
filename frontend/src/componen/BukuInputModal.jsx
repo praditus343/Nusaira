@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Upload, X } from 'lucide-react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import apiClient from "../service/axiosInstance";
 
 const BukuInputModal = ({ isOpen, onClose, initialData = null, onSubmit }) => {
     const [formData, setFormData] = useState({
@@ -75,18 +76,9 @@ const BukuInputModal = ({ isOpen, onClose, initialData = null, onSubmit }) => {
             }
     
             const method = initialData ? 'put' : 'post';
-            const url = initialData
-                ? `https://nusaira-be.vercel.app/api/buku/${initialData.id}`
-                : 'https://nusaira-be.vercel.app/api/buku';
+            const url = initialData ? `/buku/${initialData.id}` : "/buku";
     
-            const token = localStorage.getItem('token'); 
-            const config = token ? {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            } : {};
-    
-            const response = await axios[method](url, formData, config);
+            const response = await apiClient[method](url, formData);
     
             Swal.fire({
                 icon: 'success',

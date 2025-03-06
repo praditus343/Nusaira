@@ -5,6 +5,7 @@ import axios from "axios";
 import img from "../assets/img/login_singup/ls5.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import apiClient from "../service/axiosInstance";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -40,41 +41,40 @@ const SignUpPage = () => {
     }));
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!Object.values(formData).every((field) => field)) {
-      setError("Semua field harus diisi.");
-      return;
+        setError("Semua field harus diisi.");
+        return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Kata Sandi tidak cocok.");
-      return;
+        setError("Kata sandi tidak cocok.");
+        return;
     }
 
     setLoading(true);
 
-    axios
-      .post("http://localhost:3020/api/register", formData)
-      .then((response) => {
-        setLoading(false);
+    try {
+        await apiClient.post("/register", formData);
+
         Swal.fire({
-          title: "Pendaftaran Berhasil!",
-          text: "Lanjutkan ke halaman login! 🚀",
-          icon: "success",
-          confirmButtonText: "OK",
+            title: "Pendaftaran Berhasil!",
+            text: "Lanjutkan ke halaman login! 🚀",
+            icon: "success",
+            confirmButtonText: "OK",
         }).then(() => {
-          navigate("/login");
+            navigate("/login");
         });
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError("Terjadi kesalahan. Silakan coba lagi.");
+    } catch (error) {
+        setError(error.response?.data?.message || "Terjadi kesalahan. Silakan coba lagi.");
         console.error("Error signing up:", error);
-      });
-  };
+    } finally {
+        setLoading(false);
+    }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4 font-inter">

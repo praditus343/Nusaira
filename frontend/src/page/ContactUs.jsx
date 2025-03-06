@@ -4,6 +4,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import apiClient from '../service/axiosInstance';
 
 const ContactPage = () => {
   const [nama, setNama] = useState('');
@@ -47,14 +48,15 @@ const ContactPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('https://nusaira-be.vercel.app/api/contact/send', {
+      const response = await apiClient.post('/contact/send', {
         nama,
         email,
         subjek,
         pesan,
         status: 'unread',
         tanggal: new Date().toISOString(),
-      });
+    });
+    
 
       toast.success('Pesan berhasil dikirim!');
       setNama('');

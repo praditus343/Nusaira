@@ -6,6 +6,7 @@ import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 import Error404Page from '../componen/ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 const FishDiseaseDashboard = () => {
     const [isGridLayout, setIsGridLayout] = useState(true);
@@ -21,14 +22,8 @@ const FishDiseaseDashboard = () => {
             setError(null);
 
             try {
-                const response = await fetch('https://nusaira-be.vercel.app/api/penyakit-lele');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                // console.log('Fetched data:', data);
-                setDiseases(data.data || []);
+                const response = await apiClient.get('/penyakit-lele');
+                setDiseases(response.data.data || []);
             } catch (error) {
                 console.error('Error fetching diseases:', error.message);
                 setError('Gagal mengambil data penyakit lele.');

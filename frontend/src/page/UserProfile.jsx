@@ -11,6 +11,7 @@ import Footer from "../componen/Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import apiClient from "../service/axiosInstance";
 
 const UserProfile = () => {
   const [userData, setUserData] = useState(null);
@@ -27,53 +28,34 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Token tidak ditemukan. Harap login kembali.");
-        setLoading(false);
-        return;
-      }
-
       try {
-        const response = await axios.get("https://nusaira-be.vercel.app/api/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const userData = response.data;
-        if (userData.jenis_kelamin === "L") {
-          userData.jenis_kelamin = "Laki-Laki";
-        } else if (userData.jenis_kelamin === "P") {
-          userData.jenis_kelamin = "Perempuan";
-        }
-
-        setUserData(userData);
-        setEditedData(userData);
+          const response = await apiClient.get("/profile");
+  
+          const userData = response.data;
+          if (userData.jenis_kelamin === "L") {
+              userData.jenis_kelamin = "Laki-Laki";
+          } else if (userData.jenis_kelamin === "P") {
+              userData.jenis_kelamin = "Perempuan";
+          }
+  
+          setUserData(userData);
+          setEditedData(userData);
       } catch (err) {
-        setError("Gagal mengambil data pengguna.");
-        console.error("Error fetching user data:", err);
+          setError("Gagal mengambil data pengguna.");
+          console.error("Error fetching user data:", err);
       } finally {
-        setLoading(false);
+          setLoading(false);
       }
-    };
+  };  
 
-    const fetchTambakData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const response = await axios.get("https://nusaira-be.vercel.app/api/tambak", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const fetchTambakData = async () => {
+    try {
+        const response = await apiClient.get("/tambak");
         setTambakData(response.data);
-      } catch (err) {
+    } catch (err) {
         console.error("Error fetching tambak data:", err);
-      }
-    };
-
+    }
+};
     fetchUserData();
     fetchTambakData();
   }, []);
@@ -139,31 +121,21 @@ const UserProfile = () => {
       });
 
       if (confirmDeleteFinal.isConfirmed) {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          Swal.fire('Gagal!', 'Token tidak ditemukan. Harap login kembali.', 'error');
-          return;
-        }
-
         try {
-          const response = await axios.delete('https://nusaira-be.vercel.app/api/profile', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (response.status === 200) {
-            Swal.fire('Akun Dihapus!', 'Akun Anda telah dihapus dengan sukses.', 'success');
-            localStorage.removeItem('token');
-            window.location.href = '/login';
-          } else {
-            Swal.fire('Gagal Menghapus Akun!', 'Terjadi kesalahan. Coba lagi nanti.', 'error');
-          }
+            const response = await apiClient.delete("/profile");
+    
+            if (response.status === 200) {
+                Swal.fire("Akun Dihapus!", "Akun Anda telah dihapus dengan sukses.", "success");
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            } else {
+                Swal.fire("Gagal Menghapus Akun!", "Terjadi kesalahan. Coba lagi nanti.", "error");
+            }
         } catch (error) {
-          console.error('Error:', error);
-          Swal.fire('Gagal Menghapus Akun!', 'Terjadi kesalahan. Coba lagi nanti.', 'error');
+            console.error("Error:", error);
+            Swal.fire("Gagal Menghapus Akun!", "Terjadi kesalahan. Coba lagi nanti.", "error");
         }
-      }
+    }    
     }
   };
 
@@ -177,12 +149,6 @@ const UserProfile = () => {
   };
 
   const handleSaveEdit = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      Swal.fire("Gagal!", "Token tidak ditemukan. Harap login kembali.", "error");
-      return;
-    }
-
     if (editedData.jenis_kelamin === "Laki-Laki") editedData.jenis_kelamin = "L";
     else if (editedData.jenis_kelamin === "Perempuan") editedData.jenis_kelamin = "P";
 
@@ -190,31 +156,23 @@ const UserProfile = () => {
     setError(false);
 
     try {
-      const response = await axios.put("https://nusaira-be.vercel.app/api/profile", editedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+        await apiClient.put("/profile", editedData);
 
-      setUserData(response.data);
-      setIsEditing(false);
+        Swal.fire("Berhasil!", "Profil berhasil diperbarui.", "success");
 
-      Swal.fire("Berhasil!", "Profil berhasil diperbarui.", "success");
-
-      const newData = await axios.get("https://nusaira-be.vercel.app/api/profile", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUserData(newData.data);
+        const newData = await apiClient.get("/profile");
+        setUserData(newData.data);
+        setIsEditing(false);
 
     } catch (error) {
-      console.error("Error updating profile:", error);
-      setError(true);
-      Swal.fire("Gagal!", "Gagal memperbarui profil.", "error");
+        console.error("Error updating profile:", error);
+        setError(true);
+        Swal.fire("Gagal!", "Gagal memperbarui profil.", "error");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";

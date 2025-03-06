@@ -9,6 +9,7 @@ import Error404Page from "../componen/ErrorPage";
 import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
+import apiClient from "../service/axiosInstance";
 
 const ELearningBooks = () => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -23,83 +24,67 @@ const ELearningBooks = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('https://nusaira-be.vercel.app/api/buku');
-      setBooks(response.data);
+        const response = await apiClient.get('/buku'); 
+        setBooks(response.data);
     } catch (err) {
-      setError(err.message);
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: err.response?.data?.message || 'Gagal mengambil daftar buku'
-      });
-    }
-  };
-
-  const fetchFavorites = async () => {
-    try {
-      const response = await axios.get('https://nusaira-be.vercel.app/api/favorites', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-  
-      if (Array.isArray(response.data.favorites)) {
-        // console.log("Favorites Data:", response.data.favorites); 
-  
-        const favoriteBooks = response.data.favorites.map(fav => ({
-          buku_id: fav.buku_id,
-          created_at: fav.created_at,
-        }));
-        // console.log("Mapped Favorite Books:", favoriteBooks);
-  
-        setFavoriteBookIds(favoriteBooks);
-      }
-    } catch (err) {
-      setError(err.message);
-      // console.error("Error fetching favorites:", err); 
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: err.response?.data?.message || 'Gagal mengambil daftar favorit'
-      });
-    }
-  };
-  
-  
-
-  const handleDeleteBooks = async () => {
-    try {
-      const deletedBooksPromises = selectedBooks.map(async (bukuId) => {
-        await axios.delete(`https://nusaira-be.vercel.app/api/favorites/${bukuId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+        setError(err.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: err.response?.data?.message || 'Gagal mengambil daftar buku'
         });
-        return bukuId; 
+    }
+};
+
+
+const fetchFavorites = async () => {
+  try {
+      const response = await apiClient.get('/favorites'); 
+
+      if (Array.isArray(response.data.favorites)) {
+          const favoriteBooks = response.data.favorites.map(fav => ({
+              buku_id: fav.buku_id,
+              created_at: fav.created_at,
+          }));
+          setFavoriteBookIds(favoriteBooks);
+      }
+  } catch (err) {
+      setError(err.message);
+      Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: err.response?.data?.message || 'Gagal mengambil daftar favorit'
       });
-  
+  }
+};
+
+const handleDeleteBooks = async () => {
+  try {
+      const deletedBooksPromises = selectedBooks.map(async (bukuId) => {
+          await apiClient.delete(`/favorites/${bukuId}`); // Gunakan apiClient
+          return bukuId;
+      });
+
       const deletedBooks = await Promise.all(deletedBooksPromises);
-  
-      
+
       setFavoriteBookIds((prev) => prev.filter(id => !deletedBooks.includes(id)));
       setSelectedBooks([]);
       setIsSelectionMode(false);
-  
-      
+
       Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: 'Buku favorit yang dipilih berhasil dihapus'
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Buku favorit yang dipilih berhasil dihapus'
       });
-    } catch (err) {
+  } catch (err) {
       Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: 'Gagal menghapus buku favorit'
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Gagal menghapus buku favorit'
       });
-    }
-  };
-  
+  }
+};
+
   const sortBooks = () => {
     if (!favoriteBookIds.length || !books.length) return [];
   

@@ -9,6 +9,7 @@ import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
 import FishTable from '../componen/FishTable';
 import { useNavigate } from 'react-router-dom';
 import Error404Page from '../componen/ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 const CustomCard = ({ children, className }) => {
     return (
@@ -88,45 +89,24 @@ const PondTable = () => {
 
     useEffect(() => {
         const fetchTambakData = async () => {
-            setIsLoading(true); 
-            setIsError(false);  
-
-            const token = localStorage.getItem('token'); 
-            if (!token) {
-                console.error("Token tidak ditemukan, harap login.");
-                setIsError(true);
-                setIsLoading(false);
-                return;
-            }
+            setIsLoading(true);
+            setIsError(false);
     
             try {
-                const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`, 
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const response = await apiClient.get('/tambak');
     
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-    
-                const data = await response.json();
-                setTambakData(data[0]);
+                setTambakData(response.data[0]);
             } catch (error) {
                 console.error("Error fetching data:", error);
-                setIsError(true); 
+                setIsError(true);
             } finally {
-                setIsLoading(false); 
+                setIsLoading(false);
             }
         };
     
         fetchTambakData();
     }, []);
     
-
-
     useEffect(() => {
         const timer = setTimeout(() => setShowBanner(false), 8000);
         return () => clearTimeout(timer); 

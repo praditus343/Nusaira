@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import img from "../assets/img/login_singup/ls1.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import apiClient from "../service/axiosInstance"; 
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -24,16 +25,12 @@ const LoginPage = () => {
     setLoading(true);
   
     try {
-      const response = await fetch("https://nusaira-be.vercel.app/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await apiClient.post("/login", {
+        email,
+        password,
       });
   
-      const data = await response.json();
-      // console.log(data);
+      const data = response.data;
   
       if (data.token && data.profile) {
         localStorage.setItem("token", data.token);
@@ -67,7 +64,7 @@ const LoginPage = () => {
       Swal.fire({
         icon: "error",
         title: "Login Gagal",
-        text: error.message,
+        text: error.response?.data?.message || "Terjadi kesalahan.",
       });
     } finally {
       setLoading(false);

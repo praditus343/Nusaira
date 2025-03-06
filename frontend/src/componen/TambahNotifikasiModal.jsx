@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { X } from "lucide-react";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import apiClient from '../service/axiosInstance';
 
 const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,24 +26,10 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
         e.preventDefault();
     
         try {
-            const token = localStorage.getItem('token'); 
-            const headers = {
-                "Content-Type": "application/json",
-                ...(token && { "Authorization": `Bearer ${token}` }), 
-            };
-    
-            const response = await fetch("https://nusaira-be.vercel.app/api/notifikasi", {
-                method: "POST",
-                headers: headers,
-                body: JSON.stringify({
-                    ...formData,
-                    created_at: new Date().toISOString(),
-                }),
+            await apiClient.post("/notifikasi", {
+                ...formData,
+                created_at: new Date().toISOString(),
             });
-    
-            if (!response.ok) {
-                throw new Error("Gagal menambahkan notifikasi");
-            }
     
             setFormData({
                 type: "",
@@ -75,6 +62,7 @@ const TambahNotifikasiModal = ({ onNotifikasiAdded }) => {
             });
         }
     };
+    
     
 
     return (

@@ -6,6 +6,7 @@ import Footer from "../componen/Footer";
 import Header from "../componen/Header";
 import Sidebar from "../componen/SideBar";
 import Error404Page from "../componen/ErrorPage";
+import apiClient from "../service/axiosInstance";
 
 const LeftCard = ({ post, isVisible }) => {
   const navigate = useNavigate();
@@ -72,31 +73,23 @@ const KabarLeleLayout = () => {
       try {
         setIsLoading(true);
         setError(null);
-        // console.log('Fetching posts...');
-
-        const response = await fetch('https://nusaira-be.vercel.app/api/berita');
-        // console.log('Fetch response:', response);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-
-        const data = await response.json();
-        // console.log('Fetched posts data:', data);
-
+    
+        const response = await apiClient.get('/berita'); 
+        const data = response.data;
+    
         if (!Array.isArray(data.berita)) {
-          throw new Error('Data is not iterable');
+            throw new Error('Data is not iterable');
         }
-
+    
         const shuffled = [...data.berita].sort(() => 0.5 - Math.random());
         setRandomLeftPosts(shuffled.slice(0, 3));
         setFilteredPosts(data.berita);
-      } catch (err) {
+    } catch (err) {
         console.error('Error fetching posts:', err);
-        setError(err.message);
-      } finally {
+        setError(err.response?.data?.message || 'Failed to fetch posts');
+    } finally {
         setIsLoading(false);
-      }
+    }    
     };
 
 

@@ -9,6 +9,7 @@ import Header from "../componen/Header";
 import Footer from "../componen/Footer";
 import Swal from "sweetalert2";
 import Error404Page from "../componen/ErrorPage";
+import apiClient from "../service/axiosInstance";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
@@ -234,38 +235,34 @@ const ExcelForm = () => {
 
   const fetchTambaks = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get('https://nusaira-be.vercel.app/api/tambak', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.get('/tambak');
       setTambaks(response.data);
+      
       if (response.data.length > 0) {
-        setSelectedTambakId(response.data[0].id);
-        setTambakData(response.data[0]);
+          setSelectedTambakId(response.data[0].id);
+          setTambakData(response.data[0]);
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Error fetching tambaks:", error);
       setError("Gagal mengambil data tambak. Silakan coba lagi.");
-    }
+  }  
   };
 
   const fetchPemasukan = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('https://nusaira-be.vercel.app/api/pemasukan');
+      const response = await apiClient.get('/pemasukan');
       setRows(response.data.map(item => ({
-        ...item,
-        date: item.date.split("T")[0],
+          ...item,
+          date: item.date.split("T")[0],
       })));
       setError(null);
-    } catch (error) {
+  } catch (error) {
       console.error("Error fetching pemasukan data:", error);
       setError("Gagal mengambil data. Silakan coba lagi.");
-    } finally {
+  } finally {
       setIsLoading(false);
-    }
+  }  
   };
 
   if (isLoading) {
@@ -299,29 +296,29 @@ const ExcelForm = () => {
       if (result.isConfirmed) {
         try {
           setIsLoading(true);
-          await axios.delete(`https://nusaira-be.vercel.app/api/pemasukan/${id}`);
+          await apiClient.delete(`/pemasukan/${id}`);
           setRows(rows.filter((row) => row.id !== id));
           Swal.fire({
-            title: "Terhapus!",
-            text: "Data pemasukan berhasil dihapus.",
-            icon: "success",
-            confirmButtonColor: "#3085d6",
+              title: "Terhapus!",
+              text: "Data pemasukan berhasil dihapus.",
+              icon: "success",
+              confirmButtonColor: "#3085d6",
           });
-  
+      
           setError(null);
-        } catch (error) {
+      } catch (error) {
           console.error("Error deleting pemasukan:", error);
           Swal.fire({
-            title: "Gagal!",
-            text: "Data pemasukan gagal dihapus. Silakan coba lagi.",
-            icon: "error",
-            confirmButtonColor: "#d33",
+              title: "Gagal!",
+              text: "Data pemasukan gagal dihapus. Silakan coba lagi.",
+              icon: "error",
+              confirmButtonColor: "#d33",
           });
-  
+      
           setError("Gagal menghapus data. Silakan coba lagi.");
-        } finally {
+      } finally {
           setIsLoading(false);
-        }
+      }      
       }
     });
   };
@@ -330,23 +327,23 @@ const ExcelForm = () => {
     try {
       setIsLoading(true);
       const requestData = {
-        date: newRow.date,
-        kategori: String(newRow.kategori).trim(),
-        jumlah: Number(newRow.jumlah),
-        harga: Number(newRow.harga),
-        keterangan: String(newRow.keterangan || "").trim(),
-        total: newRow.jumlah * newRow.harga,
-        tambak_id: selectedTambakId,
+          date: newRow.date,
+          kategori: String(newRow.kategori).trim(),
+          jumlah: Number(newRow.jumlah),
+          harga: Number(newRow.harga),
+          keterangan: String(newRow.keterangan || "").trim(),
+          total: newRow.jumlah * newRow.harga,
+          tambak_id: selectedTambakId,
       };
-
-      const response = await axios.post('https://nusaira-be.vercel.app/api/pemasukan', requestData);
+  
+      const response = await apiClient.post('/pemasukan', requestData);
       setRows(prevRows => [...prevRows, { ...requestData, id: response.data.id }]);
-    } catch (error) {
+  } catch (error) {
       console.error("Error:", error);
       setError("Terjadi kesalahan saat memproses data.");
-    } finally {
+  } finally {
       setIsLoading(false);
-    }
+  }  
   };
 
   const formatRupiah = (number) => {

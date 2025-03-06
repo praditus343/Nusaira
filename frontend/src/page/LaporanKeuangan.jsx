@@ -8,6 +8,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import Error404Page from "../componen/ErrorPage";
+import apiClient from "../service/axiosInstance";
 
 
 function formatRupiah(amount) {
@@ -27,17 +28,18 @@ function RincianPengeluaran({ onTotalChange }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('https://nusaira-be.vercel.app/api/pengeluaran');
-        if (!res.ok) throw new Error('Failed to fetch pengeluaran');
-        const data = await res.json();
+        const response = await apiClient.get('/pengeluaran'); 
+        const data = response.data;
+    
         setPengeluaran(data);
+    
         const totalSisaTagihan = data.reduce((total, item) => total + parseFloat(item.sisa_tagihan), 0);
         onTotalChange(totalSisaTagihan); 
-      } catch (error) {
-        setError(error.message);
-      } finally {
+    } catch (error) {
+        setError(error.response?.data?.message || 'Failed to fetch pengeluaran');
+    } finally {
         setLoading(false);
-      }
+    }    
     };
 
     fetchData();
@@ -96,17 +98,15 @@ function RincianPemasukan({ onTotalChange }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('https://nusaira-be.vercel.app/api/pemasukan');
-        if (!res.ok) throw new Error('Failed to fetch pemasukan');
-        const data = await res.json();
-        setPemasukan(data);
-        const totalPendapatan = data.reduce((total, item) => total + parseFloat(item.total), 0);
+        const response = await apiClient.get('/pemasukan');
+        setPemasukan(response.data);
+        const totalPendapatan = response.data.reduce((total, item) => total + parseFloat(item.total), 0);
         onTotalChange(totalPendapatan);
-      } catch (error) {
-        setError(error.message);
-      } finally {
+    } catch (error) {
+        setError(error.response?.data?.message || error.message);
+    } finally {
         setLoading(false);
-      }
+    }    
     };
 
     fetchData();
@@ -166,28 +166,16 @@ function LaporanDashboard() {
     async function fetchTambak() {
       try {
         setIsLoading(true);
-        setIsError(false); 
-        const token = localStorage.getItem("token");
-        const response = await fetch("https://nusaira-be.vercel.app/api/tambak", {
-          method: "GET", 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-  
-        if (!response.ok) {
-          throw new Error("Failed to fetch tambak data");
-        }
-  
-        const data = await response.json();
-        setTambakList(data); 
-      } catch (error) {
+        setIsError(false);
+    
+        const response = await apiClient.get("/tambak");
+        setTambakList(response.data);
+    } catch (error) {
         setIsError(true);
-        console.error("Error fetching tambak data:", error);
-      } finally {
-        setIsLoading(false); 
-      }
+        console.error("Error fetching tambak data:", error.response?.data?.message || error.message);
+    } finally {
+        setIsLoading(false);
+    }    
     }
     fetchTambak();
   }, []);

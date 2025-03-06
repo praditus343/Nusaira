@@ -4,6 +4,7 @@ import { faTimes, faCalendarAlt, faClock, faChevronDown, faChevronUp } from '@fo
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import imageCompression from 'browser-image-compression';
+import apiClient from '../service/axiosInstance';
 
 const Button = ({ children, onClick, type = 'button', className }) => {
   return (
@@ -51,10 +52,7 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
           } : {
               'Content-Type': 'application/json'  
           };
-          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-              method: 'GET',
-              headers: headers
-          });
+          const response = await apiClient.get("/tambak");
   
           const data = await response.json();
   
@@ -159,11 +157,8 @@ export const TambahLeleSegerModal = ({ isOpen, onClose, initialData }) => {
       Object.keys(dataToSend).forEach(key => {
         form.append(key, dataToSend[key]);
       });
-      const response = await axios.post('https://nusaira-be.vercel.app/api/siklus', dataToSend, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const response = await apiClient.post("/siklus", dataToSend);
+
 
       if (response.status === 200) {
         // console.log('Data berhasil disimpan', response.data);
@@ -472,10 +467,8 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
           } : {
               'Content-Type': 'application/json'  
           };
-          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-              method: 'GET',
-              headers: headers
-          });
+          const response = await apiClient.get("/tambak");
+
   
           const data = await response.json();
   
@@ -510,30 +503,35 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const fetchUmur = async () => {
-      if (isOpen) {
+        if (!isOpen) return;  
+
         try {
-          const response = await axios.get('https://nusaira-be.vercel.app/api/siklus');
-          if (response.status === 200 && response.data?.length > 0) {
-            const { umur_awal } = response.data[0];
-            if (umur_awal !== undefined) {
-              const today = new Date();
-              const startDate = new Date();
-              startDate.setDate(startDate.getDate() - umur_awal);
-              const ageInMilliseconds = today - startDate;
-              const ageInDays = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24));
-              setFormData((prevData) => ({
-                ...prevData,
-                umur: ageInDays,
-              }));
+            const response = await apiClient.get("/siklus");
+
+            if (response.status === 200 && response.data?.length > 0) {
+                const { umur_awal } = response.data[0];
+
+                if (umur_awal !== undefined) {
+                    const today = new Date();
+                    const startDate = new Date();
+                    startDate.setDate(startDate.getDate() - umur_awal);
+
+                    const ageInDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        umur: ageInDays,
+                    }));
+                }
             }
-          }
         } catch (error) {
-          console.error('Error fetching umur data:', error);
+            console.error("Error fetching umur data:", error);
         }
-      }
     };
+
     fetchUmur();
-  }, [isOpen]);
+}, [isOpen]);  
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -638,11 +636,7 @@ export const TambahDataKematianModal = ({ isOpen, onClose }) => {
       Object.keys(dataToSend).forEach(key => {
         form.append(key, dataToSend[key]);
       });
-      const response = await axios.post('https://nusaira-be.vercel.app/api/data-kematian', dataToSend, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const response = await apiClient.post("/data-kematian", dataToSend);
 
       if (response.status === 200) {
         const { message, result } = response.data;
@@ -932,10 +926,8 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
           } : {
               'Content-Type': 'application/json'  
           };
-          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-              method: 'GET',
-              headers: headers
-          });
+          const response = await apiClient.get("/tambak");
+
   
           const data = await response.json();
   
@@ -1032,16 +1024,8 @@ export const TambahDataPenyakitModal = ({ isOpen, onClose }) => {
       // console.log('Sending payload to backend:', payload);
 
 
-      const backendResponse = await axios.post(
-        'https://nusaira-be.vercel.app/api/penyakit',
-        payload,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        }
-      );
+      const backendResponse = await apiClient.post("/penyakit", payload);
+
 
       // console.log('Backend API Response:', backendResponse);
 
@@ -1301,10 +1285,8 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
           } : {
               'Content-Type': 'application/json'  
           };
-          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-              method: 'GET',
-              headers: headers
-          });
+          const response = await apiClient.get("/tambak");
+
   
           const data = await response.json();
   
@@ -1403,8 +1385,7 @@ export const TambahDataPakanModal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await axios.post('https://nusaira-be.vercel.app/api/data-pakan', dataToSend);
-      // console.log("Form Data Posted Successfully:", response.data);
+      const response = await apiClient.post("/data-pakan", dataToSend);
 
       Swal.fire({
         icon: 'success',
@@ -1553,10 +1534,8 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
               'Content-Type': 'application/json'  
           };
   
-          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-              method: 'GET',
-              headers: headers
-          });
+          const response = await apiClient.get("/tambak");
+
   
           const data = await response.json();
   
@@ -1636,11 +1615,8 @@ export const TambahDataPanenModal = ({ isOpen, onClose }) => {
     });
 
     try {
-      const response = await axios.post("https://nusaira-be.vercel.app/api/data-panen", form, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      const response = await apiClient.post("/data-panen", form);
+
 
       if (response.status === 200) {
         // console.log("Data panen berhasil disimpan");
@@ -1819,10 +1795,8 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
               'Content-Type': 'application/json'
           };
   
-          const response = await fetch('https://nusaira-be.vercel.app/api/tambak', {
-              method: 'GET',
-              headers: headers
-          });
+          const response = await apiClient.get("/tambak");
+
   
           const data = await response.json();
   
@@ -1914,11 +1888,7 @@ export const TambahJumlahAnco = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await axios.post("https://nusaira-be.vercel.app/api/anco", dataToSend, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      const response = await apiClient.post("/anco", dataToSend);
 
       if (response.status === 200) {
         // console.log("Data berhasil disimpan");

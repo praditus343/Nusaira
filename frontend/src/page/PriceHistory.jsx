@@ -3,6 +3,7 @@ import { MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ContactPopup from '../componen/ContactModal';
 import Error404Page from '../componen/ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 const PriceCard = ({ supplier, location, province, price, whatsapp, image, description }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,19 +84,23 @@ const PriceHistory = ({ searchInput }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
-                const suppliersData = await suppliersResponse.json();
-                setSuppliers(suppliersData.data);
-
-                const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
-                const productsData = await productsResponse.json();
-                setProducts(productsData.data);
-
-                setLoading(false);
+                setLoading(true);
+            
+                const [suppliersResponse, productsResponse] = await Promise.all([
+                    apiClient.get('/suppliers'),
+                    apiClient.get('/products'),
+                ]);
+            
+                setSuppliers(suppliersResponse.data.data);
+                setProducts(productsResponse.data.data);
+            
+                setError(null);
             } catch (err) {
+                console.error("Error fetching data:", err);
                 setError(err);
+            } finally {
                 setLoading(false);
-            }
+            }            
         };
 
         fetchData();

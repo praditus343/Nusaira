@@ -5,6 +5,7 @@ import img from "../assets/img/login_singup/ls3.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios"; 
+import apiClient from "../service/axiosInstance";
 
 function PasswordReset() {
   const [newPassword, setNewPassword] = useState("");
@@ -40,25 +41,21 @@ function PasswordReset() {
     setError("");
 
     try {
-      const response = await axios.post('https://nusaira-be.vercel.app/api/change-password', {
-        newPassword: newPassword,
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`, 
-        },
+      const response = await apiClient.post('/change-password', {
+          newPassword: newPassword,
       });
-
+  
       if (response.data.success) {
-        navigate("/signup3");
+          navigate("/signup3");
       } else {
-        setError("Failed to change password");
+          setError("Failed to change password");
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Error during password change:", error);
-      setError("An error occurred while changing the password.");
-    } finally {
+      setError(error.response?.data?.message || "An error occurred while changing the password.");
+  } finally {
       setIsSubmitting(false);
-    }
+  }  
   };
 
   return (

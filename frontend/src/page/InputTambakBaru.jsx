@@ -10,6 +10,7 @@ import Header from '../componen/Header';
 import Sidebar from '../componen/SideBar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import apiClient from "../service/axiosInstance";
 
 const TambakForm = () => {
     const navigate = useNavigate();
@@ -88,13 +89,14 @@ const TambakForm = () => {
         e.preventDefault();
         let hasError = false;
         const errorMessage = [];
-
+    
         for (const key in formData) {
             if (formData[key] === '' || (typeof formData[key] === 'number' && formData[key] < 0)) {
                 hasError = true;
                 errorMessage.push(`Field ${key} tidak boleh kosong atau negatif.`);
             }
         }
+    
         for (const kolam of formData.kolamDetails) {
             ['panjang', 'lebar', 'kedalaman'].forEach(dimension => {
                 const value = kolam[dimension];
@@ -104,32 +106,27 @@ const TambakForm = () => {
                 }
             });
         }
+    
         if (hasError) {
             Alert('error', 'Terjadi Kesalahan', errorMessage.join('\n'));
-        } else {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.post('https://nusaira-be.vercel.app/api/tambak', formData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                });
-                // console.log('Data berhasil dikirim:', response.data);
-            } catch (error) {
-                console.error('Terjadi kesalahan saat mengirim data:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal Mengirim Data',
-                    text: error.response?.data?.message || 'Terjadi kesalahan',
-                });
-            }
-            // console.log("Form submitted:", formData);
+            return;
+        }
+    
+        try {
+            const response = await apiClient.post('/tambak', formData);
+    
+            // console.log('Data berhasil dikirim:', response.data);
             navigate('/FinalStep', { state: { jumlahKolam: formData.jumlahKolam } });
+        } catch (error) {
+            console.error('Terjadi kesalahan saat mengirim data:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Mengirim Data',
+                text: error.response?.data?.message || 'Terjadi kesalahan',
+            });
         }
     };
-
-
+    
     const SelectWithArrow = ({ name, value, onChange, children, required }) => (
         <div className="relative z-10">
             <select
