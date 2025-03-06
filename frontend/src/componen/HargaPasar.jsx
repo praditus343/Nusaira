@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Error404Page from './ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 const LeleDataTable = () => {
   const [data, setData] = useState([]);
@@ -10,14 +11,10 @@ const LeleDataTable = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000)); 
-
-        const response = await fetch('https://nusaira-be.vercel.app/api/budidaya-lele');
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        const result = await response.json();
-        setData(result);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        
+        const response = await apiClient.get('/budidaya-lele');
+        setData(response.data);
       } catch (err) {
         setError(err.message);
       } finally {

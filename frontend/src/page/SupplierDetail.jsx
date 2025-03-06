@@ -10,6 +10,7 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import RatingReviewForm from './RatingAndReviewForm';
 import { ChevronDown } from "lucide-react";
 import Error404Page from '../componen/ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 const SupplierDashboard = () => {
     const { supplier } = useParams();
@@ -24,72 +25,38 @@ const SupplierDashboard = () => {
 
     useEffect(() => {
         const fetchSupplierData = async () => {
+            setLoading(true);
+            setError(null);
+            setReviewError(null);
+        
             try {
-                const supplierResponse = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
-                const suppliers = supplierResponse.data.data;
-
-                // console.log("Suppliers fetched:", suppliers);
-
-                const selectedSupplier = suppliers.find((sup) => {
-                    // console.log("Checking supplier:", sup.supplier);
-                    return (
-                        sup.supplier &&
-                        sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
-                    );
-                });
-
-                if (!selectedSupplier) {
-                    console.error(`Supplier "${decodeURIComponent(supplier)}" tidak ditemukan.`);
-                    throw new Error('Supplier not found');
-                }
-
-                setSupplierData(selectedSupplier);
-
-                const productsResponse = await axios.get(
-                    `https://nusaira-be.vercel.app/api/products?supplierId=${selectedSupplier.id}`
+                const { data: supplierData } = await apiClient.get("/suppliers");
+                const suppliers = supplierData.data;
+                const selectedSupplier = suppliers.find(
+                    (sup) => sup.supplier?.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
                 );
-
-                // console.log("Products response:", productsResponse.data);
-
-                if (Array.isArray(productsResponse.data.data)) {
-                    const filteredProducts = productsResponse.data.data.filter(
-                        (product) => product.product_supplier_id === selectedSupplier.id
-                    );
-
-                    // console.log("Filtered Products:", filteredProducts);
-                    setProducts(filteredProducts);
-                } else {
-                    console.error("Products data is not an array:", productsResponse.data);
-                    setError('Produk tidak ditemukan atau format data tidak sesuai');
+        
+                if (!selectedSupplier) {
+                    throw new Error(`Supplier "${decodeURIComponent(supplier)}" tidak ditemukan.`);
                 }
-
+        
+                setSupplierData(selectedSupplier);
+        
+                const { data: productData } = await apiClient.get(`/products?supplierId=${selectedSupplier.id}`);
+                setProducts(productData.data?.filter((p) => p.product_supplier_id === selectedSupplier.id) || []);
+        
                 try {
-                    const reviewsResponse = await axios.get(
-                        `https://nusaira-be.vercel.app/api/reviews?supplierId=${selectedSupplier.id}`
-                    );
-
-                    // console.log("Reviews response:", reviewsResponse.data);
-
-                    if (Array.isArray(reviewsResponse.data.data)) {
-                        const filteredReviews = reviewsResponse.data.data.filter(
-                            (review) => review.supplier_id === selectedSupplier.id
-                        );
-
-                        // console.log("Filtered Reviews:", filteredReviews);
-                        setReviews(filteredReviews);
-                    } else {
-                        console.error("Reviews data is not an array:", reviewsResponse.data);
-                        setReviewError('Format data ulasan tidak valid');
-                    }
+                    const { data: reviewData } = await apiClient.get(`/reviews?supplierId=${selectedSupplier.id}`);
+                    setReviews(reviewData.data?.filter((r) => r.supplier_id === selectedSupplier.id) || []);
                 } catch (reviewErr) {
-                    console.error('Error fetching reviews:', reviewErr.message);
-                    setReviewError('Gagal memuat ulasan');
+                    console.error("Error fetching reviews:", reviewErr.message);
+                    setReviewError("Gagal memuat ulasan");
                 }
-
-                setLoading(false);
+        
             } catch (err) {
-                console.error('Error fetching data:', err.message);
-                setError('Gagal memuat data supplier, produk, atau reviews');
+                console.error("Error fetching data:", err.message);
+                setError(err.message || "Gagal memuat data supplier, produk, atau ulasan");
+            } finally {
                 setLoading(false);
             }
         };

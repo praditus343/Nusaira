@@ -1,6 +1,7 @@
 import { Check, Copy, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import "./ComponenCss/ContactModal.css";
+import apiClient from "../service/axiosInstance";
 
 const ContactPopup = ({ onClose, supplier }) => {
   const [copiedField, setCopiedField] = useState(null);
@@ -12,9 +13,8 @@ const ContactPopup = ({ onClose, supplier }) => {
   useEffect(() => {
     const fetchSupplierData = async () => {
       try {
-        const response = await fetch("https://nusaira-be.vercel.app/api/suppliers");
-        const data = await response.json();
-        const foundSupplier = data.data.find(
+        const response = await apiClient.get("/suppliers");
+        const foundSupplier = response.data.data.find(
           (s) => s.supplier.toLowerCase() === supplier.toLowerCase()
         );
 

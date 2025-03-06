@@ -11,6 +11,7 @@ import Sidebar from '../componen/SideBar';
 import AIFloatingButton from '../componen/AiFloatingButton';
 import Footer from '../componen/Footer';
 import Error404Page from '../componen/ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 
 
@@ -27,12 +28,7 @@ const ArticleDashboard = () => {
         const fetchArticle = async () => {
             try {
                 // console.log(`Fetching article with ID: ${id}`);
-                const response = await axios.get(`https://nusaira-be.vercel.app/api/penyakit-lele/${id}`, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
+                const response = await apiClient.get(`/penyakit-lele/${id}`);
                 // console.log('Response:', response.data);
 
                 if (response.data) {
@@ -74,7 +70,7 @@ const ArticleDashboard = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`https://nusaira-be.vercel.app/api/penyakit-lele?search=${searchTerm}`);
+            const response = await apiClient.get(`/penyakit-lele?search=${searchTerm}`);
             if (response.data.length > 0) {
                 navigate(`/artikel/${response.data[0].id}`);
             } else {
@@ -94,6 +90,7 @@ const ArticleDashboard = () => {
             });
         }
     };
+    
 
     const handleShare = () => {
         navigator.clipboard.writeText(window.location.href)

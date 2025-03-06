@@ -8,6 +8,7 @@ import Sidebar from "../componen/SideBar";
 import Error404Page from "../componen/ErrorPage";
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import apiClient from "../service/axiosInstance";
 
 
 const formatDate = (dateString) => {
@@ -30,37 +31,29 @@ const PerpustakaanBooks = () => {
   const token = localStorage.getItem('token');
   const fetchBooks = async () => {
     try {
-      const response = await fetch('https://nusaira-be.vercel.app/api/buku');
-      if (!response.ok) {
-        throw new Error('Failed to fetch books');
-      }
-      const data = await response.json();
-      setBooks(data);
-    } catch (err) {
+      const response = await apiClient.get('/buku');
+      setBooks(response.data);
+  } catch (err) {
       setError(err.message);
-    }
+  }  
   };
 
   const fetchFavorites = async () => {
     try {
-      const response = await axios.get('https://nusaira-be.vercel.app/api/favorites', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
+      const response = await apiClient.get('/favorites');
+  
       if (Array.isArray(response.data.favorites)) {
-        setFavorites(response.data.favorites.map(fav => fav.buku_id));
+          setFavorites(response.data.favorites.map(fav => fav.buku_id));
       } else {
-        setFavorites([]);
+          setFavorites([]);
       }
-    } catch (err) {
+  } catch (err) {
       Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: 'Gagal mengambil daftar favorit'
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Gagal mengambil daftar favorit'
       });
-    }
+  }  
   };
 
   const toggleFavorite = async (bookId) => {
@@ -74,47 +67,35 @@ const PerpustakaanBooks = () => {
     }
 
     try {
-      const response = await axios.post(
-        'https://nusaira-be.vercel.app/api/favorites',
-        {
-          buku_id: bookId
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
+      await apiClient.post('/favorites', { buku_id: bookId });
 
       if (favorites.includes(bookId)) {
-        setFavorites(prevFavorites => prevFavorites.filter(id => id !== bookId));
-        Swal.fire({
-          icon: 'info',
-          title: 'Favorit',
-          text: 'Buku dihapus dari favorit',
-          showConfirmButton: false,
-          timer: 1500
-        });
+          setFavorites(prevFavorites => prevFavorites.filter(id => id !== bookId));
+          Swal.fire({
+              icon: 'info',
+              title: 'Favorit',
+              text: 'Buku dihapus dari favorit',
+              showConfirmButton: false,
+              timer: 1500
+          });
       } else {
-        setFavorites(prevFavorites => [...prevFavorites, bookId]);
-        Swal.fire({
-          icon: 'success',
-          title: 'Favorit',
-          text: 'Buku berhasil ditambahkan ke favorit',
-          showConfirmButton: false,
-          timer: 1500
-        });
+          setFavorites(prevFavorites => [...prevFavorites, bookId]);
+          Swal.fire({
+              icon: 'success',
+              title: 'Favorit',
+              text: 'Buku berhasil ditambahkan ke favorit',
+              showConfirmButton: false,
+              timer: 1500
+          });
       }
 
-    } catch (err) {
+  } catch (err) {
       Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: err.response?.data?.message || 'Gagal menambahkan favorit'
+          icon: 'error',
+          title: 'Gagal',
+          text: err.response?.data?.message || 'Gagal menambahkan favorit'
       });
-    }
+  }
   };
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Star } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import apiClient from '../service/axiosInstance';
 
 const RatingReviewForm = () => {
   const { supplier } = useParams();
@@ -16,29 +17,29 @@ const RatingReviewForm = () => {
   useEffect(() => {
     const fetchSupplierId = async () => {
       try {
-        const response = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
+        const response = await apiClient.get('/suppliers');
         const suppliers = response.data.data;
-
+    
         const selectedSupplier = suppliers.find(
-          (sup) => sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
+            (sup) => sup.supplier.toLowerCase() === decodeURIComponent(supplier).toLowerCase()
         );
-
+    
         if (selectedSupplier) {
-          setSupplierId(selectedSupplier.id);
+            setSupplierId(selectedSupplier.id);
         } else {
-          Swal.fire({
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Supplier tidak ditemukan.',
+            });
+        }
+    } catch (error) {
+        Swal.fire({
             icon: 'error',
             title: 'Gagal',
-            text: 'Supplier tidak ditemukan.',
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal',
-          text: 'Terjadi kesalahan saat mengambil data supplier.',
+            text: 'Terjadi kesalahan saat mengambil data supplier.',
         });
-      }
+    }    
     };
 
     if (supplier) {
@@ -61,32 +62,32 @@ const RatingReviewForm = () => {
     }
 
     try {
-      await axios.post('https://nusaira-be.vercel.app/api/reviews', {
-        supplier_id: supplierId,
-        reviewer_name: reviewerName,
-        review_text: review,
-        rating: rating,
+      await apiClient.post('/reviews', {
+          supplier_id: supplierId,
+          reviewer_name: reviewerName,
+          review_text: review,
+          rating: rating,
       });
-
+  
       Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: 'Terima kasih atas ulasan Anda!',
+          icon: 'success',
+          title: 'Berhasil',
+          text: 'Terima kasih atas ulasan Anda!',
       });
-
+  
       setRating(0);
       setReview('');
       setReviewerName('');
       setHover(0);
-    } catch (error) {
+  } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: 'Gagal mengirim ulasan. Silakan coba lagi.',
+          icon: 'error',
+          title: 'Gagal',
+          text: 'Gagal mengirim ulasan. Silakan coba lagi.',
       });
-    } finally {
+  } finally {
       setIsSubmitting(false);
-    }
+  }  
   };
 
   return (

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Edit, Trash2, Plus, ImagePlus } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { X } from 'lucide-react';
-
+import apiClient from '../service/axiosInstance';
 
 const SuppliersTable = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -28,24 +28,21 @@ const SuppliersTable = () => {
 
   const fetchSuppliers = async () => {
     try {
-      setIsLoading(true);
-      const response = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
+        setIsLoading(true);
 
-      const suppliersData = Array.isArray(response.data.data) ? response.data.data : [];
-      setSuppliers(suppliersData);
+        const response = await apiClient.get("/suppliers");
+        const suppliersData = Array.isArray(response.data.data) ? response.data.data : [];
 
-      // console.log('API Response:', response);
-      // console.log('Response Data:', response.data);
-      // console.log('Suppliers Data:', suppliersData);
-
-      setIsLoading(false);
+        setSuppliers(suppliersData);
     } catch (err) {
-      console.error('Error fetching suppliers:', err);
-      setError('Failed to fetch suppliers');
-      setSuppliers([]);
-      setIsLoading(false);
+        console.error("Error fetching suppliers:", err);
+        setError("Failed to fetch suppliers");
+        setSuppliers([]);
+    } finally {
+        setIsLoading(false);
     }
-  };
+};
+
 
 
   const handleImageUpload = async (e) => {
@@ -112,99 +109,79 @@ const SuppliersTable = () => {
 
   const handleSaveSupplier = async (e) => {
     e.preventDefault();
-    // console.log('Current Supplier Data:', currentSupplier);
 
     try {
-        const token = localStorage.getItem('token'); 
-        const headers = token ? {
-            'Authorization': `Bearer ${token}`,  
-            'Content-Type': 'application/json',  
-        } : {
-            'Content-Type': 'application/json',
-        };
-
+        let response;
         if (currentSupplier.id) {
-            // console.log(`Updating supplier with ID: ${currentSupplier.id}`);
-            await axios.put(
-                `https://nusaira-be.vercel.app/api/suppliers/${currentSupplier.id}`, 
-                currentSupplier, 
-                { headers }
-            );
+            response = await apiClient.put(`/suppliers/${currentSupplier.id}`, currentSupplier);
         } else {
-            // console.log('Adding new supplier:', currentSupplier);
-            await axios.post(
-                'https://nusaira-be.vercel.app/api/suppliers', 
-                currentSupplier, 
-                { headers }
-            );
+            response = await apiClient.post("/suppliers", currentSupplier);
         }
 
-        // console.log('Supplier saved successfully');
         Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: currentSupplier.id ? 'Supplier berhasil diperbarui!' : 'Supplier baru berhasil ditambahkan!',
+            icon: "success",
+            title: "Berhasil!",
+            text: currentSupplier.id
+                ? "Supplier berhasil diperbarui!"
+                : "Supplier baru berhasil ditambahkan!",
         });
 
         fetchSuppliers();
         setIsModalOpen(false);
     } catch (err) {
-        console.error('Error saving supplier:', err);
+        console.error("Error saving supplier:", err);
 
         Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: 'Terjadi kesalahan saat menyimpan supplier.',
+            icon: "error",
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan supplier.",
         });
-        setError('Failed to save supplier');
+
+        setError("Failed to save supplier");
     }
 };
 
+const handleDeleteSupplier = async (supplierId) => {
+  const confirmation = await Swal.fire({
+    title: 'Konfirmasi',
+    text: 'Apakah Anda yakin ingin menghapus supplier ini?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, Hapus!',
+    cancelButtonText: 'Batal',
+  });
 
+  if (confirmation.isConfirmed) {
+    try {
+        const token = localStorage.getItem('token');  
+        const headers = token ? {
+            'Authorization': `Bearer ${token}`, 
+        } : {};
 
-  const handleDeleteSupplier = async (supplierId) => {
-    const confirmation = await Swal.fire({
-      title: 'Konfirmasi',
-      text: 'Apakah Anda yakin ingin menghapus supplier ini?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal',
-    });
+        await axios.delete(
+            `https://nusaira-be.vercel.app/api/suppliers/${supplierId}`,
+            { headers }
+        );
 
-    if (confirmation.isConfirmed) {
-      try {
-          const token = localStorage.getItem('token');  
-          const headers = token ? {
-              'Authorization': `Bearer ${token}`, 
-          } : {};
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Supplier berhasil dihapus!',
+        });
 
-          await axios.delete(
-              `https://nusaira-be.vercel.app/api/suppliers/${supplierId}`,
-              { headers }
-          );
-  
-          Swal.fire({
-              icon: 'success',
-              title: 'Berhasil!',
-              text: 'Supplier berhasil dihapus!',
-          });
-  
-          setSuppliers((prev) => prev.filter((supplier) => supplier.id !== supplierId));
-      } catch (err) {
-          Swal.fire({
-              icon: 'error',
-              title: 'Gagal!',
-              text: 'Terjadi kesalahan saat menghapus supplier.',
-          });
-          setError('Failed to delete supplier');
-      }
-  }  
-  };
-
-
+        setSuppliers((prev) => prev.filter((supplier) => supplier.id !== supplierId));
+    } catch (err) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Terjadi kesalahan saat menghapus supplier.',
+        });
+        setError('Failed to delete supplier');
+    }
+}  
+};
 
   return (
     <div className="bg-white overflow-hidden">

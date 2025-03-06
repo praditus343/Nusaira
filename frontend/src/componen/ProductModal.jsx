@@ -2,6 +2,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Image, Loader2, X } from "lucide-react";
 import React, { useEffect, useState } from 'react';
+import apiClient from '../service/axiosInstance';
 
 const ProductModal = ({
     isModalOpen,
@@ -20,11 +21,9 @@ const ProductModal = ({
         if (isModalOpen) {
             const fetchSuppliers = async () => {
                 try {
-                    const response = await fetch('https://nusaira-be.vercel.app/api/suppliers');
-                    const data = await response.json();
-                    // console.log(data);
-                    if (data.status === "success") {
-                        setSuppliers(data.data); 
+                    const response = await apiClient.get('/suppliers');
+                    if (response.data.status === "success") {
+                        setSuppliers(response.data.data);
                     } else {
                         console.error("Failed to fetch suppliers");
                     }
@@ -32,10 +31,11 @@ const ProductModal = ({
                     console.error("Error fetching suppliers:", error);
                 }
             };
-
+    
             fetchSuppliers();
         }
     }, [isModalOpen]);
+    
     
     return (
         isModalOpen && (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import PenyakitLeleUpload from './PenyakitLeleUploads';
 import { X } from 'lucide-react';
+import apiClient from '../service/axiosInstance';
 
 export const PenyakitLeleCards = ({ penyakitData, onDataUpdate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,46 +12,29 @@ export const PenyakitLeleCards = ({ penyakitData, onDataUpdate }) => {
 
   const handleDelete = async (id) => {
     Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: 'Data ini akan dihapus secara permanen!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, hapus!',
-      cancelButtonText: 'Batal',
+        title: 'Apakah Anda yakin?',
+        text: 'Data ini akan dihapus secara permanen!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal',
     }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-            const token = localStorage.getItem('token'); 
-            const headers = token ? {
-                'Authorization': `Bearer ${token}`,  
-                'Content-Type': 'application/json'
-            } : {
-                'Content-Type': 'application/json'  
-            };
-    
-            const response = await fetch(
-                `https://nusaira-be.vercel.app/api/penyakit-lele/${id}`,
-                { 
-                    method: 'DELETE',
-                    headers: headers  
-                }
-            );
-    
-            if (!response.ok) {
-                throw new Error('Gagal menghapus data.');
+        if (result.isConfirmed) {
+            try {
+                await apiClient.delete(`/penyakit-lele/${id}`);
+
+                Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
+                onDataUpdate(id);
+            } catch (error) {
+                console.error('Error saat menghapus data:', error.message);
+                Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
             }
-    
-            Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
-            onDataUpdate(id);
-        } catch (error) {
-            console.error('Error saat menghapus data:', error.message);
-            Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus data.', 'error');
         }
-    }    
     });
-  };
+};
+
 
   return (
     <>

@@ -6,6 +6,7 @@ import Sidebar from "../componen/SideBar";
 import AIFloatingButton from "../componen/AiFloatingButton";
 import Footer from "../componen/Footer";
 import Error404Page from '../componen/ErrorPage';
+import apiClient from '../service/axiosInstance';
 
 const KabarLeleArticleLayout = () => {
   const { id } = useParams();
@@ -17,19 +18,13 @@ const KabarLeleArticleLayout = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`https://nusaira-be.vercel.app/api/berita/${id}`);
-
-        if (!response.ok) {
-          throw new Error('Artikel tidak ditemukan');
-        }
-
-        const data = await response.json();
-        setArticle(data);
+        const response = await apiClient.get(`/berita/${id}`);
+        setArticle(response.data);
+    } catch (err) {
+        setError(err.response?.data?.message || 'Artikel tidak ditemukan');
+    } finally {
         setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
+    }    
     };
 
     fetchArticle();

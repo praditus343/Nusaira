@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Droplet } from 'lucide-react';
 import Error404Page from "../componen/ErrorPage";
 import axios from 'axios';
-
+import apiClient from "../service/axiosInstance";
 
 const InfoCard = ({ title, value, subValue, buttonText, onClick }) => (
   <Card>
@@ -275,28 +275,24 @@ const PengaturanDashboard = () => {
   useEffect(() => {
     const fetchTambakData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get('https://nusaira-be.vercel.app/api/tambak', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await apiClient.get('/tambak');
+    
         if (response.status < 200 || response.status >= 300) {
-          throw new Error('Gagal mengambil data tambak');
+            throw new Error('Gagal mengambil data tambak');
         }
-  
+    
         setTambakData(response.data[0]);
         setLoading(false);
-      } catch (error) {
+    } catch (error) {
         console.error('Error:', error);
         setIsError(true);
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Gagal memuat data tambak!',
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Gagal memuat data tambak!',
         });
         setLoading(false);
-      }
+    }    
     };
   
     fetchTambakData();
@@ -306,81 +302,55 @@ const PengaturanDashboard = () => {
   const handleDeleteTambak = async () => {
     try {
       const confirm = await Swal.fire({
-        title: "Anda yakin?",
-        text: "Data tambak akan dihapus secara permanen!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Hapus",
+          title: "Anda yakin?",
+          text: "Data tambak akan dihapus secara permanen!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Hapus",
       });
-
+  
       if (confirm.isConfirmed) {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`https://nusaira-be.vercel.app/api/tambak/${tambakData.id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-           'Content-Type': 'application/json',
-         },
-        });
-
-        if (!response.ok) {
-          throw new Error("Gagal menghapus data tambak");
-        }
-
-        Swal.fire({
-          icon: "success",
-          title: "Berhasil!",
-          text: "Tambak berhasil dihapus",
-        });
-
-        setTambakData(null);
+          await apiClient.delete(`/tambak/${tambakData.id}`);
+  
+          Swal.fire({
+              icon: "success",
+              title: "Berhasil!",
+              text: "Tambak berhasil dihapus",
+          });
+  
+          setTambakData(null);
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Error deleting tambak:", error);
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Gagal menghapus tambak!",
+          icon: "error",
+          title: "Oops...",
+          text: "Gagal menghapus tambak!",
       });
-    }
+  }  
   };
 
   const handleUpdateTambak = async (updatedData) => {
     try {
       const sanitizedData = Object.keys(updatedData).reduce((acc, key) => {
-        acc[key] = updatedData[key] === undefined ? null : updatedData[key];
-        return acc;
+          acc[key] = updatedData[key] === undefined ? null : updatedData[key];
+          return acc;
       }, {});
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(`https://nusaira-be.vercel.app/api/tambak/${tambakData.id}`, {
-        method: 'PUT',
-        headers: {
-           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(sanitizedData),
-      });
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.error('Failed to update data, response:', errorResponse);
-        throw new Error(errorResponse.message || 'Gagal memperbarui data tambak');
-      }
-
-      const updatedTambak = await response.json();
-
+  
+      const response = await apiClient.put(`/tambak/${tambakData.id}`, sanitizedData);
+      
       setTambakData((prev) => ({
-        ...prev,
-        ...updatedTambak,
+          ...prev,
+          ...response.data,
       }));
-
+  
       return true;
-    } catch (error) {
+  } catch (error) {
       console.error('Error updating tambak:', error);
       throw error;
-    }
+  }  
   };
 
 

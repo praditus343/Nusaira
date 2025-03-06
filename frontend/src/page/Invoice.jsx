@@ -7,6 +7,7 @@ import Header from "../componen/Header";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Error404Page from "../componen/ErrorPage";
+import apiClient from "../service/axiosInstance";
 
 function TransactionItem({ title, date, status }) {
   const formattedDate = new Date(date).toLocaleDateString("id-ID", {
@@ -45,44 +46,42 @@ function Content() {
     const fetchTagihan = async () => {
       setIsLoading(true);
       setIsError(false);
-
+  
       const token = localStorage.getItem("token");
       const profile = localStorage.getItem("profile");
-
+  
       if (!profile || !token) {
         console.error("Profile atau token tidak ditemukan. Pastikan pengguna sudah login.");
         setIsError(true);
         setIsLoading(false);
         return;
       }
+  
       const parsedProfile = JSON.parse(profile);
       const userId = parsedProfile.id;
-
+  
       try {
-        const response = await axios.get(
-          `https://nusaira-be.vercel.app/api/tagihan/user/${userId}`, 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const { data } = await apiClient.get(`tagihan/user/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        setTagihan(
+          data.map((item) => ({
+            ...item,
+            status: item.status === 0 ? "Belum Bayar" : "Sudah Bayar",
+          }))
         );
-
-        const formattedData = response.data.map((item) => ({
-          ...item,
-          status: item.status === 0 ? "Belum Bayar" : "Sudah Bayar",
-        }));
-        setTagihan(formattedData);
       } catch (error) {
-        console.error("Error fetching tagihan:", error);
+        console.error("Error fetching tagihan:", error.response?.data || error.message);
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchTagihan();
   }, []);
+  
 
   const filteredTagihan = tagihan.filter((item) =>
     filter === "belum-bayar"

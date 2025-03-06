@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Edit, Trash2 } from 'lucide-react';
-import axios from 'axios';
+import apiClient from "../service/axiosInstance";
 import Swal from 'sweetalert2';
 import BukuInputModal from './BukuInputModal';
 
@@ -9,13 +9,12 @@ const BukuCards = () => {
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingBook, setEditingBook] = useState(null);
-    const [highlightedBook, setHighlightedBook] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchBooks = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get("https://nusaira-be.vercel.app/api/buku");
+            const response = await apiClient.get("/buku");
             setBooks(response.data);
         } catch (err) {
             console.error("Error fetching buku data:", err);
@@ -41,27 +40,17 @@ const BukuCards = () => {
                 confirmButtonText: "Ya, Hapus!",
                 cancelButtonText: "Batal",
             });
-
+            
             if (result.isConfirmed) {
                 try {
-                    const token = localStorage.getItem('token');
-                    if (!token) throw new Error('Token tidak ditemukan!');
-            
-                    await axios.delete(`https://nusaira-be.vercel.app/api/buku/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`, 
-                            'Content-Type': 'application/json' 
-                        }
-                    });
-            
-                    await fetchBooks(); 
+                    await apiClient.delete(`/buku/${id}`);
+                    await fetchBooks();
                     Swal.fire("Terhapus!", "Buku berhasil dihapus.", "success");
                 } catch (error) {
                     console.error("Error:", error.message);
                     Swal.fire("Gagal!", error.message, "error");
                 }
             }
-            
         } catch (error) {
             console.error("Error deleting buku:", error);
             Swal.fire("Error", "Terjadi kesalahan saat menghapus buku.", "error");

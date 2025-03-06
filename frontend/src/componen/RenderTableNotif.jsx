@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import TambahNotifikasiModal from './TambahNotifikasiModal';
+import apiClient from '../service/axiosInstance';
 
 const RendaTableNotif = () => {
   const [notifikasiData, setNotifikasiData] = useState([]);
@@ -12,20 +13,20 @@ const RendaTableNotif = () => {
 
   const fetchNotifikasi = async () => {
     try {
-      setLoading(true);
-      const response = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
-      if (!response.ok) throw new Error('Failed to fetch notifications');
-      const data = await response.json();
-      setNotifikasiData(data);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setLoading(true);
+        const response = await apiClient.get('/notifikasi'); 
 
-  const handleDelete = async (id) => {
-    const result = await Swal.fire({
+        setNotifikasiData(response.data); 
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+
+const handleDelete = async (id) => {
+  const result = await Swal.fire({
       title: 'Apakah Anda yakin?',
       text: 'Notifikasi ini akan dihapus secara permanen!',
       icon: 'warning',
@@ -34,45 +35,34 @@ const RendaTableNotif = () => {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Ya, hapus!',
       cancelButtonText: 'Batal',
-    });
+  });
 
-    if (result.isConfirmed) {
+  if (result.isConfirmed) {
       try {
-        Swal.fire({
-          title: 'Menghapus...',
-          text: 'Sedang memproses penghapusan notifikasi.',
-          icon: 'info',
-          allowOutsideClick: false,
-          showConfirmButton: false,
-        });
-        const token = localStorage.getItem('token');  
-        const headers = token ? {
-            'Authorization': `Bearer ${token}`, 
-        } : {};
+          Swal.fire({
+              title: 'Menghapus...',
+              text: 'Sedang memproses penghapusan notifikasi.',
+              icon: 'info',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+          });
 
+          await apiClient.delete(`/notifikasi/${id}`); 
 
-        const response = await fetch(
-          `https://nusaira-be.vercel.app/api/notifikasi/${id}`,
-          { method: 'DELETE',  headers: headers, }
-        );
+          Swal.close();
+          setLoading(true);
+          fetchNotifikasi(); 
 
-        if (!response.ok) {
-          throw new Error('Gagal menghapus notifikasi.');
-        }
-
-        Swal.close();
-        setLoading(true);
-        fetchNotifikasi();
-
-        Swal.fire('Terhapus!', 'Notifikasi berhasil dihapus.', 'success');
+          Swal.fire('Terhapus!', 'Notifikasi berhasil dihapus.', 'success');
       } catch (error) {
-        console.error('Error deleting notification:', error);
-        Swal.fire('Error!', 'Terjadi kesalahan saat menghapus notifikasi.', 'error');
+          console.error('Error deleting notification:', error);
+          Swal.fire('Error!', 'Terjadi kesalahan saat menghapus notifikasi.', 'error');
       } finally {
-        setLoading(false);
+          setLoading(false);
       }
-    }
-  };
+  }
+};
+
 
   const handleNotifikasiAdded = () => {
     fetchNotifikasi();

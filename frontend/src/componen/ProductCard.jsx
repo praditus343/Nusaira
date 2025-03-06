@@ -3,6 +3,7 @@ import { Edit, Trash2, Plus, Package } from 'lucide-react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ProductModal from './ProductModal';
+import apiClient from '../service/axiosInstance';
 
 const ProductsCard = () => {
   const [products, setProducts] = useState([]);
@@ -21,29 +22,31 @@ const ProductsCard = () => {
 
   const fetchProducts = async () => {
     try {
-      setIsLoading(true);
+        setIsLoading(true);
 
-      const response = await axios.get('https://nusaira-be.vercel.app/api/products');
-      const suppliersResponse = await axios.get('https://nusaira-be.vercel.app/api/suppliers');
+        const [productsResponse, suppliersResponse] = await Promise.all([
+            apiClient.get('/products'),
+            apiClient.get('/suppliers')
+        ]);
 
-      const suppliersData = Array.isArray(suppliersResponse.data.data) ? suppliersResponse.data.data : [];
-      // console.log('Suppliers Data:', suppliersData);
+        const suppliersData = Array.isArray(suppliersResponse.data.data) ? suppliersResponse.data.data : [];
+        const productsData = Array.isArray(productsResponse.data.data) ? productsResponse.data.data : [];
 
-      const productsData = Array.isArray(response.data.data) ? response.data.data : [];
-      setSuppliers(suppliersData);
-      setProducts(productsData);
+        setSuppliers(suppliersData);
+        setProducts(productsData);
 
-      setIsLoading(false);
     } catch (err) {
-      console.error('Error fetching products:', err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal Memuat Produk',
-        text: err.response?.data?.message || 'Terjadi kesalahan saat memuat produk',
-      });
-      setIsLoading(false);
+        console.error('Error fetching products:', err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Memuat Produk',
+            text: err.response?.data?.message || 'Terjadi kesalahan saat memuat produk',
+        });
+    } finally {
+        setIsLoading(false);
     }
-  };
+};
+
 
 
   const getSupplierName = (supplierId) => {
@@ -88,34 +91,15 @@ const ProductsCard = () => {
     e.preventDefault();
     // console.log("Current Product Data:", currentProduct);
 
-    const productData = {
-        ...currentProduct,
-    };
-    // console.log("Product Data to be sent:", productData);
+    const productData = { ...currentProduct };
 
     try {
-        const token = localStorage.getItem('token');  
-        const headers = token ? {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,  
-        } : {
-            'Content-Type': 'application/json',
-        };
-
         if (currentProduct.product_id) {
             // console.log("Updating product with ID:", currentProduct.product_id);
-            await axios.put(
-                `https://nusaira-be.vercel.app/api/products/${currentProduct.product_id}`,
-                productData,
-                { headers }  
-            );
+            await apiClient.put(`/products/${currentProduct.product_id}`, productData);
         } else {
             // console.log("Adding new product");
-            await axios.post(
-                `https://nusaira-be.vercel.app/api/products`,
-                productData,
-                { headers }  
-            );
+            await apiClient.post('/products', productData);
         }
 
         // console.log("Product saved successfully");
@@ -137,10 +121,9 @@ const ProductsCard = () => {
         });
     }
 };
-
-
-  const handleDeleteProduct = async (productId) => {
-    Swal.fire({
+ 
+const handleDeleteProduct = async (productId) => {
+  Swal.fire({
       title: 'Apakah Anda yakin?',
       text: 'Produk akan dihapus permanen',
       icon: 'warning',
@@ -149,36 +132,28 @@ const ProductsCard = () => {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Ya, Hapus!',
       cancelButtonText: 'Batal'
-    }).then(async (result) => {
+  }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-            const token = localStorage.getItem('token'); 
-            const headers = token ? {
-                'Authorization': `Bearer ${token}`,  
-            } : {};
-    
-            await axios.delete(
-                `https://nusaira-be.vercel.app/api/products/${productId}`,
-                { headers }  
-            );
-    
-            setProducts(products.filter(product => product.product_id !== productId));
-    
-            Swal.fire({
-                icon: 'success',
-                title: 'Dihapus!',
-                text: 'Produk berhasil dihapus'
-            });
-        } catch (err) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal Menghapus',
-                text: err.response?.data?.message || 'Terjadi kesalahan saat menghapus produk'
-            });
-        }
-    }    
-    });
-  };
+          try {
+              await apiClient.delete(`/products/${productId}`);
+
+              setProducts(products.filter(product => product.product_id !== productId));
+
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Dihapus!',
+                  text: 'Produk berhasil dihapus'
+              });
+          } catch (err) {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal Menghapus',
+                  text: err.response?.data?.message || 'Terjadi kesalahan saat menghapus produk'
+              });
+          }
+      }
+  });
+};
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];

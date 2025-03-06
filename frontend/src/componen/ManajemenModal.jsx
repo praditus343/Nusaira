@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
+import apiClient from '../service/axiosInstance';
 
 const ManagementModal = ({ isOpen, onClose }) => {
     const formRef = useRef(null);
@@ -30,14 +31,7 @@ const ManagementModal = ({ isOpen, onClose }) => {
             });
     
             try {
-                const token = localStorage.getItem('token'); 
-                const config = token ? {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                } : {};
-    
-                const response = await axios.get('https://nusaira-be.vercel.app/api/tambak', config);
+                const response = await apiClient.get('/tambak');
                 setTambakList(response.data);
                 setSelectedTambakId('');
             } catch (error) {
@@ -55,7 +49,6 @@ const ManagementModal = ({ isOpen, onClose }) => {
     
         fetchTambakList();
     }, [isOpen]);
-    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -64,7 +57,7 @@ const ManagementModal = ({ isOpen, onClose }) => {
         const ph = parseFloat(formData.get('ph'));
         const suhu = parseFloat(formData.get('suhu'));
         const oksigen = parseFloat(formData.get('oksigen'));
-        const salinitas = parseFloat(formData.get('salinitas')) ;
+        const salinitas = parseFloat(formData.get('salinitas'));
     
         let errorObj = {
             ph: '',
@@ -113,19 +106,7 @@ const ManagementModal = ({ isOpen, onClose }) => {
                 salinitas
             };
     
-            const token = localStorage.getItem('token'); 
-            const config = token ? {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-            } : {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            };
-    
-            const response = await axios.post('https://nusaira-be.vercel.app/api/air', payload, config);
+            const response = await apiClient.post('/air', payload);
     
             if (response.status === 200 || response.status === 201) {
                 await Swal.fire({
@@ -156,6 +137,7 @@ const ManagementModal = ({ isOpen, onClose }) => {
     
 
     if (!isOpen) return null;
+
 
     return (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

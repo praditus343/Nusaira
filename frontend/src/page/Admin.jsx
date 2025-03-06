@@ -11,6 +11,7 @@ import Logo from '../assets/Logo.png'
 import { useNavigate } from 'react-router-dom'; 
 import TagihanTable from '../componen/TagihanTable';
 import BukuCards from '../componen/BukuCard';
+import apiClient from '../service/axiosInstance';
 
 const AdminDashboard = () => {
   const [beritaData, setBeritaData] = useState([]);
@@ -33,46 +34,43 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const beritaResponse = await fetch('https://nusaira-be.vercel.app/api/berita');
-        const penyakitResponse = await fetch('https://nusaira-be.vercel.app/api/penyakit-lele');
-        const pesanResponse = await fetch('https://nusaira-be.vercel.app/api/contact/messages');
-        const notifikasiResponse = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
-        const suppliersResponse = await fetch('https://nusaira-be.vercel.app/api/suppliers');
-        const productsResponse = await fetch('https://nusaira-be.vercel.app/api/products');
-        const tagihanResponse = await fetch('https://nusaira-be.vercel.app/api/semua/tagihan');
-        const bukuResponse = await fetch('https://nusaira-be.vercel.app/api/buku');
-        
-        
-        
-        const beritaJson = await beritaResponse.json();
-        const penyakitJson = await penyakitResponse.json();
-        const pesanJson = await pesanResponse.json();
-        const notifikasiJson = await notifikasiResponse.json();
-        const suppliersJson = await suppliersResponse.json();
-        const productsJson = await productsResponse.json();
-        const tagihanJson = await tagihanResponse.json();
-        const bukuJson = await bukuResponse.json();
-
-
-        setTagihanData(tagihanJson.data || tagihanJson || []);
-        setBeritaData(beritaJson || []);
-        setPenyakitData(penyakitJson.data || []);
-        setPesanData(pesanJson.data || []);
-        setNotifikasiData(notifikasiJson.data || notifikasiJson || []);
-        setSuppliersData(suppliersJson.data || suppliersJson || []);
-        setProductsData(productsJson.data || productsJson || []);
-        setBukuData(bukuJson.data || bukuJson || []);
-        
+        const [
+          beritaResponse,
+          penyakitResponse,
+          pesanResponse,
+          notifikasiResponse,
+          suppliersResponse,
+          productsResponse,
+          tagihanResponse,
+          bukuResponse
+        ] = await Promise.all([
+          apiClient.get('/berita'),
+          apiClient.get('/penyakit-lele'),
+          apiClient.get('/contact/messages'),
+          apiClient.get('/notifikasi'),
+          apiClient.get('/suppliers'),
+          apiClient.get('/products'),
+          apiClient.get('/semua/tagihan'),
+          apiClient.get('/buku')
+        ]);
+  
+        setBeritaData(beritaResponse.data || []);
+        setPenyakitData(penyakitResponse.data || []);
+        setPesanData(pesanResponse.data || []);
+        setNotifikasiData(notifikasiResponse.data || []);
+        setSuppliersData(suppliersResponse.data || []);
+        setProductsData(productsResponse.data || []);
+        setTagihanData(tagihanResponse.data || []);
+        setBukuData(bukuResponse.data || []);
+  
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
-    
+  
     fetchData();
-    
   }, []);
-
+  
   const handleDataUpdate = (deletedId) => {
     setPenyakitData((prevData) =>
       prevData.filter((item) => item.id !== deletedId)

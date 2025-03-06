@@ -6,9 +6,7 @@ import AIFloatingButton from '../componen/AiFloatingButton';
 import Header from '../componen/Header';
 import Swal from 'sweetalert2';
 import Error404Page from '../componen/ErrorPage';
-
-
-
+import apiClient from '../service/axiosInstance';
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -43,17 +41,13 @@ const NotificationDashboard = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await fetch('https://nusaira-be.vercel.app/api/notifikasi');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch notifications');
-                }
-                const data = await response.json();
-                setNotifications(data);
+                const response = await apiClient.get('/notifikasi');
+                setNotifications(response.data);
                 setLoading(false);
-            } catch (err) {
-                setError(err.message);
+            } catch (error) {
+                setError(error.response?.data?.message || "Failed to fetch notifications");
                 setLoading(false);
-            }
+            }            
         };
 
         fetchNotifications();

@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { BeritaInputModal } from "./BeritaInputModal";
 import Swal from "sweetalert2";
+import apiClient from "../service/axiosInstance";
 
 export const BeritaCards = ({ onAddBerita }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
- 
   const fetchBerita = async () => {
     try {
-      const response = await fetch("https://nusaira-be.vercel.app/api/berita");
-      if (!response.ok) throw new Error("Gagal mengambil data dari API.");
-      const result = await response.json();
-      // console.log("Data fetched:", result); 
-      setData(result);
+      const response = await apiClient.get("/berita");
+      setData(response.data);
     } catch (err) {
       console.error("Error fetching berita data:", err);
       setError(err.message);
@@ -39,26 +36,17 @@ export const BeritaCards = ({ onAddBerita }) => {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('Token tidak ditemukan!');
     
-            const response = await fetch(`https://nusaira-be.vercel.app/api/berita/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`, 
-                    "Content-Type": "application/json"  
-                }
+            await apiClient.delete(`/berita/${id}`, {
+                headers: { Authorization: `Bearer ${token}` }
             });
     
-            if (response.ok) {
-                await fetchBerita(); 
-                Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
-            } else {
-                throw new Error("Penghapusan gagal");
-            }
+            await fetchBerita(); 
+            Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
         } catch (error) {
             console.error("Error:", error.message);
             Swal.fire("Gagal!", error.message, "error");
         }
-    }
-    
+      }
     } catch (error) {
       console.error("Error deleting berita:", error);
       Swal.fire("Error", "Terjadi kesalahan saat menghapus berita.", "error");
